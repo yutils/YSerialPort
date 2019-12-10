@@ -1,8 +1,8 @@
 # YSerialPort
 
-Google官方的Android串口通信Demo，重新封装代码
+Google官方的Android串口通信Demo，重新封装代码，实现读取串口数据，实现重新组包一次性读取完整数据。
 
-官方源码 https://github.com/licheedev/Android-SerialPort-API
+已经多次长时间测试：串口打印机命令，串口电子秤，串口NFC读卡器，读M1区，读CPU区，一次读取16KB数据。
 
 [![](https://jitpack.io/v/yu1441/YSerialPort.svg)](https://jitpack.io/#yu1441/YSerialPort)
 
@@ -39,7 +39,6 @@ dependencies {
 ```
 
 # 使用方法
-已经多次长时间测试：串口打印机命令，串口电子秤，串口NFC读卡器，读M1区，读CPU区，一次读取16KB数据。
 
 ```
 int index = 0;//第0个串口
@@ -79,5 +78,7 @@ protected void onDestroy() {
 }
 
 ```
+
+官方源码 https://github.com/licheedev/Android-SerialPort-API
 
 不懂的问我QQ：3373217
