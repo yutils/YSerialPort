@@ -26,14 +26,15 @@ dependencies {
 **注意**
 1.因为Android-SerialPort-API的SDK最低版本22，低于22的用户请使用Android-SerialPort-API1.0.1，把YSerialPort里面的复制出来，稍加改动就可以使用。
 
-...
+```
     minSdkVersion 22
-...
+```
 
 2.在AndroidManifest.xml文件中加入
-...
+
+```
     tools:replace="android:label"
-...
+```
 
 # 使用方法
 已经多次长时间测试：串口打印机命令，串口电子秤，串口NFC读卡器，读M1区，读CPU区，一次读取16KB数据。
