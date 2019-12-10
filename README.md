@@ -20,7 +20,7 @@ allprojects {
 
 ```
 dependencies {
-        compile 'com.github.yu1441:serialport:2.0.0'
+       implementation 'com.github.yu1441:YSerialPort:2.0.0'
 }
 ```
 
