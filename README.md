@@ -23,7 +23,8 @@ dependencies {
        implementation 'com.github.yu1441:YSerialPort:2.0.0'
 }
 ```
-**注意**
+##注意
+
 1.因为Android-SerialPort-API的SDK最低版本22，低于22的用户请使用Android-SerialPort-API1.0.1，把YSerialPort里面的复制出来，稍加改动就可以使用。
 
 ```
