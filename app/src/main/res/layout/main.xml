@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/ButtonSetup"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="设置" />
+
+            <Button
+                android:id="@+id/ButtonSendWords"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="发送" />
+
+            <Button
+                android:id="@+id/bt_ZM703_m1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="ZM703读卡器——M1" />
+            <Button
+                android:id="@+id/bt_ZM703_cpu"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="ZM703读卡器——CPU" />
+            <Button
+                android:id="@+id/ButtonAbout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="关于" />
+
+            <Button
+                android:id="@+id/ButtonQuit"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="退出" />
+
+        </LinearLayout>
+    </ScrollView>
+</layout>

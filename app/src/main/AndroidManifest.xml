@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.yujing.chuankou">
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <application
+        android:name=".App"
+        android:allowBackup="true"
+        android:icon="@mipmap/icon"
+        android:label="${app_name}"
+        android:networkSecurityConfig="@xml/network_config"
+        android:roundIcon="@mipmap/icon"
+        android:supportsRtl="true"
+        tools:replace="android:label"
+        android:theme="@style/AppTheme">
+
+        <activity android:name=".MainMenu">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".SendWordsActivity" />
+        <activity android:name=".SetActivity" />
+        <activity android:name=".zm703.ZM703CardM1Activity" android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+        <activity android:name=".zm703.ZM703CardCPUActivity" android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+    </application>
+
+</manifest>

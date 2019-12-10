@@ -1,0 +1,83 @@
+def jarName = "yserialport2.0.0"
+
+//Copy类型，请在Terminal中运行gradlew makeJar
+task makeJar(type: Copy) {
+    //删除存在的
+    delete 'build/libs/' + jarName + ".jar"
+    //设置拷贝的文件
+    from('build/intermediates/packaged-classes/release/')
+    //打进jar包后的文件目录,将classes.jar放入build/libs/目录下
+    into('build/libs/')
+    //要打包的jar文件
+    include('classes.jar')
+    //重命名
+    rename('classes.jar', jarName + ".jar")
+}
+makeJar.dependsOn(build)
+
+//-encoding UTF-8  -charset UTF-8
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+// 生成jar包的sourcesJar，不需要修改。
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+    archiveName = jarName + '-sources.jar'
+}
+
+//生成jarDoc的task，不需要修改。
+task javadoc(type: Javadoc) {
+    failOnError false
+    source = android.sourceSets.main.java.srcDirs
+    options.encoding = "UTF-8"
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    classpath += configurations.compile
+}
+
+// 生成javaDoc的jar，不需要修改。
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    group = 'jar'
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+    archiveName = jarName + '-javadoc.jar'
+}
+
+task generateJavadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    ext.cp = android.libraryVariants.collect { variant ->
+        variant.javaCompile.classpath.files
+    }
+    classpath = files(ext.cp)
+}
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+//导出JAR包的相关配置，打包jar请在Terminal中运行gradlew makeJar，检查使用gradle lint
+//task makeJar(type: Jar) {
+//    //删除之前的jar
+//    delete jarName+".jar"
+//    //设置拷贝的文件
+//    from file('build/intermediates/javac/release/compileReleaseJavaWithJavac/classes')
+//    from file('src/main/java/')
+//    //打进jar包后的文件目录
+//    destinationDir = file('build/libs')
+//    //打进jar包后的文件名
+//    archiveName = jarName+".jar"
+//    //指定打包的文件
+//    include "com/yujing/**/*.class"
+//    include "com/yujing/**/**/*.class"
+//    include "com/yujing/**/*.java"
+//    include "com/yujing/**/**/*.java"
+//    //过滤不需要的class
+//    exclude "**/**/BuildConfig.class"
+//    exclude "**/**/BuildConfig\$*.class"
+//    exclude "**/R.class"
+//    exclude "**/R\$*.class"
+//    exclude "**/test/"
+//}
+//makeJar.dependsOn(build)
+

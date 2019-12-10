@@ -1,0 +1,108 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    compileSdkVersion 29
+    buildToolsVersion = '29.0.2'
+    defaultConfig {
+        applicationId "com.yujing.chuankou"
+        minSdkVersion 22
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.1"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    dataBinding {
+        enabled = true
+    }
+    buildTypes {
+        debug {
+//            buildConfigField 'String', 'SERVER_PORT', server_port
+//            buildConfigField 'String', 'SERVER_IP', server_ip
+//            buildConfigField 'String', 'SERVER_URL', server_url
+            manifestPlaceholders = ["app_name": "@string/app_name_debug"]
+            applicationIdSuffix ".debug"//包名后缀
+            // 显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+            versionNameSuffix "-debug"
+            minifyEnabled false
+            zipAlignEnabled false
+            shrinkResources false
+            signingConfig signingConfigs.debug
+        }
+        release {
+//            buildConfigField 'String', 'SERVER_PORT', server_port
+//            buildConfigField 'String', 'SERVER_IP', server_ip
+//            buildConfigField 'String', 'SERVER_URL', server_url
+            manifestPlaceholders = ["app_name": "@string/app_name"]
+            // 不显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            //混淆
+            minifyEnabled true
+            //Zipalign优化
+            zipAlignEnabled true
+            // 移除无用的resource文件
+            shrinkResources true
+            //前一部分代表系统默认的android程序的混淆文件，该文件已经包含了基本的混淆声明，后一个文件是自己的定义混淆文件
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+        }
+    }
+    //打包
+    android.applicationVariants.all { variant ->
+        //判断是release还是debug版本
+        def buildType = variant.buildType.name
+        //获取渠道名称
+        //def channel = variant.productFlavors[0].name
+        def channel = "串口测试"
+        def fileName//获取当前时间的"YYYY-MM-dd"格式。
+        def createDate = new Date().format("YYYY-MM-dd", TimeZone.getTimeZone("GMT+08:00"))
+        def createTime = new Date().format("HH-mm-ss", TimeZone.getTimeZone("GMT+08:00"))
+        variant.outputs.each {
+            if (buildType == "release") {
+                variant.getPackageApplicationProvider().get().outputDirectory = new File(project.rootDir.absolutePath + "/apks")
+                fileName = "${channel}_v${defaultConfig.versionName}_${versionCode}_${createDate}_${createTime}_${buildType}.apk"
+                it.outputFileName = fileName
+            }
+            if (buildType == "debug") {
+                fileName = "${channel}_v${defaultConfig.versionName}_${versionCode}_${buildType}.apk"
+                it.outputFileName = fileName
+            }
+        }
+    }
+    //签名
+    signingConfigs {
+        debug {
+            storeFile file("doc/yujingtest.jks")
+            storePassword "123456"
+            keyAlias "test"
+            keyPassword "123456"
+        }
+        release {
+            storeFile file("doc/yujingtest.jks")
+            storePassword "123456"
+            keyAlias "test"
+            keyPassword "123456"
+        }
+    }
+}
+//0
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    //gson  <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+
+    implementation 'com.github.yu1441.utlis2:net:2.3.4'
+    implementation 'com.github.yu1441.utlis2:utils:2.3.4'
+    implementation 'com.github.yu1441.utlis2:ycrash:2.3.4'
+    implementation project(':yserialport')
+}

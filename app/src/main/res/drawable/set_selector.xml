@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--按下颜色  -->
+    <item android:state_pressed="true">
+        <color android:color="#80AAAAAA" />
+    </item>
+    <!--抬起颜色  -->
+    <item android:state_pressed="false">
+        <color android:color="#FFFFFF" />
+    </item>
+</selector>
