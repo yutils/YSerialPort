@@ -176,7 +176,7 @@ public class ZM703CardCPUActivity extends BaseActivity<ActivityZm703CpuBinding> 
     //退出注销
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         ySerialPort.onDestroy();
+        super.onDestroy();
     }
 }

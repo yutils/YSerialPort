@@ -156,8 +156,8 @@ public class ZM703CardM1Activity extends BaseActivity<ActivityZm703M1Binding> {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         ySerialPort.onDestroy();
+        super.onDestroy();
     }
 
     //*********************************************************类完毕**********************************************************************
