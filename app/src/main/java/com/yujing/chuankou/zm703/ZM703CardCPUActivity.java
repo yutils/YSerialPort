@@ -166,6 +166,7 @@ public class ZM703CardCPUActivity extends BaseActivity<ActivityZm703CpuBinding> 
             byte[] cmd = SerialCpu.getComplete(SerialCpu.readFile16k("0000", "4000"));
             Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
             ySerialPort.setDataLength(16384 + 7, 2000);
+            ySerialPort.setGroupPackageTime(10);
             binding.tvResult.setText(binding.tvResult.getText() + "\n读文件\n发送串口命令:" + YConvert.bytesToHexString(cmd));
             ySerialPort.send(cmd);
         } catch (IOException e) {

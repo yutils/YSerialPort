@@ -179,6 +179,7 @@ public class YSerialPort {
      * @throws IOException IO异常
      */
     public void send(byte[] buffer) throws IOException {
+        if (mSerialPort != null) mOutputStream = mSerialPort.getOutputStream();
         mOutputStream.write(buffer);
     }
 
@@ -196,99 +197,20 @@ public class YSerialPort {
         public void run() {
             try {
                 while (!Thread.currentThread().isInterrupted()) {
+                    if (mSerialPort != null) mInputStream = mSerialPort.getInputStream();
                     if (mInputStream == null) return;
                     //读取一次
                     final byte[] initBytes = new byte[dataLength < 64 ? 64 : dataLength];
                     final int initSize = mInputStream.read(initBytes);
-                    final long startTime = System.currentTimeMillis();
                     if (initSize > 0 && !Thread.currentThread().isInterrupted()) {
-                        //组包
                         final YBytes bytes = new YBytes();
                         bytes.addByte(initBytes, initSize);
                         //如果读取长度不达标，就组包
                         if (initSize < dataLength) {
-                            //方法内部类，读取线程
-                            class MReadThread extends Thread {
-                                private boolean timeOut = true;
-                                public boolean isTimeOut() {
-                                    return timeOut;
-                                }
-                                @Override
-                                public void run() {
-                                    try {
-                                        int i = 0;//第几次组包
-                                        Log.i(TAG, "首次读取长度：" + bytes.getBytes().length + " ，目标长度：" + dataLength + " ，已耗时：" + (System.currentTimeMillis() - startTime) + "ms,超时时间：" + readTimeOut + "ms");
-                                        while (!Thread.currentThread().isInterrupted() && bytes.getBytes().length < dataLength && i * groupPackageTime < readTimeOut) {
-                                            i++;
-                                            Thread.sleep(groupPackageTime);//每次组包间隔，毫秒
-                                            //再读取一次
-                                            byte[] newBytes = new byte[dataLength < 64 ? 64 : dataLength];
-                                            int newSize = mInputStream.read(newBytes);
-                                            if (newSize > 0) {
-                                                bytes.addByte(newBytes, newSize);
-                                                Log.i(TAG, "第" + i + "次组包后长度：" + bytes.getBytes().length + " ，目标长度：" + dataLength + " ，已耗时：" + (System.currentTimeMillis() - startTime) + "ms,超时时间：" + readTimeOut + "ms");
-                                            }
-                                        }
-                                        timeOut = false;
-                                    } catch (InterruptedException e) {
-                                        Log.e(TAG, "读取线程被中断");
-                                        interrupt();
-                                    } catch (Exception e) {
-                                        Log.e(TAG, "读取线程异常", e);
-                                        interrupt();
-                                    } finally {
-                                        synchronized (bytes) {
-                                            bytes.notify();
-                                        }
-                                        Log.e(TAG, " 读取线程关闭isInterrupted()：" + Thread.currentThread().isInterrupted());
-                                    }
-                                }
-                            }
-                            //方法内部类，终止线程
-                            class StopReadThread extends Thread {
-                                @Override
-                                public void run() {
-                                    try {
-                                        Thread.sleep(readTimeOut);
-                                    } catch (InterruptedException e) {
-                                        Log.e(TAG, "终止线程被中断");
-                                        interrupt();
-                                    }
-                                    if (!isInterrupted()) {
-                                        Log.i(TAG, "已超时：" + readTimeOut + "ms");
-                                        synchronized (bytes) {
-                                            bytes.notify();
-                                        }
-                                    }
-                                }
-                            }
 
-                            //开个线程来读取
-                            final MReadThread mReadThread = new MReadThread();
-                            mReadThread.start();
-                            //开个线程来终止
-                            final StopReadThread stopReadThread = new StopReadThread();
-                            stopReadThread.start();
-
-                            try {
-                                //同步锁
-                                synchronized (bytes) {
-                                    bytes.wait();
-                                }
-                            } catch (Exception e) {
-                                mReadThread.interrupt();
-                                stopReadThread.interrupt();
-                                Thread.currentThread().interrupt();
-                                Log.e(TAG, "同步锁被中断");
-                            }
-
-                            Log.i(TAG, (mReadThread.isTimeOut() ? "读取超时！" : "读取完毕"));
-
-                            //释放这两个线程
-                            if (!mReadThread.isInterrupted())
-                                mReadThread.interrupt();
-                            if (!stopReadThread.isInterrupted())
-                                stopReadThread.interrupt();
+                            Log.i(TAG, "已读取长度:" + initSize + "   目标长度:" + dataLength + "   还需读取:" + (dataLength - initSize) + "  开始组包");
+                            YBytes bytesTemp = Utils.readInputStream(mInputStream, readTimeOut, groupPackageTime,dataLength - initSize);
+                            bytes.addByte(bytesTemp.getBytes());
 
                             handler.post(new Runnable() {
                                 @Override
@@ -315,7 +237,7 @@ public class YSerialPort {
                 Thread.currentThread().interrupt();
                 Log.e(TAG, "读取总线程异常", e);
             } finally {
-                Log.e(TAG, " 读取总线程关闭isInterrupted()：" + Thread.currentThread().isInterrupted());
+                Log.i(TAG, " 读取总线程关闭");
             }
         }
     }
