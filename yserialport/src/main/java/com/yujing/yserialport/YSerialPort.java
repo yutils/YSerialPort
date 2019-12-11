@@ -210,11 +210,9 @@ public class YSerialPort {
                             //方法内部类，读取线程
                             class MReadThread extends Thread {
                                 private boolean timeOut = true;
-
                                 public boolean isTimeOut() {
                                     return timeOut;
                                 }
-
                                 @Override
                                 public void run() {
                                     try {
