@@ -1,9 +1,8 @@
 package com.yujing.chuankou.zm703;
 
-
-import com.yujing.utils.YByteConvert;
 import com.yujing.utils.YBytes;
 import com.yujing.utils.YConvert;
+import com.yujing.utils.YConvertBytes;
 import com.yujing.utils.YString;
 import com.yujing.yserialport.YSerialPort;
 
@@ -219,7 +218,7 @@ public class SerialCpu {
      * 计算长度和校验位，异或
      */
     public static byte calcCheck(byte[] bytes) {
-        byte[] length = YByteConvert.intToBytes(bytes.length - 4);
+        byte[] length = YConvertBytes.intToBytes(bytes.length - 4);
         bytes[3] = length[2];
         bytes[4] = length[3];
         byte b = bytes[0];
