@@ -25,15 +25,23 @@
                 android:text="发送" />
 
             <Button
+                android:id="@+id/bt_test"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="各种硬件测试" />
+
+            <Button
                 android:id="@+id/bt_ZM703_m1"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="ZM703读卡器——M1" />
+
             <Button
                 android:id="@+id/bt_ZM703_cpu"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="ZM703读卡器——CPU" />
+
             <Button
                 android:id="@+id/ButtonAbout"
                 android:layout_width="fill_parent"

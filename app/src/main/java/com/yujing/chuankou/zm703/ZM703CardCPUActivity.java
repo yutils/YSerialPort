@@ -33,14 +33,9 @@ public class ZM703CardCPUActivity extends BaseActivity<ActivityZm703CpuBinding> 
         ySerialPort.setDataLength(10);
         ySerialPort.clearDataListener();
         ySerialPort.start();
-
         binding.btCardCpu.setOnClickListener(v -> readCpu());
-
-        binding.btDyk.setOnClickListener(v -> yTts.speak("测试，你好，烟包，称重，磅码，排号，烟农,仓储设备，管理人员，同重超次数。"));
-
-        binding.tvTips.setText("注意：" +
-                "当前串口：" + YSerialPort.readDevice(this) + "，当前波特率：" + YSerialPort.readBaudRate(this) +
-                "。\t\tZM703读卡器：\t/dev/ttyS4\t波特率115200");
+        binding.btDyk.setOnClickListener(v -> show("未开发"));
+        binding.tvTips.setText(String.format("注意：当前串口：%s，当前波特率：%s。\t\tZM703读卡器：\t/dev/ttyS4\t波特率115200", YSerialPort.readDevice(this), YSerialPort.readBaudRate(this)));
     }
 
 
@@ -78,7 +73,8 @@ public class ZM703CardCPUActivity extends BaseActivity<ActivityZm703CpuBinding> 
                 binding.tvResult.setText(binding.tvResult.getText() + "\n状态:失败");
                 return;
             }
-            binding.tvResult.setText(binding.tvResult.getText() + "\nvalue:\n" + zm703.getDataHexString());
+            binding.tvResult.setText(binding.tvResult.getText() + "\nvalue:" + zm703.getDataHexString());
+
             step++;
             if (step == 1) {
                 step1();

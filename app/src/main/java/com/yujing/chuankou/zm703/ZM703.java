@@ -37,7 +37,10 @@ public class ZM703 {
         this.hexString = hexString;
         this.bytes = bytes;
         this.size = size;
+        init();
+    }
 
+    private void init() {
         //长度不够7直接错误
         if (bytes.length < 7) {
             status = false;
@@ -73,6 +76,7 @@ public class ZM703 {
         dataHexString = hexString.substring(12, hexString.length() - 2);
         dataBytes = new byte[dataSize];
         System.arraycopy(bytes, 6, dataBytes, 0, dataSize);
+
     }
 
     public String getHexString() {

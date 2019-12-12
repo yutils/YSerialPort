@@ -1,14 +1,10 @@
 package com.yujing.chuankou.zm703;
 
-import android.util.Log;
-
 import com.yujing.utils.YByteConvert;
 import com.yujing.utils.YBytes;
 import com.yujing.utils.YConvert;
 import com.yujing.utils.YString;
-import com.yujing.yserialport.YSerialPort;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -88,83 +84,6 @@ public class SerialM1 {
     public static enum KEYType {
         KEY_A,
         KEY_B
-    }
-
-    /**
-     * 将串口读出的hexString多余部分剪断，获取完整的正确的hexString
-     *
-     * @param hexString 串口读出的数据
-     * @param bytes     串口读出的数据
-     * @param size      串口回调的长度数据
-     * @return 正确的hexString
-     */
-    public static String getHexString(String hexString, byte[] bytes, int size) {
-        Log.i("m1", hexString);
-        if (hexString.length() < 12 || !"55AAFF".equals(hexString.substring(0, 6))) {
-            Log.i("m1", "头部不正确");
-            return null;
-        }
-        //如果返回错误，重新开启自动寻卡
-        if (bytes[5] != (byte) 255) {
-            Log.i("m1", "识别符不正确");
-            return hexString;
-        }
-        //解析
-        //获取hex字符串真实长度
-        byte[] lengthByte = new byte[]{0, 0, bytes[3], bytes[4]};
-        int length = YByteConvert.bytesToInt(lengthByte);
-        length += 5;//加上前面5个固定位置
-        if (hexString.length() < length * 2) {
-            Log.i("m1", "长度不够，抛弃。需要长度：" + (length * 2) + "实际长度：" + hexString.length());
-            return null;
-        }
-        hexString = hexString.substring(0, length * 2);
-        Log.i("new", hexString);
-        return hexString;
-    }
-
-    /**
-     * 将完整的正确的hexString里面的块数据组装成byte数组
-     * 如果是寻到了卡readType余1就获取烟农卡号
-     * 如果是寻到了卡readType余2就获取烟工作人员卡号
-     *
-     * @param m1        串口工具
-     * @param hexString 正确的hexString
-     * @return 块数据
-     */
-    public static byte[][] hexStringToData(YSerialPort m1, String hexString) {
-        if (hexString == null) {
-            return null;
-        }
-        //寻到了卡
-        if (hexString.length() == 28) {
-            readType++;
-            if (readType % 2 == 1) {
-                m1.setDataLength(7 + 32);
-                send(m1, SerialM1.getComplete(SerialM1.getCommandMultipleBlock(1, 2, YConvert.hexStringToByte("FFFFFFFFFFFF"))));
-            }
-            if (readType % 2 == 0) {
-                m1.setDataLength(7 + 16);
-                send(m1, SerialM1.getComplete(SerialM1.getCommandMultipleBlock(4, 4, YConvert.hexStringToByte("000000000000"))));
-            }
-        } else if ((hexString.length() - 14) % 32 == 0) {
-            return getData(hexString);
-        }
-        return null;
-    }
-
-    /**
-     * 像串口发送数据
-     *
-     * @param m1    串口工具
-     * @param bytes 数据
-     */
-    public static void send(YSerialPort m1, byte[] bytes) {
-        try {
-            m1.send(bytes);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     /**

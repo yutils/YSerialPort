@@ -42,9 +42,7 @@ public class ZM703CardM1Activity extends BaseActivity<ActivityZm703M1Binding> {
         binding.btSetV3Gzry.setOnClickListener(v -> set("1", "5", "ffffffffffff"));
         binding.btSetV3Yhk.setOnClickListener(v -> set("4", "4", "000000000000"));
         binding.btClear.setOnClickListener(v -> binding.tvResult.setText(""));
-        binding.tvTips.setText("注意：" +
-                "当前串口：" + YSerialPort.readDevice(this) + "，当前波特率：" + YSerialPort.readBaudRate(this) +
-                "。\t\tZM703读卡器：\t/dev/ttyS4\t波特率115200");
+        binding.tvTips.setText(String.format("注意：当前串口：%s，当前波特率：%s。\t\tZM703读卡器：\t/dev/ttyS4\t波特率115200", YSerialPort.readDevice(this), YSerialPort.readBaudRate(this)));
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, Arrays.asList("KeyA", "KeyB"));
         binding.sp.setAdapter(adapter);
@@ -169,19 +167,37 @@ public class ZM703CardM1Activity extends BaseActivity<ActivityZm703M1Binding> {
         private int blockStart;//开始扇区
         private int blockEnd;//结束扇区
         private String password;//密码
-        private SerialM1.KEYType keyType = SerialM1.KEYType.KEY_A;
+        private SerialM1.KEYType keyType;
 
-        public M1ReadDataListener(int blockStart, int blockEnd, String password) {
-            this.blockStart = blockStart;
-            this.blockEnd = blockEnd;
-            this.password = password;
+        public M1ReadDataListener(int blockStart, int blockEnd, String passwordHexString) {
+            this(blockStart, blockEnd, passwordHexString, SerialM1.KEYType.KEY_A);
         }
 
-        public M1ReadDataListener(int blockStart, int blockEnd, String password, SerialM1.KEYType keyType) {
+        public M1ReadDataListener(int blockStart, int blockEnd, String passwordHexString, SerialM1.KEYType keyType) {
             this.blockStart = blockStart;
             this.blockEnd = blockEnd;
-            this.password = password;
+            this.password = passwordHexString;
             this.keyType = keyType;
+        }
+
+        @Override
+        public void onDataReceived(String hexString, byte[] bytes, int size) {
+            binding.tvResult.setText(binding.tvResult.getText() + "\n收到数据：" + hexString);
+            Log.d("收到数据", hexString);
+            ZM703 zm703 = new ZM703(hexString, bytes, size);
+            Log.d("收到数据", zm703.toString());
+            if (!zm703.isStatus()) {
+                binding.tvResult.setText(binding.tvResult.getText() + "\n状态:失败");
+                return;
+            }
+            binding.tvResult.setText(binding.tvResult.getText() + "\nvalue:" + zm703.getDataHexString());
+            if (zm703.getDataSize() == 7) {//寻卡结果长度为7
+                readM1();
+            } else if (zm703.getDataSize() % 16 == 0) {//数据正好是16的倍数
+                byte[][] data = SerialM1.getData(hexString);//连续读取结果会自动跳过密码块
+                if (data == null || data.length == 0) return;
+                m1DataHandle(data);
+            }
         }
 
         /**
@@ -198,39 +214,28 @@ public class ZM703CardM1Activity extends BaseActivity<ActivityZm703M1Binding> {
             return length;
         }
 
-
-        @Override
-        public void onDataReceived(String hexString, byte[] bytes, int size) {
-            hexString = SerialM1.getHexString(hexString, bytes, size);
-            if (hexString == null) return;
-            binding.tvResult.setText(binding.tvResult.getText() + "\n读取结果:\n" + hexString);
-            byte[][] data = null;
-            if (hexString.length() == 28) {
-                try {
-                    //连续读取结果会自动跳过密码块，一次最多读4个扇区，也就是0-15扇区，应该返回12组数据
-                    ySerialPort.setDataLength(getDataLength(), 100);
-                    byte[] cmd = SerialM1.getComplete(SerialM1.getCommandMultipleBlock(blockStart, blockEnd, keyType, YConvert.hexStringToByte(password)));
-                    Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
-                    binding.tvResult.setText(binding.tvResult.getText() + "\n发送串口命令:" + YConvert.bytesToHexString(cmd));
-                    ySerialPort.send(cmd);
-                } catch (Exception e) {
-                }
-            } else if ((hexString.length() - 14) % 32 == 0) {
-                //连续读取结果会自动跳过密码块
-                data = SerialM1.getData(hexString);
-            } else if (bytes[5] != (byte) 255) {
-                StringBuilder error = new StringBuilder("\n错误消息:" + hexString);
-                if (hexString.contains("55AAFF000340")) {
-                    error.append("   错误分析：认证失败");
-                } else if (hexString.contains("55AAFF000341")) {
-                    error.append("   错误分析：读卡失败");
-                } else if (hexString.contains("55AAFF000342")) {
-                    error.append("   错误分析：写卡失败");
-                }
-                binding.tvResult.setText(binding.tvResult.getText() + error.toString());
-                return;
+        /**
+         * 读M1扇区指令
+         */
+        public void readM1() {
+            try {
+                //连续读取结果会自动跳过密码块，一次最多读4个扇区，也就是0-15扇区，应该返回12组数据
+                ySerialPort.setDataLength(getDataLength(), 100);
+                ySerialPort.setGroupPackageTime(5);
+                byte[] cmd = SerialM1.getComplete(SerialM1.getCommandMultipleBlock(blockStart, blockEnd, keyType, YConvert.hexStringToByte(password)));
+                Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
+                binding.tvResult.setText(binding.tvResult.getText() + "\n发送串口命令:" + YConvert.bytesToHexString(cmd));
+                ySerialPort.send(cmd);
+            } catch (Exception e) {
             }
-            if (data == null || data.length == 0) return;
+        }
+
+        /**
+         * 读取到m1扇区的结果
+         *
+         * @param data
+         */
+        public void m1DataHandle(byte[][] data) {
             //显示
             binding.tvResult.setText(binding.tvResult.getText() + "\n读取数据结果:");
             StringBuilder stringBuilder = new StringBuilder();
@@ -302,34 +307,40 @@ public class ZM703CardM1Activity extends BaseActivity<ActivityZm703M1Binding> {
             return length;
         }
 
+        /**
+         * 读M1扇区指令
+         */
+        public void writeM1() {
+            try {
+                //连续读取结果会自动跳过密码块，一次最多读4个扇区，也就是0-15扇区，应该返回12组数据
+                ySerialPort.setDataLength(7);
+                byte[] cmd = SerialM1.getComplete(SerialM1.setCommandMultipleBlock(blockStart, blockEnd, keyType, YConvert.hexStringToByte(password), YConvert.hexStringToByte(data)));
+                Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
+                binding.tvResult.setText(binding.tvResult.getText() + "\n发送串口命令:" + YConvert.bytesToHexString(cmd));
+                ySerialPort.send(cmd);
+            } catch (Exception e) {
+            }
+        }
+
         @Override
         public void onDataReceived(String hexString, byte[] bytes, int size) {
-            hexString = SerialM1.getHexString(hexString, bytes, size);
-            if (hexString == null) return;
-            binding.tvResult.setText(binding.tvResult.getText() + "\n读取结果:\n" + hexString);
-            if (hexString.length() == 28) {
-                try {
-                    //连续读取结果会自动跳过密码块，一次最多读4个扇区，也就是0-15扇区，应该返回12组数据
-                    ySerialPort.setDataLength(7);
-                    byte[] cmd = SerialM1.getComplete(SerialM1.setCommandMultipleBlock(blockStart, blockEnd, keyType, YConvert.hexStringToByte(password), YConvert.hexStringToByte(data)));
-                    Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
-                    binding.tvResult.setText(binding.tvResult.getText() + "\n发送串口命令:" + YConvert.bytesToHexString(cmd));
-                    ySerialPort.send(cmd);
-                } catch (Exception e) {
+            binding.tvResult.setText(binding.tvResult.getText() + "\n收到数据：" + hexString);
+            Log.d("收到数据", hexString);
+            ZM703 zm703 = new ZM703(hexString, bytes, size);
+            Log.d("收到数据", zm703.toString());
+            if (!zm703.isStatus()) {
+                binding.tvResult.setText(binding.tvResult.getText() + "\n状态:失败");
+                return;
+            }
+            binding.tvResult.setText(binding.tvResult.getText() + "\nvalue:" + zm703.getDataHexString());
+            if (zm703.getDataSize() == 7) {//寻卡结果长度为7
+                writeM1();
+            } else if (zm703.getDataSize() == 0) {
+                if (zm703.isStatus()) {
+                    binding.tvResult.setText(binding.tvResult.getText() + "\n状态:成功");
                 }
-            } else if (hexString.equals("55AAFF0002FFFD")) {
-                binding.tvResult.setText(binding.tvResult.getText() + "\n成功");
-            } else if (bytes[5] != (byte) 255) {
-                StringBuilder error = new StringBuilder("\n错误消息:" + hexString);
-                if (hexString.contains("55AAFF000340")) {
-                    error.append("   错误分析：认证失败");
-                } else if (hexString.contains("55AAFF000341")) {
-                    error.append("   错误分析：读卡失败");
-                } else if (hexString.contains("55AAFF000342")) {
-                    error.append("   错误分析：写卡失败");
-                }
-                binding.tvResult.setText(binding.tvResult.getText() + error.toString());
             }
         }
     }
 }
+
