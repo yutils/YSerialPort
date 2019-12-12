@@ -92,7 +92,7 @@ public class Utils {
         } catch (Exception e) {
             mReadThread.interrupt();
             stopReadThread.interrupt();
-            Thread.currentThread().interrupt();
+            //Thread.currentThread().interrupt();
             Log.e(TAG, "同步锁被中断");
         }
 
