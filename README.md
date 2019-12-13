@@ -7,6 +7,7 @@ Google官方的Android串口通信Demo，重新封装代码，实现读取串口
 [![](https://jitpack.io/v/yu1441/YSerialPort.svg)](https://jitpack.io/#yu1441/YSerialPort)
 
 **源码YSerialPort/app/apk 文件夹中有APK文件。**
+
 **Gradle 引用**
 1. 在根build.gradle中添加
 ```
@@ -18,11 +19,11 @@ allprojects {
 }
 ```
 
-2. 子module添加依赖
+2. 子module添加依赖 版本号：[![](https://jitpack.io/v/yu1441/YSerialPort.svg)](https://jitpack.io/#yu1441/YSerialPort)
 
 ```
 dependencies {
-       implementation 'com.github.yu1441:YSerialPort:2.0.0'
+       implementation 'com.github.yu1441:YSerialPort:2.*.*'
 }
 ```
 ## 注意
