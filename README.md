@@ -19,13 +19,14 @@ allprojects {
 }
 ```
 
-2. 子module添加依赖 版本号：[![](https://jitpack.io/v/yu1441/YSerialPort.svg)](https://jitpack.io/#yu1441/YSerialPort)
+2. 子项目build.gradle添加依赖   版本号：[![](https://jitpack.io/v/yu1441/YSerialPort.svg)](https://jitpack.io/#yu1441/YSerialPort)
 
 ```
 dependencies {
        implementation 'com.github.yu1441:YSerialPort:2.*.*'
 }
 ```
+
 ## 注意
 
 1.因为Android-SerialPort-API的SDK最低版本22，低于22的用户请使用Android-SerialPort-API1.0.1，把YSerialPort里面的复制出来，稍加改动就可以使用。
