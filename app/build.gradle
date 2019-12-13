@@ -53,22 +53,23 @@ android {
     }
     //打包
     android.applicationVariants.all { variant ->
-        //判断是release还是debug版本
-        def buildType = variant.buildType.name
         //获取渠道名称
-        //def channel = variant.productFlavors[0].name
-        def channel = "串口测试"
+        //def appName = variant.productFlavors[0].name
+        def appName = "串口测试"
         def fileName//获取当前时间的"YYYY-MM-dd"格式。
         def createDate = new Date().format("YYYY-MM-dd", TimeZone.getTimeZone("GMT+08:00"))
         def createTime = new Date().format("HH-mm-ss", TimeZone.getTimeZone("GMT+08:00"))
         variant.outputs.each {
+            //判断是release还是debug版本
+            def buildType = variant.buildType.name
             if (buildType == "release") {
-                variant.getPackageApplicationProvider().get().outputDirectory = new File(project.rootDir.absolutePath + "/apks")
-                fileName = "${channel}_v${defaultConfig.versionName}_${versionCode}_${createDate}_${createTime}_${buildType}.apk"
+                variant.getPackageApplicationProvider().get().outputDirectory = new File(project.projectDir.absolutePath + "/apk")
+                fileName = "${appName}_v${defaultConfig.versionName}_${versionCode}_${createDate}_${createTime}_${buildType}.apk"
                 it.outputFileName = fileName
             }
             if (buildType == "debug") {
-                fileName = "${channel}_v${defaultConfig.versionName}_${versionCode}_${buildType}.apk"
+                variant.getPackageApplicationProvider().get().outputDirectory = new File(project.projectDir.absolutePath + "/build/apk")
+                fileName = "${appName}_v${defaultConfig.versionName}_${versionCode}_${buildType}.apk"
                 it.outputFileName = fileName
             }
         }
