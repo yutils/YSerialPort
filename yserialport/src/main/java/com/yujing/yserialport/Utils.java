@@ -20,27 +20,35 @@ public class Utils {
      * @return YBytes
      */
     public static YBytes readInputStream(final InputStream mInputStream, final int readTimeOut, final int groupPackageTime, final int dataLength) {
+        final int loopWaitTime = 1;//循环等待时间1毫秒
         final String TAG = "组包";
         final YBytes bytes = new YBytes();
         final long startTime = System.currentTimeMillis();
         //方法内部类，读取线程
         class MReadThread extends Thread {
             private boolean timeOut = true;
-
             private boolean isTimeOut() {
                 return timeOut;
             }
-
             @Override
             public void run() {
                 try {
                     int i = 0;//第几次组包
                     while (!Thread.currentThread().isInterrupted() && bytes.getBytes().length < dataLength && i * groupPackageTime < readTimeOut) {
                         i++;
+                        int available = mInputStream.available();// 可读取多少字节内容
+                        if (available == 0) {//如果可读取消息为0，那么久休息loopWaitTime毫秒。防止InputStream.read阻塞
+                            try {
+                                Thread.sleep(loopWaitTime);
+                            } catch (Exception e) {
+                                Thread.currentThread().interrupt();
+                            }
+                            continue;
+                        }
                         Thread.sleep(groupPackageTime);//每次组包间隔，毫秒
                         //再读取一次
                         byte[] newBytes = new byte[dataLength < 64 ? 64 : dataLength];
-                        int newSize = mInputStream.read(newBytes);
+                        int newSize = mInputStream.read(newBytes, 0, available);
                         if (newSize > 0) {
                             bytes.addByte(newBytes, newSize);
                             Log.i(TAG, "第" + i + "次组包后长度：" + bytes.getBytes().length + " ，目标长度：" + dataLength + " ，已耗时：" + (System.currentTimeMillis() - startTime) + "ms,超时时间：" + readTimeOut + "ms");
@@ -53,6 +61,7 @@ public class Utils {
                     Log.e(TAG, "读取线程异常", e);
                     interrupt();
                 } finally {
+                    Log.i(TAG, "读取线程关闭");
                     synchronized (bytes) {
                         bytes.notify();
                     }
@@ -74,6 +83,7 @@ public class Utils {
                         bytes.notify();
                     }
                 }
+                Log.i(TAG, "超时线程关闭");
             }
         }
 
@@ -83,7 +93,6 @@ public class Utils {
         //开个线程来终止
         final StopReadThread stopReadThread = new StopReadThread();
         stopReadThread.start();
-
         try {
             //同步锁
             synchronized (bytes) {
@@ -95,9 +104,7 @@ public class Utils {
             //Thread.currentThread().interrupt();
             Log.e(TAG, "同步锁被中断");
         }
-
         Log.i(TAG, (mReadThread.isTimeOut() ? "读取超时！" : "读取完毕"));
-
         //释放这两个线程
         if (!mReadThread.isInterrupted())
             mReadThread.interrupt();

@@ -1,1 +1,2 @@
 include ':app' , ':yserialport'
+rootProject.name='串口测试APP'

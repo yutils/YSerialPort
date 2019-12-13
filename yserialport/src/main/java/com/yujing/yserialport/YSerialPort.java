@@ -42,7 +42,7 @@ public class YSerialPort {
     private int dataLength = 1;//读取的数据包长度最短是多少
     private int readTimeOut = 50;//读取的数据包超时时间，毫秒
     private int groupPackageTime = 1;//组包时间差，毫秒
-
+    final int loopWaitTime = 1;//循环等待时间1毫秒
     //串口类
     private SerialPort mSerialPort;
     //串口查找列表类
@@ -135,6 +135,7 @@ public class YSerialPort {
             mSerialPort.close();
             mSerialPort = null;
         }
+
         try {
             mOutputStream = getSerialPort().getOutputStream();
             mInputStream = getSerialPort().getInputStream();
@@ -201,17 +202,25 @@ public class YSerialPort {
                     if (mInputStream == null) return;
                     //读取一次
                     final byte[] initBytes = new byte[dataLength < 64 ? 64 : dataLength];
-                    final int initSize = mInputStream.read(initBytes);
+
+                    int available = mInputStream.available();// 可读取多少字节内容
+                    if (available == 0) {//如果可读取消息为0，那么久休息loopWaitTime毫秒。防止InputStream.read阻塞
+                        try {
+                            Thread.sleep(loopWaitTime);
+                        } catch (Exception e) {
+                            Thread.currentThread().interrupt();
+                        }
+                        continue;
+                    }
+                    final int initSize = mInputStream.read(initBytes,0,available);
                     if (initSize > 0 && !Thread.currentThread().isInterrupted()) {
                         final YBytes bytes = new YBytes();
                         bytes.addByte(initBytes, initSize);
                         //如果读取长度不达标，就组包
                         if (initSize < dataLength) {
-
                             Log.i(TAG, "已读取长度:" + initSize + "   目标长度:" + dataLength + "   还需读取:" + (dataLength - initSize) + "  开始组包");
-                            YBytes bytesTemp = Utils.readInputStream(mInputStream, readTimeOut, groupPackageTime,dataLength - initSize);
+                            YBytes bytesTemp = Utils.readInputStream(mInputStream, readTimeOut, groupPackageTime, dataLength - initSize);
                             bytes.addByte(bytesTemp.getBytes());
-
                             handler.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -220,7 +229,6 @@ public class YSerialPort {
                                     }
                                 }
                             });
-
                         } else {
                             handler.post(new Runnable() {
                                 @Override
@@ -237,7 +245,7 @@ public class YSerialPort {
                 Thread.currentThread().interrupt();
                 Log.e(TAG, "读取总线程异常", e);
             } finally {
-                Log.i(TAG, " 读取总线程关闭");
+                Log.i(TAG, "读取总线程关闭");
             }
         }
     }
@@ -434,7 +442,6 @@ public class YSerialPort {
         }
     }
 
-
     /**
      * 结果回调
      */
@@ -463,13 +470,14 @@ public class YSerialPort {
                 mOutputStream.close();
                 mOutputStream = null;
             }
+            if (mReadThread != null) mReadThread.interrupt();
+        } catch (Exception e) {
+            Log.e(TAG, "onDestroy异常", e);
+        } finally {
             if (mSerialPort != null) {
                 mSerialPort.close();
                 mSerialPort = null;
             }
-            if (mReadThread != null) mReadThread.interrupt();
-        } catch (Exception e) {
-            Log.e(TAG, "onDestroy异常", e);
         }
         clearDataListener();
     }
