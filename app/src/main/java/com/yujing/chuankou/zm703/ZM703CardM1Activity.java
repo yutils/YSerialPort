@@ -42,7 +42,7 @@ public class ZM703CardM1Activity extends BaseActivity<ActivityZm703M1Binding> {
         binding.btSetV3Gzry.setOnClickListener(v -> set("1", "5", "ffffffffffff"));
         binding.btSetV3Yhk.setOnClickListener(v -> set("4", "4", "000000000000"));
         binding.btClear.setOnClickListener(v -> binding.tvResult.setText(""));
-        binding.tvTips.setText(String.format("注意：当前串口：%s，当前波特率：%s。\t\tZM703读卡器：\t/dev/ttyS4\t波特率115200", YSerialPort.readDevice(this), YSerialPort.readBaudRate(this)));
+        binding.tvTips.setText(String.format("注意：当前串口：%s，当前波特率：%s。\t\tZM703读卡器：\t/dev/ttyS4\t波特率115200", ySerialPort.getDevice(),ySerialPort.getBaudRate()));
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, Arrays.asList("KeyA", "KeyB"));
         binding.sp.setAdapter(adapter);

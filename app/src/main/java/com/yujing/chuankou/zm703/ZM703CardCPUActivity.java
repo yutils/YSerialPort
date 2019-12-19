@@ -35,7 +35,7 @@ public class ZM703CardCPUActivity extends BaseActivity<ActivityZm703CpuBinding> 
         ySerialPort.start();
         binding.btCardCpu.setOnClickListener(v -> readCpu());
         binding.btDyk.setOnClickListener(v -> show("未开发"));
-        binding.tvTips.setText(String.format("注意：当前串口：%s，当前波特率：%s。\t\tZM703读卡器：\t/dev/ttyS4\t波特率115200", YSerialPort.readDevice(this), YSerialPort.readBaudRate(this)));
+        binding.tvTips.setText(String.format("注意：当前串口：%s，当前波特率：%s。\t\tZM703读卡器：\t/dev/ttyS4\t波特率115200",  ySerialPort.getDevice(),ySerialPort.getBaudRate()));
     }
 
     /**
