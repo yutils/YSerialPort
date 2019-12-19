@@ -160,15 +160,15 @@ public class YSerialPort {
      */
     private SerialPort getSerialPort() throws SecurityException, IOException, InvalidParameterException {
         if (mSerialPort == null) {
-            if (device != null && baudRate != null) {
-                mSerialPort = SerialPort.newBuilder(new File(device), Integer.parseInt(baudRate)).build();
-            } else {
+            if (device == null || baudRate == null) {
                 if (readDevice(activity) == null || readBaudRate(activity) == null || (readDevice(activity).length() == 0) || (readBaudRate(activity).length() == 0)) {
                     throw new InvalidParameterException();
                 }
-                /* 打开串口 */
-                mSerialPort = SerialPort.newBuilder(new File(readDevice(activity)), Integer.parseInt(readBaudRate(activity))).build();
+                device = readDevice(activity);
+                baudRate = readBaudRate(activity);
             }
+            /* 打开串口 */
+            mSerialPort = SerialPort.newBuilder(new File(device), Integer.parseInt(baudRate)).build();
         }
         return mSerialPort;
     }
@@ -212,7 +212,7 @@ public class YSerialPort {
                         }
                         continue;
                     }
-                    final int initSize = mInputStream.read(initBytes,0,available);
+                    final int initSize = mInputStream.read(initBytes, 0, available);
                     if (initSize > 0 && !Thread.currentThread().isInterrupted()) {
                         final YBytes bytes = new YBytes();
                         bytes.addByte(initBytes, initSize);
@@ -312,6 +312,42 @@ public class YSerialPort {
      */
     public void setDevice(String device, String baudRate) {
         this.device = device;
+        this.baudRate = baudRate;
+    }
+
+    /**
+     * 获取当前串口
+     *
+     * @return 串口名
+     */
+    public String getDevice() {
+        return device;
+    }
+
+    /**
+     * 设置当前串口
+     *
+     * @param device 串口名
+     */
+    public void setDevice(String device) {
+        this.device = device;
+    }
+
+    /**
+     * 获取当前波特率
+     *
+     * @return 波特率
+     */
+    public String getBaudRate() {
+        return baudRate;
+    }
+
+    /**
+     * 设置当前波特率
+     *
+     * @param baudRate 波特率
+     */
+    public void setBaudRate(String baudRate) {
         this.baudRate = baudRate;
     }
 
