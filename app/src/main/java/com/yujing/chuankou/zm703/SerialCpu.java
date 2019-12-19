@@ -49,11 +49,12 @@ public class SerialCpu {
 
     /**
      * 命令,寻卡。55AAFF 0003 0233 32
-     *
+     * 自动寻卡 022126，
+     * 硬件复位自动寻卡 022152，
      * @return
      */
     public static String getCommandSearch() {
-        return "0233";
+        return "022152";
     }
 
     /**
@@ -63,6 +64,16 @@ public class SerialCpu {
      */
     public static String getCpuInto() {
         return "0401";
+    }
+
+    /**
+     * 命令,CPU转出，CPU停卡。55AAFF 0003 04F0 F7
+     * 返回数据55AAFF 0002 FF FD
+     *
+     * @return
+     */
+    public static String getCpuExit() {
+        return "04F0";
     }
 
     /**

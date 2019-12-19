@@ -74,6 +74,10 @@ public class ZM703CardCPUActivity extends BaseActivity<ActivityZm703CpuBinding> 
             }
             binding.tvResult.setText(binding.tvResult.getText() + "\nvalue:" + zm703.getDataHexString());
             step++;
+            //判断是否是自动寻卡成功，寻卡成功数据区长度为7
+            if (step == 1 && zm703.getDataSize() != 7) {
+                step = 0;
+            }
             if (step == 1) {
                 step1();
             } else if (step == 2) {

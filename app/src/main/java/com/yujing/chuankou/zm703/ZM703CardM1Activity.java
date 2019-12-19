@@ -38,7 +38,7 @@ public class ZM703CardM1Activity extends BaseActivity<ActivityZm703M1Binding> {
 
         binding.btCardM1Read.setOnClickListener(v -> readM1Read());
         binding.btCardM1Write.setOnClickListener(v -> readM1Write());
-        binding.btSetDyk.setOnClickListener(v -> set("0", "32", "665544332211"));
+        binding.btSetDyk.setOnClickListener(v -> set("0", "63", "665544332211"));
         binding.btSetV3Gzry.setOnClickListener(v -> set("1", "5", "ffffffffffff"));
         binding.btSetV3Yhk.setOnClickListener(v -> set("4", "4", "000000000000"));
         binding.btClear.setOnClickListener(v -> binding.tvResult.setText(""));

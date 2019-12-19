@@ -71,11 +71,12 @@ public class SerialM1 {
 
     /**
      * 命令,寻卡 55AAFF 0004 022126 01
-     *
+     * 自动寻卡 022126，
+     * 硬件复位自动寻卡 022152，
      * @return
      */
     public static String getCommandSearch() {
-        return "022126";
+        return "022152";
     }
 
     /**
