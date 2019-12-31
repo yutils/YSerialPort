@@ -109,9 +109,53 @@ public class TestActivity extends BaseActivity<ActivityTestBinding> {
         binding.btDzcWeight.setOnClickListener(v -> DzcWeight());
         binding.btBankCard.setOnClickListener(v -> readBankCard());
         binding.btCardManage.setOnClickListener(v -> readCardManage());
+        binding.btQr.setOnClickListener(v -> printQr());
         binding.tvTips.setText(String.format("注意：\n当前串口：%s，当前波特率：%s\n打印机是：\t/dev/ttyS2\t波特率9600\n电子秤是：\t/dev/ttyS2\t波特率9600\nM1读卡是：\t/dev/ttyS4\t波特率115200", YSerialPort.readDevice(this), YSerialPort.readBaudRate(this)));
     }
 
+    /**
+     * 打印二维码测试
+     */
+    private void printQr() {
+        String result = "SIZE 50mm,146mm\n" +
+                "BLINE 4mm,0\n" +
+                "\n" +
+                "OFFSET 0mm\n" +
+                "SPEED 4\n" +
+                "DENSITY 9\n" +
+                "DIRECTION 0,0\n" +
+                "REFERENCE 0,0\n" +
+                "SET PRINTKEY OFF\n" +
+                "SET RIBBON ON\n" +
+                "CLS\n" +
+                "TEXT 40,340,\"FONT001\",0,2,2,\"产地: 会理 海潮烟点\"\n" +
+                "TEXT 100,380,\"FONT001\",0,2,2,\"1号收购线\"\n" +
+                "TEXT 40,420,\"FONT001\",0,2,2,\"红花大金元 散烟\"\n" +
+                "TEXT 40,460,\"FONT001\",0,4,4,\"等级：CX1K\"\n" +
+                "TEXT 40,540,\"FONT001\",0,2,2,\"打包管理员：哈么石吉子\"\n" +
+                "TEXT 40,580,\"FONT001\",0,2,2,\"定级员：张国伟\"\n" +
+                "TEXT 40,620,\"FONT001\",0,2,2,\"烟农：五哈砂海子 等\"\n" +
+                "TEXT 40,660,\"FONT001\",0,2,2,\"净重：39.95Kg\"\n" +
+                "TEXT 40,700,\"FONT001\",0,2,2,\"成件时间：20180722 13:22\"\n" +
+                "\n" +
+                "QRCODE 40,740,H,7,A,0,M2,\"http://www.lstobacco.com/GTIN/A/9111510422018119070110000103001498200000000011\"\n" +
+                "\n" +
+                "TEXT 20,1036,\"FONT001\",0,2,2,\"9111510422018119070110000\"\n" +
+                "TEXT 50,1076,\"FONT001\",0,2,2,\"103001498610000000011\"\n" +
+                "TEXT 200,1116,\"FONT001\",0,2,2,\"打印次数：1\"\n" +
+                "\n" +
+                "PRINT 1\n\n";
+        try {
+            ySerialPort.clearDataListener();
+            ySerialPort.addDataListener(dataListener);
+            ySerialPort.setDataLength(10);
+            //打印
+            ySerialPort.send(result.getBytes("GBK"));
+        } catch (Exception e) {
+            YToast.show(getApplicationContext(), "打印机异常");
+            Log.e("打印机异常", "打印机异常", e);
+        }
+    }
 
     /**
      * 电子秤ID

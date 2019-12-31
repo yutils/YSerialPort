@@ -11,8 +11,8 @@ android {
         applicationId "com.yujing.chuankou"
         minSdkVersion 22
         targetSdkVersion 29
-        versionCode 4
-        versionName "2.0.4"
+        versionCode 5
+        versionName "2.0.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     dataBinding {
@@ -41,11 +41,11 @@ android {
             // 不显示Log
             buildConfigField "boolean", "LOG_DEBUG", "false"
             //混淆
-            minifyEnabled true
+            minifyEnabled false
             //Zipalign优化
-            zipAlignEnabled true
+            zipAlignEnabled false
             // 移除无用的resource文件
-            shrinkResources true
+            shrinkResources false
             //前一部分代表系统默认的android程序的混淆文件，该文件已经包含了基本的混淆声明，后一个文件是自己的定义混淆文件
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -100,10 +100,10 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
-    implementation 'com.github.yu1441.utils3:net:3.3.3'
-    implementation 'com.github.yu1441.utils3:utils:3.3.3'
-    implementation 'com.github.yu1441.utils3:ycrash:3.3.3'
-    implementation 'com.github.yu1441.utils3:yurl:3.3.3'
+    implementation 'com.github.yu1441.utils3:net:3.3.4'
+    implementation 'com.github.yu1441.utils3:utils:3.3.4'
+    implementation 'com.github.yu1441.utils3:ycrash:3.3.4'
+    implementation 'com.github.yu1441.utils3:yurl:3.3.4'
 
 //    implementation 'com.github.yu1441:YSerialPort:2.0.0'
     implementation project(':yserialport')

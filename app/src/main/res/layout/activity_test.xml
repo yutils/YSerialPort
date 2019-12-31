@@ -135,6 +135,20 @@
                     android:text="读M1工作人员卡" />
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/bt_qr"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="二维码测试" />
+
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/tv_tips"
                 android:layout_width="match_parent"
@@ -152,6 +166,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:text="回显：" />
+
             <TextView
                 android:id="@+id/tv_result"
                 android:layout_width="match_parent"
