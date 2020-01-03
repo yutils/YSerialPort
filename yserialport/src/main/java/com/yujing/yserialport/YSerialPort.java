@@ -30,7 +30,6 @@ public class YSerialPort {
     private static String TAG = "YSerialPort";
     private OutputStream mOutputStream;
     private InputStream mInputStream;
-    private ReadThread mReadThread;
     private final Handler handler = new Handler();
     private Activity activity;
     private String device;//串口
@@ -39,10 +38,10 @@ public class YSerialPort {
     private static final String BAUD_RATE = "BAUD_RATE";
     private static final String SERIAL_PORT = "SERIAL_PORT";
     private static final String[] BAUD_RATE_LIST = new String[]{"50", "75", "110", "134", "150", "200", "300", "600", "1200", "1800", "2400", "4800", "9600", "19200", "38400", "57600", "115200", "230400", "460800", "500000", "576000", "921600", "1000000", "1152000", "1500000", "2000000", "2500000", "3000000", "3500000", "4000000"};
-    private int dataLength = 1;//读取的数据包长度最短是多少
-    private int readTimeOut = 50;//读取的数据包超时时间，毫秒
-    private int groupPackageTime = 1;//组包时间差，毫秒
-    final int loopWaitTime = 1;//循环等待时间1毫秒
+    private int groupPackageTime = 3;//组包时间差，毫秒
+    private int loopWaitTime = 1;//循环等待时间1毫秒
+
+    private YReadInputStream readInputStream;
     //串口类
     private SerialPort mSerialPort;
     //串口查找列表类
@@ -129,8 +128,9 @@ public class YSerialPort {
      * 开始读取串口
      */
     public void start() {
-        if (mReadThread != null)
-            mReadThread.interrupt();
+        if (readInputStream != null) {
+            readInputStream.stop();
+        }
         if (mSerialPort != null) {
             mSerialPort.close();
             mSerialPort = null;
@@ -139,8 +139,22 @@ public class YSerialPort {
         try {
             mOutputStream = getSerialPort().getOutputStream();
             mInputStream = getSerialPort().getInputStream();
-            mReadThread = new ReadThread();
-            mReadThread.start();
+            readInputStream = new YReadInputStream(mInputStream, new YListener<byte[]>() {
+                @Override
+                public void value(final byte[] bytes) {
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            for (DataListener item : dataListeners) {
+                                item.onDataReceived(bytesToHexString(bytes), bytes, bytes.length);
+                            }
+                        }
+                    });
+                }
+            });
+            readInputStream.setGroupPackageTime(groupPackageTime);
+            readInputStream.setLoopWaitTime(loopWaitTime);
+            readInputStream.start();
         } catch (SecurityException e) {
             DisplayError("您对串行端口没有读/写权限。");
         } catch (IOException e) {
@@ -182,72 +196,6 @@ public class YSerialPort {
     public void send(byte[] buffer) throws IOException {
         if (mSerialPort != null) mOutputStream = mSerialPort.getOutputStream();
         mOutputStream.write(buffer);
-    }
-
-    /**
-     * 开线程监听串口回馈的数据
-     * 逻辑：
-     * 1.如果没有读取到数据，就死等
-     * 2.如果读取到了数据
-     * 2.1 数据长度够了dataLength，直接返回数据
-     * 2.2 数据长度不够，则开线程MReadThread循环读取，直到读取长度够，或者超时为止。当读取读完数据，且不够长度时候，用终止线程StopReadThread来终止读取线程MReadThread。
-     * 采用同步锁来通知线程MReadThread读取完毕，或者超时。
-     */
-    private class ReadThread extends Thread {
-        @Override
-        public void run() {
-            try {
-                while (!Thread.currentThread().isInterrupted()) {
-                    if (mSerialPort != null) mInputStream = mSerialPort.getInputStream();
-                    if (mInputStream == null) return;
-                    //读取一次
-                    final byte[] initBytes = new byte[dataLength < 64 ? 64 : dataLength];
-
-                    int available = mInputStream.available();// 可读取多少字节内容
-                    if (available == 0) {//如果可读取消息为0，那么久休息loopWaitTime毫秒。防止InputStream.read阻塞
-                        try {
-                            Thread.sleep(loopWaitTime);
-                        } catch (Exception e) {
-                            Thread.currentThread().interrupt();
-                        }
-                        continue;
-                    }
-                    final int initSize = mInputStream.read(initBytes, 0, available);
-                    if (initSize > 0 && !Thread.currentThread().isInterrupted()) {
-                        final YBytes bytes = new YBytes();
-                        bytes.addByte(initBytes, initSize);
-                        //如果读取长度不达标，就组包
-                        if (initSize < dataLength) {
-                            Log.i(TAG, "已读取长度:" + initSize + "   目标长度:" + dataLength + "   还需读取:" + (dataLength - initSize) + "  开始组包");
-                            YBytes bytesTemp = Utils.readInputStream(mInputStream, readTimeOut, groupPackageTime, dataLength - initSize);
-                            bytes.addByte(bytesTemp.getBytes());
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    for (DataListener item : dataListeners) {
-                                        item.onDataReceived(bytesToHexString(bytes.getBytes()), bytes.getBytes(), bytes.getBytes().length);
-                                    }
-                                }
-                            });
-                        } else {
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    for (DataListener item : dataListeners) {
-                                        item.onDataReceived(bytesToHexString(bytes.getBytes()), bytes.getBytes(), bytes.getBytes().length);
-                                    }
-                                }
-                            });
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                Thread.currentThread().interrupt();
-                Log.e(TAG, "读取总线程异常", e);
-            } finally {
-                Log.i(TAG, "读取总线程关闭");
-            }
-        }
     }
 
     //保存串口
@@ -379,53 +327,6 @@ public class YSerialPort {
     }
 
     /**
-     * 读取超时时间
-     *
-     * @return 毫秒
-     */
-    public int getReadTimeOut() {
-        return readTimeOut;
-    }
-
-    /**
-     * 设置读取超时时间
-     *
-     * @param readTimeOut 毫秒
-     */
-    public void setReadTimeOut(int readTimeOut) {
-        this.readTimeOut = readTimeOut;
-    }
-
-    /**
-     * 读取长度
-     *
-     * @return 长度
-     */
-    public int getDataLength() {
-        return dataLength;
-    }
-
-    /**
-     * 设置读取长度
-     *
-     * @param dataLength 读取长度
-     */
-    public void setDataLength(int dataLength) {
-        this.dataLength = dataLength;
-    }
-
-    /**
-     * 读取长度和超时时间
-     *
-     * @param dataLength  读取长度
-     * @param readTimeOut 超时时间，毫秒
-     */
-    public void setDataLength(int dataLength, int readTimeOut) {
-        this.readTimeOut = readTimeOut;
-        this.dataLength = dataLength;
-    }
-
-    /**
      * 获取组包最小时间差
      *
      * @return 毫秒
@@ -441,6 +342,24 @@ public class YSerialPort {
      */
     public void setGroupPackageTime(int groupPackageTime) {
         this.groupPackageTime = groupPackageTime;
+    }
+
+    /**
+     * 获取循环等待数据时间
+     *
+     * @return loopWaitTime毫秒
+     */
+    public int getLoopWaitTime() {
+        return loopWaitTime;
+    }
+
+    /**
+     * 设置循环等待数据时间
+     *
+     * @param loopWaitTime 毫秒
+     */
+    public void setLoopWaitTime(int loopWaitTime) {
+        this.loopWaitTime = loopWaitTime;
     }
 
     /**
@@ -498,6 +417,9 @@ public class YSerialPort {
     public void onDestroy() {
         Log.i(TAG, "调用onDestroy");
         try {
+            if (readInputStream != null) {
+                readInputStream.stop();
+            }
             if (mInputStream != null) {
                 mInputStream.close();
                 mOutputStream = null;
@@ -506,7 +428,6 @@ public class YSerialPort {
                 mOutputStream.close();
                 mOutputStream = null;
             }
-            if (mReadThread != null) mReadThread.interrupt();
         } catch (Exception e) {
             Log.e(TAG, "onDestroy异常", e);
         } finally {

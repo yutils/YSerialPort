@@ -55,7 +55,6 @@ public class TestActivity extends BaseActivity<ActivityTestBinding> {
             return;
         }
         try {
-            ySerialPort.setDataLength(10);
             ySerialPort.send(str.getBytes(Charset.forName("GB18030")));
             //保存数据
             YSharedPreferencesUtils.write(getApplicationContext(), SEND_STRING, str);
@@ -75,7 +74,6 @@ public class TestActivity extends BaseActivity<ActivityTestBinding> {
             return;
         }
         try {
-            ySerialPort.setDataLength(10);
             ySerialPort.send(YConvert.hexStringToByte(str));
             //保存数据
             YSharedPreferencesUtils.write(getApplicationContext(), SEND_HEX, str);
@@ -97,7 +95,6 @@ public class TestActivity extends BaseActivity<ActivityTestBinding> {
         binding.editText.setSelection(binding.editText.getText().length());
 
         ySerialPort = new YSerialPort(this);
-        ySerialPort.setDataLength(10);
         ySerialPort.clearDataListener();
         ySerialPort.addDataListener(dataListener);
         ySerialPort.start();
@@ -148,7 +145,6 @@ public class TestActivity extends BaseActivity<ActivityTestBinding> {
         try {
             ySerialPort.clearDataListener();
             ySerialPort.addDataListener(dataListener);
-            ySerialPort.setDataLength(10);
             //打印
             ySerialPort.send(result.getBytes("GBK"));
         } catch (Exception e) {
@@ -183,7 +179,6 @@ public class TestActivity extends BaseActivity<ActivityTestBinding> {
     private void readBankCard() {
         try {
             ySerialPort.clearDataListener();
-            ySerialPort.setDataLength(7);
             ySerialPort.addDataListener(new M1ReadDataListener(4, 4, "000000000000"));
             byte[] cmd = SerialM1.getComplete(SerialM1.getCommandSearch());
             binding.tvResult.setText("开始寻卡\n发送串口命令:" + YConvert.bytesToHexString(cmd));
@@ -199,7 +194,6 @@ public class TestActivity extends BaseActivity<ActivityTestBinding> {
     private void readCardManage() {
         try {
             ySerialPort.clearDataListener();
-            ySerialPort.setDataLength(7);
             ySerialPort.addDataListener(new M1ReadDataListener(1, 2, "FFFFFFFFFFFF"));
             byte[] cmd = SerialM1.getComplete(SerialM1.getCommandSearch());
             binding.tvResult.setText("开始寻卡\n发送串口命令:" + "\n发送串口命令:" + YConvert.bytesToHexString(cmd));
@@ -220,7 +214,6 @@ public class TestActivity extends BaseActivity<ActivityTestBinding> {
             }.getType());
             ySerialPort.clearDataListener();
             ySerialPort.addDataListener(dataListener);
-            ySerialPort.setDataLength(10);
             ySerialPort.send(YConvert.hexStringToByte(DY.检查));
             ySerialPort.send(YConvert.hexStringToByte(DY.初始化打印机));
             ySerialPort.send(YConvert.hexStringToByte(DY.旋转180度));
@@ -251,7 +244,6 @@ public class TestActivity extends BaseActivity<ActivityTestBinding> {
         try {
             ySerialPort.clearDataListener();
             ySerialPort.addDataListener(dataListener);
-            ySerialPort.setDataLength(10);
             ySerialPort.send(YConvert.hexStringToByte(DY.检查));
         } catch (Exception e) {
             YToast.show(getApplicationContext(), "打印机异常");
@@ -338,8 +330,6 @@ public class TestActivity extends BaseActivity<ActivityTestBinding> {
         public void readM1() {
             try {
                 //连续读取结果会自动跳过密码块，一次最多读4个扇区，也就是0-15扇区，应该返回12组数据
-                ySerialPort.setDataLength(getDataLength(), 100);
-                ySerialPort.setGroupPackageTime(5);
                 byte[] cmd = SerialM1.getComplete(SerialM1.getCommandMultipleBlock(blockStart, blockEnd, keyType, YConvert.hexStringToByte(password)));
                 Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
                 binding.tvResult.setText(binding.tvResult.getText() + "\n发送串口命令:" + YConvert.bytesToHexString(cmd));

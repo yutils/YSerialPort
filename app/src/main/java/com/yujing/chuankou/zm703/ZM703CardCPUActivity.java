@@ -21,7 +21,8 @@ import java.io.IOException;
 @SuppressLint("SetTextI18n")
 public class ZM703CardCPUActivity extends BaseActivity<ActivityZm703CpuBinding> {
     YSerialPort ySerialPort;
-    CpuDataListener cpuDataListener=new CpuDataListener();
+    CpuDataListener cpuDataListener = new CpuDataListener();
+
     @Override
     protected Integer getContentLayoutId() {
         return R.layout.activity_zm703_cpu;
@@ -30,12 +31,11 @@ public class ZM703CardCPUActivity extends BaseActivity<ActivityZm703CpuBinding> 
     @Override
     protected void initData() {
         ySerialPort = new YSerialPort(this);
-        ySerialPort.setDataLength(10);
         ySerialPort.clearDataListener();
         ySerialPort.start();
         binding.btCardCpu.setOnClickListener(v -> readCpu());
         binding.btDyk.setOnClickListener(v -> show("未开发"));
-        binding.tvTips.setText(String.format("注意：当前串口：%s，当前波特率：%s。\t\tZM703读卡器：\t/dev/ttyS4\t波特率115200",  ySerialPort.getDevice(),ySerialPort.getBaudRate()));
+        binding.tvTips.setText(String.format("注意：当前串口：%s，当前波特率：%s。\t\tZM703读卡器：\t/dev/ttyS4\t波特率115200", ySerialPort.getDevice(), ySerialPort.getBaudRate()));
     }
 
     /**
@@ -43,9 +43,8 @@ public class ZM703CardCPUActivity extends BaseActivity<ActivityZm703CpuBinding> 
      */
     private void readCpu() {
         try {
-            cpuDataListener.step=0;//步骤设置成0
+            cpuDataListener.step = 0;//步骤设置成0
             ySerialPort.clearDataListener();
-            ySerialPort.setDataLength(7);
             ySerialPort.addDataListener(cpuDataListener);
             byte[] cmd = SerialCpu.getComplete(SerialCpu.getCommandSearch());
             Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
@@ -62,6 +61,7 @@ public class ZM703CardCPUActivity extends BaseActivity<ActivityZm703CpuBinding> 
     class CpuDataListener implements YSerialPort.DataListener {
         int step = 0;
         int packetsLength;
+
         @Override
         public void onDataReceived(String hexString, byte[] bytes, int size) {
             binding.tvResult.setText(binding.tvResult.getText() + "\n收到数据：" + hexString);
@@ -87,19 +87,19 @@ public class ZM703CardCPUActivity extends BaseActivity<ActivityZm703CpuBinding> 
                     step3();
                 else {
                     binding.tvResult.setText(binding.tvResult.getText() + "\n选择DF失败");
-                    step=0;
+                    step = 0;
                 }
             } else if (step == 4) {
                 if ("9000".equals(zm703.getDataHexString())) step4();
                 else {
                     binding.tvResult.setText(binding.tvResult.getText() + "\n复合认证失败");
-                    step=0;
+                    step = 0;
                 }
             } else if (step == 5) {
                 if ("9000".equals(zm703.getDataHexString())) step5();
                 else {
                     binding.tvResult.setText(binding.tvResult.getText() + "\n选择文件失败");
-                    step=0;
+                    step = 0;
                 }
             } else if (step == 6) {
                 //分包
@@ -168,8 +168,6 @@ public class ZM703CardCPUActivity extends BaseActivity<ActivityZm703CpuBinding> 
         try {
             byte[] cmd = SerialCpu.getComplete(SerialCpu.readFile16k("0000", "0002"));
             Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
-            ySerialPort.setDataLength(2 + 7, 2000);
-            ySerialPort.setGroupPackageTime(10);
             binding.tvResult.setText(binding.tvResult.getText() + "\n读文件\n发送串口命令:" + YConvert.bytesToHexString(cmd));
             ySerialPort.send(cmd);
         } catch (IOException e) {
@@ -183,8 +181,6 @@ public class ZM703CardCPUActivity extends BaseActivity<ActivityZm703CpuBinding> 
             int length = packetsLength * 11;//长度位=烟包*11
             byte[] cmd = SerialCpu.getComplete(SerialCpu.readFile16k(YConvert.bytesToHexString(YConvertBytes.intTo2Bytes(startIndex)), YConvert.bytesToHexString(YConvertBytes.intTo2Bytes(length))));
             Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
-            ySerialPort.setDataLength(length + 7, 2000);
-            ySerialPort.setGroupPackageTime(10);
             binding.tvResult.setText(binding.tvResult.getText() + "\n读文件\n发送串口命令:" + YConvert.bytesToHexString(cmd));
             ySerialPort.send(cmd);
         } catch (IOException e) {

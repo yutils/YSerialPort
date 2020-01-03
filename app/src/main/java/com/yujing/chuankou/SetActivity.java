@@ -38,7 +38,6 @@ public class SetActivity extends BaseActivity<ActivitySetBinding> {
                         //判断串口是否可用
                         if (YSerialPort.readBaudRate(SetActivity.this) != null) {
                             final YSerialPort ySerialPort = new YSerialPort(SetActivity.this);
-                            ySerialPort.setDataLength(10);
                             ySerialPort.start();
                             YDelayAndroid.run(100, () -> ySerialPort.onDestroy());
                         }

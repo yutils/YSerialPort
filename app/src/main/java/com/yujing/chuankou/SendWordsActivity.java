@@ -33,7 +33,6 @@ public class SendWordsActivity extends BaseActivity<SendingWordsBinding> {
             return;
         }
         try {
-            ySerialPort.setDataLength(10);
             ySerialPort.send(str.getBytes(Charset.forName("GB18030")));
             //保存数据
             YSharedPreferencesUtils.write(getApplicationContext(), SEND_STRING, str);
@@ -53,7 +52,6 @@ public class SendWordsActivity extends BaseActivity<SendingWordsBinding> {
             return;
         }
         try {
-            ySerialPort.setDataLength(10);
             ySerialPort.send(YConvert.hexStringToByte(str));
             //保存数据
             YSharedPreferencesUtils.write(getApplicationContext(), SEND_HEX, str);
@@ -74,7 +72,6 @@ public class SendWordsActivity extends BaseActivity<SendingWordsBinding> {
         binding.editText.setSelection(binding.editText.getText().length());
 
         ySerialPort = new YSerialPort(this);
-        ySerialPort.setDataLength(10);
         ySerialPort.clearDataListener();
         ySerialPort.addDataListener(dataListener);
         ySerialPort.start();

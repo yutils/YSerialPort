@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat;
 import com.yujing.chuankou.databinding.MainBinding;
 import com.yujing.chuankou.zm703.ZM703CardCPUActivity;
 import com.yujing.chuankou.zm703.ZM703CardM1Activity;
+import com.yujing.yserialport.YReadInputStream;
 
 import java.util.ArrayList;
 
@@ -34,6 +35,7 @@ public class MainMenu extends BaseActivity<MainBinding> {
             builder.show();
         });
         initPermission();
+        YReadInputStream.setShowLog(true);
     }
 
     /**

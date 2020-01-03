@@ -32,7 +32,6 @@ public class ZM703CardM1Activity extends BaseActivity<ActivityZm703M1Binding> {
     @Override
     protected void initData() {
         ySerialPort = new YSerialPort(this);
-        ySerialPort.setDataLength(10);
         ySerialPort.clearDataListener();
         ySerialPort.start();
 
@@ -92,7 +91,6 @@ public class ZM703CardM1Activity extends BaseActivity<ActivityZm703M1Binding> {
             binding.tvResult.setText("开始寻卡\n发送串口命令:" + YConvert.bytesToHexString(cmd));
 
             ySerialPort.clearDataListener();
-            ySerialPort.setDataLength(7);
             ySerialPort.addDataListener(listener);
             ySerialPort.send(cmd);
         } catch (IOException e) {
@@ -144,7 +142,6 @@ public class ZM703CardM1Activity extends BaseActivity<ActivityZm703M1Binding> {
             binding.tvResult.setText("开始寻卡\n发送串口命令:" + YConvert.bytesToHexString(cmd));
 
             ySerialPort.clearDataListener();
-            ySerialPort.setDataLength(7);
             ySerialPort.addDataListener(m1WriteDataListener);
             ySerialPort.send(cmd);
         } catch (IOException e) {
@@ -220,8 +217,6 @@ public class ZM703CardM1Activity extends BaseActivity<ActivityZm703M1Binding> {
         public void readM1() {
             try {
                 //连续读取结果会自动跳过密码块，一次最多读4个扇区，也就是0-15扇区，应该返回12组数据
-                ySerialPort.setDataLength(getDataLength(), 100);
-                ySerialPort.setGroupPackageTime(5);
                 byte[] cmd = SerialM1.getComplete(SerialM1.getCommandMultipleBlock(blockStart, blockEnd, keyType, YConvert.hexStringToByte(password)));
                 Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
                 binding.tvResult.setText(binding.tvResult.getText() + "\n发送串口命令:" + YConvert.bytesToHexString(cmd));
@@ -313,7 +308,6 @@ public class ZM703CardM1Activity extends BaseActivity<ActivityZm703M1Binding> {
         public void writeM1() {
             try {
                 //连续读取结果会自动跳过密码块，一次最多读4个扇区，也就是0-15扇区，应该返回12组数据
-                ySerialPort.setDataLength(7);
                 byte[] cmd = SerialM1.getComplete(SerialM1.setCommandMultipleBlock(blockStart, blockEnd, keyType, YConvert.hexStringToByte(password), YConvert.hexStringToByte(data)));
                 Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
                 binding.tvResult.setText(binding.tvResult.getText() + "\n发送串口命令:" + YConvert.bytesToHexString(cmd));
