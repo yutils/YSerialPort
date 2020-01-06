@@ -39,7 +39,7 @@ public class YSerialPort {
     private static final String SERIAL_PORT = "SERIAL_PORT";
     private static final String[] BAUD_RATE_LIST = new String[]{"50", "75", "110", "134", "150", "200", "300", "600", "1200", "1800", "2400", "4800", "9600", "19200", "38400", "57600", "115200", "230400", "460800", "500000", "576000", "921600", "1000000", "1152000", "1500000", "2000000", "2500000", "3000000", "3500000", "4000000"};
     private boolean autoPackage = true;//自动组包
-    private int packageTime = 5;//组包时间差，毫秒
+    private int packageTime = -1;//组包时间差，毫秒
     private int readTimeout = -1;//读取超时时间
     private int readLength = -1;//读取长度
     private YReadInputStream readInputStream;
@@ -153,6 +153,7 @@ public class YSerialPort {
                 }
             });
             readInputStream.setLengthAndTimeout(readLength, readTimeout);
+            if (packageTime == -1) setPackageTimeDefault();//设置默认组包时间
             readInputStream.setPackageTime(packageTime);
             readInputStream.start();
         } catch (SecurityException e) {
@@ -363,6 +364,12 @@ public class YSerialPort {
         }
     }
 
+    private void setPackageTimeDefault() {
+        if (baudRate != null) {
+            int intBaudRate = Integer.parseInt(baudRate);
+            packageTime = Math.round((4f / (intBaudRate / 115200f)) + 0.4999f);//向上取整
+        }
+    }
 
     /**
      * 设置读取超时时间和读取最小长度 方法互斥 setGroupPackageTime
