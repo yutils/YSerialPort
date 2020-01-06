@@ -7,7 +7,7 @@ import java.io.InputStream;
 /**
  * 读取InputStream
  *
- * @author yujing 2020年1月3日10:10:51
+ * @author yujing 2020年1月6日17:22:15
  */
 @SuppressWarnings("unused")
 public class YReadInputStream {
@@ -16,8 +16,11 @@ public class YReadInputStream {
     private InputStream inputStream;
     private YListener<byte[]> readListener;
     private ReadThread readThread;
-    private int groupPackageTime = 1;//组包时间差，毫秒
-    private int loopWaitTime = 1;//循环等待时间1毫秒
+    private final int loopWaitTime = 1;//循环等待时间1毫秒
+    private boolean autoPackage = true;//自动组包
+    private int packageTime = 1;//组包时间差，毫秒
+    private int readLength = -1;//读取长度
+    private int readTimeout = -1;//读取超时时间
 
     public YReadInputStream() {
     }
@@ -67,7 +70,13 @@ public class YReadInputStream {
                         }
                         continue;
                     }
-                    YBytes yBytes = read(inputStream, groupPackageTime);
+                    YBytes yBytes;
+                    if (!autoPackage && readTimeout > 0 && readLength > 0) {
+                        //知道长度时，组包时间间隔意义不大
+                        yBytes = read(inputStream, 1, readTimeout, readLength);
+                    } else {
+                        yBytes = read(inputStream, packageTime);
+                    }
                     if (readListener != null) {
                         readListener.value(yBytes.getBytes());
                     }
@@ -78,14 +87,6 @@ public class YReadInputStream {
                 log("关闭一个读取线程");
             }
         }
-    }
-
-    public int getLoopWaitTime() {
-        return loopWaitTime;
-    }
-
-    public void setLoopWaitTime(int loopWaitTime) {
-        this.loopWaitTime = loopWaitTime;
     }
 
     private static void log(String string) {
@@ -104,13 +105,27 @@ public class YReadInputStream {
         YReadInputStream.showLog = showLog;
     }
 
-    public int getGroupPackageTime() {
-        return groupPackageTime;
+    public int getPackageTime() {
+        return packageTime;
     }
 
-    public void setGroupPackageTime(int groupPackageTime) {
-        this.groupPackageTime = groupPackageTime;
+    public void setPackageTime(int packageTime) {
+        this.packageTime = packageTime;
     }
+
+    public void setLengthAndTimeout(int readLength, int readTimeout) {
+        this.readLength = readLength;
+        this.readTimeout = readTimeout;
+    }
+
+    public boolean isAutoPackage() {
+        return autoPackage;
+    }
+
+    public void setAutoPackage(boolean autoPackage) {
+        this.autoPackage = autoPackage;
+    }
+
     //★★★★★★★★★★★★★★★★★★★★★★★★★★★★★读流操作★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 
     /**
@@ -176,12 +191,12 @@ public class YReadInputStream {
      * 指定时间内读取指定长度的InputStream
      *
      * @param mInputStream     输入流
-     * @param readTimeOut      超时时间
-     * @param dataLength       读取长度
      * @param groupPackageTime 每次组包时间间隔
+     * @param readTimeOut      超时时间
+     * @param readLength       读取长度
      * @return YBytes
      */
-    public static YBytes read(final InputStream mInputStream, final int readTimeOut, final int groupPackageTime, final int dataLength) {
+    public static YBytes read(final InputStream mInputStream, final int groupPackageTime, final int readTimeOut, final int readLength) {
         final YBytes bytes = new YBytes();
         final long startTime = System.currentTimeMillis();
         //方法内部类，读取线程
@@ -196,7 +211,7 @@ public class YReadInputStream {
             public void run() {
                 try {
                     int i = 0;//第几次组包
-                    while (!Thread.currentThread().isInterrupted() && bytes.getBytes().length < dataLength && i * groupPackageTime < readTimeOut) {
+                    while (!Thread.currentThread().isInterrupted() && bytes.getBytes().length < readLength && i * groupPackageTime < readTimeOut) {
                         i++;
                         int available = mInputStream.available();// 可读取多少字节内容
                         if (available == 0) {//如果可读取消息为0，那么久休息loopWaitTime毫秒。防止InputStream.read阻塞
@@ -209,11 +224,11 @@ public class YReadInputStream {
                         }
                         Thread.sleep(groupPackageTime);//每次组包间隔，毫秒
                         //再读取一次
-                        byte[] newBytes = new byte[dataLength < 1024 ? 1024 : dataLength];
+                        byte[] newBytes = new byte[readLength < 1024 ? 1024 : readLength];
                         int newSize = mInputStream.read(newBytes, 0, available);
                         if (newSize > 0) {
                             bytes.addByte(newBytes, newSize);
-                            log("第" + i + "次组包后长度：" + bytes.getBytes().length + " ，目标长度：" + dataLength + " ，已耗时：" + (System.currentTimeMillis() - startTime) + "ms,超时时间：" + readTimeOut + "ms");
+                            log("第" + i + "次组包后长度：" + bytes.getBytes().length + " ，目标长度：" + readLength + " ，已耗时：" + (System.currentTimeMillis() - startTime) + "ms,超时时间：" + readTimeOut + "ms");
                         }
                     }
                     timeOut = false;

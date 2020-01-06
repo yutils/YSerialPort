@@ -53,13 +53,11 @@ public class TestActivity extends BaseActivity<ActivityTestBinding> {
             show("未输入内容！");
             return;
         }
-        try {
-            ySerialPort.send(str.getBytes(Charset.forName("GB18030")));
-            //保存数据
-            YSharedPreferencesUtils.write(getApplicationContext(), SEND_STRING, str);
-        } catch (Exception e) {
-            YToast.show(getApplicationContext(), "串口异常");
-        }
+        ySerialPort.send(str.getBytes(Charset.forName("GB18030")), value -> {
+            if (!value) YToast.show(getApplicationContext(), "串口异常");
+        });
+        //保存数据
+        YSharedPreferencesUtils.write(getApplicationContext(), SEND_STRING, str);
     }
 
     private void sendHexString() {
@@ -96,6 +94,7 @@ public class TestActivity extends BaseActivity<ActivityTestBinding> {
         ySerialPort = new YSerialPort(this);
         ySerialPort.clearDataListener();
         ySerialPort.addDataListener(dataListener);
+        ySerialPort.setPackageTime(40);
         ySerialPort.start();
         binding.button.setOnClickListener(v -> sendString());
         binding.btHex.setOnClickListener(v -> sendHexString());

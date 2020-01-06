@@ -62,10 +62,13 @@ ySerialPort.addDataListener(new YSerialPort.DataListener() {
         //结果回调:size
     }
 });
-//设置本次读取长度
-//ySerialPort.setDataLength(64);
-//设置本次读取超时时间
-//ySerialPort.setReadTimeOut(100);
+//设置自动组包，每次组包时长为40毫秒，如果40毫秒读取不到数据则返回结果
+ySerialPort.setAutoPackage(true);
+ySerialPort.setPackageTime(40);
+//或者,设置非自动组包，读取长度1000，超时时间为500毫秒。如果读取到1000立即返回，否则直到读取到超时为止
+ySerialPort.setAutoPackage(false);
+ySerialPort.setLengthAndTimeout(1000,500);
+
 //启动
 ySerialPort.start();
 

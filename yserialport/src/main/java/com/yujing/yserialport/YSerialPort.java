@@ -38,9 +38,10 @@ public class YSerialPort {
     private static final String BAUD_RATE = "BAUD_RATE";
     private static final String SERIAL_PORT = "SERIAL_PORT";
     private static final String[] BAUD_RATE_LIST = new String[]{"50", "75", "110", "134", "150", "200", "300", "600", "1200", "1800", "2400", "4800", "9600", "19200", "38400", "57600", "115200", "230400", "460800", "500000", "576000", "921600", "1000000", "1152000", "1500000", "2000000", "2500000", "3000000", "3500000", "4000000"};
-    private int groupPackageTime = 3;//组包时间差，毫秒
-    private int loopWaitTime = 1;//循环等待时间1毫秒
-
+    private boolean autoPackage = true;//自动组包
+    private int packageTime = 5;//组包时间差，毫秒
+    private int readTimeout = -1;//读取超时时间
+    private int readLength = -1;//读取长度
     private YReadInputStream readInputStream;
     //串口类
     private SerialPort mSerialPort;
@@ -135,7 +136,6 @@ public class YSerialPort {
             mSerialPort.close();
             mSerialPort = null;
         }
-
         try {
             mOutputStream = getSerialPort().getOutputStream();
             mInputStream = getSerialPort().getInputStream();
@@ -152,8 +152,8 @@ public class YSerialPort {
                     });
                 }
             });
-            readInputStream.setGroupPackageTime(groupPackageTime);
-            readInputStream.setLoopWaitTime(loopWaitTime);
+            readInputStream.setLengthAndTimeout(readLength, readTimeout);
+            readInputStream.setPackageTime(packageTime);
             readInputStream.start();
         } catch (SecurityException e) {
             DisplayError("您对串行端口没有读/写权限。");
@@ -346,35 +346,46 @@ public class YSerialPort {
      *
      * @return 毫秒
      */
-    public int getGroupPackageTime() {
-        return groupPackageTime;
+    public int getPackageTime() {
+        return packageTime;
     }
 
     /**
-     * 设置组包最小时间差
+     * 设置组包最小时间差  方法互斥 setReadTimeOutAndLength
      *
-     * @param groupPackageTime 组包最小时间差,毫秒
+     * @param packageTime 组包最小时间差,毫秒
      */
-    public void setGroupPackageTime(int groupPackageTime) {
-        this.groupPackageTime = groupPackageTime;
+    public void setPackageTime(int packageTime) {
+        this.packageTime = packageTime;
+        if (readInputStream != null) {
+            readInputStream.setPackageTime(packageTime);
+            setAutoPackage(true);
+        }
     }
 
-    /**
-     * 获取循环等待数据时间
-     *
-     * @return loopWaitTime毫秒
-     */
-    public int getLoopWaitTime() {
-        return loopWaitTime;
-    }
 
     /**
-     * 设置循环等待数据时间
+     * 设置读取超时时间和读取最小长度 方法互斥 setGroupPackageTime
      *
-     * @param loopWaitTime 毫秒
+     * @param readTimeout 读取超时时间
+     * @param readLength  读取最小长度
      */
-    public void setLoopWaitTime(int loopWaitTime) {
-        this.loopWaitTime = loopWaitTime;
+    public void setLengthAndTimeout(int readLength, int readTimeout) {
+        this.readTimeout = readTimeout;
+        this.readLength = readLength;
+        if (readInputStream != null) {
+            readInputStream.setLengthAndTimeout(readLength, readTimeout);
+            setAutoPackage(false);
+        }
+    }
+
+    public boolean isAutoPackage() {
+        return autoPackage;
+    }
+
+    public void setAutoPackage(boolean autoPackage) {
+        this.autoPackage = autoPackage;
+        if (readInputStream != null) readInputStream.setAutoPackage(autoPackage);
     }
 
     /**
