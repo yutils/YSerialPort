@@ -94,8 +94,13 @@ public class TestActivity extends BaseActivity<ActivityTestBinding> {
         ySerialPort = new YSerialPort(this);
         ySerialPort.clearDataListener();
         ySerialPort.addDataListener(dataListener);
-        ySerialPort.setPackageTime(40);
         ySerialPort.start();
+        try {
+            int baudRate = Integer.parseInt(ySerialPort.getBaudRate());
+            ySerialPort.setPackageTime(Math.round((4f / (baudRate / 115200f)) + 0.4999f));//向上取整
+        } catch (Exception e) {
+            ySerialPort.setPackageTime(40);
+        }
         binding.button.setOnClickListener(v -> sendString());
         binding.btHex.setOnClickListener(v -> sendHexString());
         binding.buttonTest1.setOnClickListener(v -> printDJ());
