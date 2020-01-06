@@ -63,9 +63,9 @@ ySerialPort.addDataListener(new YSerialPort.DataListener() {
     }
 });
 //设置本次读取长度
-ySerialPort.setDataLength(64);
+//ySerialPort.setDataLength(64);
 //设置本次读取超时时间
-ySerialPort.setReadTimeOut(100);
+//ySerialPort.setReadTimeOut(100);
 //启动
 ySerialPort.start();
 
