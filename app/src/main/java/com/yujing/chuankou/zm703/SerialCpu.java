@@ -6,7 +6,6 @@ import com.yujing.utils.YConvertBytes;
 import com.yujing.utils.YString;
 import com.yujing.yserialport.YSerialPort;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -51,6 +50,7 @@ public class SerialCpu {
      * 命令,寻卡。55AAFF 0003 0233 32
      * 自动寻卡 022126，
      * 硬件复位自动寻卡 022152，
+     *
      * @return
      */
     public static String getCommandSearch() {
@@ -188,11 +188,7 @@ public class SerialCpu {
      * @param bytes 数据
      */
     public static void send(YSerialPort m1, byte[] bytes) {
-        try {
-            m1.send(bytes);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        m1.send(bytes);
     }
 
     /**

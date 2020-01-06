@@ -11,7 +11,6 @@ import com.yujing.chuankou.databinding.ActivityZm703M1Binding;
 import com.yujing.utils.YConvert;
 import com.yujing.yserialport.YSerialPort;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
@@ -41,7 +40,7 @@ public class ZM703CardM1Activity extends BaseActivity<ActivityZm703M1Binding> {
         binding.btSetV3Gzry.setOnClickListener(v -> set("1", "5", "ffffffffffff"));
         binding.btSetV3Yhk.setOnClickListener(v -> set("4", "4", "000000000000"));
         binding.btClear.setOnClickListener(v -> binding.tvResult.setText(""));
-        binding.tvTips.setText(String.format("注意：当前串口：%s，当前波特率：%s。\t\tZM703读卡器：\t/dev/ttyS4\t波特率115200", ySerialPort.getDevice(),ySerialPort.getBaudRate()));
+        binding.tvTips.setText(String.format("注意：当前串口：%s，当前波特率：%s。\t\tZM703读卡器：\t/dev/ttyS4\t波特率115200", ySerialPort.getDevice(), ySerialPort.getBaudRate()));
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, Arrays.asList("KeyA", "KeyB"));
         binding.sp.setAdapter(adapter);
@@ -57,96 +56,87 @@ public class ZM703CardM1Activity extends BaseActivity<ActivityZm703M1Binding> {
      * 读M1
      */
     private void readM1Read() {
-        try {
-            String blockStartString = binding.etBlockStart.getText().toString();
-            String blockEndString = binding.etBlockEnd.getText().toString();
-            String blockPasswordString = binding.etBlockPassword.getText().toString();
-            if (blockStartString.isEmpty()) {
-                show("开始块不能为空");
-                return;
-            }
-            if (blockEndString.isEmpty()) {
-                show("结束块不能为空");
-                return;
-            }
-            if (blockPasswordString.isEmpty()) {
-                show("密码不能为空");
-                return;
-            }
-            if (blockPasswordString.length() != 12) {
-                show("密码长度不正确");
-                return;
-            }
-            int blockStart = Integer.parseInt(blockStartString);
-            int blockEnd = Integer.parseInt(blockEndString);
-            if (blockStart > blockEnd) {
-                show("开始扇区不能大于结束扇区");
-                return;
-            }
-
-            SerialM1.KEYType keyType = binding.sp.getSelectedItemPosition() == 0 ? SerialM1.KEYType.KEY_A : SerialM1.KEYType.KEY_B;
-            M1ReadDataListener listener = new M1ReadDataListener(blockStart, blockEnd, blockPasswordString, keyType);
-            byte[] cmd = SerialM1.getComplete(SerialM1.getCommandSearch());
-            Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
-            binding.tvResult.setText("开始寻卡\n发送串口命令:" + YConvert.bytesToHexString(cmd));
-
-            ySerialPort.clearDataListener();
-            ySerialPort.addDataListener(listener);
-            ySerialPort.send(cmd);
-        } catch (IOException e) {
-            Log.e("异常", "串口异常", e);
+        String blockStartString = binding.etBlockStart.getText().toString();
+        String blockEndString = binding.etBlockEnd.getText().toString();
+        String blockPasswordString = binding.etBlockPassword.getText().toString();
+        if (blockStartString.isEmpty()) {
+            show("开始块不能为空");
+            return;
         }
+        if (blockEndString.isEmpty()) {
+            show("结束块不能为空");
+            return;
+        }
+        if (blockPasswordString.isEmpty()) {
+            show("密码不能为空");
+            return;
+        }
+        if (blockPasswordString.length() != 12) {
+            show("密码长度不正确");
+            return;
+        }
+        int blockStart = Integer.parseInt(blockStartString);
+        int blockEnd = Integer.parseInt(blockEndString);
+        if (blockStart > blockEnd) {
+            show("开始扇区不能大于结束扇区");
+            return;
+        }
+
+        SerialM1.KEYType keyType = binding.sp.getSelectedItemPosition() == 0 ? SerialM1.KEYType.KEY_A : SerialM1.KEYType.KEY_B;
+        M1ReadDataListener listener = new M1ReadDataListener(blockStart, blockEnd, blockPasswordString, keyType);
+        byte[] cmd = SerialM1.getComplete(SerialM1.getCommandSearch());
+        Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
+        binding.tvResult.setText("开始寻卡\n发送串口命令:" + YConvert.bytesToHexString(cmd));
+        ySerialPort.clearDataListener();
+        ySerialPort.addDataListener(listener);
+        ySerialPort.send(cmd);
     }
 
     /**
      * 写入
      */
     private void readM1Write() {
-        try {
-            String blockStartString = binding.etBlockStart.getText().toString();
-            String blockEndString = binding.etBlockEnd.getText().toString();
-            String blockPasswordString = binding.etBlockPassword.getText().toString();
-            String blockData = binding.etBlockData.getText().toString();
-            if (blockStartString.isEmpty()) {
-                show("开始块不能为空");
-                return;
-            }
-            if (blockEndString.isEmpty()) {
-                show("结束块不能为空");
-                return;
-            }
-            if (blockPasswordString.isEmpty()) {
-                show("密码不能为空");
-                return;
-            }
-            if (blockPasswordString.length() != 12) {
-                show("密码长度不正确");
-                return;
-            }
-            int blockStart = Integer.parseInt(blockStartString);
-            int blockEnd = Integer.parseInt(blockEndString);
-            if (blockStart > blockEnd) {
-                show("开始扇区不能大于结束扇区");
-                return;
-            }
-            SerialM1.KEYType keyType = binding.sp.getSelectedItemPosition() == 0 ? SerialM1.KEYType.KEY_A : SerialM1.KEYType.KEY_B;
-            M1WriteDataListener m1WriteDataListener = new M1WriteDataListener(blockStart, blockEnd, blockPasswordString, keyType, blockData);
-            int writeLength = m1WriteDataListener.getDataLength() * 2;
-            if (blockData.length() != writeLength) {
-                show("写入数据长度不正确，当前长度：" + blockData.length() + "需要长度：" + writeLength);
-                return;
-            }
-
-            byte[] cmd = SerialM1.getComplete(SerialM1.getCommandSearch());
-            Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
-            binding.tvResult.setText("开始寻卡\n发送串口命令:" + YConvert.bytesToHexString(cmd));
-
-            ySerialPort.clearDataListener();
-            ySerialPort.addDataListener(m1WriteDataListener);
-            ySerialPort.send(cmd);
-        } catch (IOException e) {
-            Log.e("异常", "串口异常", e);
+        String blockStartString = binding.etBlockStart.getText().toString();
+        String blockEndString = binding.etBlockEnd.getText().toString();
+        String blockPasswordString = binding.etBlockPassword.getText().toString();
+        String blockData = binding.etBlockData.getText().toString();
+        if (blockStartString.isEmpty()) {
+            show("开始块不能为空");
+            return;
         }
+        if (blockEndString.isEmpty()) {
+            show("结束块不能为空");
+            return;
+        }
+        if (blockPasswordString.isEmpty()) {
+            show("密码不能为空");
+            return;
+        }
+        if (blockPasswordString.length() != 12) {
+            show("密码长度不正确");
+            return;
+        }
+        int blockStart = Integer.parseInt(blockStartString);
+        int blockEnd = Integer.parseInt(blockEndString);
+        if (blockStart > blockEnd) {
+            show("开始扇区不能大于结束扇区");
+            return;
+        }
+        SerialM1.KEYType keyType = binding.sp.getSelectedItemPosition() == 0 ? SerialM1.KEYType.KEY_A : SerialM1.KEYType.KEY_B;
+        M1WriteDataListener m1WriteDataListener = new M1WriteDataListener(blockStart, blockEnd, blockPasswordString, keyType, blockData);
+        int writeLength = m1WriteDataListener.getDataLength() * 2;
+        if (blockData.length() != writeLength) {
+            show("写入数据长度不正确，当前长度：" + blockData.length() + "需要长度：" + writeLength);
+            return;
+        }
+
+        byte[] cmd = SerialM1.getComplete(SerialM1.getCommandSearch());
+        Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
+        binding.tvResult.setText("开始寻卡\n发送串口命令:" + YConvert.bytesToHexString(cmd));
+
+        ySerialPort.clearDataListener();
+        ySerialPort.addDataListener(m1WriteDataListener);
+        ySerialPort.send(cmd);
     }
 
     @Override

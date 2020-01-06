@@ -11,8 +11,6 @@ import com.yujing.utils.YConvert;
 import com.yujing.utils.YConvertBytes;
 import com.yujing.yserialport.YSerialPort;
 
-import java.io.IOException;
-
 /**
  * zm703读卡器 读取cpu区
  *
@@ -42,17 +40,13 @@ public class ZM703CardCPUActivity extends BaseActivity<ActivityZm703CpuBinding> 
      * 读CPU
      */
     private void readCpu() {
-        try {
-            cpuDataListener.step = 0;//步骤设置成0
-            ySerialPort.clearDataListener();
-            ySerialPort.addDataListener(cpuDataListener);
-            byte[] cmd = SerialCpu.getComplete(SerialCpu.getCommandSearch());
-            Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
-            binding.tvResult.setText("开始寻卡\n发送串口命令:" + YConvert.bytesToHexString(cmd));
-            ySerialPort.send(cmd);
-        } catch (IOException e) {
-            Log.e("异常", "串口异常", e);
-        }
+        cpuDataListener.step = 0;//步骤设置成0
+        ySerialPort.clearDataListener();
+        ySerialPort.addDataListener(cpuDataListener);
+        byte[] cmd = SerialCpu.getComplete(SerialCpu.getCommandSearch());
+        Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
+        binding.tvResult.setText("开始寻卡\n发送串口命令:" + YConvert.bytesToHexString(cmd));
+        ySerialPort.send(cmd);
     }
 
     /**
@@ -120,72 +114,48 @@ public class ZM703CardCPUActivity extends BaseActivity<ActivityZm703CpuBinding> 
 
 
     protected void step1() {
-        try {
-            byte[] cmd = SerialCpu.getComplete(SerialCpu.getCpuInto());
-            Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
-            binding.tvResult.setText(binding.tvResult.getText() + "\nCPU转入\n发送串口命令:" + YConvert.bytesToHexString(cmd));
-            ySerialPort.send(cmd);
-        } catch (IOException e) {
-            Log.e("异常", "串口异常", e);
-        }
+        byte[] cmd = SerialCpu.getComplete(SerialCpu.getCpuInto());
+        Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
+        binding.tvResult.setText(binding.tvResult.getText() + "\nCPU转入\n发送串口命令:" + YConvert.bytesToHexString(cmd));
+        ySerialPort.send(cmd);
     }
 
     protected void step2() {
-        try {
-            byte[] cmd = SerialCpu.getComplete(SerialCpu.getCos(SerialCpu.cosSelectDf()));
-            Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
-            binding.tvResult.setText(binding.tvResult.getText() + "\n选择DF\n发送串口命令:" + YConvert.bytesToHexString(cmd));
-            ySerialPort.send(cmd);
-        } catch (IOException e) {
-            Log.e("异常", "串口异常", e);
-        }
+        byte[] cmd = SerialCpu.getComplete(SerialCpu.getCos(SerialCpu.cosSelectDf()));
+        Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
+        binding.tvResult.setText(binding.tvResult.getText() + "\n选择DF\n发送串口命令:" + YConvert.bytesToHexString(cmd));
+        ySerialPort.send(cmd);
     }
 
     protected void step3() {
-        try {
-            byte[] cmd = SerialCpu.getComplete(SerialCpu.getAuthentication());
-            Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
-            binding.tvResult.setText(binding.tvResult.getText() + "\n复合认证\n发送串口命令:" + YConvert.bytesToHexString(cmd));
-            ySerialPort.send(cmd);
-        } catch (IOException e) {
-            Log.e("异常", "串口异常", e);
-        }
+        byte[] cmd = SerialCpu.getComplete(SerialCpu.getAuthentication());
+        Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
+        binding.tvResult.setText(binding.tvResult.getText() + "\n复合认证\n发送串口命令:" + YConvert.bytesToHexString(cmd));
+        ySerialPort.send(cmd);
     }
 
     protected void step4() {
-        try {
-            byte[] cmd = SerialCpu.getComplete(SerialCpu.getCos(SerialCpu.cosSelectFile()));
-            Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
-            binding.tvResult.setText(binding.tvResult.getText() + "\n选择文件\n发送串口命令:" + YConvert.bytesToHexString(cmd));
-            ySerialPort.send(cmd);
-        } catch (IOException e) {
-            Log.e("异常", "串口异常", e);
-        }
+        byte[] cmd = SerialCpu.getComplete(SerialCpu.getCos(SerialCpu.cosSelectFile()));
+        Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
+        binding.tvResult.setText(binding.tvResult.getText() + "\n选择文件\n发送串口命令:" + YConvert.bytesToHexString(cmd));
+        ySerialPort.send(cmd);
     }
 
     //读取长度
     protected void step5() {
-        try {
-            byte[] cmd = SerialCpu.getComplete(SerialCpu.readFile16k("0000", "0002"));
-            Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
-            binding.tvResult.setText(binding.tvResult.getText() + "\n读文件\n发送串口命令:" + YConvert.bytesToHexString(cmd));
-            ySerialPort.send(cmd);
-        } catch (IOException e) {
-            Log.e("异常", "串口异常", e);
-        }
+        byte[] cmd = SerialCpu.getComplete(SerialCpu.readFile16k("0000", "0002"));
+        Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
+        binding.tvResult.setText(binding.tvResult.getText() + "\n读文件\n发送串口命令:" + YConvert.bytesToHexString(cmd));
+        ySerialPort.send(cmd);
     }
 
     protected void step6(int packetsLength) {
-        try {
-            int startIndex = 11 + 2;//开始位置2位长度位+11个基本属性位
-            int length = packetsLength * 11;//长度位=烟包*11
-            byte[] cmd = SerialCpu.getComplete(SerialCpu.readFile16k(YConvert.bytesToHexString(YConvertBytes.intTo2Bytes(startIndex)), YConvert.bytesToHexString(YConvertBytes.intTo2Bytes(length))));
-            Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
-            binding.tvResult.setText(binding.tvResult.getText() + "\n读文件\n发送串口命令:" + YConvert.bytesToHexString(cmd));
-            ySerialPort.send(cmd);
-        } catch (IOException e) {
-            Log.e("异常", "串口异常", e);
-        }
+        int startIndex = 11 + 2;//开始位置2位长度位+11个基本属性位
+        int length = packetsLength * 11;//长度位=烟包*11
+        byte[] cmd = SerialCpu.getComplete(SerialCpu.readFile16k(YConvert.bytesToHexString(YConvertBytes.intTo2Bytes(startIndex)), YConvert.bytesToHexString(YConvertBytes.intTo2Bytes(length))));
+        Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
+        binding.tvResult.setText(binding.tvResult.getText() + "\n读文件\n发送串口命令:" + YConvert.bytesToHexString(cmd));
+        ySerialPort.send(cmd);
     }
 
     //退出注销

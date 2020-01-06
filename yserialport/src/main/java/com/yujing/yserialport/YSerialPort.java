@@ -190,12 +190,27 @@ public class YSerialPort {
     /**
      * 发送
      *
-     * @param buffer 数据
-     * @throws IOException IO异常
+     * @param bytes 数据
      */
-    public void send(byte[] buffer) throws IOException {
-        if (mSerialPort != null) mOutputStream = mSerialPort.getOutputStream();
-        mOutputStream.write(buffer);
+    public void send(byte[] bytes) {
+        send(bytes, null);
+    }
+
+    /**
+     * 发送
+     *
+     * @param bytes    数据
+     * @param listener 状态，成功回调true，失败false
+     */
+    public void send(byte[] bytes, YListener<Boolean> listener) {
+        try {
+            if (mSerialPort != null) mOutputStream = mSerialPort.getOutputStream();
+            mOutputStream.write(bytes);
+            if (listener != null) listener.value(true);
+        } catch (Exception e) {
+            Log.e(TAG, "发送失败", e);
+            if (listener != null) listener.value(false);
+        }
     }
 
     //保存串口

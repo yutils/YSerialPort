@@ -19,7 +19,6 @@ import com.yujing.yserialport.YSerialPort;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
@@ -177,30 +176,22 @@ public class TestActivity extends BaseActivity<ActivityTestBinding> {
      * 读银行卡
      */
     private void readBankCard() {
-        try {
-            ySerialPort.clearDataListener();
-            ySerialPort.addDataListener(new M1ReadDataListener(4, 4, "000000000000"));
-            byte[] cmd = SerialM1.getComplete(SerialM1.getCommandSearch());
-            binding.tvResult.setText("开始寻卡\n发送串口命令:" + YConvert.bytesToHexString(cmd));
-            ySerialPort.send(cmd);
-        } catch (IOException e) {
-            Log.e("异常", "串口异常", e);
-        }
+        ySerialPort.clearDataListener();
+        ySerialPort.addDataListener(new M1ReadDataListener(4, 4, "000000000000"));
+        byte[] cmd = SerialM1.getComplete(SerialM1.getCommandSearch());
+        binding.tvResult.setText("开始寻卡\n发送串口命令:" + YConvert.bytesToHexString(cmd));
+        ySerialPort.send(cmd);
     }
 
     /**
      * 读工作人员卡
      */
     private void readCardManage() {
-        try {
-            ySerialPort.clearDataListener();
-            ySerialPort.addDataListener(new M1ReadDataListener(1, 2, "FFFFFFFFFFFF"));
-            byte[] cmd = SerialM1.getComplete(SerialM1.getCommandSearch());
-            binding.tvResult.setText("开始寻卡\n发送串口命令:" + "\n发送串口命令:" + YConvert.bytesToHexString(cmd));
-            ySerialPort.send(cmd);
-        } catch (IOException e) {
-            Log.e("异常", "串口异常", e);
-        }
+        ySerialPort.clearDataListener();
+        ySerialPort.addDataListener(new M1ReadDataListener(1, 2, "FFFFFFFFFFFF"));
+        byte[] cmd = SerialM1.getComplete(SerialM1.getCommandSearch());
+        binding.tvResult.setText("开始寻卡\n发送串口命令:" + "\n发送串口命令:" + YConvert.bytesToHexString(cmd));
+        ySerialPort.send(cmd);
     }
 
     /**
