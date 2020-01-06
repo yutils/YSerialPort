@@ -47,9 +47,9 @@ import java.util.List;
  * 返回数据：55AAFF 0002 FF FD
  */
 public class SerialM1 {
-    public static final String M1_DEVICE = "/dev/ttyS4";
-    public static final String M1_RATE = "115200";
-    private static int readType = 0;//读取类型
+//    public static final String M1_DEVICE = "/dev/ttyS4";
+//    public static final String M1_RATE = "115200";
+//    private static int readType = 0;//读取类型
 
     /**
      * 头部
