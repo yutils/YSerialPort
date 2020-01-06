@@ -19,11 +19,10 @@ allprojects {
 }
 ```
 
-2. 子项目build.gradle添加依赖   版本号：[![](https://jitpack.io/v/yu1441/YSerialPort.svg)](https://jitpack.io/#yu1441/YSerialPort)
-
+2. 子项目build.gradle添加依赖   版本号：[![](https://jitpack.io/v/yutils/YSerialPort.svg)](https://jitpack.io/#yutils/YSerialPort)
 ```
 dependencies {
-       implementation 'com.github.yu1441:YSerialPort:2.*.*'
+       implementation 'com.github.yutils:YSerialPort:2.*.*'
 }
 ```
 
