@@ -46,6 +46,7 @@ public class ZM703CardCPUActivity extends BaseActivity<ActivityZm703CpuBinding> 
         byte[] cmd = SerialCpu.getComplete(SerialCpu.getCommandSearch());
         Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
         binding.tvResult.setText("开始寻卡\n发送串口命令:" + YConvert.bytesToHexString(cmd));
+        ySerialPort.setLengthAndTimeout(7, 10);
         ySerialPort.send(cmd);
     }
 
@@ -68,8 +69,8 @@ public class ZM703CardCPUActivity extends BaseActivity<ActivityZm703CpuBinding> 
             }
             binding.tvResult.setText(binding.tvResult.getText() + "\nvalue:" + zm703.getDataHexString());
             step++;
-            //判断是否是自动寻卡成功，寻卡成功数据区长度为7
-            if (step == 1 && zm703.getDataSize() != 7) {
+            //判断是否是自动寻卡成功，寻卡成功数据区长度为7，总长度14，启动自动寻卡数据区长度为0，总长度为7。所以，当数据区长度为7，或者，长度为0但是总长度为14+7
+            if (step == 1 && !(zm703.getDataSize() == 7 || (zm703.getDataSize() == 0 && zm703.getSize() == 21))) {
                 step = 0;
             }
             if (step == 1) {
@@ -112,11 +113,11 @@ public class ZM703CardCPUActivity extends BaseActivity<ActivityZm703CpuBinding> 
         }
     }
 
-
     protected void step1() {
         byte[] cmd = SerialCpu.getComplete(SerialCpu.getCpuInto());
         Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
         binding.tvResult.setText(binding.tvResult.getText() + "\nCPU转入\n发送串口命令:" + YConvert.bytesToHexString(cmd));
+        ySerialPort.setLengthAndTimeout(17 + 7, 10);
         ySerialPort.send(cmd);
     }
 
@@ -124,6 +125,7 @@ public class ZM703CardCPUActivity extends BaseActivity<ActivityZm703CpuBinding> 
         byte[] cmd = SerialCpu.getComplete(SerialCpu.getCos(SerialCpu.cosSelectDf()));
         Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
         binding.tvResult.setText(binding.tvResult.getText() + "\n选择DF\n发送串口命令:" + YConvert.bytesToHexString(cmd));
+        ySerialPort.setLengthAndTimeout(20 + 7, 10);
         ySerialPort.send(cmd);
     }
 
@@ -131,6 +133,7 @@ public class ZM703CardCPUActivity extends BaseActivity<ActivityZm703CpuBinding> 
         byte[] cmd = SerialCpu.getComplete(SerialCpu.getAuthentication());
         Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
         binding.tvResult.setText(binding.tvResult.getText() + "\n复合认证\n发送串口命令:" + YConvert.bytesToHexString(cmd));
+        ySerialPort.setLengthAndTimeout(2 + 7, 10);
         ySerialPort.send(cmd);
     }
 
@@ -138,6 +141,7 @@ public class ZM703CardCPUActivity extends BaseActivity<ActivityZm703CpuBinding> 
         byte[] cmd = SerialCpu.getComplete(SerialCpu.getCos(SerialCpu.cosSelectFile()));
         Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
         binding.tvResult.setText(binding.tvResult.getText() + "\n选择文件\n发送串口命令:" + YConvert.bytesToHexString(cmd));
+        ySerialPort.setLengthAndTimeout(2 + 7, 10);
         ySerialPort.send(cmd);
     }
 
@@ -146,6 +150,7 @@ public class ZM703CardCPUActivity extends BaseActivity<ActivityZm703CpuBinding> 
         byte[] cmd = SerialCpu.getComplete(SerialCpu.readFile16k("0000", "0002"));
         Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
         binding.tvResult.setText(binding.tvResult.getText() + "\n读文件\n发送串口命令:" + YConvert.bytesToHexString(cmd));
+        ySerialPort.setLengthAndTimeout(2 + 7, 10);
         ySerialPort.send(cmd);
     }
 
@@ -153,6 +158,7 @@ public class ZM703CardCPUActivity extends BaseActivity<ActivityZm703CpuBinding> 
         int startIndex = 11 + 2;//开始位置2位长度位+11个基本属性位
         int length = packetsLength * 11;//长度位=烟包*11
         byte[] cmd = SerialCpu.getComplete(SerialCpu.readFile16k(YConvert.bytesToHexString(YConvertBytes.intTo2Bytes(startIndex)), YConvert.bytesToHexString(YConvertBytes.intTo2Bytes(length))));
+        ySerialPort.setLengthAndTimeout(length, length / 9);
         Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
         binding.tvResult.setText(binding.tvResult.getText() + "\n读文件\n发送串口命令:" + YConvert.bytesToHexString(cmd));
         ySerialPort.send(cmd);

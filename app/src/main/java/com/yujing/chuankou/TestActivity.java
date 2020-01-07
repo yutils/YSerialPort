@@ -70,13 +70,9 @@ public class TestActivity extends BaseActivity<ActivityTestBinding> {
             show("未输入内容！");
             return;
         }
-        try {
-            ySerialPort.send(YConvert.hexStringToByte(str));
-            //保存数据
-            YSharedPreferencesUtils.write(getApplicationContext(), SEND_HEX, str);
-        } catch (Exception e) {
-            YToast.show(getApplicationContext(), "串口异常");
-        }
+        ySerialPort.send(YConvert.hexStringToByte(str));
+        //保存数据
+        YSharedPreferencesUtils.write(getApplicationContext(), SEND_HEX, str);
     }
 
     //回调监听
@@ -95,12 +91,6 @@ public class TestActivity extends BaseActivity<ActivityTestBinding> {
         ySerialPort.clearDataListener();
         ySerialPort.addDataListener(dataListener);
         ySerialPort.start();
-        try {
-            int baudRate = Integer.parseInt(ySerialPort.getBaudRate());
-            ySerialPort.setPackageTime(Math.round((4f / (baudRate / 115200f)) + 0.4999f));//向上取整
-        } catch (Exception e) {
-            ySerialPort.setPackageTime(40);
-        }
         binding.button.setOnClickListener(v -> sendString());
         binding.btHex.setOnClickListener(v -> sendHexString());
         binding.buttonTest1.setOnClickListener(v -> printDJ());
@@ -145,14 +135,13 @@ public class TestActivity extends BaseActivity<ActivityTestBinding> {
                 "TEXT 200,1116,\"FONT001\",0,2,2,\"打印次数：1\"\n" +
                 "\n" +
                 "PRINT 1\n\n";
+        ySerialPort.clearDataListener();
+        ySerialPort.addDataListener(dataListener);
+        //打印
         try {
-            ySerialPort.clearDataListener();
-            ySerialPort.addDataListener(dataListener);
-            //打印
             ySerialPort.send(result.getBytes("GBK"));
-        } catch (Exception e) {
-            YToast.show(getApplicationContext(), "打印机异常");
-            Log.e("打印机异常", "打印机异常", e);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
     }
 
@@ -219,9 +208,6 @@ public class TestActivity extends BaseActivity<ActivityTestBinding> {
         } catch (JSONException e) {
             YToast.show(getApplicationContext(), "解析失败：" + result);
             Log.e("解析失败", result, e);
-        } catch (Exception e) {
-            YToast.show(getApplicationContext(), "打印机异常");
-            Log.e("打印机异常", "打印机异常", e);
         }
     }
 
@@ -236,14 +222,11 @@ public class TestActivity extends BaseActivity<ActivityTestBinding> {
         String personnel = "定级：余静";
         String time = simpleDateFormat.format(new Date());
         //自检
-        try {
-            ySerialPort.clearDataListener();
-            ySerialPort.addDataListener(dataListener);
-            ySerialPort.send(YConvert.hexStringToByte(DY.检查));
-        } catch (Exception e) {
-            YToast.show(getApplicationContext(), "打印机异常");
-            Log.e("打印机异常", "打印机异常", e);
-        }
+
+        ySerialPort.clearDataListener();
+        ySerialPort.addDataListener(dataListener);
+        ySerialPort.send(YConvert.hexStringToByte(DY.检查));
+
         YBytes bytes = new YBytes();
         bytes.addByte(YConvert.hexStringToByte(DY.初始化打印机))
                 .addByte((name + "\n").getBytes(Charset.forName("GB18030")))
@@ -256,12 +239,8 @@ public class TestActivity extends BaseActivity<ActivityTestBinding> {
                 .addByte(("\n\n" + personnel + "\n").getBytes(Charset.forName("GB18030")))
                 .addByte((time + "\n\n\n\n\n\n").getBytes(Charset.forName("GB18030")))
                 .addByte(YConvert.hexStringToByte(DY.半切));
-        try {
-            ySerialPort.send(bytes.getBytes());
-        } catch (Exception e) {
-            YToast.show(getApplicationContext(), "打印机异常");
-            Log.e("打印机异常", "打印机异常", e);
-        }
+
+        ySerialPort.send(bytes.getBytes());
     }
 
 
@@ -323,14 +302,11 @@ public class TestActivity extends BaseActivity<ActivityTestBinding> {
          * 读M1扇区指令
          */
         public void readM1() {
-            try {
-                //连续读取结果会自动跳过密码块，一次最多读4个扇区，也就是0-15扇区，应该返回12组数据
-                byte[] cmd = SerialM1.getComplete(SerialM1.getCommandMultipleBlock(blockStart, blockEnd, keyType, YConvert.hexStringToByte(password)));
-                Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
-                binding.tvResult.setText(binding.tvResult.getText() + "\n发送串口命令:" + YConvert.bytesToHexString(cmd));
-                ySerialPort.send(cmd);
-            } catch (Exception e) {
-            }
+            //连续读取结果会自动跳过密码块，一次最多读4个扇区，也就是0-15扇区，应该返回12组数据
+            byte[] cmd = SerialM1.getComplete(SerialM1.getCommandMultipleBlock(blockStart, blockEnd, keyType, YConvert.hexStringToByte(password)));
+            Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
+            binding.tvResult.setText(binding.tvResult.getText() + "\n发送串口命令:" + YConvert.bytesToHexString(cmd));
+            ySerialPort.send(cmd);
         }
 
         /**

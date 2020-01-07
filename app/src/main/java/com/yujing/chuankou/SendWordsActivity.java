@@ -49,13 +49,9 @@ public class SendWordsActivity extends BaseActivity<SendingWordsBinding> {
             show("未输入内容！");
             return;
         }
-        try {
             ySerialPort.send(YConvert.hexStringToByte(str));
             //保存数据
             YSharedPreferencesUtils.write(getApplicationContext(), SEND_HEX, str);
-        } catch (Exception e) {
-            YToast.show(getApplicationContext(), "串口异常");
-        }
     }
 
     YSerialPort.DataListener dataListener = (hexString, bytes, size) -> {
@@ -73,12 +69,6 @@ public class SendWordsActivity extends BaseActivity<SendingWordsBinding> {
         ySerialPort.clearDataListener();
         ySerialPort.addDataListener(dataListener);
         ySerialPort.start();
-        try {
-            int baudRate = Integer.parseInt(ySerialPort.getBaudRate());
-            ySerialPort.setPackageTime(Math.round((4f / (baudRate / 115200f)) + 0.4999f));//向上取整
-        } catch (Exception e) {
-            ySerialPort.setPackageTime(40);
-        }
         binding.button.setOnClickListener(v -> sendString());
         binding.btHex.setOnClickListener(v -> sendHexString());
         binding.tvTips.setText("注意：当前串口：" + YSerialPort.readDevice(this) + "，当前波特率：" + YSerialPort.readBaudRate(this));

@@ -145,17 +145,29 @@ public class YReadInputStream {
                 try {
                     int i = 0;//第几次组包
                     int available = mInputStream.available();// 可读取多少字节内容
-                    while (!Thread.currentThread().isInterrupted() && available > 0) {
+                    int packageTime = 0;//每次组包时间间隔
+                    while (!Thread.currentThread().isInterrupted()) {
                         i++;
                         //再读取一次
                         byte[] newBytes = new byte[1024];
                         int newSize = mInputStream.read(newBytes, 0, available);
                         if (newSize > 0) {
                             bytes.addByte(newBytes, newSize);
-                            log("第" + i + "次组包后长度：" + bytes.getBytes().length + "  ，已耗时：" + (System.currentTimeMillis() - startTime));
+                            log("第" + i + "次组包后长度：" + bytes.getBytes().length + "，\t组包间隔：" + (packageTime) + "，\t最大间隔：" + (groupPackageTime) + "ms，\t已耗时：" + (System.currentTimeMillis() - startTime));
                         }
-                        Thread.sleep(groupPackageTime);//每次组包间隔，毫秒
+                        Thread.sleep(1);//每次组包间隔，毫秒
                         available = mInputStream.available();// 可读取多少字节内容
+                        packageTime = 1;//组包时间间隔1ms
+                        //如果读取长度为0，那么休息1毫秒继续读取，如果在groupPackageTime时间内都没有数据，那么就退出循环
+                        if (available == 0) {
+                            for (int j = 0; j <= groupPackageTime; j++) {
+                                Thread.sleep(1);//每次组包间隔，毫秒
+                                packageTime++;//组包时间间隔+1ms
+                                available = mInputStream.available();// 可读取多少字节内容
+                                if (available != 0) break;//如果读取到数据立即关闭循环
+                            }
+                        }
+                        if (packageTime > groupPackageTime) break;//如果组包countLength0次后，大于设置的时间就退出读取
                     }
                 } catch (InterruptedException e) {
                     interrupt();
@@ -228,7 +240,7 @@ public class YReadInputStream {
                         int newSize = mInputStream.read(newBytes, 0, available);
                         if (newSize > 0) {
                             bytes.addByte(newBytes, newSize);
-                            log("第" + i + "次组包后长度：" + bytes.getBytes().length + " ，目标长度：" + readLength + " ，已耗时：" + (System.currentTimeMillis() - startTime) + "ms,超时时间：" + readTimeOut + "ms");
+                            log("第" + i + "次组包后长度：" + bytes.getBytes().length + "，\t目标长度：" + readLength + "，\t已耗时：" + (System.currentTimeMillis() - startTime) + "ms，\t超时时间：" + readTimeOut + "ms");
                         }
                     }
                     timeOut = false;
