@@ -154,6 +154,7 @@ public class YSerialPort {
             });
             readInputStream.setLengthAndTimeout(readLength, readTimeout);
             if (packageTime == -1) setPackageTimeDefault();//设置默认组包时间
+            readInputStream.setAutoPackage(autoPackage);
             readInputStream.setPackageTime(packageTime);
             readInputStream.start();
         } catch (SecurityException e) {
