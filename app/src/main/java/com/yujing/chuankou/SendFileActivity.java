@@ -36,8 +36,8 @@ public class SendFileActivity extends BaseActivity<ActivitySendFileBinding> {
         binding.btSend.setOnClickListener(v -> sendFile());
         //发送文件Xmodem
         binding.btSendXmodem.setOnClickListener(v -> sendFileXmoden());
-        ySerialPort = new YSerialPort(this);
         //初始化
+        ySerialPort = new YSerialPort(this);
         ySerialPort.addDataListener((hexString, bytes, size) -> runOnUiThread(() -> binding.tvResult.setText(hexString)));
         ySerialPort.start();
         binding.tvTips.setText(String.format("注意：当前串口：%s，当前波特率：%s。", ySerialPort.getDevice(), ySerialPort.getBaudRate()));
