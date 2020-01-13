@@ -28,6 +28,7 @@ public class MainMenu extends BaseActivity<MainBinding> {
         binding.btZM703M1.setOnClickListener(v -> startActivity(ZM703CardM1Activity.class));
         binding.btZM703Cpu.setOnClickListener(v -> startActivity(ZM703CardCPUActivity.class));
         binding.ButtonSendWords.setOnClickListener(v -> startActivity(SendWordsActivity.class));
+        binding.ButtonSendFile.setOnClickListener(v -> startActivity(SendFileActivity.class));
         binding.ButtonAbout.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainMenu.this);
             builder.setTitle("关于——余静的串口测试工具");

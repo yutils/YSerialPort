@@ -1,6 +1,192 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">@color/title</color>
+    <color name="colorPrimaryDark">@color/title</color>
+    <color name="colorAccent">@color/title</color>
+    <!-- 背景 -->
+    <color name="background">#F0F0F0</color>
+    <!-- 标题颜色 -->
+    <color name="title">@color/blue_light_E</color>
+    <!-- 分割线条颜色 -->
+    <color name="division1">#004C66</color>
+    <color name="division2">#003344</color>
+    <color name="division3">#6000b2EE</color>
+    <color name="division4">#2000b2EE</color>
+    <color name="division5">#1000b2EE</color>
+    <!-- 文字颜色 -->
+    <color name="text1">@color/blue_light_2</color>
+    <color name="text2">@color/blue_light_4</color>
+    <color name="text3">@color/blue_light_6</color>
+    <color name="text4">@color/blue_light_8</color>
+    <color name="text5">@color/blue_light_A</color>
+    <!-- QRCode scanner color begin -->
+    <color name="viewfinder_mask">#60000000</color>
+    <color name="result_view">#B0000000</color>
+    <color name="viewfinder_frame">#90FFFFFF</color>
+    <color name="result_point_color">#C0FFFF00</color>
+    <color name="laser_color">#0F0</color>
+    <color name="corner_color">#00FF00</color>
+    <!-- QRCode scanner color end -->
+    <!-- 下面颜色为基色 -->
+    <!-- 红色 -->
+    <color name="red_F">#FF0000</color>
+    <color name="red_E">#EE0000</color>
+    <color name="red_C">#CC0000</color>
+    <color name="red_A">#AA0000</color>
+    <color name="red_8">#880000</color>
+    <color name="red_6">#660000</color>
+    <color name="red_4">#440000</color>
+    <color name="red_2">#220000</color>
+    <!-- 绿色 -->
+    <color name="green_F">#00FF00</color>
+    <color name="green_E">#00EE00</color>
+    <color name="green_C">#00CC00</color>
+    <color name="green_A">#00AA00</color>
+    <color name="green_8">#008800</color>
+    <color name="green_6">#006600</color>
+    <color name="green_4">#004400</color>
+    <color name="green_2">#002200</color>
+    <!-- 蓝色 -->
+    <color name="blue_F">#0000FF</color>
+    <color name="blue_E">#0000EE</color>
+    <color name="blue_C">#0000CC</color>
+    <color name="blue_A">#0000AA</color>
+    <color name="blue_8">#000088</color>
+    <color name="blue_6">#000066</color>
+    <color name="blue_4">#000044</color>
+    <color name="blue_2">#000022</color>
+    <!-- 黄色 -->
+    <color name="yellow_F">#FFFF00</color>
+    <color name="yellow_E">#EEEE00</color>
+    <color name="yellow_C">#CCCC00</color>
+    <color name="yellow_A">#AAAA00</color>
+    <color name="yellow_8">#888800</color>
+    <color name="yellow_6">#666600</color>
+    <color name="yellow_4">#444400</color>
+    <color name="yellow_2">#222200</color>
+    <!-- 青色 -->
+    <color name="cyan_F">#00FFFF</color>
+    <color name="cyan_E">#00EEEE</color>
+    <color name="cyan_C">#00CCCC</color>
+    <color name="cyan_A">#00AAAA</color>
+    <color name="cyan_8">#008888</color>
+    <color name="cyan_6">#006666</color>
+    <color name="cyan_4">#004444</color>
+    <color name="cyan_2">#002222</color>
+    <!-- 紫色 -->
+    <color name="purple_F">#FF00FF</color>
+    <color name="purple_E">#EE00EE</color>
+    <color name="purple_C">#CC00CC</color>
+    <color name="purple_A">#AA00AA</color>
+    <color name="purple_8">#880088</color>
+    <color name="purple_6">#660066</color>
+    <color name="purple_4">#440044</color>
+    <color name="purple_2">#220022</color>
+    <!-- 天蓝色 -->
+    <color name="blue_Sky_F">#88bfFF</color>
+    <color name="blue_Sky_E">#77b2EE</color>
+    <color name="blue_Sky_C">#6699CC</color>
+    <color name="blue_Sky_A">#557FAA</color>
+    <color name="blue_Sky_8">#446688</color>
+    <color name="blue_Sky_6">#334C66</color>
+    <color name="blue_Sky_4">#223344</color>
+    <color name="blue_Sky_2">#111922</color>
+    <!-- 淡蓝色 -->
+    <color name="blue_light_F">#00bfFF</color>
+    <color name="blue_light_E">#00b2EE</color>
+    <color name="blue_light_C">#0099CC</color>
+    <color name="blue_light_A">#007FAA</color>
+    <color name="blue_light_8">#006688</color>
+    <color name="blue_light_6">#004C66</color>
+    <color name="blue_light_4">#003344</color>
+    <color name="blue_light_2">#001922</color>
+    <!-- 草绿色 -->
+    <color name="green_grass_F">#00FFBF</color>
+    <color name="green_grass_E">#00EEB2</color>
+    <color name="green_grass_C">#00CC99</color>
+    <color name="green_grass_A">#00AA7F</color>
+    <color name="green_grass_8">#008866</color>
+    <color name="green_grass_6">#00664C</color>
+    <color name="green_grass_4">#004433</color>
+    <color name="green_grass_2">#002219</color>
+    <!-- 透明白色 -->
+    <color name="trans_White_E">#efff</color>
+    <color name="trans_White_C">#cfff</color>
+    <color name="trans_White_A">#afff</color>
+    <color name="trans_White_8">#8fff</color>
+    <color name="trans_White_6">#6fff</color>
+    <color name="trans_White_4">#4fff</color>
+    <color name="trans_White_2">#2fff</color>
+    <color name="trans_White_1">#1fff</color>
+    <!-- 透明黑色 -->
+    <color name="trans_Black_E">#e000</color>
+    <color name="trans_Black_C">#c000</color>
+    <color name="trans_Black_A">#a000</color>
+    <color name="trans_Black_8">#8000</color>
+    <color name="trans_Black_6">#6000</color>
+    <color name="trans_Black_4">#4000</color>
+    <color name="trans_Black_2">#2000</color>
+    <color name="trans_Black_1">#1000</color>
+    <!-- 灰色 -->
+    <color name="gray_E">#eeeeee</color>
+    <color name="gray_C">#cccccc</color>
+    <color name="gray_A">#aaaaaa</color>
+    <color name="gray_8">#888888</color>
+    <color name="gray_6">#666666</color>
+    <color name="gray_4">#444444</color>
+    <color name="gray_2">#222222</color>
+    <!-- 白色 -->
+    <color name="white">#FFFFFF</color>
+    <!-- 黑色 -->
+    <color name="black">#000000</color>
+    <!-- 透明 -->
+    <color name="trans">#0000</color>
+    <!-- 淡蓝 -->
+    <color name="blue2">#5EB4FF</color>
+    <!-- 天依蓝 -->
+    <color name="blue3">#66ccff</color>
+    <!-- 蓝色 -->
+    <color name="blue">#1B82d2</color>
+    <!-- 蓝色字体 -->
+    <color name="bluefont2">#003F7A</color>
+    <!-- 蓝色字体 -->
+    <color name="bluefont">#000F4A</color>
+    <!-- 初音绿 -->
+    <color name="chuyinlv">#39C5BB</color>
+    <!-- Luka粉 -->
+    <color name="lukafen">#FFBFCB</color>
+    <!-- 红色 3 -->
+    <color name="red3">#C03050</color>
+    <!-- 红色 4 -->
+    <color name="red4">#B5367F</color>
+    <!-- 红色 5 -->
+    <color name="red5">#F06060</color>
+
+    <!-- item按下颜色 -->
+    <color name="item_click">#605EB4FF</color>
+    <!-- 序号 -->
+    <color name="row_number">#E4595F</color>
+    <!-- 半透明 蓝色 -->
+    <color name="translucent_blue">#400078d7</color>
+    <!-- list背景颜色 -->
+    <color name="list_background">@color/translucent_blue</color>
+    <!-- row_number_text_blue -->
+    <color name="row_number_text_blue">#0B36C2</color>
+
+    <!-- item按下颜色 -->
+    <color name="item_click_up">#305EB4FF</color>
+
+    <!-- list淡淡的蓝色 -->
+    <color name="pale_blue">#100078d7</color>
+
+    <!-- list淡淡的蓝色 -->
+    <color name="keyboard_start">#B01A81DE</color>
+    <!-- list淡淡的蓝色 -->
+    <color name="keyboard_center">#F01A81DE</color>
+    <!-- list淡淡的蓝色 -->
+    <color name="keyboard_end">#A01A81DE</color>
+    <!-- 红色 4 -->
+    <color name="red_text">#F06060</color>
+    <!-- 白中带绿 -->
+    <color name="white_green">#C8FFC8</color>
 </resources>

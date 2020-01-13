@@ -16,44 +16,89 @@
                 android:id="@+id/ButtonSetup"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="设置" />
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/bt_click"
+                android:text="设置"
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/ButtonSendWords"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="发送" />
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/bt_click"
+                android:text="发送"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/ButtonSendFile"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/bt_click"
+                android:text="发送文件"
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/bt_test"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="各种硬件测试" />
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/bt_click"
+                android:text="各种硬件测试"
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/bt_ZM703_m1"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="ZM703读卡器——M1" />
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/bt_click"
+                android:text="ZM703读卡器——M1"
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/bt_ZM703_cpu"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="ZM703读卡器——CPU" />
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/bt_click"
+                android:text="ZM703读卡器——CPU"
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/ButtonAbout"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="关于" />
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/bt_click"
+                android:text="关于"
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/ButtonQuit"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="退出" />
-
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/bt_click"
+                android:text="退出"
+                android:textColor="@color/white" />
         </LinearLayout>
     </ScrollView>
 </layout>

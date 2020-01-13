@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 按下颜色 -->
+    <item android:state_pressed="true">
+        <shape>
+            <!--   <solid android:color="#30001050" />-->
+            <stroke android:width="1dp" android:color="@color/green_E" />
+            <gradient android:angle="90" android:centerColor="@color/trans" android:endColor="@color/trans" android:startColor="@color/trans" android:type="linear" />
+            <corners android:bottomLeftRadius="5dp" android:bottomRightRadius="5dp" android:topLeftRadius="5dp" android:topRightRadius="5dp" />
+        </shape>
+    </item>
+    <!-- 抬起颜色 -->
+    <item android:state_pressed="false">
+        <shape>
+            <!--<solid android:color="@color/trans" />-->
+            <stroke android:width="1dp" android:color="@color/white" />
+            <gradient android:angle="135" android:centerColor="@color/keyboard_center" android:endColor="@color/keyboard_end" android:startColor="@color/keyboard_start" android:type="linear" />
+            <corners android:bottomLeftRadius="5dp" android:bottomRightRadius="5dp" android:topLeftRadius="5dp" android:topRightRadius="5dp" />
+        </shape>
+    </item>
+</selector>

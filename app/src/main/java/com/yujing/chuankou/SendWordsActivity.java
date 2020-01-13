@@ -49,9 +49,9 @@ public class SendWordsActivity extends BaseActivity<SendingWordsBinding> {
             show("未输入内容！");
             return;
         }
-            ySerialPort.send(YConvert.hexStringToByte(str));
-            //保存数据
-            YSharedPreferencesUtils.write(getApplicationContext(), SEND_HEX, str);
+        ySerialPort.send(YConvert.hexStringToByte(str));
+        //保存数据
+        YSharedPreferencesUtils.write(getApplicationContext(), SEND_HEX, str);
     }
 
     YSerialPort.DataListener dataListener = (hexString, bytes, size) -> {

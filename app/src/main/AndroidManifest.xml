@@ -34,6 +34,7 @@
         </activity>
         <activity android:name=".SendWordsActivity" />
         <activity android:name=".SetActivity" />
+        <activity android:name=".SendFileActivity" />
         <activity
             android:name=".TestActivity"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
@@ -45,6 +46,7 @@
             android:name=".zm703.ZM703CardCPUActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+
     </application>
 
 </manifest>

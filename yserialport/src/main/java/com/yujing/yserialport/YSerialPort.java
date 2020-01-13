@@ -28,8 +28,8 @@ import java.util.Locale;
 @SuppressWarnings("unused")
 public class YSerialPort {
     private static String TAG = "YSerialPort";
-    private OutputStream mOutputStream;
-    private InputStream mInputStream;
+    private OutputStream outputStream;
+    private InputStream inputStream;
     private final Handler handler = new Handler();
     private Activity activity;
     private String device;//串口
@@ -44,7 +44,7 @@ public class YSerialPort {
     private int readLength = -1;//读取长度
     private YReadInputStream readInputStream;
     //串口类
-    private SerialPort mSerialPort;
+    private SerialPort serialPort;
     //串口查找列表类
     private static final SerialPortFinder mSerialPortFinder = new SerialPortFinder();
 
@@ -132,26 +132,19 @@ public class YSerialPort {
         if (readInputStream != null) {
             readInputStream.stop();
         }
-        if (mSerialPort != null) {
-            mSerialPort.close();
-            mSerialPort = null;
+        if (serialPort != null) {
+            serialPort.close();
+            serialPort = null;
         }
         try {
-            mOutputStream = getSerialPort().getOutputStream();
-            mInputStream = getSerialPort().getInputStream();
-            readInputStream = new YReadInputStream(mInputStream, new YListener<byte[]>() {
-                @Override
-                public void value(final byte[] bytes) {
-                    activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            for (DataListener item : dataListeners) {
-                                item.onDataReceived(bytesToHexString(bytes), bytes, bytes.length);
-                            }
-                        }
-                    });
+            serialPort = buildSerialPort();
+            outputStream = serialPort.getOutputStream();
+            inputStream = serialPort.getInputStream();
+            readInputStream = new YReadInputStream(inputStream, bytes -> activity.runOnUiThread(() -> {
+                for (DataListener item : dataListeners) {
+                    item.onDataReceived(bytesToHexString(bytes), bytes, bytes.length);
                 }
-            });
+            }));
             readInputStream.setLengthAndTimeout(readLength, readTimeout);
             if (packageTime == -1) setPackageTimeDefault();//设置默认组包时间
             readInputStream.setAutoPackage(autoPackage);
@@ -167,26 +160,22 @@ public class YSerialPort {
     }
 
     /**
-     * 获取SerialPort类
+     * 构建SerialPort类
      *
      * @return SerialPort
      * @throws SecurityException         串行端口权限
      * @throws IOException               IO异常
      * @throws InvalidParameterException 未配置串口
      */
-    private SerialPort getSerialPort() throws SecurityException, IOException, InvalidParameterException {
-        if (mSerialPort == null) {
-            if (device == null || baudRate == null) {
-                if (readDevice(activity) == null || readBaudRate(activity) == null || (readDevice(activity).length() == 0) || (readBaudRate(activity).length() == 0)) {
-                    throw new InvalidParameterException();
-                }
-                device = readDevice(activity);
-                baudRate = readBaudRate(activity);
+    private SerialPort buildSerialPort() throws SecurityException, IOException, InvalidParameterException {
+        if (device == null || baudRate == null) {
+            if (readDevice(activity) == null || readBaudRate(activity) == null || (readDevice(activity).length() == 0) || (readBaudRate(activity).length() == 0)) {
+                throw new InvalidParameterException();
             }
-            /* 打开串口 */
-            mSerialPort = SerialPort.newBuilder(new File(device), Integer.parseInt(baudRate)).build();
+            device = readDevice(activity);
+            baudRate = readBaudRate(activity);
         }
-        return mSerialPort;
+        return SerialPort.newBuilder(new File(device), Integer.parseInt(baudRate)).build();
     }
 
     /**
@@ -205,13 +194,60 @@ public class YSerialPort {
      * @param listener 状态，成功回调true，失败false
      */
     public void send(byte[] bytes, YListener<Boolean> listener) {
+        send(bytes, listener,null);
+    }
+
+    /**
+     * 发送
+     *
+     * @param bytes            数据
+     * @param listener         状态，成功回调true，失败false
+     * @param progressListener 进度监听，返回已经发送长度
+     */
+    public void send(final byte[] bytes, final YListener<Boolean> listener, final YListener<Integer> progressListener) {
         try {
-            if (mSerialPort != null) mOutputStream = mSerialPort.getOutputStream();
-            mOutputStream.write(bytes);
-            if (listener != null) listener.value(true);
+            if (serialPort != null) outputStream = serialPort.getOutputStream();
+            final int sendLength = 1024;//每次写入长度
+            if (bytes.length > sendLength) {
+                new Thread(() -> {
+                    try {
+                        int i = 0;//第几次写入
+                        int count = 0;//统计已经发送长度
+                        while (true) {
+                            //剩余长度
+                            int sy = bytes.length - (i * sendLength);
+                            //如果剩余长度小于等于0，说明发送完成
+                            if (sy <= 0) break;
+                            //如果剩余长度大于每次写入长度，就写入对应长度，如果不大于就写入剩余长度
+                            byte[] current = new byte[(sy > sendLength) ? sendLength : sy];
+                            //数组copy
+                            System.arraycopy(bytes, i * sendLength, current, 0, current.length);
+                            //写入
+                            outputStream.write(current);
+                            //统计已经发送长度
+                            count += current.length;
+                            //回调进度
+                            if (progressListener != null) {
+                                final int finalCount = count;
+                                activity.runOnUiThread(() -> progressListener.value(finalCount));
+                            }
+                            i++;
+                        }
+                    } catch (Exception e) {
+                        Log.e(TAG, "发送失败", e);
+                        if (listener != null) activity.runOnUiThread(() -> listener.value(false));
+                    }
+                }).start();
+            } else {
+                outputStream.write(bytes);
+                if (progressListener != null) {
+                    activity.runOnUiThread(() -> progressListener.value(bytes.length));
+                }
+            }
+            if (listener != null) activity.runOnUiThread(() -> listener.value(true));
         } catch (Exception e) {
             Log.e(TAG, "发送失败", e);
-            if (listener != null) listener.value(false);
+            if (listener != null) activity.runOnUiThread(() -> listener.value(false));
         }
     }
 
@@ -365,6 +401,33 @@ public class YSerialPort {
         }
     }
 
+    /**
+     * 获取SerialPort对象
+     *
+     * @return SerialPort
+     */
+    public SerialPort getSerialPort() {
+        return serialPort;
+    }
+
+    /**
+     * 获取输出流
+     *
+     * @return OutputStream
+     */
+    public OutputStream getOutputStream() {
+        return serialPort.getOutputStream();
+    }
+
+    /**
+     * 获取输入流
+     *
+     * @return InputStream
+     */
+    public InputStream getInputStream() {
+        return serialPort.getInputStream();
+    }
+
     private void setPackageTimeDefault() {
         if (baudRate != null) {
             int intBaudRate = Integer.parseInt(baudRate);
@@ -454,20 +517,20 @@ public class YSerialPort {
             if (readInputStream != null) {
                 readInputStream.stop();
             }
-            if (mInputStream != null) {
-                mInputStream.close();
-                mOutputStream = null;
+            if (inputStream != null) {
+                inputStream.close();
+                outputStream = null;
             }
-            if (mOutputStream != null) {
-                mOutputStream.close();
-                mOutputStream = null;
+            if (outputStream != null) {
+                outputStream.close();
+                outputStream = null;
             }
         } catch (Exception e) {
             Log.e(TAG, "onDestroy异常", e);
         } finally {
-            if (mSerialPort != null) {
-                mSerialPort.close();
-                mSerialPort = null;
+            if (serialPort != null) {
+                serialPort.close();
+                serialPort = null;
             }
         }
         clearDataListener();
