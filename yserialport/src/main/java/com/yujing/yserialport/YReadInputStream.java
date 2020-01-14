@@ -167,7 +167,10 @@ public class YReadInputStream {
                                 if (available != 0) break;//如果读取到数据立即关闭循环
                             }
                         }
-                        if (packageTime > groupPackageTime) break;//如果组包countLength0次后，大于设置的时间就退出读取
+                        //如果组包countLength0次后，大于设置的时间就退出读取
+                        if (packageTime > groupPackageTime) {
+                            break;
+                        }
                     }
                 } catch (InterruptedException e) {
                     interrupt();

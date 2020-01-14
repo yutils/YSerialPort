@@ -1,26 +1,20 @@
 package com.yujing.chuankou;
 
 
-import android.content.ContentUris;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Environment;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
+import android.serialport.SerialPort;
 
 import com.yujing.chuankou.databinding.ActivitySendFileBinding;
 import com.yujing.chuankou.xmodem.Xmodem;
 import com.yujing.utils.YConvert;
 import com.yujing.utils.YShow;
+import com.yujing.utils.YUri;
 import com.yujing.yserialport.YSerialPort;
 
 import java.io.File;
 
 public class SendFileActivity extends BaseActivity<ActivitySendFileBinding> {
-    YSerialPort ySerialPort;
     File sendFile = null;//要发送的文件
 
     @Override
@@ -36,11 +30,7 @@ public class SendFileActivity extends BaseActivity<ActivitySendFileBinding> {
         binding.btSend.setOnClickListener(v -> sendFile());
         //发送文件Xmodem
         binding.btSendXmodem.setOnClickListener(v -> sendFileXmoden());
-        //初始化
-        ySerialPort = new YSerialPort(this);
-        ySerialPort.addDataListener((hexString, bytes, size) -> runOnUiThread(() -> binding.tvResult.setText(hexString)));
-        ySerialPort.start();
-        binding.tvTips.setText(String.format("注意：当前串口：%s，当前波特率：%s。", ySerialPort.getDevice(), ySerialPort.getBaudRate()));
+        binding.tvTips.setText(String.format("注意：当前串口：%s，当前波特率：%s。", YSerialPort.readDevice(this), YSerialPort.readBaudRate(this)));
     }
 
     //直接发送文件到串口
@@ -51,6 +41,10 @@ public class SendFileActivity extends BaseActivity<ActivitySendFileBinding> {
         }
         byte[] bytes = YConvert.fileToByte(sendFile);
         YShow.show(this, "发送中...", "进度：" + 0 + "/" + bytes.length);
+        //初始化
+        YSerialPort ySerialPort = new YSerialPort(this);
+        ySerialPort.addDataListener((hexString, bytes2, size) -> runOnUiThread(() -> binding.tvResult.setText(hexString)));
+        ySerialPort.start();
         ySerialPort.send(bytes,
                 aBoolean -> show("发送：" + (aBoolean ? "成功" : "失败")),
                 integer -> {
@@ -58,6 +52,7 @@ public class SendFileActivity extends BaseActivity<ActivitySendFileBinding> {
                     if (integer == bytes.length) {
                         YShow.finish();
                         show("发送完成");
+                        ySerialPort.onDestroy();
                     }
                 });
         show("正在发送请稍后...");
@@ -73,9 +68,17 @@ public class SendFileActivity extends BaseActivity<ActivitySendFileBinding> {
             show("请先选择串口和波特率");
             return;
         }
-        Xmodem xmodem = new Xmodem(ySerialPort.getInputStream(), ySerialPort.getOutputStream());
-        xmodem.send(sendFile.getPath());
-        show("正在发送请稍后，可能需要很长时间...");
+        try {
+            SerialPort serialPort = new YSerialPort(this).buildSerialPort();
+            Xmodem xmodem = new Xmodem(serialPort.getInputStream(), serialPort.getOutputStream());
+            xmodem.send(sendFile.getPath(), aBoolean -> {
+                serialPort.close();
+                runOnUiThread(() -> show("发送" + (aBoolean ? "完成" : "失败")));
+            });
+            show("正在发送请稍后，可能需要很长时间...");
+        } catch (Exception e) {
+            show("异常");
+        }
     }
 
     public void onClick() {
@@ -88,12 +91,11 @@ public class SendFileActivity extends BaseActivity<ActivitySendFileBinding> {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 Uri uri = data.getData();
                 if (uri != null) {
-                    String path = getPath(this, uri);
+                    String path = YUri.getPath(this, uri);
                     if (path != null) {
                         File file = new File(path);
                         if (file.exists()) {
@@ -108,62 +110,8 @@ public class SendFileActivity extends BaseActivity<ActivitySendFileBinding> {
         }
     }
 
-    public String getPath(final Context context, final Uri uri) {
-        final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
-        if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
-            if ("com.android.externalstorage.documents".equals(uri.getAuthority())) {
-                final String docId = DocumentsContract.getDocumentId(uri);
-                final String[] split = docId.split(":");
-                final String type = split[0];
-                if ("primary".equalsIgnoreCase(type)) {
-                    return Environment.getExternalStorageDirectory() + "/" + split[1];
-                }
-            } else if ("com.android.providers.downloads.documents".equals(uri.getAuthority())) {
-                final String id = DocumentsContract.getDocumentId(uri);
-                final Uri contentUri = ContentUris.withAppendedId(
-                        Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
-                return getDataColumn(context, contentUri, null, null);
-            } else if ("com.android.providers.media.documents".equals(uri.getAuthority())) {
-                final String docId = DocumentsContract.getDocumentId(uri);
-                final String[] split = docId.split(":");
-                final String type = split[0];
-                Uri contentUri = null;
-                if ("image".equals(type)) {
-                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-                } else if ("video".equals(type)) {
-                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-                } else if ("audio".equals(type)) {
-                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-                }
-                final String selection = "_id=?";
-                final String[] selectionArgs = new String[]{split[1]};
-                return getDataColumn(context, contentUri, selection, selectionArgs);
-            }
-        } else if ("content".equalsIgnoreCase(uri.getScheme())) {
-            return getDataColumn(context, uri, null, null);
-        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
-            return uri.getPath();
-        }
-        return null;
-    }
-
-    public String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
-        final String column = "_data";
-        final String[] projection = {column};
-        try (Cursor cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
-                null)) {
-            if (cursor != null && cursor.moveToFirst()) {
-                final int column_index = cursor.getColumnIndexOrThrow(column);
-                return cursor.getString(column_index);
-            }
-        }
-        return null;
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (ySerialPort != null)
-            ySerialPort.onDestroy();
     }
 }

@@ -167,7 +167,7 @@ public class YSerialPort {
      * @throws IOException               IO异常
      * @throws InvalidParameterException 未配置串口
      */
-    private SerialPort buildSerialPort() throws SecurityException, IOException, InvalidParameterException {
+    public SerialPort buildSerialPort() throws SecurityException, IOException, InvalidParameterException {
         if (device == null || baudRate == null) {
             if (readDevice(activity) == null || readBaudRate(activity) == null || (readDevice(activity).length() == 0) || (readBaudRate(activity).length() == 0)) {
                 throw new InvalidParameterException();
@@ -431,7 +431,7 @@ public class YSerialPort {
     private void setPackageTimeDefault() {
         if (baudRate != null) {
             int intBaudRate = Integer.parseInt(baudRate);
-            packageTime = Math.round((4f / (intBaudRate / 115200f)) + 0.4999f);//向上取整
+            packageTime = Math.round((5f / (intBaudRate / 115200f)) + 0.4999f);//向上取整
         }
     }
 
