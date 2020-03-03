@@ -1,21 +1,16 @@
 package com.yujing.chuankou;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 
+import com.yujing.utils.YPermissions;
 import com.yujing.utils.YShow;
 import com.yujing.utils.YToast;
 import com.yujing.utils.YTts;
-
-import java.util.ArrayList;
 
 /**
  * 基础activity
@@ -36,7 +31,7 @@ public abstract class BaseActivity<B extends ViewDataBinding> extends AppCompatA
             binding = DataBindingUtil.setContentView(this, contentViewId);
         }
         yTts = new YTts(this);
-        initPermission();//获取权限
+        YPermissions.requestAll(this);
         initData();
     }
 
@@ -49,32 +44,6 @@ public abstract class BaseActivity<B extends ViewDataBinding> extends AppCompatA
      * 初始化数据
      */
     protected abstract void initData();
-
-    /**
-     * 获取权限
-     */
-    private void initPermission() {
-        String[] permissions = {
-                Manifest.permission.GET_ACCOUNTS,
-                Manifest.permission.READ_CONTACTS,
-        };
-        ArrayList<String> toApplyList = new ArrayList<String>();
-        for (String perm : permissions) {
-            if (PackageManager.PERMISSION_GRANTED != ContextCompat.checkSelfPermission(this, perm)) {
-                toApplyList.add(perm); // 进入到这里代表没有权限.
-            }
-        }
-        String[] tmpList = new String[toApplyList.size()];
-        if (!toApplyList.isEmpty()) {
-            ActivityCompat.requestPermissions(this, toApplyList.toArray(tmpList), 123);
-        }
-    }
-
-    // 此处为android 6.0以上动态授权的回调，用户自行实现。
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-
-    }
 
     /**
      * 跳转

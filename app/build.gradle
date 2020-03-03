@@ -6,7 +6,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     compileSdkVersion 29
-    buildToolsVersion = '29.0.2'
+    buildToolsVersion = '29.0.3'
     defaultConfig {
         applicationId "com.yujing.chuankou"
         minSdkVersion 22
@@ -52,24 +52,17 @@ android {
     }
     //打包
     android.applicationVariants.all { variant ->
-        //获取渠道名称
-        //def appName = variant.productFlavors[0].name
-        def appName = "串口测试"
-        def fileName//获取当前时间的"YYYY-MM-dd"格式。
-        def createDate = new Date().format("YYYY-MM-dd", TimeZone.getTimeZone("GMT+08:00"))
-        def createTime = new Date().format("HH-mm-ss", TimeZone.getTimeZone("GMT+08:00"))
-        variant.outputs.each {
+        //def appName = variant.productFlavors[0].name //获取渠道名称
+        def appName = "串口测试" //rootProject.name
+        def createDate = new Date().format("YYYYMMdd", TimeZone.getTimeZone("GMT+08:00"))
+        def createTime = new Date().format("HHmmss", TimeZone.getTimeZone("GMT+08:00"))
+        variant.outputs.all {
+            //variant.getPackageApplicationProvider().get().outputDirectory = new File(project.projectDir.absolutePath + "/build/apk")
             //判断是release还是debug版本
-            def buildType = variant.buildType.name
-            if (buildType == "release") {
-                variant.getPackageApplicationProvider().get().outputDirectory = new File(project.projectDir.absolutePath + "/apk")
-                fileName = "${appName}_v${defaultConfig.versionName}_${versionCode}_${createDate}_${createTime}_${buildType}.apk"
-                it.outputFileName = fileName
-            }
-            if (buildType == "debug") {
-                //variant.getPackageApplicationProvider().get().outputDirectory = new File(project.projectDir.absolutePath + "/build/apk")
-                fileName = "${appName}_v${defaultConfig.versionName}_${versionCode}_${buildType}.apk"
-                it.outputFileName = fileName
+            if (variant.buildType.name == "release") {
+                it.outputFileName = "${appName}_v${defaultConfig.versionName}_${versionCode}_${createDate}_${createTime}_release.apk"
+            } else if (variant.buildType.name == "debug") {
+                it.outputFileName = "${appName}_v${defaultConfig.versionName}_${versionCode}_${createDate}_${createTime}_debug.apk"
             }
         }
     }
@@ -100,10 +93,10 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
-    implementation 'com.github.yutils.utils3:net:3.3.7'
-    implementation 'com.github.yutils.utils3:utils:3.3.7'
-    implementation 'com.github.yutils.utils3:yurl:3.3.7'
-    implementation 'com.github.yutils.utils3:ycrash:3.3.7'
+    implementation 'com.github.yutils.utils3:net:3.4.2'
+    implementation 'com.github.yutils.utils3:utils:3.4.2'
+    implementation 'com.github.yutils.utils3:yurl:3.4.2'
+    implementation 'com.github.yutils.utils3:ycrash:3.4.2'
 
 //    implementation 'com.github.yu1441:YSerialPort:2.0.0'
     implementation project(':yserialport')

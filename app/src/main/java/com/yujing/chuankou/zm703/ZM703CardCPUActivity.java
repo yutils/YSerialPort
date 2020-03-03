@@ -11,6 +11,8 @@ import com.yujing.utils.YConvert;
 import com.yujing.utils.YConvertBytes;
 import com.yujing.yserialport.YSerialPort;
 
+import java.nio.charset.StandardCharsets;
+
 /**
  * zm703读卡器 读取cpu区
  *
@@ -107,7 +109,7 @@ public class ZM703CardCPUActivity extends BaseActivity<ActivityZm703CpuBinding> 
                 }
                 for (int i = 0; i < packetsLength; i++) {
                     byte[] item = packets[i];
-                    binding.tvResult.setText(binding.tvResult.getText() + "\n烟包数：" + i + "：" + YConvert.bytesToHexString(item));
+                    binding.tvResult.setText(binding.tvResult.getText() + "\n烟包ID：" + i + "：" + YConvert.bytesToHexString(item) + "------解析----->" + new String(item, StandardCharsets.US_ASCII));
                 }
             }
         }

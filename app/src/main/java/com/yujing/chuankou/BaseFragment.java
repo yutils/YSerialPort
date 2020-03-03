@@ -36,7 +36,7 @@ public abstract class BaseFragment<B extends ViewDataBinding> extends Fragment {
     }
 
     protected void show(String str) {
-        YToast.show(App.getContext(), str);
+        YToast.show(App.getInstance(), str);
     }
 
     protected void startActivity(Class<?> classActivity) {

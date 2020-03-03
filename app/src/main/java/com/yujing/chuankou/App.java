@@ -10,24 +10,24 @@ import com.yujing.ycrash.YCrash;
 
 public class App extends Application {
 
-    @SuppressLint("StaticFieldLeak")
-    private static Context context;
+    public static App INSTANCE;
 
+    public static App getInstance() {
+        if (INSTANCE == null) {
+            synchronized (App.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new App();
+                }
+            }
+        }
+        return INSTANCE;
+    }
     @Override
     public void onCreate() {
-        setContext(getApplicationContext());
+        super.onCreate();
+        INSTANCE=this;
         YCrash.getInstance().init(this);
         YCrash.getInstance().setAppName(getString(R.string.app_name));
         YCrash.getInstance().setCrashInfoListener(appInfo -> Log.e("崩溃拦截",appInfo.崩溃信息));
-        super.onCreate();
     }
-
-    public static Context getContext() {
-        return context;
-    }
-
-    private static void setContext(Context context) {
-        App.context = context;
-    }
-
 }
