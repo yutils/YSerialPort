@@ -3,6 +3,7 @@ package com.yujing.chuankou;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.pm.PackageManager;
+import android.view.View;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -10,6 +11,7 @@ import androidx.core.content.ContextCompat;
 import com.yujing.chuankou.databinding.MainBinding;
 import com.yujing.chuankou.zm703.ZM703CardCPUActivity;
 import com.yujing.chuankou.zm703.ZM703CardM1Activity;
+import com.yujing.utils.YUtils;
 import com.yujing.yserialport.YReadInputStream;
 
 import java.util.ArrayList;
@@ -23,8 +25,8 @@ public class MainMenu extends BaseActivity<MainBinding> {
     @Override
     protected void initData() {
         binding.ButtonQuit.setOnClickListener(v -> MainMenu.this.finish());
-        binding.btTest.setOnClickListener(v -> startActivity(TestActivity.class));
         binding.ButtonSetup.setOnClickListener(v -> startActivity(SetActivity.class));
+        binding.btTest.setOnClickListener(v -> startActivity(TestActivity.class));
         binding.btZM703M1.setOnClickListener(v -> startActivity(ZM703CardM1Activity.class));
         binding.btZM703Cpu.setOnClickListener(v -> startActivity(ZM703CardCPUActivity.class));
         binding.ButtonSendWords.setOnClickListener(v -> startActivity(SendWordsActivity.class));
@@ -37,6 +39,15 @@ public class MainMenu extends BaseActivity<MainBinding> {
         });
         initPermission();
         YReadInputStream.setShowLog(true);
+        if (YUtils.isDebug(this)){
+            binding.btTest.setVisibility(View.VISIBLE);
+            binding.btZM703M1.setVisibility(View.VISIBLE);
+            binding.btZM703Cpu.setVisibility(View.VISIBLE);
+        }else{
+            binding.btTest.setVisibility(View.GONE);
+            binding.btZM703M1.setVisibility(View.GONE);
+            binding.btZM703Cpu.setVisibility(View.GONE);
+        }
     }
 
     /**
