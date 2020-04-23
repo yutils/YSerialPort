@@ -18,34 +18,53 @@ android {
     dataBinding {
         enabled = true
     }
-    buildTypes {
+    //签名
+    signingConfigs {
         debug {
-//            buildConfigField 'String', 'SERVER_PORT', server_port
-//            buildConfigField 'String', 'SERVER_IP', server_ip
-//            buildConfigField 'String', 'SERVER_URL', server_url
-            manifestPlaceholders = ["app_name": "@string/app_name_debug"]
-            applicationIdSuffix ".debug"//包名后缀
-            // 显示Log
-            buildConfigField "boolean", "LOG_DEBUG", "true"
-            versionNameSuffix "-debug"
-            minifyEnabled false
-            zipAlignEnabled false
-            shrinkResources false
-            signingConfig signingConfigs.debug
+            storeFile file("doc/yujingtest.jks")
+            storePassword "123456"
+            keyAlias "test"
+            keyPassword "123456"
         }
         release {
-//            buildConfigField 'String', 'SERVER_PORT', server_port
-//            buildConfigField 'String', 'SERVER_IP', server_ip
-//            buildConfigField 'String', 'SERVER_URL', server_url
-            manifestPlaceholders = ["app_name": "@string/app_name"]
-            // 不显示Log
-            buildConfigField "boolean", "LOG_DEBUG", "false"
+            storeFile file("doc/yujingtest.jks")
+            storePassword "123456"
+            keyAlias "test"
+            keyPassword "123456"
+        }
+    }
+    buildTypes {
+        debug {
+            //app名称
+            manifestPlaceholders = ["app_name": "@string/app_name_debug"]
+            //包名后缀
+            applicationIdSuffix ".debug"
+            //版本名后缀
+            //versionNameSuffix "-debug"
+            //显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "true"
             //混淆
             minifyEnabled false
             //Zipalign优化
             zipAlignEnabled false
             // 移除无用的resource文件
             shrinkResources false
+            //签名配置
+            signingConfig signingConfigs.debug
+        }
+        release {
+            //app名称
+            manifestPlaceholders = ["app_name": "@string/app_name"]
+            //不显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            //混淆
+            minifyEnabled false
+            //Zipalign优化
+            zipAlignEnabled false
+            //移除无用的resource文件
+            shrinkResources false
+            //签名配置
+            signingConfig signingConfigs.release
             //前一部分代表系统默认的android程序的混淆文件，该文件已经包含了基本的混淆声明，后一个文件是自己的定义混淆文件
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -66,21 +85,6 @@ android {
             }
         }
     }
-    //签名
-    signingConfigs {
-        debug {
-            storeFile file("doc/yujingtest.jks")
-            storePassword "123456"
-            keyAlias "test"
-            keyPassword "123456"
-        }
-        release {
-            storeFile file("doc/yujingtest.jks")
-            storePassword "123456"
-            keyAlias "test"
-            keyPassword "123456"
-        }
-    }
 }
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -93,8 +97,8 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
-    implementation 'com.github.yutils:yutils:1.0.6'
-    implementation 'com.github.yutils:ycrash:1.0.1'
+    implementation 'com.github.yutils:yutils:1.1.0'
+    implementation 'com.github.yutils:ycrash:1.0.2'
     implementation 'com.github.yutils:ynet:1.0.0'
     implementation 'com.github.yutils:yurl:1.0.3'
 

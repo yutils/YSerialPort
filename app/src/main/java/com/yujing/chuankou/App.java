@@ -1,8 +1,6 @@
 package com.yujing.chuankou;
 
-import android.annotation.SuppressLint;
 import android.app.Application;
-import android.content.Context;
 import android.util.Log;
 
 import com.yujing.ycrash.YCrash;
