@@ -1,10 +1,6 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
     compileSdkVersion 29
     buildToolsVersion = '29.0.3'
     defaultConfig {
@@ -38,8 +34,6 @@ android {
             applicationIdSuffix ".debug"
             //版本名后缀
             //versionNameSuffix "-debug"
-            //显示Log
-            buildConfigField "boolean", "LOG_DEBUG", "true"
             //混淆
             minifyEnabled false
             //Zipalign优化
@@ -52,8 +46,6 @@ android {
         release {
             //app名称
             manifestPlaceholders = ["app_name": "@string/app_name"]
-            //不显示Log
-            buildConfigField "boolean", "LOG_DEBUG", "false"
             //混淆
             minifyEnabled false
             //Zipalign优化
@@ -81,6 +73,10 @@ android {
                 it.outputFileName = "${appName}_v${defaultConfig.versionName}_${versionCode}_${createDate}_${createTime}_debug.apk"
             }
         }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     buildFeatures{
         dataBinding = true
