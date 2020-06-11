@@ -6,7 +6,10 @@ Google官方的Android串口通信Demo，重新封装代码，实现读取串口
 
 [![](https://jitpack.io/v/yutils/YSerialPort.svg)](https://jitpack.io/#yutils/YSerialPort)
 
-**releases版本中有APK文件。**
+**[releases里面有APK文件。点击前往](https://github.com/yutils/YSerialPort/releases)**
+
+**[releases里面有AAR包。点击前往](https://github.com/yutils/YSerialPort/releases)**
+
 
 **如果拉取整个项目，请用AS4.0以上打开**
 
