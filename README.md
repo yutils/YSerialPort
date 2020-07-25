@@ -49,7 +49,7 @@ dependencies {
 
 java
 
-```
+```java
 //String[] device = YSerialPort.getSerialPortFinder().getAllDevicesPath();//获取串口列表
 //String[] baudRate = YSerialPort.getBaudRateList();//获取波特率列表
 //YSerialPort.saveDevice(getApplication(), "/dev/ttyS4");//设置默认串口,可以不设置
@@ -96,7 +96,7 @@ kotlin
 ```kotlin
 //val device = YSerialPort.getSerialPortFinder().allDevicesPath//获取串口列表
 //val baudRate = YSerialPort.getBaudRateList() //获取波特率列表
-//YSerialPort.saveDevice(application, device[0]) //设置默认串口,可以不设置
+//YSerialPort.saveDevice(application, "/dev/ttyS4") //设置默认串口,可以不设置
 //YSerialPort.saveBaudRate(application, "9600") //设置默认波特率,可以不设置
 
 //创建对象
