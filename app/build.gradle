@@ -93,10 +93,10 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
-    implementation 'com.github.yutils:yutils:1.1.3'
+    implementation 'com.github.yutils:yutils:1.1.4'
     implementation 'com.github.yutils:ycrash:1.0.2'
-    implementation 'com.github.yutils:ynet:1.0.2'
-    implementation 'com.github.yutils:yurl:1.0.5'
+    implementation 'com.github.yutils:ynet:1.0.3'
+    implementation 'com.github.yutils:yurl:1.0.7'
 
 //    implementation 'com.github.yu1441:YSerialPort:2.0.0'
     implementation project(':yserialport')

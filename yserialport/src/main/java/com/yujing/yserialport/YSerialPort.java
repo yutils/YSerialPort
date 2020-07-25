@@ -259,7 +259,7 @@ public class YSerialPort {
         editor.apply();
     }
 
-    //读取串口
+    //读取上面方法保存的串口
     public static String readDevice(Context context) {
         SharedPreferences sp = context.getSharedPreferences(SERIAL_PORT, Context.MODE_PRIVATE);
         return sp.getString(DEVICE, null);// null为默认值
@@ -273,7 +273,7 @@ public class YSerialPort {
         editor.apply();
     }
 
-    //读取波特率
+    //读取上面方法保存的波特率
     public static String readBaudRate(Context context) {
         SharedPreferences sp = context.getSharedPreferences(SERIAL_PORT, Context.MODE_PRIVATE);
         return sp.getString(BAUD_RATE, null);// null为默认值
