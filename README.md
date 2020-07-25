@@ -47,17 +47,18 @@ dependencies {
 
 # 使用方法
 
+java
+
 ```
-int index = 0;//第0个串口
-String device = YSerialPort.getSerialPortFinder().getAllDevicesPath()[index];//获取串口列表
-String baudRate = YSerialPort.getBaudRateList()[index];//获取波特率列表
-YSerialPort.saveDevice(getApplication(), device);//设置默认串口,可以不设置
-YSerialPort.saveBaudRate(getApplication(), baudRate);//设置默认波特率,可以不设置
+//String[] device = YSerialPort.getSerialPortFinder().getAllDevicesPath();//获取串口列表
+//String[] baudRate = YSerialPort.getBaudRateList();//获取波特率列表
+//YSerialPort.saveDevice(getApplication(), "/dev/ttyS4");//设置默认串口,可以不设置
+//YSerialPort.saveBaudRate(getApplication(), "9600");//设置默认波特率,可以不设置
 
 //创建对象
 YSerialPort ySerialPort = new YSerialPort(this);
-//设置串口,设置波特率
-ySerialPort.setDevice(device,baudRate);
+//设置串口,设置波特率,如果设置了默认可以不用设置
+ySerialPort.setDevice("/dev/ttyS4", "9600");
 //设置数据监听
 ySerialPort.addDataListener(new YSerialPort.DataListener() {
     @Override
@@ -67,12 +68,14 @@ ySerialPort.addDataListener(new YSerialPort.DataListener() {
         //结果回调:size
     }
 });
+
 //设置自动组包，每次组包时长为40毫秒，如果40毫秒读取不到数据则返回结果
 ySerialPort.setAutoPackage(true);
 ySerialPort.setPackageTime(40);
+
 //或者,设置非自动组包，读取长度1000，超时时间为500毫秒。如果读取到1000立即返回，否则直到读取到超时为止
-ySerialPort.setAutoPackage(false);
-ySerialPort.setLengthAndTimeout(1000,500);
+//ySerialPort.setAutoPackage(false);
+//ySerialPort.setLengthAndTimeout(1000,500);
 
 //启动
 ySerialPort.start();
@@ -89,6 +92,43 @@ protected void onDestroy() {
 
 ```
 
+kotlin
+```kotlin
+//val device = YSerialPort.getSerialPortFinder().allDevicesPath//获取串口列表
+//val baudRate = YSerialPort.getBaudRateList() //获取波特率列表
+//YSerialPort.saveDevice(application, device[0]) //设置默认串口,可以不设置
+//YSerialPort.saveBaudRate(application, "9600") //设置默认波特率,可以不设置
+
+//创建对象
+val ySerialPort = YSerialPort(this)
+//设置串口,设置波特率,如果设置了默认可以不用设置
+ySerialPort.setDevice("/dev/ttyS4", "9600")
+//设置数据监听
+ySerialPort.addDataListener { hexString, bytes, size ->
+    //结果回调:haxString
+    //结果回调:bytes
+    //结果回调:size
+}
+//设置自动组包，每次组包时长为40毫秒，如果40毫秒读取不到数据则返回结果
+ySerialPort.isAutoPackage = true
+ySerialPort.packageTime = 40
+
+//或者,设置非自动组包，读取长度1000，超时时间为500毫秒。如果读取到1000立即返回，否则直到读取到超时为止
+//ySerialPort.isAutoPackage = false
+//ySerialPort.setLengthAndTimeout(1000, 500)
+
+//启动
+ySerialPort.start()
+//发送文字
+ySerialPort.send("你好".toByteArray(Charset.forName("GB18030")))
+
+
+//退出页面时候注销
+override fun onDestroy() {
+    super.onDestroy()
+    ySerialPort.onDestroy()
+}
+```
 官方源码 https://github.com/licheedev/Android-SerialPort-API
 
 不懂的问我QQ：3373217
