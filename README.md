@@ -13,8 +13,12 @@ Google官方的Android串口通信Demo，重新封装代码，实现读取串口
 
 **如果拉取整个项目，请用AS4.0以上打开**
 
+## <font color="ff0000">不建议直接拉取项目编译，请仔细看完</font> ##
+
 **Gradle 引用**
+
 1. 在根build.gradle中添加
+
 ```
 allprojects {
     repositories {
@@ -25,6 +29,7 @@ allprojects {
 ```
 
 2. 子项目build.gradle添加依赖   版本号：[![](https://jitpack.io/v/yutils/YSerialPort.svg)](https://jitpack.io/#yutils/YSerialPort)
+
 ```
 dependencies {
        implementation 'com.github.yutils:YSerialPort:2.0.9'
@@ -34,7 +39,7 @@ dependencies {
 3.在AndroidManifest.xml文件中加入
 
 ```
-    tools:replace="android:label"
+tools:replace="android:label"
 ```
 
 ## 注意
