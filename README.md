@@ -31,6 +31,12 @@ dependencies {
 }
 ```
 
+3.在AndroidManifest.xml文件中加入
+
+```
+    tools:replace="android:label"
+```
+
 ## 注意
 
 1.因为Android-SerialPort-API的SDK最低版本22，低于22的用户请使用Android-SerialPort-API1.0.1，把YSerialPort里面的复制出来，稍加改动就可以使用。
@@ -43,12 +49,6 @@ dependencies {
   //2. build.gradle 把 minSdkVersion 22 改成  minSdkVersion 19
   //3. YSerialPort中的buildSerialPort()方法最后一行改成
   return new SerialPort(new File(device), Integer.parseInt(baudRate));//return SerialPort.newBuilder(new File(device), Integer.parseInt(baudRate)).build();
-```
-
-2.在AndroidManifest.xml文件中加入
-
-```
-    tools:replace="android:label"
 ```
 
 # 使用方法
@@ -135,6 +135,8 @@ override fun onDestroy() {
     ySerialPort.onDestroy()
 }
 ```
+
+串口文件位置：/proc/tty/drivers
 官方源码 https://github.com/licheedev/Android-SerialPort-API
 
 不懂的问我QQ：3373217
