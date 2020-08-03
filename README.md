@@ -1,6 +1,6 @@
 # YSerialPort
 
-Google官方的Android串口通信Demo，重新封装代码，实现读取串口数据，实现重新组包一次性读取完整数据。可连续读取任意长度数据。
+源Android-SerialPort-API，重新封装代码，实现读取串口数据，实现重新组包一次性读取完整数据。可连续读取任意长度数据。
 
 已经多次长时间测试：串口打印机命令，串口电子秤，串口NFC读卡器，读M1区一次性读取64个扇区，读CPU区一次读取16KB数据。
 
@@ -142,6 +142,7 @@ override fun onDestroy() {
 ```
 
 串口文件位置：/proc/tty/drivers
-官方源码 https://github.com/licheedev/Android-SerialPort-API
+
+[Android-SerialPort-API](https://github.com/licheedev/Android-SerialPort-API)
 
 不懂的问我QQ：3373217
