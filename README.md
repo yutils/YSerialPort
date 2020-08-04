@@ -46,7 +46,7 @@ tools:replace="android:label"
 
 1.因为Android-SerialPort-API的SDK最低版本22，低于22的用户请使用Android-SerialPort-API1.0.1，把YSerialPort里面的复制出来，稍加改动就可以使用。
 
-  要安卓4.4支持，修改方式
+  如需安卓4.4支持，自行修改源码（也可以找我要），如下3步即可
 
 ```
   //1. build.gradle引用把2.0.0改成1.0.1
@@ -147,4 +147,4 @@ override fun onDestroy() {
 
 [Android-SerialPort-API](https://github.com/licheedev/Android-SerialPort-API)
 
-不懂的问我QQ：3373217
+不懂的问我QQ：3373217 （别问我为啥手机没串口，别问我模拟器怎么调试串口，别问我USB转的串口为什么有的转换器能识别而有的转换器不能识别）
