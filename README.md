@@ -58,6 +58,8 @@ tools:replace="android:label"
 
 # 使用方法
 
+可以参考SendWordsActivity.java
+
 java
 
 ```java
