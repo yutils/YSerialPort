@@ -12,6 +12,7 @@ import java.nio.charset.Charset;
 /**
  * @author yujing
  * 2019年12月12日09:54:04
+ * 可以参考此类用法
  */
 public class SendWordsActivity extends BaseActivity<SendingWordsBinding> {
     YSerialPort ySerialPort;
@@ -29,45 +30,47 @@ public class SendWordsActivity extends BaseActivity<SendingWordsBinding> {
         binding.editText.setText(YSharedPreferencesUtils.get(this, SEND_STRING));
         binding.etHex.setText(YSharedPreferencesUtils.get(this, SEND_HEX));
         binding.editText.setSelection(binding.editText.getText().length());
+        binding.button.setOnClickListener(v -> sendString());
+        binding.btHex.setOnClickListener(v -> sendHexString());
+        binding.tvTips.setText("注意：当前串口：" + YSerialPort.readDevice(this) + "，当前波特率：" + YSerialPort.readBaudRate(this));
 
         ySerialPort = new YSerialPort(this);
         ySerialPort.clearDataListener();
         ySerialPort.addDataListener(dataListener);
         ySerialPort.start();
-        binding.button.setOnClickListener(v -> sendString());
-        binding.btHex.setOnClickListener(v -> sendHexString());
-        binding.tvTips.setText("注意：当前串口：" + YSerialPort.readDevice(this) + "，当前波特率：" + YSerialPort.readBaudRate(this));
     }
 
     private void sendString() {
-        binding.tvResult.setText("");
-        ySerialPort.clearDataListener();
-        ySerialPort.addDataListener(dataListener);
         String str = binding.editText.getText().toString();
         if (str.isEmpty()) {
             show("未输入内容！");
             return;
         }
+
+        binding.tvResult.setText("");
+        ySerialPort.clearDataListener();
+        ySerialPort.addDataListener(dataListener);
         ySerialPort.send(str.getBytes(Charset.forName("GB18030")), value -> {
             if (!value) YToast.show(getApplicationContext(), "串口异常");
         });
-        //保存数据
+
+        //保存数据，下次打开页面直接填写历史记录
         YSharedPreferencesUtils.write(getApplicationContext(), SEND_STRING, str);
     }
 
     private void sendHexString() {
-        binding.tvResult.setText("");
-        ySerialPort.clearDataListener();
-        ySerialPort.addDataListener(dataListener);
         String str = binding.etHex.getText().toString().replaceAll("\n", "").replace(" ","");
         if (str.isEmpty()) {
             show("未输入内容！");
             return;
         }
+        binding.tvResult.setText("");
+        ySerialPort.clearDataListener();
+        ySerialPort.addDataListener(dataListener);
         binding.etHex.setText(str);
         ySerialPort.send(YConvert.hexStringToByte(str));
 
-        //保存数据
+        //保存数据，下次打开页面直接填写历史记录
         YSharedPreferencesUtils.write(getApplicationContext(), SEND_HEX, str);
     }
 
