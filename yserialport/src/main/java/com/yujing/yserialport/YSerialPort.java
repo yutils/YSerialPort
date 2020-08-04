@@ -194,7 +194,7 @@ public class YSerialPort {
      * @param listener 状态，成功回调true，失败false
      */
     public void send(byte[] bytes, YListener<Boolean> listener) {
-        send(bytes, listener,null);
+        send(bytes, listener, null);
     }
 
     /**
@@ -529,7 +529,10 @@ public class YSerialPort {
             Log.e(TAG, "onDestroy异常", e);
         } finally {
             if (serialPort != null) {
-                serialPort.close();
+                try {
+                    serialPort.close();
+                } catch (Throwable ignored) {
+                }
                 serialPort = null;
             }
         }

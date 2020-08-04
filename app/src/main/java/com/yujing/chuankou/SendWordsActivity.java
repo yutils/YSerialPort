@@ -23,6 +23,22 @@ public class SendWordsActivity extends BaseActivity<SendingWordsBinding> {
         return R.layout.sending_words;
     }
 
+    @Override
+    protected void initData() {
+        //上次使用的数据
+        binding.editText.setText(YSharedPreferencesUtils.get(this, SEND_STRING));
+        binding.etHex.setText(YSharedPreferencesUtils.get(this, SEND_HEX));
+        binding.editText.setSelection(binding.editText.getText().length());
+
+        ySerialPort = new YSerialPort(this);
+        ySerialPort.clearDataListener();
+        ySerialPort.addDataListener(dataListener);
+        ySerialPort.start();
+        binding.button.setOnClickListener(v -> sendString());
+        binding.btHex.setOnClickListener(v -> sendHexString());
+        binding.tvTips.setText("注意：当前串口：" + YSerialPort.readDevice(this) + "，当前波特率：" + YSerialPort.readBaudRate(this));
+    }
+
     private void sendString() {
         binding.tvResult.setText("");
         ySerialPort.clearDataListener();
@@ -43,13 +59,14 @@ public class SendWordsActivity extends BaseActivity<SendingWordsBinding> {
         binding.tvResult.setText("");
         ySerialPort.clearDataListener();
         ySerialPort.addDataListener(dataListener);
-        String str = binding.etHex.getText().toString().replaceAll("\n", "");
-        binding.etHex.setText(str);
+        String str = binding.etHex.getText().toString().replaceAll("\n", "").replace(" ","");
         if (str.isEmpty()) {
             show("未输入内容！");
             return;
         }
+        binding.etHex.setText(str);
         ySerialPort.send(YConvert.hexStringToByte(str));
+
         //保存数据
         YSharedPreferencesUtils.write(getApplicationContext(), SEND_HEX, str);
     }
@@ -59,24 +76,11 @@ public class SendWordsActivity extends BaseActivity<SendingWordsBinding> {
     };
 
     @Override
-    protected void initData() {
-        //上次使用的数据
-        binding.editText.setText(YSharedPreferencesUtils.get(this, SEND_STRING));
-        binding.etHex.setText(YSharedPreferencesUtils.get(this, SEND_HEX));
-        binding.editText.setSelection(binding.editText.getText().length());
-
-        ySerialPort = new YSerialPort(this);
-        ySerialPort.clearDataListener();
-        ySerialPort.addDataListener(dataListener);
-        ySerialPort.start();
-        binding.button.setOnClickListener(v -> sendString());
-        binding.btHex.setOnClickListener(v -> sendHexString());
-        binding.tvTips.setText("注意：当前串口：" + YSerialPort.readDevice(this) + "，当前波特率：" + YSerialPort.readBaudRate(this));
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
-        ySerialPort.onDestroy();
+        try {
+            ySerialPort.onDestroy();
+        } catch (Throwable ignored) {
+        }
     }
 }
