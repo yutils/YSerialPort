@@ -23,7 +23,43 @@ import java.util.Locale;
  * 默认50ms读取超时，读取长数据请设置读取长度和超时时间。
  * 读取未知长度，请增大读取长度，并且增加组包时间差，组包时间差要小于读取超时时间。
  *
- * @author yujing 2019年12月2日09:46:02
+ * @author yujing 2020年8月11日10:27:58
+ */
+/*
+使用方法：
+YSerialPort ySerialPort = new YSerialPort(this);
+//设置串口,设置波特率,如果设置了默认可以不用设置
+ySerialPort.setDevice("/dev/ttyS4", "9600");
+//设置数据监听
+ySerialPort.addDataListener(new YSerialPort.DataListener() {
+    @Override
+    public void onDataReceived(String hexString, byte[] bytes, int size) {
+        //结果回调:haxString
+        //结果回调:bytes
+        //结果回调:size
+    }
+});
+
+//设置自动组包，每次组包时长为40毫秒，如果40毫秒读取不到数据则返回结果
+ySerialPort.setAutoPackage(true);
+//ySerialPort.setPackageTime(40);
+
+//或者,设置非自动组包，读取长度1000，超时时间为500毫秒。如果读取到1000立即返回，否则直到读取到超时为止
+//ySerialPort.setAutoPackage(false);
+//ySerialPort.setLengthAndTimeout(1000,500);
+
+//启动
+ySerialPort.start();
+
+//发送文字
+ySerialPort.send("你好".getBytes(Charset.forName("GB18030")));
+
+//退出页面时候注销
+@Override
+protected void onDestroy() {
+    super.onDestroy();
+    ySerialPort.onDestroy();
+}
  */
 @SuppressWarnings("unused")
 public class YSerialPort {
@@ -53,8 +89,12 @@ public class YSerialPort {
         return mSerialPortFinder;
     }
 
+    public static String[] getDevices() {
+        return getSerialPortFinder().getAllDevicesPath();
+    }
+
     //获取波特率列表
-    public static String[] getBaudRateList() {
+    public static String[] getBaudRates() {
         return BAUD_RATE_LIST;
     }
 
@@ -160,6 +200,26 @@ public class YSerialPort {
     }
 
     /**
+     * 重启
+     */
+    public void reStart() {
+        stop();
+        start();
+    }
+
+    /**
+     * 重启
+     *
+     * @param device   串口
+     * @param baudRate 波特率
+     */
+    public void reStart(String device, String baudRate) {
+        setDevice(device, baudRate);
+        stop();
+        start();
+    }
+
+    /**
      * 构建SerialPort类
      *
      * @return SerialPort
@@ -219,7 +279,7 @@ public class YSerialPort {
                             //如果剩余长度小于等于0，说明发送完成
                             if (sy <= 0) break;
                             //如果剩余长度大于每次写入长度，就写入对应长度，如果不大于就写入剩余长度
-                            byte[] current = new byte[(sy > sendLength) ? sendLength : sy];
+                            byte[] current = new byte[Math.min(sy, sendLength)];
                             //数组copy
                             System.arraycopy(bytes, i * sendLength, current, 0, current.length);
                             //写入
@@ -486,11 +546,13 @@ public class YSerialPort {
         if (errorListener != null) {
             errorListener.error(error);
         } else {
-            AlertDialog.Builder b = new AlertDialog.Builder(activity);
-            b.setTitle("错误");
-            b.setMessage(error);
-            b.setPositiveButton("确定", null);
-            b.show();
+            activity.runOnUiThread(() -> {
+                AlertDialog.Builder b = new AlertDialog.Builder(activity);
+                b.setTitle("错误");
+                b.setMessage(error);
+                b.setPositiveButton("确定", null);
+                b.show();
+            });
         }
     }
 
@@ -509,10 +571,9 @@ public class YSerialPort {
     }
 
     /**
-     * onDestroy,调用的此类的activity必须在onDestroy调用此方法
+     * 关闭串口释放资源
      */
-    public void onDestroy() {
-        Log.i(TAG, "调用onDestroy");
+    private void stop() {
         try {
             if (readInputStream != null) {
                 readInputStream.stop();
@@ -526,7 +587,7 @@ public class YSerialPort {
                 outputStream = null;
             }
         } catch (Exception e) {
-            Log.e(TAG, "onDestroy异常", e);
+            Log.e(TAG, "stop异常", e);
         } finally {
             if (serialPort != null) {
                 try {
@@ -536,6 +597,14 @@ public class YSerialPort {
                 serialPort = null;
             }
         }
+    }
+
+    /**
+     * onDestroy,调用的此类的activity必须在onDestroy调用此方法
+     */
+    public void onDestroy() {
+        Log.i(TAG, "调用onDestroy");
+        stop();
         clearDataListener();
     }
 }
