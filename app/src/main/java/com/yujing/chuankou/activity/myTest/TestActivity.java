@@ -1,5 +1,5 @@
 
-package com.yujing.chuankou;
+package com.yujing.chuankou.activity.myTest;
 
 import android.annotation.SuppressLint;
 import android.util.Base64;
@@ -7,9 +7,13 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.yujing.chuankou.R;
+import com.yujing.chuankou.activity.myTest.zm703.SerialM1;
+import com.yujing.chuankou.activity.myTest.zm703.ZM703;
+import com.yujing.chuankou.base.BaseActivity;
 import com.yujing.chuankou.databinding.ActivityTestBinding;
-import com.yujing.chuankou.zm703.SerialM1;
-import com.yujing.chuankou.zm703.ZM703;
+import com.yujing.chuankou.utils.DY;
+import com.yujing.chuankou.utils.Setting;
 import com.yujing.utils.YBytes;
 import com.yujing.utils.YConvert;
 import com.yujing.utils.YSharedPreferencesUtils;
@@ -42,6 +46,37 @@ public class TestActivity extends BaseActivity<ActivityTestBinding> {
     @Override
     protected Integer getContentLayoutId() {
         return R.layout.activity_test;
+    }
+
+    @Override
+    protected void initData() {
+        //上次使用的数据
+        binding.editText.setText(YSharedPreferencesUtils.get(this, SEND_STRING));
+        binding.etHex.setText(YSharedPreferencesUtils.get(this, SEND_HEX));
+        binding.editText.setSelection(binding.editText.getText().length());
+        binding.button.setOnClickListener(v -> sendString());
+        binding.btHex.setOnClickListener(v -> sendHexString());
+        binding.buttonTest1.setOnClickListener(v -> printDJ());
+        binding.buttonTest2.setOnClickListener(v -> printJS());
+        binding.btDzcId.setOnClickListener(v -> DzcId());
+        binding.btDzcWeight.setOnClickListener(v -> DzcWeight());
+        binding.btBankCard.setOnClickListener(v -> readBankCard());
+        binding.btCardManage.setOnClickListener(v -> readCardManage());
+        binding.btQr.setOnClickListener(v -> printQr());
+        binding.tvTips.setText(String.format("注意：\n打印机是：\t/dev/ttyS2\t波特率9600\n电子秤是：\t/dev/ttyS2\t波特率9600\nM1读卡是：\t/dev/ttyS4\t波特率115200", YSerialPort.readDevice(this), YSerialPort.readBaudRate(this)));
+
+        ySerialPort = new YSerialPort(this);
+        ySerialPort.clearDataListener();
+        ySerialPort.addDataListener(dataListener);
+        ySerialPort.start();
+        //设置
+        Setting.setting(this, binding.includeSet, () -> {
+            if (YSerialPort.readDevice(this) != null && YSerialPort.readBaudRate(this) != null)
+                ySerialPort.reStart(YSerialPort.readDevice(this), YSerialPort.readBaudRate(this));
+            binding.tvResult.setText("");
+        });
+        //退出
+        binding.ButtonQuit.setOnClickListener(v -> finish());
     }
 
     private void sendString() {
@@ -79,29 +114,6 @@ public class TestActivity extends BaseActivity<ActivityTestBinding> {
     YSerialPort.DataListener dataListener = (hexString, bytes, size) -> {
         binding.tvResult.setText(hexString);
     };
-
-    @Override
-    protected void initData() {
-        //上次使用的数据
-        binding.editText.setText(YSharedPreferencesUtils.get(this, SEND_STRING));
-        binding.etHex.setText(YSharedPreferencesUtils.get(this, SEND_HEX));
-        binding.editText.setSelection(binding.editText.getText().length());
-
-        ySerialPort = new YSerialPort(this);
-        ySerialPort.clearDataListener();
-        ySerialPort.addDataListener(dataListener);
-        ySerialPort.start();
-        binding.button.setOnClickListener(v -> sendString());
-        binding.btHex.setOnClickListener(v -> sendHexString());
-        binding.buttonTest1.setOnClickListener(v -> printDJ());
-        binding.buttonTest2.setOnClickListener(v -> printJS());
-        binding.btDzcId.setOnClickListener(v -> DzcId());
-        binding.btDzcWeight.setOnClickListener(v -> DzcWeight());
-        binding.btBankCard.setOnClickListener(v -> readBankCard());
-        binding.btCardManage.setOnClickListener(v -> readCardManage());
-        binding.btQr.setOnClickListener(v -> printQr());
-        binding.tvTips.setText(String.format("注意：\n当前串口：%s，当前波特率：%s\n打印机是：\t/dev/ttyS2\t波特率9600\n电子秤是：\t/dev/ttyS2\t波特率9600\nM1读卡是：\t/dev/ttyS4\t波特率115200", YSerialPort.readDevice(this), YSerialPort.readBaudRate(this)));
-    }
 
     /**
      * 打印二维码测试

@@ -17,6 +17,11 @@
                 android:id="@+id/include_set"
                 layout="@layout/view_set" />
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#80126132" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -96,99 +101,6 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/button_test1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_weight="1"
-                    android:text="打印定级小票" />
-
-                <Button
-                    android:id="@+id/button_test2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_weight="1"
-                    android:text="打印交售小票" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/bt_dzc_id"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_weight="1"
-                    android:text="电子称ID" />
-
-                <Button
-                    android:id="@+id/bt_dzc_weight"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_weight="1"
-                    android:text="电子称重量" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/bt_bankCard"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_weight="1"
-                    android:text="读M1银行卡" />
-
-                <Button
-                    android:id="@+id/bt_card_manage"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_weight="1"
-                    android:text="读M1工作人员卡" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/bt_qr"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_weight="1"
-                    android:text="二维码测试" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/tv_tips"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -213,7 +125,6 @@
                 android:minLines="5"
                 android:padding="4dp"
                 android:textSize="14sp" />
-
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/ButtonQuit"
                 android:layout_width="fill_parent"
@@ -229,5 +140,6 @@
                 app:strokeColor="@color/blue_Sky_F"
                 app:strokeWidth="1dp" />
         </LinearLayout>
+
     </ScrollView>
 </layout>

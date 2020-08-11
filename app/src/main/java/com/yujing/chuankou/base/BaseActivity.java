@@ -1,4 +1,4 @@
-package com.yujing.chuankou;
+package com.yujing.chuankou.base;
 
 import android.content.Intent;
 import android.os.Bundle;

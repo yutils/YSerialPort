@@ -1,13 +1,14 @@
 
-package com.yujing.chuankou.zm703;
+package com.yujing.chuankou.activity.myTest.zm703;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
-import com.yujing.chuankou.BaseActivity;
+import com.yujing.chuankou.base.BaseActivity;
 import com.yujing.chuankou.R;
 import com.yujing.chuankou.databinding.ActivityZm703M1Binding;
+import com.yujing.chuankou.utils.Setting;
 import com.yujing.utils.YConvert;
 import com.yujing.yserialport.YSerialPort;
 
@@ -39,9 +40,18 @@ public class ZM703CardM1Activity extends BaseActivity<ActivityZm703M1Binding> {
         binding.btSetV3Gzry.setOnClickListener(v -> set("1", "5", "ffffffffffff"));
         binding.btSetV3Yhk.setOnClickListener(v -> set("4", "4", "000000000000"));
         binding.btClear.setOnClickListener(v -> binding.tvResult.setText(""));
-        binding.tvTips.setText(String.format("注意：当前串口：%s，当前波特率：%s。\t\tZM703读卡器：\t/dev/ttyS4\t波特率115200", ySerialPort.getDevice(), ySerialPort.getBaudRate()));
+        binding.tvTips.setText(String.format("注意：\n\t\tZM703读卡器：\t/dev/ttyS4\t波特率115200", ySerialPort.getDevice(), ySerialPort.getBaudRate()));
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, Arrays.asList("KeyA", "KeyB"));
         binding.sp.setAdapter(adapter);
+
+        //设置
+        Setting.setting(this, binding.includeSet, () -> {
+            if (YSerialPort.readDevice(this) != null && YSerialPort.readBaudRate(this) != null)
+                ySerialPort.reStart(YSerialPort.readDevice(this), YSerialPort.readBaudRate(this));
+            binding.tvResult.setText("");
+        });
+        //退出
+        binding.ButtonQuit.setOnClickListener(v -> finish());
     }
 
     private void set(String blockStart, String blockEnd, String password) {
@@ -183,7 +193,7 @@ public class ZM703CardM1Activity extends BaseActivity<ActivityZm703M1Binding> {
                 readM1();
             } else if (zm703.getDataSize() % 16 == 0) {//数据正好是16的倍数
                 byte[][] data = SerialM1.getData(hexString);//连续读取结果会自动跳过密码块
-                if (data == null || data.length == 0) return;
+                if (data.length == 0) return;
                 m1DataHandle(data);
             }
         }

@@ -6,6 +6,6 @@
     </item>
     <!--抬起颜色  -->
     <item android:state_pressed="false">
-        <color android:color="#FFFFFF" />
+        <color android:color="#80FFFFFF" />
     </item>
 </selector>

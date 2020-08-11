@@ -5,13 +5,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#f0f0f0"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
         <LinearLayout
             android:id="@+id/ll_ck"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
+            android:layout_weight="1"
             android:background="@drawable/set_selector"
             android:clickable="true"
             android:focusable="true"
@@ -39,14 +40,15 @@
         </LinearLayout>
 
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1px"
+            android:layout_width="1px"
+            android:layout_height="match_parent"
             android:background="#80126132" />
 
         <LinearLayout
             android:id="@+id/ll_btl"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="@drawable/set_selector"
             android:clickable="true"
             android:focusable="true"
@@ -72,10 +74,5 @@
                 android:textColor="#666"
                 android:textSize="12sp" />
         </LinearLayout>
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="#80126132" />
     </LinearLayout>
 </layout>

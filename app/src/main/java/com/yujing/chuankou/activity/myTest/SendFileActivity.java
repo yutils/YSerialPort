@@ -1,12 +1,13 @@
-package com.yujing.chuankou;
-
-
+package com.yujing.chuankou.activity.myTest;
 import android.content.Intent;
 import android.net.Uri;
 import android.serialport.SerialPort;
 
+import com.yujing.chuankou.R;
+import com.yujing.chuankou.base.BaseActivity;
 import com.yujing.chuankou.databinding.ActivitySendFileBinding;
-import com.yujing.chuankou.xmodem.Xmodem;
+import com.yujing.chuankou.utils.Setting;
+import com.yujing.chuankou.utils.xmodem.Xmodem;
 import com.yujing.utils.YConvert;
 import com.yujing.utils.YShow;
 import com.yujing.utils.YUri;
@@ -16,7 +17,7 @@ import java.io.File;
 
 public class SendFileActivity extends BaseActivity<ActivitySendFileBinding> {
     File sendFile = null;//要发送的文件
-
+    YSerialPort ySerialPort;
     @Override
     protected Integer getContentLayoutId() {
         return R.layout.activity_send_file;
@@ -30,7 +31,17 @@ public class SendFileActivity extends BaseActivity<ActivitySendFileBinding> {
         binding.btSend.setOnClickListener(v -> sendFile());
         //发送文件Xmodem
         binding.btSendXmodem.setOnClickListener(v -> sendFileXmoden());
-        binding.tvTips.setText(String.format("注意：当前串口：%s，当前波特率：%s。", YSerialPort.readDevice(this), YSerialPort.readBaudRate(this)));
+
+        ySerialPort = new YSerialPort(this);
+        ySerialPort.addDataListener((hexString, bytes2, size) -> runOnUiThread(() -> binding.tvResult.setText(hexString)));
+        ySerialPort.start();
+        //设置
+        Setting.setting(this, binding.includeSet, () -> {
+            if (YSerialPort.readDevice(this) != null && YSerialPort.readBaudRate(this) != null)
+                ySerialPort.reStart(YSerialPort.readDevice(this), YSerialPort.readBaudRate(this));
+            binding.tvResult.setText("");
+        });
+        binding.ButtonQuit.setOnClickListener(v -> finish());
     }
 
     //直接发送文件到串口
@@ -42,9 +53,6 @@ public class SendFileActivity extends BaseActivity<ActivitySendFileBinding> {
         byte[] bytes = YConvert.fileToByte(sendFile);
         YShow.show(this, "发送中...", "进度：" + 0 + "/" + bytes.length);
         //初始化
-        YSerialPort ySerialPort = new YSerialPort(this);
-        ySerialPort.addDataListener((hexString, bytes2, size) -> runOnUiThread(() -> binding.tvResult.setText(hexString)));
-        ySerialPort.start();
         ySerialPort.send(bytes,
                 aBoolean -> show("发送：" + (aBoolean ? "成功" : "失败")),
                 integer -> {
@@ -109,9 +117,9 @@ public class SendFileActivity extends BaseActivity<ActivitySendFileBinding> {
             }
         }
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ySerialPort.onDestroy();
     }
 }

@@ -1,4 +1,4 @@
-package com.yujing.chuankou.zm703;
+package com.yujing.chuankou.activity.myTest.zm703;
 
 import com.yujing.utils.YBytes;
 import com.yujing.utils.YConvert;
@@ -137,7 +137,6 @@ public class SerialM1 {
             stringBuilder.append("61");
         }
         stringBuilder.append(YConvert.bytesToHexString(password));
-
         return stringBuilder.toString();
     }
 

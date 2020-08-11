@@ -1,4 +1,4 @@
-package com.yujing.chuankou.xmodem;
+package com.yujing.chuankou.utils.xmodem;
 
 
 import com.yujing.yserialport.YListener;
@@ -20,7 +20,6 @@ import java.nio.ByteOrder;
  */
 @SuppressWarnings("all")
 public class Xmodem {
-
     // 开始
     private final byte SOH = 0x01;
     // 结束
@@ -73,7 +72,6 @@ public class Xmodem {
                     // 读取文件初始化
                     DataInputStream inputStream = new DataInputStream(
                             new FileInputStream(filePath));
-
                     while ((nbytes = inputStream.read(sector)) > 0) {
                         // 如果最后一包数据小于128个字节，以0xff补齐
                         if (nbytes < SECTOR_SIZE) {
@@ -81,7 +79,6 @@ public class Xmodem {
                                 sector[i] = (byte) 0xff;
                             }
                         }
-
                         // 同一包数据最多发送10次
                         errorCount = 0;
                         while (errorCount < MAX_ERRORS) {

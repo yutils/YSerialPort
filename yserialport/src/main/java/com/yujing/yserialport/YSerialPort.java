@@ -586,7 +586,7 @@ public class YSerialPort {
                 outputStream.close();
                 outputStream = null;
             }
-        } catch (Exception e) {
+        } catch (Throwable e) {
             Log.e(TAG, "stop异常", e);
         } finally {
             if (serialPort != null) {

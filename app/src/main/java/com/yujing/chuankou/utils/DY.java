@@ -1,4 +1,4 @@
-package com.yujing.chuankou;
+package com.yujing.chuankou.utils;
 
 /**
  * 打印机命令，全部采用hex

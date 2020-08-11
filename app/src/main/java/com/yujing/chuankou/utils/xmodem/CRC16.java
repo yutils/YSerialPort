@@ -1,4 +1,4 @@
-package com.yujing.chuankou.xmodem;
+package com.yujing.chuankou.utils.xmodem;
 
 public class CRC16 {
 	private static final char crctable[] = { 0x0000, 0x1021, 0x2042, 0x3063,

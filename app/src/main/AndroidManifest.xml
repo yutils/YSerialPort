@@ -18,7 +18,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:label">
 
-        <activity android:name=".MainMenu">
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -26,20 +26,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SendWordsActivity" />
-        <activity android:name=".SetActivity" />
-        <activity android:name=".SendFileActivity" />
+        <activity android:name=".activity.SendActivity" />
+        <activity android:name=".activity.myTest.SendFileActivity" />
         <activity
-            android:name=".TestActivity"
+            android:name=".activity.myTest.TestActivity"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity
-            android:name=".zm703.ZM703CardM1Activity"
+            android:name=".activity.myTest.zm703.ZM703CardM1Activity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity
-            android:name=".zm703.ZM703CardCPUActivity"
+            android:name=".activity.myTest.zm703.ZM703CardCPUActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+        <activity android:name=".activity.myTest.MyMainActivity" />
 
     </application>
 

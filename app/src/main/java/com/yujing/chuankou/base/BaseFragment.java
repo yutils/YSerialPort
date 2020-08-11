@@ -1,4 +1,4 @@
-package com.yujing.chuankou;
+package com.yujing.chuankou.base;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 
+import com.yujing.chuankou.App;
 import com.yujing.utils.YToast;
 
 @SuppressWarnings("unused")
