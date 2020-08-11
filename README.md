@@ -58,7 +58,7 @@ tools:replace="android:label"
 
 # 使用方法
 
-可以参考SendActivity.java
+可以参考SendActivity.java 
 
 java
 
