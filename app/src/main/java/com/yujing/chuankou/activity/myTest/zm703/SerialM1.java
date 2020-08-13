@@ -47,10 +47,7 @@ import java.util.List;
  * 返回数据：55AAFF 0002 FF FD
  */
 public class SerialM1 {
-//    public static final String M1_DEVICE = "/dev/ttyS4";
-//    public static final String M1_RATE = "115200";
-//    private static int readType = 0;//读取类型
-
+    private static int readType = 0;//读取类型
     /**
      * 头部
      *
@@ -76,7 +73,7 @@ public class SerialM1 {
      * @return
      */
     public static String getCommandSearch() {
-        return "022152";
+        return "022126";
     }
 
     /**
@@ -137,6 +134,7 @@ public class SerialM1 {
             stringBuilder.append("61");
         }
         stringBuilder.append(YConvert.bytesToHexString(password));
+
         return stringBuilder.toString();
     }
 

@@ -25,9 +25,6 @@ import java.util.List;
  * 7.写入COS		00 D6 0000 02 FFFF		,0000是开始位置，02是读取长度，数据取为FFFF
  */
 public class SerialCpu {
-//    public static final String M1_DEVICE = "/dev/ttyS4";
-//    public static final String M1_RATE = "115200";
-
     /**
      * 头部
      *
