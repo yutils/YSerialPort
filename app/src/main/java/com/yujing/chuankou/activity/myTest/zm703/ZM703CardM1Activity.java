@@ -131,7 +131,6 @@ public class ZM703CardM1Activity extends BaseActivity<ActivityZm703M1Binding> {
         String blockStartString = binding.etBlockStart.getText().toString();
         String blockEndString = binding.etBlockEnd.getText().toString();
         String blockPasswordString = binding.etBlockPassword.getText().toString();
-        String blockData = binding.etBlockData.getText().toString();
         if (blockStartString.isEmpty()) {
             show("开始块不能为空");
             return false;
