@@ -4,8 +4,8 @@ package com.yujing.chuankou.activity.myTest.zm703;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
-import com.yujing.chuankou.base.BaseActivity;
 import com.yujing.chuankou.R;
+import com.yujing.chuankou.base.BaseActivity;
 import com.yujing.chuankou.databinding.ActivityZm703CpuBinding;
 import com.yujing.chuankou.utils.Setting;
 import com.yujing.utils.YConvert;
@@ -87,7 +87,11 @@ public class ZM703CardCPUActivity extends BaseActivity<ActivityZm703CpuBinding> 
             if (step == 1) {
                 step1();
             } else if (step == 2) {
-                step2();
+                if (zm703.getDataBytes()[5] == 0x4D && zm703.getDataBytes()[6] == 0x54) {
+                    step2_new();
+                } else {
+                    step2_old();
+                }
             } else if (step == 3) {
                 if ("9000".equals(zm703.getDataHexString().substring(zm703.getDataHexString().length() - 4)))
                     step3();
@@ -132,8 +136,16 @@ public class ZM703CardCPUActivity extends BaseActivity<ActivityZm703CpuBinding> 
         ySerialPort.send(cmd);
     }
 
-    protected void step2() {
-        byte[] cmd = SerialCpu.getComplete(SerialCpu.getCos(SerialCpu.cosSelectDf()));
+    protected void step2_old() {
+        byte[] cmd = SerialCpu.getComplete(SerialCpu.getCos(SerialCpu.cosSelectDfDefault()));
+        Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
+        binding.tvResult.setText(binding.tvResult.getText() + "\n选择DF\n发送串口命令:" + YConvert.bytesToHexString(cmd));
+        ySerialPort.setLengthAndTimeout(20 + 7, 10);
+        ySerialPort.send(cmd);
+    }
+
+    protected void step2_new() {
+        byte[] cmd = SerialCpu.getComplete(SerialCpu.getCos(SerialCpu.cosSelectDfMax()));
         Log.d("发送串口命令", YConvert.bytesToHexString(cmd));
         binding.tvResult.setText(binding.tvResult.getText() + "\n选择DF\n发送串口命令:" + YConvert.bytesToHexString(cmd));
         ySerialPort.setLengthAndTimeout(20 + 7, 10);

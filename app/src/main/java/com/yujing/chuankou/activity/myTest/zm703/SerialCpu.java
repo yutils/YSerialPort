@@ -77,12 +77,21 @@ public class SerialCpu {
     }
 
     /**
+     * 选择DF文件（大卡）00 A4 00 00 02 3F 02（大卡02 ，小卡01）
+     * 大卡有三个目录 别
+     * @return
+     */
+    public static String cosSelectDfMax() {
+        return cosSelectDf("02");
+    }
+
+    /**
      * 选择DF文件00 A4 00 00 02 3F 02（大卡02 ，小卡01）
      *
      * @return
      */
-    public static String cosSelectDf() {
-        return cosSelectDf("02");
+    public static String cosSelectDfDefault() {
+        return cosSelectDf("01");
     }
 
     /**

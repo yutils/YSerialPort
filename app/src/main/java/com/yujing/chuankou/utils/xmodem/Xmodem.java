@@ -1,8 +1,5 @@
 package com.yujing.chuankou.utils.xmodem;
-
-
 import com.yujing.yserialport.YListener;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
