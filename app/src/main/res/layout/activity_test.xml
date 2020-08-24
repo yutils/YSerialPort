@@ -76,8 +76,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editText"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:digits="1234567890ABCDEFabcdef\n" />
+                            android:layout_height="wrap_content"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.button.MaterialButton

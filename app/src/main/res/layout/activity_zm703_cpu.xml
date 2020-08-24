@@ -39,6 +39,7 @@
                     android:layout_margin="2dp"
                     android:layout_weight="1"
                     android:background="#7fb546"
+                    android:visibility="gone"
                     android:text="调运卡"
                     android:textColor="#ffffff" />
 
