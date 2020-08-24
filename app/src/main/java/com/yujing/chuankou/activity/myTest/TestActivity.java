@@ -16,6 +16,7 @@ import com.yujing.chuankou.utils.DY;
 import com.yujing.chuankou.utils.Setting;
 import com.yujing.utils.YBytes;
 import com.yujing.utils.YConvert;
+import com.yujing.utils.YLog;
 import com.yujing.utils.YSharedPreferencesUtils;
 import com.yujing.utils.YToast;
 import com.yujing.yserialport.YSerialPort;
@@ -58,6 +59,7 @@ public class TestActivity extends BaseActivity<ActivityTestBinding> {
         binding.btHex.setOnClickListener(v -> sendHexString());
         binding.buttonTest1.setOnClickListener(v -> printDJ());
         binding.buttonTest2.setOnClickListener(v -> printJS());
+        binding.buttonTest3.setOnClickListener(v -> printSetDefault());
         binding.btDzcId.setOnClickListener(v -> DzcId());
         binding.btDzcWeight.setOnClickListener(v -> DzcWeight());
         binding.btBankCard.setOnClickListener(v -> readBankCard());
@@ -220,6 +222,22 @@ public class TestActivity extends BaseActivity<ActivityTestBinding> {
         } catch (JSONException e) {
             YToast.show(getApplicationContext(), "解析失败：" + result);
             Log.e("解析失败", result, e);
+        }
+    }
+
+    //初始化打印机
+    private void printSetDefault() {
+        try {
+            ySerialPort.clearDataListener();
+            ySerialPort.addDataListener(dataListener);
+            ySerialPort.send(YConvert.hexStringToByte(DY.检查));
+            ySerialPort.send(YConvert.hexStringToByte(DY.顺时针旋转0度));
+            ySerialPort.send(YConvert.hexStringToByte(DY.放大0倍));
+            ySerialPort.send(YConvert.hexStringToByte(DY.初始化打印机));
+            YToast.show(getApplicationContext(), "设置成功");
+        } catch (Exception e) {
+            YToast.show(getApplicationContext(), "设置失败");
+            YLog.e("设置失败", e);
         }
     }
 

@@ -117,6 +117,14 @@
                     android:layout_marginEnd="5dp"
                     android:layout_weight="1"
                     android:text="打印交售小票" />
+                <Button
+                    android:id="@+id/button_test3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:text="初始化打印机" />
             </LinearLayout>
 
             <LinearLayout
