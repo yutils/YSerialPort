@@ -1,4 +1,4 @@
-def jarName = "yserialport2.1.0"
+def jarName = "yserialport2.1.1"
 
 //Copy类型，请在Terminal中运行gradlew makeJar
 task makeJar(type: Copy) {

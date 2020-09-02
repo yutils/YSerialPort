@@ -25,7 +25,7 @@ import java.util.Locale;
  * 读取未知长度，请增大读取长度，并且增加组包时间差，组包时间差要小于读取超时时间。
  * 构造函数传入的是activity就返回到UI线程 传的是Context就返回到线程
  *
- * @author yujing 2020年9月2日17:09:36
+ * @author yujing 2020年9月2日17:20:57
  */
 /*
 使用方法：
@@ -44,7 +44,7 @@ ySerialPort.addDataListener(new YSerialPort.DataListener() {
 
 //设置自动组包，每次组包时长为40毫秒，如果40毫秒读取不到数据则返回结果
 ySerialPort.setAutoPackage(true);
-//ySerialPort.setPackageTime(40);
+//ySerialPort.setMaxGroupPackageTime(40);
 
 //或者,设置非自动组包，读取长度1000，超时时间为500毫秒。如果读取到1000立即返回，否则直到读取到超时为止
 //ySerialPort.setAutoPackage(false);
@@ -198,7 +198,7 @@ public class YSerialPort {
             });
 
             readInputStream.setLengthAndTimeout(readLength, readTimeout);
-            if (maxGroupPackageTime == -1) setPackageTimeDefault();//设置默认组包时间
+            if (maxGroupPackageTime == -1) setMaxGroupPackageTimeDefault();//设置默认组包时间
             readInputStream.setAutoPackage(autoPackage);
             readInputStream.setMaxGroupPackageTime(maxGroupPackageTime);
             readInputStream.start();
@@ -485,7 +485,7 @@ public class YSerialPort {
      *
      * @param maxGroupPackageTime 组包最小时间差,毫秒
      */
-    public void setPackageTime(int maxGroupPackageTime) {
+    public void setMaxGroupPackageTime(int maxGroupPackageTime) {
         this.maxGroupPackageTime = maxGroupPackageTime;
         if (readInputStream != null) {
             readInputStream.setMaxGroupPackageTime(maxGroupPackageTime);
@@ -520,7 +520,7 @@ public class YSerialPort {
         return serialPort.getInputStream();
     }
 
-    private void setPackageTimeDefault() {
+    private void setMaxGroupPackageTimeDefault() {
         if (baudRate != null) {
             int intBaudRate = Integer.parseInt(baudRate);
             maxGroupPackageTime = Math.round((5f / (intBaudRate / 115200f)) + 0.4999f);//向上取整

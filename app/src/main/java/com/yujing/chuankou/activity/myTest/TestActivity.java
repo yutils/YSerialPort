@@ -114,13 +114,7 @@ public class TestActivity extends BaseActivity<ActivityTestBinding> {
 
     //回调监听
     YSerialPort.DataListener dataListener = (hexString, bytes, size) -> {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                binding.tvResult.setText(hexString);
-            }
-        });
-
+        binding.tvResult.setText(hexString);
     };
 
     /**
@@ -302,25 +296,22 @@ public class TestActivity extends BaseActivity<ActivityTestBinding> {
 
         @Override
         public void onDataReceived(String hexString, byte[] bytes, int size) {
-            runOnUiThread(() -> {
-                binding.tvResult.setText(binding.tvResult.getText() + "\n收到数据：" + hexString);
-                Log.d("收到数据", hexString);
-                ZM703 zm703 = new ZM703(hexString, bytes, size);
-                Log.d("收到数据", zm703.toString());
-                if (!zm703.isStatus()) {
-                    binding.tvResult.setText(binding.tvResult.getText() + "\n状态:失败");
-                    return;
-                }
-                binding.tvResult.setText(binding.tvResult.getText() + "\nvalue:" + zm703.getDataHexString());
-                if (zm703.getDataSize() == 7) {//寻卡结果长度为7
-                    readM1();
-                } else if (zm703.getDataSize() % 16 == 0) {//数据正好是16的倍数
-                    byte[][] data = SerialM1.getData(hexString);//连续读取结果会自动跳过密码块
-                    if (data == null || data.length == 0) return;
-                    m1DataHandle(data);
-                }
-            });
-
+            binding.tvResult.setText(binding.tvResult.getText() + "\n收到数据：" + hexString);
+            Log.d("收到数据", hexString);
+            ZM703 zm703 = new ZM703(hexString, bytes, size);
+            Log.d("收到数据", zm703.toString());
+            if (!zm703.isStatus()) {
+                binding.tvResult.setText(binding.tvResult.getText() + "\n状态:失败");
+                return;
+            }
+            binding.tvResult.setText(binding.tvResult.getText() + "\nvalue:" + zm703.getDataHexString());
+            if (zm703.getDataSize() == 7) {//寻卡结果长度为7
+                readM1();
+            } else if (zm703.getDataSize() % 16 == 0) {//数据正好是16的倍数
+                byte[][] data = SerialM1.getData(hexString);//连续读取结果会自动跳过密码块
+                if (data == null || data.length == 0) return;
+                m1DataHandle(data);
+            }
         }
 
         /**
