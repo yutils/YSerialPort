@@ -32,7 +32,7 @@ allprojects {
 
 ```
 dependencies {
-       implementation 'com.github.yutils:YSerialPort:2.1.0'
+       implementation 'com.github.yutils:YSerialPort:2.1.1'
 }
 ```
 
