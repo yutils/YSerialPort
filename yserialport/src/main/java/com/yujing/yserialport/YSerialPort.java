@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.serialport.SerialPort;
 import android.serialport.SerialPortFinder;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,8 +23,9 @@ import java.util.Locale;
  * 串口工具类，调用的此类的activity必须在onDestroy调用onDestroy方法
  * 默认50ms读取超时，读取长数据请设置读取长度和超时时间。
  * 读取未知长度，请增大读取长度，并且增加组包时间差，组包时间差要小于读取超时时间。
+ * 构造函数传入的是activity就返回到UI线程 传的是Context就返回到线程
  *
- * @author yujing 2020年8月11日10:27:58
+ * @author yujing 2020年9月2日17:09:36
  */
 /*
 使用方法：
@@ -67,7 +69,7 @@ public class YSerialPort {
     private OutputStream outputStream;
     private InputStream inputStream;
     private final Handler handler = new Handler();
-    private Activity activity;
+    private Context context;
     private String device;//串口
     private String baudRate;//波特率
     private static final String DEVICE = "DEVICE";
@@ -75,7 +77,7 @@ public class YSerialPort {
     private static final String SERIAL_PORT = "SERIAL_PORT";
     private static final String[] BAUD_RATE_LIST = new String[]{"50", "75", "110", "134", "150", "200", "300", "600", "1200", "1800", "2400", "4800", "9600", "19200", "38400", "57600", "115200", "230400", "460800", "500000", "576000", "921600", "1000000", "1152000", "1500000", "2000000", "2500000", "3000000", "3500000", "4000000"};
     private boolean autoPackage = true;//自动组包
-    private int packageTime = -1;//组包时间差，毫秒
+    private int maxGroupPackageTime = -1;//最大组包时间
     private int readTimeout = -1;//读取超时时间
     private int readLength = -1;//读取长度
     private YReadInputStream readInputStream;
@@ -108,14 +110,14 @@ public class YSerialPort {
     /**
      * 单例模式，调用此方法前必须先调用getInstance(String ip, int port)
      *
-     * @param activity activity
+     * @param context context
      * @return YSerialPort
      */
-    public static synchronized YSerialPort getInstance(Activity activity) {
+    public static synchronized YSerialPort getInstance(Context context) {
         if (instance == null) {
             synchronized (YSerialPort.class) {
                 if (instance == null) {
-                    instance = new YSerialPort(activity);
+                    instance = new YSerialPort(context);
                 }
             }
         }
@@ -125,20 +127,20 @@ public class YSerialPort {
     /**
      * 单例模式
      *
-     * @param activity activity
+     * @param context  context
      * @param device   串口
      * @param baudRate 波特率
      * @return YSerialPort
      */
-    public static YSerialPort getInstance(Activity activity, String device, String baudRate) {
+    public static YSerialPort getInstance(Context context, String device, String baudRate) {
         if (instance == null) {
             synchronized (YSerialPort.class) {
                 if (instance == null) {
-                    instance = new YSerialPort(activity, device, baudRate);
+                    instance = new YSerialPort(context, device, baudRate);
                 }
             }
         }
-        instance.setActivity(activity);
+        instance.setContext(context);
         instance.setDevice(device, baudRate);
         return instance;
     }
@@ -146,21 +148,21 @@ public class YSerialPort {
     /**
      * 构造函数
      *
-     * @param activity activity
+     * @param context context
      */
-    public YSerialPort(Activity activity) {
-        this.activity = activity;
+    public YSerialPort(Context context) {
+        this.context = context;
     }
 
     /**
      * 构造函数
      *
-     * @param activity activity
+     * @param context  context
      * @param device   串口
      * @param baudRate 波特率
      */
-    public YSerialPort(Activity activity, String device, String baudRate) {
-        this.activity = activity;
+    public YSerialPort(Context context, String device, String baudRate) {
+        this.context = context;
         this.device = device;
         this.baudRate = baudRate;
     }
@@ -180,15 +182,25 @@ public class YSerialPort {
             serialPort = buildSerialPort();
             outputStream = serialPort.getOutputStream();
             inputStream = serialPort.getInputStream();
-            readInputStream = new YReadInputStream(inputStream, bytes -> activity.runOnUiThread(() -> {
-                for (DataListener item : dataListeners) {
-                    item.onDataReceived(bytesToHexString(bytes), bytes, bytes.length);
+            readInputStream = new YReadInputStream(inputStream, bytes -> {
+                if (context instanceof Activity) {
+                    Activity activity = (Activity) context;
+                    activity.runOnUiThread(() -> {
+                        for (DataListener item : dataListeners) {
+                            item.onDataReceived(bytesToHexString(bytes), bytes, bytes.length);
+                        }
+                    });
+                } else {
+                    for (DataListener item : dataListeners) {
+                        item.onDataReceived(bytesToHexString(bytes), bytes, bytes.length);
+                    }
                 }
-            }));
+            });
+
             readInputStream.setLengthAndTimeout(readLength, readTimeout);
-            if (packageTime == -1) setPackageTimeDefault();//设置默认组包时间
+            if (maxGroupPackageTime == -1) setPackageTimeDefault();//设置默认组包时间
             readInputStream.setAutoPackage(autoPackage);
-            readInputStream.setPackageTime(packageTime);
+            readInputStream.setMaxGroupPackageTime(maxGroupPackageTime);
             readInputStream.start();
         } catch (SecurityException e) {
             DisplayError("您对串行端口没有读/写权限。");
@@ -229,11 +241,11 @@ public class YSerialPort {
      */
     public SerialPort buildSerialPort() throws SecurityException, IOException, InvalidParameterException {
         if (device == null || baudRate == null) {
-            if (readDevice(activity) == null || readBaudRate(activity) == null || (readDevice(activity).length() == 0) || (readBaudRate(activity).length() == 0)) {
+            if (readDevice(context) == null || readBaudRate(context) == null || (readDevice(context).length() == 0) || (readBaudRate(context).length() == 0)) {
                 throw new InvalidParameterException();
             }
-            device = readDevice(activity);
-            baudRate = readBaudRate(activity);
+            device = readDevice(context);
+            baudRate = readBaudRate(context);
         }
         return SerialPort.newBuilder(new File(device), Integer.parseInt(baudRate)).build();
     }
@@ -289,25 +301,55 @@ public class YSerialPort {
                             //回调进度
                             if (progressListener != null) {
                                 final int finalCount = count;
-                                activity.runOnUiThread(() -> progressListener.value(finalCount));
+                                if (context instanceof Activity) {
+                                    Activity activity = (Activity) context;
+                                    activity.runOnUiThread(() -> progressListener.value(finalCount));
+                                } else {
+                                    progressListener.value(finalCount);
+                                }
                             }
                             i++;
                         }
                     } catch (Exception e) {
                         Log.e(TAG, "发送失败", e);
-                        if (listener != null) activity.runOnUiThread(() -> listener.value(false));
+                        if (context instanceof Activity) {
+                            Activity activity = (Activity) context;
+                            if (listener != null)
+                                activity.runOnUiThread(() -> listener.value(false));
+                        } else {
+                            listener.value(false);
+                        }
                     }
                 }).start();
             } else {
                 outputStream.write(bytes);
                 if (progressListener != null) {
-                    activity.runOnUiThread(() -> progressListener.value(bytes.length));
+                    if (context instanceof Activity) {
+                        Activity activity = (Activity) context;
+                        activity.runOnUiThread(() -> progressListener.value(bytes.length));
+                    } else {
+                        progressListener.value(bytes.length);
+                    }
                 }
             }
-            if (listener != null) activity.runOnUiThread(() -> listener.value(true));
+            if (listener != null) {
+                if (context instanceof Activity) {
+                    Activity activity = (Activity) context;
+                    activity.runOnUiThread(() -> listener.value(true));
+                } else {
+                    listener.value(true);
+                }
+            }
         } catch (Exception e) {
             Log.e(TAG, "发送失败", e);
-            if (listener != null) activity.runOnUiThread(() -> listener.value(false));
+            if (listener != null) {
+                if (context instanceof Activity) {
+                    Activity activity = (Activity) context;
+                    activity.runOnUiThread(() -> listener.value(false));
+                } else {
+                    listener.value(false);
+                }
+            }
         }
     }
 
@@ -412,22 +454,12 @@ public class YSerialPort {
         this.baudRate = baudRate;
     }
 
-    /**
-     * 获取activity
-     *
-     * @return Activity
-     */
-    public Activity getActivity() {
-        return activity;
+    public Context getContext() {
+        return context;
     }
 
-    /**
-     * 设置activity
-     *
-     * @param activity activity
-     */
-    public void setActivity(Activity activity) {
-        this.activity = activity;
+    public void setContext(Context context) {
+        this.context = context;
     }
 
     /**
@@ -444,19 +476,19 @@ public class YSerialPort {
      *
      * @return 毫秒
      */
-    public int getPackageTime() {
-        return packageTime;
+    public int getMaxGroupPackageTime() {
+        return maxGroupPackageTime;
     }
 
     /**
      * 设置组包最小时间差  方法互斥 setReadTimeOutAndLength
      *
-     * @param packageTime 组包最小时间差,毫秒
+     * @param maxGroupPackageTime 组包最小时间差,毫秒
      */
-    public void setPackageTime(int packageTime) {
-        this.packageTime = packageTime;
+    public void setPackageTime(int maxGroupPackageTime) {
+        this.maxGroupPackageTime = maxGroupPackageTime;
         if (readInputStream != null) {
-            readInputStream.setPackageTime(packageTime);
+            readInputStream.setMaxGroupPackageTime(maxGroupPackageTime);
             setAutoPackage(true);
         }
     }
@@ -491,7 +523,7 @@ public class YSerialPort {
     private void setPackageTimeDefault() {
         if (baudRate != null) {
             int intBaudRate = Integer.parseInt(baudRate);
-            packageTime = Math.round((5f / (intBaudRate / 115200f)) + 0.4999f);//向上取整
+            maxGroupPackageTime = Math.round((5f / (intBaudRate / 115200f)) + 0.4999f);//向上取整
         }
     }
 
@@ -546,13 +578,18 @@ public class YSerialPort {
         if (errorListener != null) {
             errorListener.error(error);
         } else {
-            activity.runOnUiThread(() -> {
-                AlertDialog.Builder b = new AlertDialog.Builder(activity);
-                b.setTitle("错误");
-                b.setMessage(error);
-                b.setPositiveButton("确定", null);
-                b.show();
-            });
+            if (context instanceof Activity) {
+                Activity activity = (Activity) context;
+                activity.runOnUiThread(() -> {
+                    AlertDialog.Builder b = new AlertDialog.Builder(activity);
+                    b.setTitle("错误");
+                    b.setMessage(error);
+                    b.setPositiveButton("确定", null);
+                    b.show();
+                });
+            } else {
+                Toast.makeText(context, "错误:" + error, Toast.LENGTH_LONG).show();
+            }
         }
     }
 
