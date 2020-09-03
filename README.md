@@ -84,7 +84,7 @@ ySerialPort.addDataListener(new YSerialPort.DataListener() {
 
 //设置自动组包，每次组包时长为40毫秒，如果40毫秒读取不到数据则返回结果
 ySerialPort.setAutoPackage(true);
-//ySerialPort.setPackageTime(40);
+//ySerialPort.setMaxGroupPackageTime(40);
 
 //或者,设置非自动组包，读取长度1000，超时时间为500毫秒。如果读取到1000立即返回，否则直到读取到超时为止
 //ySerialPort.setAutoPackage(false);
@@ -124,7 +124,7 @@ ySerialPort.addDataListener { hexString, bytes, size ->
 }
 //设置自动组包，每次组包时长为40毫秒，如果40毫秒读取不到数据则返回结果
 ySerialPort.isAutoPackage = true
-//ySerialPort.packageTime = 40
+//ySerialPort.maxGroupPackageTime = 40
 
 //或者,设置非自动组包，读取长度1000，超时时间为500毫秒。如果读取到1000立即返回，否则直到读取到超时为止
 //ySerialPort.isAutoPackage = false
