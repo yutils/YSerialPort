@@ -36,6 +36,7 @@ allprojects {
 
 ```
 dependencies {
+       //更新地址  https://github.com/yutils/YSerialPort 建议过几天访问看下有没有新版本
        implementation 'com.github.yutils:YSerialPort:2.1.1'
 }
 ```
@@ -43,22 +44,14 @@ dependencies {
 3.在AndroidManifest.xml文件中加入
 
 ```
-tools:replace="android:label"
+<application
+    ...
+    tools:replace="android:label" >
 ```
 
 ## 注意
 
-1.因为Android-SerialPort-API的SDK最低版本22，低于22的用户请使用Android-SerialPort-API1.0.1，把YSerialPort里面的复制出来，稍加改动就可以使用。
-
-  如需安卓4.4支持，自行修改源码（也可以找我要），如下3步即可
-
-```
-  //1. build.gradle引用把2.0.0改成1.0.1
-  api 'com.github.licheedev:Android-SerialPort-API:1.0.1'
-  //2. build.gradle 把 minSdkVersion 22 改成  minSdkVersion 19
-  //3. YSerialPort中的buildSerialPort()方法最后一行改成
-  return new SerialPort(new File(device), Integer.parseInt(baudRate));//return SerialPort.newBuilder(new File(device), Integer.parseInt(baudRate)).build();
-```
+1.因为Android-SerialPort-API的SDK最低版本22，低于22的用户请使用Android-SerialPort-API1.0.1，把YSerialPort里面的复制出来，稍加改动就可以使用。后面又兼容4.4方法。
 
 # 使用方法
 
@@ -145,6 +138,17 @@ override fun onDestroy() {
     super.onDestroy()
     ySerialPort.onDestroy()
 }
+```
+
+## 兼容4.4方法
+  如需安卓4.4支持，自行修改源码（也可以找我要），如下3步即可
+
+```
+  //1. build.gradle引用把2.0.0改成1.0.1
+  api 'com.github.licheedev:Android-SerialPort-API:1.0.1'
+  //2. build.gradle 把 minSdkVersion 22 改成  minSdkVersion 19
+  //3. YSerialPort中的buildSerialPort()方法最后一行改成
+  return new SerialPort(new File(device), Integer.parseInt(baudRate));//return SerialPort.newBuilder(new File(device), Integer.parseInt(baudRate)).build();
 ```
 
 串口文件位置：/proc/tty/drivers
