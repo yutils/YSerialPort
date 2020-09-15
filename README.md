@@ -49,10 +49,6 @@ dependencies {
     tools:replace="android:label" >
 ```
 
-## 注意
-
-1.因为Android-SerialPort-API的SDK最低版本22，低于22的用户请使用Android-SerialPort-API1.0.1，把YSerialPort里面的复制出来，稍加改动就可以使用。后面又兼容4.4方法。
-
 # 使用方法
 
 可以参考SendActivity.java 
@@ -139,6 +135,10 @@ override fun onDestroy() {
     ySerialPort.onDestroy()
 }
 ```
+
+## 注意
+
+1.因为Android-SerialPort-API的SDK最低版本22，低于22的用户请使用Android-SerialPort-API1.0.1，把YSerialPort里面的复制出来，稍加改动就可以使用。
 
 ## 兼容4.4方法
   如需安卓4.4支持，自行修改源码（也可以找我要），如下3步即可
