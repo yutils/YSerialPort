@@ -80,6 +80,7 @@ public class YSerialPort {
     private int maxGroupPackageTime = -1;//最大组包时间
     private int readTimeout = -1;//读取超时时间
     private int readLength = -1;//读取长度
+    private boolean noDataNotReturn = true;//无数据不返回
     private YReadInputStream readInputStream;
     //串口类
     private SerialPort serialPort;
@@ -183,7 +184,6 @@ public class YSerialPort {
             outputStream = serialPort.getOutputStream();
             inputStream = serialPort.getInputStream();
             readInputStream = new YReadInputStream(inputStream, bytes -> {
-                if (bytes == null || bytes.length == 0) return;
                 if (context instanceof Activity) {
                     Activity activity = (Activity) context;
                     activity.runOnUiThread(() -> {
@@ -197,11 +197,11 @@ public class YSerialPort {
                     }
                 }
             });
-
             readInputStream.setLengthAndTimeout(readLength, readTimeout);
             if (maxGroupPackageTime == -1) setMaxGroupPackageTimeDefault();//设置默认组包时间
             readInputStream.setAutoPackage(autoPackage);
             readInputStream.setMaxGroupPackageTime(maxGroupPackageTime);
+            readInputStream.setNoDataNotReturn(noDataNotReturn);
             readInputStream.start();
         } catch (SecurityException e) {
             DisplayError("您对串行端口没有读/写权限。");
@@ -380,6 +380,16 @@ public class YSerialPort {
     public static String readBaudRate(Context context) {
         SharedPreferences sp = context.getSharedPreferences(SERIAL_PORT, Context.MODE_PRIVATE);
         return sp.getString(BAUD_RATE, null);// null为默认值
+    }
+
+    public boolean isNoDataNotReturn() {
+        return noDataNotReturn;
+    }
+
+    public void setNoDataNotReturn(boolean noDataNotReturn) {
+        if (readInputStream != null)
+            readInputStream.setNoDataNotReturn(noDataNotReturn);
+        this.noDataNotReturn = noDataNotReturn;
     }
 
     /**
