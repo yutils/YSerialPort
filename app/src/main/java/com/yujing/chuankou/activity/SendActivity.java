@@ -9,6 +9,7 @@ import com.yujing.utils.YConvert;
 import com.yujing.utils.YLog;
 import com.yujing.utils.YSharedPreferencesUtils;
 import com.yujing.utils.YToast;
+import com.yujing.yserialport.DataListener;
 import com.yujing.yserialport.YSerialPort;
 
 import java.nio.charset.Charset;
@@ -59,7 +60,7 @@ public class SendActivity extends BaseActivity<ActivitySendBinding> {
         binding.tvResult.setText("");
         ySerialPort.clearDataListener();
         ySerialPort.addDataListener(dataListener);
-        YLog.e(ySerialPort.getDevice()+" "+ySerialPort.getBaudRate()+" "+str);
+        YLog.e(ySerialPort.getDevice() + " " + ySerialPort.getBaudRate() + " " + str);
         binding.etHex.setText(str);
         ySerialPort.send(YConvert.hexStringToByte(str));
         //保存数据，下次打开页面直接填写历史记录
@@ -82,7 +83,7 @@ public class SendActivity extends BaseActivity<ActivitySendBinding> {
         YSharedPreferencesUtils.write(getApplicationContext(), SEND_STRING, str);
     }
 
-    YSerialPort.DataListener dataListener = (hexString, bytes, size) -> {
+    DataListener dataListener = (hexString, bytes) -> {
         binding.tvResult.setText(hexString);
     };
 

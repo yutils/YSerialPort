@@ -33,7 +33,7 @@ public class SendFileActivity extends BaseActivity<ActivitySendFileBinding> {
         binding.btSendXmodem.setOnClickListener(v -> sendFileXmoden());
 
         ySerialPort = new YSerialPort(this);
-        ySerialPort.addDataListener((hexString, bytes2, size) -> runOnUiThread(() -> binding.tvResult.setText(hexString)));
+        ySerialPort.addDataListener((hexString, bytes2) -> runOnUiThread(() -> binding.tvResult.setText(hexString)));
         ySerialPort.start();
         //设置
         Setting.setting(this, binding.includeSet, () -> {

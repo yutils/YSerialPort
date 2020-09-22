@@ -3,6 +3,7 @@ package com.yujing.chuankou.activity.myTest.zm703;
 import com.yujing.contract.YListener1;
 import com.yujing.contract.YSuccessFailListener;
 import com.yujing.utils.YConvert;
+import com.yujing.yserialport.DataListener;
 import com.yujing.yserialport.YSerialPort;
 
 /**
@@ -10,7 +11,7 @@ import com.yujing.yserialport.YSerialPort;
  *
  * @author yujing 2020年8月13日19:48:21
  */
-public class M1WriteDataListener implements YSerialPort.DataListener {
+public class M1WriteDataListener implements DataListener {
     private int blockStart;//开始扇区
     private int blockEnd;//结束扇区
     private String password;//密码
@@ -84,9 +85,9 @@ public class M1WriteDataListener implements YSerialPort.DataListener {
     }
 
     @Override
-    public void onDataReceived(String hexString, byte[] bytes, int size) {
+    public void value(String hexString, byte[] bytes) {
         if (logListener != null) logListener.value("收到数据：" + hexString);
-        ZM703 zm703 = new ZM703(hexString, bytes, size);
+        ZM703 zm703 = new ZM703(hexString, bytes, bytes.length);
         if (logListener != null && zm703.getDataHexString() != null && !zm703.getDataHexString().isEmpty())
             logListener.value("剥壳数据：" + zm703.getDataHexString());
         if (!zm703.isStatus()) {

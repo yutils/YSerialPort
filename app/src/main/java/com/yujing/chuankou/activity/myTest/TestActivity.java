@@ -19,6 +19,7 @@ import com.yujing.utils.YConvert;
 import com.yujing.utils.YLog;
 import com.yujing.utils.YSharedPreferencesUtils;
 import com.yujing.utils.YToast;
+import com.yujing.yserialport.DataListener;
 import com.yujing.yserialport.YSerialPort;
 
 import org.json.JSONException;
@@ -113,7 +114,7 @@ public class TestActivity extends BaseActivity<ActivityTestBinding> {
     }
 
     //回调监听
-    YSerialPort.DataListener dataListener = (hexString, bytes, size) -> {
+    DataListener dataListener = (hexString, bytes) -> {
         binding.tvResult.setText(hexString);
     };
 
@@ -277,7 +278,7 @@ public class TestActivity extends BaseActivity<ActivityTestBinding> {
     /**
      * m1读卡监听
      */
-    class M1ReadDataListener implements YSerialPort.DataListener {
+    class M1ReadDataListener implements DataListener {
         private int blockStart;//开始扇区
         private int blockEnd;//结束扇区
         private String password;//密码
@@ -295,10 +296,10 @@ public class TestActivity extends BaseActivity<ActivityTestBinding> {
         }
 
         @Override
-        public void onDataReceived(String hexString, byte[] bytes, int size) {
+        public void value(String hexString, byte[] bytes) {
             binding.tvResult.setText(binding.tvResult.getText() + "\n收到数据：" + hexString);
             Log.d("收到数据", hexString);
-            ZM703 zm703 = new ZM703(hexString, bytes, size);
+            ZM703 zm703 = new ZM703(hexString, bytes, bytes.length);
             Log.d("收到数据", zm703.toString());
             if (!zm703.isStatus()) {
                 binding.tvResult.setText(binding.tvResult.getText() + "\n状态:失败");

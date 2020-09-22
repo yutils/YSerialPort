@@ -33,9 +33,9 @@ YSerialPort ySerialPort = new YSerialPort(this);
 //设置串口,设置波特率,如果设置了默认可以不用设置
 ySerialPort.setDevice("/dev/ttyS4", "9600");
 //设置数据监听
-ySerialPort.addDataListener(new YSerialPort.DataListener() {
+ySerialPort.addDataListener(new DataListener() {
     @Override
-    public void onDataReceived(String hexString, byte[] bytes, int size) {
+    public void value(String hexString, byte[] bytes) {
         //结果回调:haxString
         //结果回调:bytes
         //结果回调:size
@@ -188,12 +188,12 @@ public class YSerialPort {
                     Activity activity = (Activity) context;
                     activity.runOnUiThread(() -> {
                         for (DataListener item : dataListeners) {
-                            item.onDataReceived(bytesToHexString(bytes), bytes, bytes.length);
+                            item.value(bytesToHexString(bytes), bytes);
                         }
                     });
                 } else {
                     for (DataListener item : dataListeners) {
-                        item.onDataReceived(bytesToHexString(bytes), bytes, bytes.length);
+                        item.value(bytesToHexString(bytes), bytes);
                     }
                 }
             });
@@ -602,13 +602,6 @@ public class YSerialPort {
                 Toast.makeText(context, "错误:" + error, Toast.LENGTH_LONG).show();
             }
         }
-    }
-
-    /**
-     * 结果回调
-     */
-    public interface DataListener {
-        void onDataReceived(String hexString, byte[] bytes, int size);
     }
 
     /**

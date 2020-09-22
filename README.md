@@ -37,7 +37,7 @@ allprojects {
 ```
 dependencies {
        //更新地址  https://github.com/yutils/YSerialPort 建议过几天访问看下有没有新版本
-       implementation 'com.github.yutils:YSerialPort:2.1.1'
+       implementation 'com.github.yutils:YSerialPort:2.1.2'
 }
 ```
 
@@ -66,9 +66,9 @@ YSerialPort ySerialPort = new YSerialPort(this);
 //设置串口,设置波特率,如果设置了默认可以不用设置
 ySerialPort.setDevice("/dev/ttyS4", "9600");
 //设置数据监听
-ySerialPort.addDataListener(new YSerialPort.DataListener() {
+ySerialPort.addDataListener(new DataListener() {
     @Override
-    public void onDataReceived(String hexString, byte[] bytes, int size) {
+    public void value(String hexString, byte[] bytes) {
         //结果回调:haxString
         //结果回调:bytes
         //结果回调:size
@@ -110,7 +110,7 @@ val ySerialPort = YSerialPort(this)
 //设置串口,设置波特率,如果设置了默认可以不用设置
 ySerialPort.setDevice("/dev/ttyS4", "9600")
 //设置数据监听
-ySerialPort.addDataListener { hexString, bytes, size ->
+ySerialPort.addDataListener { hexString, bytes ->
     //结果回调:haxString
     //结果回调:bytes
     //结果回调:size
