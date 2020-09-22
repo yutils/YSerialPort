@@ -3,7 +3,7 @@ package com.yujing.chuankou.activity.myTest.zm703;
 import android.util.Log;
 
 import com.yujing.utils.YConvert;
-import com.yujing.utils.YConvertBytes;
+import com.yujing.utils.YConvertNumberBytes;
 
 import java.util.Arrays;
 
@@ -62,7 +62,7 @@ public class ZM703 {
         }
         //获取hex字符串真实长度
         byte[] lengthByte = new byte[]{0, 0, bytes[3], bytes[4]};
-        int length = YConvertBytes.bytesToInt(lengthByte);
+        int length = YConvertNumberBytes.bytesToInt(lengthByte);
         length += 5;//加上前面5个固定位置
         if (hexString.length() < length * 2) {
             Log.i(TAG, "长度不够，抛弃。需要长度：" + (length) + "实际长度：" + hexString.length() / 2);

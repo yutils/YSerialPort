@@ -2,7 +2,7 @@ package com.yujing.chuankou.activity.myTest.zm703;
 
 import com.yujing.contract.YListener1;
 import com.yujing.utils.YConvert;
-import com.yujing.utils.YConvertBytes;
+import com.yujing.utils.YConvertNumberBytes;
 import com.yujing.yserialport.YSerialPort;
 
 import java.nio.charset.StandardCharsets;
@@ -100,7 +100,7 @@ public class CpuReadDataListener implements YSerialPort.DataListener {
             }
         } else if (step == 6) {
             //分包
-            packetsLength = YConvertBytes.bytes2ToInt(zm703.getDataBytes());
+            packetsLength = YConvertNumberBytes.bytes2ToInt(zm703.getDataBytes());
             step6(packetsLength);
         } else if (step == 7) {
             if (zm703.getDataBytes().length < 11) {
@@ -170,7 +170,7 @@ public class CpuReadDataListener implements YSerialPort.DataListener {
     void step6(int packetsLength) {
         int startIndex = 11 + 2;//开始位置2位长度位+11个基本属性位
         int length = packetsLength * 11;//长度位=烟包*11
-        byte[] cmd = SerialCpu.getComplete(SerialCpu.readFile16k(YConvert.bytesToHexString(YConvertBytes.intTo2Bytes(startIndex)), YConvert.bytesToHexString(YConvertBytes.intTo2Bytes(length))));
+        byte[] cmd = SerialCpu.getComplete(SerialCpu.readFile16k(YConvert.bytesToHexString(YConvertNumberBytes.intTo2Bytes(startIndex)), YConvert.bytesToHexString(YConvertNumberBytes.intTo2Bytes(length))));
         if (logListener != null)
             logListener.value("◆读文件，发送串口命令:" + YConvert.bytesToHexString(cmd));
         ySerialPort.send(cmd);

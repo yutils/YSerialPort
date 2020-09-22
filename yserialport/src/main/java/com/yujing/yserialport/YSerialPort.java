@@ -183,6 +183,7 @@ public class YSerialPort {
             outputStream = serialPort.getOutputStream();
             inputStream = serialPort.getInputStream();
             readInputStream = new YReadInputStream(inputStream, bytes -> {
+                //if (bytes == null || bytes.length == 0) return;
                 if (context instanceof Activity) {
                     Activity activity = (Activity) context;
                     activity.runOnUiThread(() -> {

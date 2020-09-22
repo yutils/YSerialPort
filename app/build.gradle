@@ -88,7 +88,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
-    implementation 'com.github.yutils:yutils:1.2.1'
+    implementation 'com.github.yutils:yutils:1.2.2'
     implementation 'com.github.yutils:ycrash:1.0.3'
     implementation 'com.github.yutils:yhttp:1.0.6'
 
