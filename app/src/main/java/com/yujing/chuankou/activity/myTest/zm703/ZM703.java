@@ -22,8 +22,7 @@ public class ZM703 {
     //状态，状态byte
     private byte statusByte;
     //状态，状态hexString
-    private String statushexString;
-
+    private String statusHexString;
     //数据区的HexString
     private String dataHexString;
     //数据区的Bytes
@@ -50,7 +49,7 @@ public class ZM703 {
             return;
         }
         statusByte = bytes[5];
-        statushexString = YConvert.bytesToHexString(new byte[]{statusByte});
+        statusHexString = YConvert.bytesToHexString(new byte[]{statusByte});
         //长度状态位不是ff直接错误
         if (bytes[5] != (byte) 255) {
             status = false;
@@ -132,12 +131,12 @@ public class ZM703 {
         this.statusByte = statusByte;
     }
 
-    public String getStatushexString() {
-        return statushexString;
+    public String getStatusHexString() {
+        return statusHexString;
     }
 
-    public void setStatushexString(String statushexString) {
-        this.statushexString = statushexString;
+    public void setStatusHexString(String statusHexString) {
+        this.statusHexString = statusHexString;
     }
 
     @Override
@@ -147,7 +146,7 @@ public class ZM703 {
                 ", bytes=" + Arrays.toString(bytes) +
                 ", status=" + status +
                 ", statusByte=" + statusByte +
-                ", statushexString='" + statushexString + '\'' +
+                ", statushexString='" + statusHexString + '\'' +
                 ", dataHexString='" + dataHexString + '\'' +
                 ", dataBytes=" + Arrays.toString(dataBytes) +
                 ", dataSize=" + dataSize +
