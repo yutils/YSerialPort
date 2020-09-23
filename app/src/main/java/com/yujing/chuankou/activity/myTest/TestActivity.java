@@ -299,7 +299,7 @@ public class TestActivity extends BaseActivity<ActivityTestBinding> {
         public void value(String hexString, byte[] bytes) {
             binding.tvResult.setText(binding.tvResult.getText() + "\n收到数据：" + hexString);
             Log.d("收到数据", hexString);
-            ZM703 zm703 = new ZM703(hexString, bytes, bytes.length);
+            ZM703 zm703 = new ZM703(hexString, bytes);
             Log.d("收到数据", zm703.toString());
             if (!zm703.isStatus()) {
                 binding.tvResult.setText(binding.tvResult.getText() + "\n状态:失败");

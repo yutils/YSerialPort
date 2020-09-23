@@ -56,7 +56,7 @@ public class CpuReadDataListener implements DataListener {
     @Override
     public void value(String hexString, byte[] bytes) {
         if (logListener != null) logListener.value("收到数据：" + hexString);
-        ZM703 zm703 = new ZM703(hexString, bytes, bytes.length);
+        ZM703 zm703 = new ZM703(hexString, bytes);
         if (logListener != null && zm703.getDataHexString() != null && !zm703.getDataHexString().isEmpty())
             logListener.value("剥壳数据:" + zm703.getDataHexString());
         if (!zm703.isStatus()) {
@@ -66,7 +66,7 @@ public class CpuReadDataListener implements DataListener {
         }
         step++;
         //判断是否是自动寻卡成功，寻卡成功数据区长度为7，总长度14，启动自动寻卡数据区长度为0，总长度为7。所以，当数据区长度为7，或者，长度为0但是总长度为14+7
-        if (step == 1 && !(zm703.getDataSize() == 7 || (zm703.getDataSize() == 0 && zm703.getSize() == 21))) {
+        if (step == 1 && !(zm703.getDataSize() == 7 || (zm703.getDataSize() == 0 && zm703.getBytes().length == 21))) {
             step = 0;
         }
         if (step == 1) {

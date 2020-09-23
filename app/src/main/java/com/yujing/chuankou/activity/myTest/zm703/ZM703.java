@@ -17,8 +17,6 @@ public class ZM703 {
     private String hexString;
     //完整bytes
     private byte[] bytes;
-    //串口返回长度
-    private int size;
     //状态，状态位第五位为FF为正确
     private boolean status;
     //状态，状态byte
@@ -33,10 +31,9 @@ public class ZM703 {
     //数据区的长度
     private int dataSize;
 
-    public ZM703(String hexString, byte[] bytes, int size) {
+    public ZM703(String hexString, byte[] bytes) {
         this.hexString = hexString;
         this.bytes = bytes;
-        this.size = size;
         init();
     }
 
@@ -95,14 +92,6 @@ public class ZM703 {
         this.bytes = bytes;
     }
 
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
-    }
-
     public String getDataHexString() {
         return dataHexString;
     }
@@ -156,7 +145,6 @@ public class ZM703 {
         return "ZM703{" +
                 "hexString='" + hexString + '\'' +
                 ", bytes=" + Arrays.toString(bytes) +
-                ", size=" + size +
                 ", status=" + status +
                 ", statusByte=" + statusByte +
                 ", statushexString='" + statushexString + '\'' +

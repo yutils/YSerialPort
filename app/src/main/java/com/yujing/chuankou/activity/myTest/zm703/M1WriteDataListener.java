@@ -87,7 +87,7 @@ public class M1WriteDataListener implements DataListener {
     @Override
     public void value(String hexString, byte[] bytes) {
         if (logListener != null) logListener.value("收到数据：" + hexString);
-        ZM703 zm703 = new ZM703(hexString, bytes, bytes.length);
+        ZM703 zm703 = new ZM703(hexString, bytes);
         if (logListener != null && zm703.getDataHexString() != null && !zm703.getDataHexString().isEmpty())
             logListener.value("剥壳数据：" + zm703.getDataHexString());
         if (!zm703.isStatus()) {

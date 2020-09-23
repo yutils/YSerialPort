@@ -74,7 +74,7 @@ public class M1ReadDataListener implements DataListener {
     @Override
     public void value(String hexString, byte[] bytes) {
         if (logListener != null) logListener.value("收到数据:" + hexString);
-        ZM703 zm703 = new ZM703(hexString, bytes, bytes.length);
+        ZM703 zm703 = new ZM703(hexString, bytes);
         if (logListener != null && zm703.getDataHexString() != null && !zm703.getDataHexString().isEmpty())
             logListener.value("剥壳数据：" + zm703.getDataHexString());
         if (!zm703.isStatus()) {
@@ -86,7 +86,7 @@ public class M1ReadDataListener implements DataListener {
         if (zm703.getDataSize() == 7) {
             if (logListener != null) logListener.value("寻卡成功");
             readM1();
-        } else if (zm703.getDataSize() == 0 && zm703.getSize() == 21) {
+        } else if (zm703.getDataSize() == 0 && zm703.getBytes().length == 21) {
             if (logListener != null) logListener.value("启动寻卡且寻卡成功");
             readM1();
         } else if (zm703.getDataSize() % 16 == 0) {//数据正好是16的倍数
