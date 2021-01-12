@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -63,13 +64,29 @@ protected void onDestroy() {
     super.onDestroy();
     ySerialPort.onDestroy();
 }
+
+//自定义组包
+ySerialPort.setInputStreamReadListener(inputStream -> {
+    // 网络传输时候，这样获取真正长度
+    int count = 0;
+    while (count == 0) {
+        count = inputStream.available();
+    }
+    byte[] bytes = new byte[count];
+    // 一定要读取count个数据，如果inputStream.read(bytes);可能读不完
+    int readCount = 0; // 已经成功读取的字节的个数
+    while (readCount < count) {
+        readCount += inputStream.read(bytes, readCount, count - readCount);
+    }
+    return bytes;
+});
  */
 @SuppressWarnings("unused")
 public class YSerialPort {
     private static String TAG = "YSerialPort";
     private OutputStream outputStream;
     private InputStream inputStream;
-    private final Handler handler = new Handler(Looper.getMainLooper());
+    private Handler handler = new Handler(Looper.getMainLooper());
     private Context context;
     private String device;//串口
     private String baudRate;//波特率
@@ -83,6 +100,7 @@ public class YSerialPort {
     private int readLength = -1;//读取长度
     private boolean noDataNotReturn = true;//无数据不返回
     private YReadInputStream readInputStream;
+    private InputStreamReadListener inputStreamReadListener;//自定义读取InputStream
     //串口类
     private SerialPort serialPort;
     //串口查找列表类
@@ -108,6 +126,8 @@ public class YSerialPort {
     private ErrorListener errorListener;
     //单例模式，全局只有一个串口通信使用
     private static YSerialPort instance;
+    //读取线程，当inputStreamReadListener 不为null时，启用
+    private ReadThread readThread;
 
     /**
      * 单例模式，调用此方法前必须先调用getInstance(String ip, int port)
@@ -184,26 +204,24 @@ public class YSerialPort {
             serialPort = buildSerialPort();
             outputStream = serialPort.getOutputStream();
             inputStream = serialPort.getInputStream();
-            readInputStream = new YReadInputStream(inputStream, bytes -> {
-                if (context instanceof Activity) {
-                    Activity activity = (Activity) context;
-                    activity.runOnUiThread(() -> {
+            if (inputStreamReadListener!=null){
+                readThread=new ReadThread();
+                readThread.start();
+            }else {
+                readInputStream = new YReadInputStream(inputStream, bytes -> {
+                    handler.post(() -> {
                         for (DataListener item : dataListeners) {
                             item.value(bytesToHexString(bytes), bytes);
                         }
                     });
-                } else {
-                    for (DataListener item : dataListeners) {
-                        item.value(bytesToHexString(bytes), bytes);
-                    }
-                }
-            });
-            readInputStream.setLengthAndTimeout(readLength, readTimeout);
-            if (maxGroupPackageTime == -1) setMaxGroupPackageTimeDefault();//设置默认组包时间
-            readInputStream.setAutoPackage(autoPackage);
-            readInputStream.setMaxGroupPackageTime(maxGroupPackageTime);
-            readInputStream.setNoDataNotReturn(noDataNotReturn);
-            readInputStream.start();
+                });
+                readInputStream.setLengthAndTimeout(readLength, readTimeout);
+                readInputStream.setAutoPackage(autoPackage);
+                if (maxGroupPackageTime == -1) setMaxGroupPackageTimeDefault();//设置默认组包时间
+                readInputStream.setMaxGroupPackageTime(maxGroupPackageTime);
+                readInputStream.setNoDataNotReturn(noDataNotReturn);
+                readInputStream.start();
+            }
         } catch (SecurityException e) {
             DisplayError("您对串行端口没有读/写权限。");
         } catch (IOException e) {
@@ -213,6 +231,22 @@ public class YSerialPort {
         }
     }
 
+    protected class ReadThread extends Thread {
+        @Override
+        public void run() {
+            while (!isInterrupted()) {
+                try {
+                    byte[] resultBytes = inputStreamReadListener.inputStreamToBytes(inputStream);
+                    handler.post(() -> {
+                        for (DataListener item : dataListeners) {
+                            item.value(bytesToHexString(resultBytes), resultBytes);
+                        }
+                    });
+                } catch (Exception ignored) {
+                }
+            }
+        }
+    }
     /**
      * 重启
      */
@@ -303,55 +337,27 @@ public class YSerialPort {
                             //回调进度
                             if (progressListener != null) {
                                 final int finalCount = count;
-                                if (context instanceof Activity) {
-                                    Activity activity = (Activity) context;
-                                    activity.runOnUiThread(() -> progressListener.value(finalCount));
-                                } else {
-                                    progressListener.value(finalCount);
-                                }
+                                handler.post(() -> progressListener.value(finalCount));
                             }
                             i++;
                         }
                     } catch (Exception e) {
                         Log.e(TAG, "发送失败", e);
-                        if (context instanceof Activity) {
-                            Activity activity = (Activity) context;
-                            if (listener != null)
-                                activity.runOnUiThread(() -> listener.value(false));
-                        } else {
-                            listener.value(false);
-                        }
+                        if (listener != null)
+                            handler.post(() -> listener.value(false));
                     }
                 }).start();
             } else {
                 outputStream.write(bytes);
-                if (progressListener != null) {
-                    if (context instanceof Activity) {
-                        Activity activity = (Activity) context;
-                        activity.runOnUiThread(() -> progressListener.value(bytes.length));
-                    } else {
-                        progressListener.value(bytes.length);
-                    }
-                }
+                if (progressListener != null)
+                    handler.post(() -> progressListener.value(bytes.length));
             }
-            if (listener != null) {
-                if (context instanceof Activity) {
-                    Activity activity = (Activity) context;
-                    activity.runOnUiThread(() -> listener.value(true));
-                } else {
-                    listener.value(true);
-                }
-            }
+            if (listener != null)
+                handler.post(() -> listener.value(true));
         } catch (Exception e) {
             Log.e(TAG, "发送失败", e);
-            if (listener != null) {
-                if (context instanceof Activity) {
-                    Activity activity = (Activity) context;
-                    activity.runOnUiThread(() -> listener.value(false));
-                } else {
-                    listener.value(false);
-                }
-            }
+            if (listener != null)
+                handler.post(() -> listener.value(false));
         }
     }
 
@@ -464,6 +470,14 @@ public class YSerialPort {
      */
     public void setBaudRate(String baudRate) {
         this.baudRate = baudRate;
+    }
+
+    /**
+     * 自定义读取InputStream
+     * @param inputStreamReadListener InputStream监听
+     */
+    public void setInputStreamReadListener(InputStreamReadListener inputStreamReadListener) {
+        this.inputStreamReadListener = inputStreamReadListener;
     }
 
     public Context getContext() {
@@ -622,11 +636,15 @@ public class YSerialPort {
             }
             if (inputStream != null) {
                 inputStream.close();
-                outputStream = null;
+                inputStream = null;
             }
             if (outputStream != null) {
                 outputStream.close();
                 outputStream = null;
+            }
+            if (readThread!=null){
+                readThread.interrupt();
+                readThread=null;
             }
         } catch (Throwable e) {
             Log.e(TAG, "stop异常", e);

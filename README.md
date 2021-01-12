@@ -36,8 +36,8 @@ allprojects {
 
 ```
 dependencies {
-       //更新地址  https://github.com/yutils/YSerialPort 建议过几天访问看下有没有新版本
-       implementation 'com.github.yutils:YSerialPort:2.1.3'
+    //更新地址  https://github.com/yutils/YSerialPort 建议过几天访问看下有没有新版本
+    implementation 'com.github.yutils:YSerialPort:2.1.3'
 }
 ```
 
@@ -53,7 +53,7 @@ dependencies {
 
 可以参考SendActivity.java 
 
-java
+**java**
 
 ```java
 //String[] device = YSerialPort.getDevices();//获取串口列表
@@ -98,7 +98,30 @@ protected void onDestroy() {
 
 ```
 
-kotlin
+**如果要自己解析inputStream，请实现此方法**  
+
+```java
+//如果要自己解析inputStream，请实现此方法
+ySerialPort.setInputStreamReadListener
+
+//举例：自定义组包
+ySerialPort.setInputStreamReadListener(inputStream -> {
+    // 网络传输时候，这样获取真正长度
+    int count = 0;
+    while (count == 0) {
+        count = inputStream.available();
+    }
+    byte[] bytes = new byte[count];
+    // 一定要读取count个数据，如果inputStream.read(bytes);可能读不完
+    int readCount = 0; // 已经成功读取的字节的个数
+    while (readCount < count) {
+        readCount += inputStream.read(bytes, readCount, count - readCount);
+    }
+    return bytes;
+});
+```
+
+**kotlin**  
 ```kotlin
 //val device = YSerialPort.getDevices()//获取串口列表
 //val baudRate = YSerialPort.getBaudRates() //获取波特率列表

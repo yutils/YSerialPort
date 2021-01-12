@@ -37,9 +37,24 @@ public class SendActivity extends BaseActivity<ActivitySendBinding> {
         binding.editText.setSelection(binding.editText.getText().length());
         binding.button.setOnClickListener(v -> sendString());
         binding.btHex.setOnClickListener(v -> sendHexString());
-
+        //初始化串口
         ySerialPort = new YSerialPort(this);
         ySerialPort.addDataListener(dataListener);
+//        //自定义组包
+//        ySerialPort.setInputStreamReadListener(inputStream -> {
+//            // 网络传输时候，这样获取真正长度
+//            int count;
+//            do {
+//                count = inputStream.available();
+//            } while (count == 0);
+//            byte[] bytes = new byte[count];
+//            // 一定要读取count个数据，如果inputStream.read(bytes);可能读不完
+//            int readCount = 0; // 已经成功读取的字节的个数
+//            while (readCount < count) {
+//                readCount += inputStream.read(bytes, readCount, count - readCount);
+//            }
+//            return bytes;
+//        });
         ySerialPort.start();
         //设置
         Setting.setting(this, binding.includeSet, () -> {
@@ -84,7 +99,7 @@ public class SendActivity extends BaseActivity<ActivitySendBinding> {
     }
 
     DataListener dataListener = (hexString, bytes) -> {
-        binding.tvResult.setText(hexString);
+        binding.tvResult.setText(binding.tvResult.getText().equals("") ? hexString : binding.tvResult.getText() + "\n" + hexString);
     };
 
     @Override
