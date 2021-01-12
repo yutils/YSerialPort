@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
+import android.os.Looper;
 import android.serialport.SerialPort;
 import android.serialport.SerialPortFinder;
 import android.util.Log;
@@ -68,7 +69,7 @@ public class YSerialPort {
     private static String TAG = "YSerialPort";
     private OutputStream outputStream;
     private InputStream inputStream;
-    private final Handler handler = new Handler();
+    private final Handler handler = new Handler(Looper.getMainLooper());
     private Context context;
     private String device;//串口
     private String baudRate;//波特率
