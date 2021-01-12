@@ -98,11 +98,11 @@ protected void onDestroy() {
 
 ```
 
-**如果要自己解析inputStream，请实现此方法**  
+**如果要自己解析inputStream，请在start()之前实现此方法**  
 
 ```java
-//如果要自己解析inputStream，请实现此方法
-ySerialPort.setInputStreamReadListener
+//如果要自己解析inputStream，请在start()之前实现此方法
+ySerialPort.setInputStreamReadListener(InputStreamReadListener inputStreamReadListener)
 
 //举例：自定义组包
 ySerialPort.setInputStreamReadListener(inputStream -> {
