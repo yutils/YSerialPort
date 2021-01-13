@@ -1,58 +1,33 @@
 package com.yujing.chuankou.base;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
-import androidx.fragment.app.Fragment;
 
-import com.yujing.chuankou.App;
-import com.yujing.utils.YToast;
+import com.yujing.base.YBaseFragment;
 
-@SuppressWarnings("unused")
-public abstract class BaseFragment<B extends ViewDataBinding> extends Fragment {
+/**
+ * 基础Fragment
+ *
+ * @author yujing 2021年1月13日17:21:58
+ */
+/* 用法举例
+public class Fragment1 extends BaseFragment<ActivityMainBinding> {
+    public Fragment1() {
+        super(R.layout.activity_main);
+    }
+    @Override
+    protected void init() {
+    }
+}
+*/
+public abstract class BaseFragment<B extends ViewDataBinding> extends YBaseFragment<B> {
     protected B binding;
 
+    public BaseFragment(int layout) {
+        super(layout);
+    }
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Integer contentViewId = getContentLayoutId();
-        if (contentViewId != null) {
-            binding = DataBindingUtil.inflate(inflater, contentViewId, container, false);
-        }
-        initData();
-        return binding == null ? null : binding.getRoot();
-    }
-
-    protected abstract Integer getContentLayoutId();
-
-    protected abstract void initData();
-
-    protected int dip2px(float dpValue) {
-        float scale = getResources().getDisplayMetrics().density;
-        return (int) (dpValue * scale + 0.5f);
-    }
-
-    protected void show(String str) {
-        YToast.show(App.getInstance(), str);
-    }
-
-    protected void startActivity(Class<?> classActivity) {
-        Intent intent = new Intent();
-        intent.setClass(getActivity(), classActivity);
-        startActivity(intent);
-    }
-
-    protected void startActivity(Class<?> classActivity, int resultCode) {
-        startActivityForResult(classActivity, resultCode);
-    }
-
-    protected void startActivityForResult(Class<?> classActivity, int resultCode) {
-        Intent intent = new Intent();
-        intent.setClass(getActivity(), classActivity);
-        startActivityForResult(intent, resultCode);
+    public void initBefore() {
+        binding = getBinding();
     }
 }

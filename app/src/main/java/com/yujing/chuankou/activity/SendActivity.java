@@ -24,13 +24,12 @@ public class SendActivity extends BaseActivity<ActivitySendBinding> {
     final String SEND_STRING = "SEND_STRING";
     final String SEND_HEX = "SEND_HEX";
 
-    @Override
-    protected Integer getContentLayoutId() {
-        return R.layout.activity_send;
+    public SendActivity() {
+        super(R.layout.activity_send);
     }
 
     @Override
-    protected void initData() {
+    protected void init() {
         //上次使用的数据
         binding.editText.setText(YSharedPreferencesUtils.get(this, SEND_STRING));
         binding.etHex.setText(YSharedPreferencesUtils.get(this, SEND_HEX));
@@ -103,7 +102,7 @@ public class SendActivity extends BaseActivity<ActivitySendBinding> {
     };
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         ySerialPort.onDestroy();
     }

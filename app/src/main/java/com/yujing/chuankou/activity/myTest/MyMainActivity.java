@@ -7,12 +7,11 @@ import com.yujing.chuankou.base.BaseActivity;
 import com.yujing.chuankou.databinding.ActivityMyMainBinding;
 
 public class MyMainActivity extends BaseActivity<ActivityMyMainBinding> {
-    @Override
-    protected Integer getContentLayoutId() {
-        return R.layout.activity_my_main;
+    public MyMainActivity() {
+        super(R.layout.activity_my_main);
     }
     @Override
-    protected void initData() {
+    protected void init() {
         binding.ButtonQuit.setOnClickListener(v -> finish());
         binding.btTest.setOnClickListener(v -> startActivity(TestActivity.class));
         binding.btZM703M1.setOnClickListener(v -> startActivity(ZM703CardM1Activity.class));

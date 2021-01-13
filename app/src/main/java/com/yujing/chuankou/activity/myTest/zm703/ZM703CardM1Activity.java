@@ -23,13 +23,12 @@ import java.util.Arrays;
 public class ZM703CardM1Activity extends BaseActivity<ActivityZm703M1Binding> {
     YSerialPort ySerialPort;
 
-    @Override
-    protected Integer getContentLayoutId() {
-        return R.layout.activity_zm703_m1;
+    public ZM703CardM1Activity() {
+        super(R.layout.activity_zm703_m1);
     }
 
     @Override
-    protected void initData() {
+    protected void init() {
         ySerialPort = new YSerialPort(this);
         ySerialPort.clearDataListener();
         ySerialPort.start();
@@ -157,10 +156,9 @@ public class ZM703CardM1Activity extends BaseActivity<ActivityZm703M1Binding> {
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         ySerialPort.onDestroy();
         super.onDestroy();
     }
-
 }
 

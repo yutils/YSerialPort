@@ -20,13 +20,11 @@ public class ZM703CardCPUActivity extends BaseActivity<ActivityZm703CpuBinding> 
     YSerialPort ySerialPort;
     CpuReadDataListener cpuDataListener;
 
-    @Override
-    protected Integer getContentLayoutId() {
-        return R.layout.activity_zm703_cpu;
+    public ZM703CardCPUActivity() {
+        super(R.layout.activity_zm703_cpu);
     }
-
     @Override
-    protected void initData() {
+    protected void init() {
         ySerialPort = new YSerialPort(this);
         ySerialPort.clearDataListener();
         ySerialPort.start();
@@ -63,7 +61,7 @@ public class ZM703CardCPUActivity extends BaseActivity<ActivityZm703CpuBinding> 
 
     //退出注销
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         ySerialPort.onDestroy();
         super.onDestroy();
     }

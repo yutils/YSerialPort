@@ -45,13 +45,12 @@ public class TestActivity extends BaseActivity<ActivityTestBinding> {
     final String SEND_STRING = "SEND_STRING";
     final String SEND_HEX = "SEND_HEX";
 
-    @Override
-    protected Integer getContentLayoutId() {
-        return R.layout.activity_test;
+    public TestActivity() {
+        super(R.layout.activity_test);
     }
 
     @Override
-    protected void initData() {
+    protected void init() {
         //上次使用的数据
         binding.editText.setText(YSharedPreferencesUtils.get(this, SEND_STRING));
         binding.etHex.setText(YSharedPreferencesUtils.get(this, SEND_HEX));
@@ -115,7 +114,7 @@ public class TestActivity extends BaseActivity<ActivityTestBinding> {
 
     //回调监听
     DataListener dataListener = (hexString, bytes) -> {
-        binding.tvResult.setText(hexString);
+        binding.tvResult.setText(binding.tvResult.getText().equals("") ? hexString : binding.tvResult.getText() + "\n" + hexString);
     };
 
     /**
@@ -418,7 +417,7 @@ public class TestActivity extends BaseActivity<ActivityTestBinding> {
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         ySerialPort.onDestroy();
     }

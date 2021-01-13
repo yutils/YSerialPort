@@ -3,6 +3,7 @@ package com.yujing.chuankou;
 import android.app.Application;
 import android.util.Log;
 
+import com.yujing.utils.YApp;
 import com.yujing.ycrash.YCrash;
 
 
