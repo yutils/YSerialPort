@@ -29,11 +29,11 @@
             android:name=".activity.myTest.TestActivity"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity
-            android:name=".activity.myTest.zm703.ZM703CardM1Activity"
+            android:name=".activity.myTest.ZM703CardM1Activity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity
-            android:name=".activity.myTest.zm703.ZM703CardCPUActivity"
+            android:name=".activity.myTest.ZM703CardCPUActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity android:name=".activity.myTest.MyMainActivity" />

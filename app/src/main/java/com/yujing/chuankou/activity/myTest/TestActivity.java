@@ -8,10 +8,10 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.yujing.chuankou.R;
-import com.yujing.chuankou.activity.myTest.zm703.SerialM1;
-import com.yujing.chuankou.activity.myTest.zm703.ZM703;
+import com.hn.utils.zm703.SerialM1;
+import com.hn.utils.zm703.ZM703;
 import com.yujing.chuankou.base.BaseActivity;
-import com.yujing.chuankou.databinding.ActivityTestBinding;
+import com.yujing.chuankou.databinding.ActivityTestAllBinding;
 import com.yujing.chuankou.utils.DY;
 import com.yujing.chuankou.utils.Setting;
 import com.yujing.utils.YBytes;
@@ -38,7 +38,7 @@ import java.util.List;
  * @author yujing
  * 2019年12月12日09:57:41
  */
-public class TestActivity extends BaseActivity<ActivityTestBinding> {
+public class TestActivity extends BaseActivity<ActivityTestAllBinding> {
     YSerialPort ySerialPort;
     final String 读取电子秤ID = "0252445801EF0D";
     final String 读取电子秤重量 = "0252445301EA0D";
@@ -46,7 +46,7 @@ public class TestActivity extends BaseActivity<ActivityTestBinding> {
     final String SEND_HEX = "SEND_HEX";
 
     public TestActivity() {
-        super(R.layout.activity_test);
+        super(R.layout.activity_test_all);
     }
 
     @Override

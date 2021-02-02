@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion = '29.0.3'
+    compileSdkVersion 30
+    buildToolsVersion = '30.0.2'
     defaultConfig {
         applicationId "com.yujing.chuankou"
         minSdkVersion 22
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 13
         versionName "2.1.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -78,6 +78,7 @@ android {
 }
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.aar'])
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     testImplementation 'junit:junit:4.13.1'
@@ -88,7 +89,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
-    implementation 'com.github.yutils:yutils:1.3.1'
+    implementation 'com.github.yutils:yutils:1.3.2'
     implementation 'com.github.yutils:ycrash:1.0.3'
     implementation 'com.github.yutils:yhttp:1.0.7'
 
@@ -105,4 +106,7 @@ dependencies {
     // https://mvnrepository.com/artifact/com.blankj/rxbus
     implementation group: 'com.blankj', name: 'rxbus', version: '1.6'
     //____________________________________________________________RxJava____________________________________________________________
+
+    //https://github.com/Blankj/AndroidUtilCode/blob/master/lib/utilcode/README-CN.md
+    implementation 'com.blankj:utilcodex:1.30.5'
 }

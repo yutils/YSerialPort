@@ -7,6 +7,11 @@
     <color name="background">#F0F0F0</color>
     <!-- 标题颜色 -->
     <color name="title">@color/blue_light_E</color>
+    <!-- 白色 -->
+    <color name="white">#FFFFFF</color>
+    <!-- 黑色 -->
+    <color name="black">#000000</color>
+
     <!-- 分割线条颜色 -->
     <color name="division1">#004C66</color>
     <color name="division2">#003344</color>
@@ -135,10 +140,6 @@
     <color name="gray_6">#666666</color>
     <color name="gray_4">#444444</color>
     <color name="gray_2">#222222</color>
-    <!-- 白色 -->
-    <color name="white">#FFFFFF</color>
-    <!-- 黑色 -->
-    <color name="black">#000000</color>
     <!-- 透明 -->
     <color name="trans">#0000</color>
     <!-- 淡蓝 -->

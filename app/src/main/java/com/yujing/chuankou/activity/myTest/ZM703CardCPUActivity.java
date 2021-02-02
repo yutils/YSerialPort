@@ -1,8 +1,9 @@
 
-package com.yujing.chuankou.activity.myTest.zm703;
+package com.yujing.chuankou.activity.myTest;
 
 import android.annotation.SuppressLint;
 
+import com.hn.utils.zm703.CpuReadDataListener;
 import com.yujing.chuankou.R;
 import com.yujing.chuankou.base.BaseActivity;
 import com.yujing.chuankou.databinding.ActivityZm703CpuBinding;

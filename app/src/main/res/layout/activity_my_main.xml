@@ -69,6 +69,20 @@
                 android:text="ZM703读卡器——CPU"
                 android:textColor="@color/white" />
 
+            <TextView
+                android:id="@+id/bt_other"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/bt_click"
+                android:gravity="center"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="其他"
+                android:textColor="@color/white" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/ButtonQuit"
                 android:layout_width="fill_parent"
