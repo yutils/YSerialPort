@@ -35,9 +35,5 @@ public class App extends Application {
         //作者的测试
         HnUtils.Companion.init(this);
         HnUtils.Companion.initDevice();
-        //打开日志保存
-        YLog.saveOpen(YPath.getFilePath(this, "log"));
-        //保存最近30天日志
-        YLog.delDaysAgo(30);
     }
 }
