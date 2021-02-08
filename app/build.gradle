@@ -100,7 +100,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.3.0'
 
     //implementation 'com.github.yutils:YSerialPort:2.1.3'
-    implementation 'com.github.yutils:yutils:1.3.5'
+    implementation 'com.github.yutils:yutils:1.3.6'
     implementation 'com.github.yutils:ycrash:1.0.3'
     implementation 'com.github.yutils:yhttp:1.0.7'
     implementation project(':yserialport')
