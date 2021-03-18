@@ -1,15 +1,13 @@
 buildscript {
-    ext.kotlin_version = "1.4.30"
+    ext.kotlin_version = "1.4.31"
     repositories {
+        maven { url 'https://maven.aliyun.com/repository/central' }
+        maven { url 'https://maven.aliyun.com/repository/public' }
         maven { url 'https://maven.aliyun.com/repository/google' }
-        maven { url 'https://maven.aliyun.com/repository/jcenter' }
-        maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
         maven { url 'https://jitpack.io' }
         google()
         jcenter()
-//        maven { url 'http://central.maven.org/maven2/' }
-//        maven { url 'https://maven.google.com' }
-//        maven { url 'https://dl.google.com/dl/android/maven2/' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.2'
@@ -20,15 +18,13 @@ buildscript {
 
 allprojects {
     repositories {
+        maven { url 'https://maven.aliyun.com/repository/central' }
+        maven { url 'https://maven.aliyun.com/repository/public' }
         maven { url 'https://maven.aliyun.com/repository/google' }
-        maven { url 'https://maven.aliyun.com/repository/jcenter' }
-        maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
         maven { url 'https://jitpack.io' }
         google()
         jcenter()
-//        maven { url 'http://central.maven.org/maven2/' }
-//        maven { url 'https://maven.google.com' }
-//        maven { url 'https://dl.google.com/dl/android/maven2/' }
     }
 }
 

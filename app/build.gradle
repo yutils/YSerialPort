@@ -6,7 +6,7 @@ plugins {
 }
 android {
     compileSdkVersion 30
-    buildToolsVersion = '30.0.2'
+    buildToolsVersion = '30.0.3'
     defaultConfig {
         applicationId "com.yujing.chuankou"
         minSdkVersion 22
@@ -94,13 +94,13 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.aar'])
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test:runner:1.3.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.google.android.material:material:1.3.0'
 
     //implementation 'com.github.yutils:YSerialPort:2.1.3'
-    implementation 'com.github.yutils:yutils:1.3.6'
+    implementation 'com.github.yutils:yutils:1.4.2'
     implementation 'com.github.yutils:ycrash:1.0.3'
     implementation 'com.github.yutils:yhttp:1.0.7'
     implementation project(':yserialport')
