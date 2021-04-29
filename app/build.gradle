@@ -11,8 +11,8 @@ android {
         applicationId "com.yujing.chuankou"
         minSdkVersion 22
         targetSdkVersion 30
-        versionCode 13
-        versionName "2.1.3"
+        versionCode 14
+        versionName "2.1.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     //签名
@@ -100,9 +100,9 @@ dependencies {
     implementation 'com.google.android.material:material:1.3.0'
 
     //implementation 'com.github.yutils:YSerialPort:2.1.3'
-    implementation 'com.github.yutils:yutils:1.4.2'
+    implementation 'com.github.yutils:yutils:1.4.7'
     implementation 'com.github.yutils:ycrash:1.0.3'
-    implementation 'com.github.yutils:yhttp:1.0.7'
+    implementation 'com.github.yutils:yhttp:1.0.8'
     implementation project(':yserialport')
 
     //gson  <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
@@ -122,5 +122,5 @@ dependencies {
     //____________________________________________________________RxJava____________________________________________________________
 
     //https://github.com/Blankj/AndroidUtilCode/blob/master/lib/utilcode/README-CN.md
-    implementation 'com.blankj:utilcodex:1.30.5'
+    implementation 'com.blankj:utilcodex:1.30.6'
 }

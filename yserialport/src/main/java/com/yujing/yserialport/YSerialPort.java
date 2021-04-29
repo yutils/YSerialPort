@@ -17,7 +17,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -204,10 +203,10 @@ public class YSerialPort {
             serialPort = buildSerialPort();
             outputStream = serialPort.getOutputStream();
             inputStream = serialPort.getInputStream();
-            if (inputStreamReadListener!=null){
-                readThread=new ReadThread();
+            if (inputStreamReadListener != null) {
+                readThread = new ReadThread();
                 readThread.start();
-            }else {
+            } else {
                 readInputStream = new YReadInputStream(inputStream, bytes -> {
                     handler.post(() -> {
                         for (DataListener item : dataListeners) {
@@ -247,6 +246,7 @@ public class YSerialPort {
             }
         }
     }
+
     /**
      * 重启
      */
@@ -313,53 +313,54 @@ public class YSerialPort {
      * @param progressListener 进度监听，返回已经发送长度
      */
     public void send(final byte[] bytes, final YListener<Boolean> listener, final YListener<Integer> progressListener) {
+        new Thread(() -> {
+            boolean result = sendSynchronization(bytes, progressListener);
+            if (listener != null)
+                handler.post(() -> listener.value(result));
+        }).start();
+    }
+
+    /**
+     * 同步发送
+     *
+     * @param bytes 数据
+     * @return 是否成功
+     */
+    public boolean sendSynchronization(final byte[] bytes) {
+        return sendSynchronization(bytes, null);
+    }
+
+    /**
+     * 同步发送
+     *
+     * @param bytes            数据
+     * @param progressListener 进度
+     * @return 是否成功
+     */
+    public boolean sendSynchronization(final byte[] bytes, final YListener<Integer> progressListener) {
         try {
             if (serialPort != null) outputStream = serialPort.getOutputStream();
             final int sendLength = 1024;//每次写入长度
-            if (bytes.length > sendLength) {
-                new Thread(() -> {
-                    try {
-                        int i = 0;//第几次写入
-                        int count = 0;//统计已经发送长度
-                        while (true) {
-                            //剩余长度
-                            int sy = bytes.length - (i * sendLength);
-                            //如果剩余长度小于等于0，说明发送完成
-                            if (sy <= 0) break;
-                            //如果剩余长度大于每次写入长度，就写入对应长度，如果不大于就写入剩余长度
-                            byte[] current = new byte[Math.min(sy, sendLength)];
-                            //数组copy
-                            System.arraycopy(bytes, i * sendLength, current, 0, current.length);
-                            //写入
-                            outputStream.write(current);
-                            //统计已经发送长度
-                            count += current.length;
-                            //回调进度
-                            if (progressListener != null) {
-                                final int finalCount = count;
-                                handler.post(() -> progressListener.value(finalCount));
-                            }
-                            i++;
-                        }
-                    } catch (Exception e) {
-                        Log.e(TAG, "发送失败", e);
-                        if (listener != null)
-                            handler.post(() -> listener.value(false));
-                    }
-                }).start();
-            } else {
-                outputStream.write(bytes);
-                if (progressListener != null)
-                    handler.post(() -> progressListener.value(bytes.length));
+            int count = 0;//统计已经发送长度
+            //数据拆分
+            List<byte[]> list = YBytes.split(bytes, sendLength);
+            for (byte[] item : list) {
+                //写入
+                outputStream.write(item);
+                count += item.length;
+                //回调进度
+                if (progressListener != null) {
+                    final int finalCount = count;
+                    handler.post(() -> progressListener.value(finalCount));
+                }
             }
-            if (listener != null)
-                handler.post(() -> listener.value(true));
+            return true;
         } catch (Exception e) {
             Log.e(TAG, "发送失败", e);
-            if (listener != null)
-                handler.post(() -> listener.value(false));
+            return false;
         }
     }
+
 
     //保存串口
     public static void saveDevice(Context context, String device) {
@@ -474,6 +475,7 @@ public class YSerialPort {
 
     /**
      * 自定义读取InputStream
+     *
      * @param inputStreamReadListener InputStream监听
      */
     public void setInputStreamReadListener(InputStreamReadListener inputStreamReadListener) {
@@ -642,9 +644,9 @@ public class YSerialPort {
                 outputStream.close();
                 outputStream = null;
             }
-            if (readThread!=null){
+            if (readThread != null) {
                 readThread.interrupt();
-                readThread=null;
+                readThread = null;
             }
         } catch (Throwable e) {
             Log.e(TAG, "stop异常", e);

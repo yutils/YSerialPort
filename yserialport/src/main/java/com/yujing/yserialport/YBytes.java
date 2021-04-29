@@ -1,5 +1,6 @@
 package com.yujing.yserialport;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -228,6 +229,42 @@ public class YBytes {
      */
     public void setBytes(byte[] bytes) {
         this.bytes = bytes;
+    }
+
+    /**
+     * 拆分byte数组为多个byte数组
+     *
+     * @param length 每组最大长度
+     * @return 最终拆分的数据
+     */
+    public static List<byte[]> split(byte[] bytes, int length) {
+        List<byte[]> list = new ArrayList<>();
+        int count = 0;//统计已经发送长度
+        while (true) {
+            //剩余长度
+            int sy = bytes.length - count;
+            //如果剩余长度小于等于0，说明发送完成
+            if (sy <= 0) break;
+            //如果剩余长度大于每次写入长度，就写入对应长度，如果不大于就写入剩余长度
+            byte[] current = new byte[Math.min(sy, length)];
+            //数组copy
+            System.arraycopy(bytes, count, current, 0, current.length);
+            //写入
+            list.add(current);
+            //统计已经发送长度
+            count += current.length;
+        }
+        return list;
+    }
+
+    /**
+     * 拆分byte数组为多个byte数组
+     *
+     * @param length 每组最大长度
+     * @return 最终拆分的数据
+     */
+    public List<byte[]> split(int length) {
+        return split(bytes, length);
     }
 
     /**
