@@ -234,6 +234,7 @@ public class YBytes {
     /**
      * 拆分byte数组为多个byte数组
      *
+     * @param bytes  需要拆分的数组
      * @param length 每组最大长度
      * @return 最终拆分的数据
      */
