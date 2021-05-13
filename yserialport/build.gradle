@@ -1,5 +1,11 @@
-apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'kotlin-parcelize'
+    id 'com.github.dcendents.android-maven'
+    id 'maven-publish'
+}
 group='com.github.yu1441'//github地址
 android {
     compileSdkVersion 30
@@ -11,8 +17,8 @@ android {
     defaultConfig {
         minSdkVersion 22
         targetSdkVersion 30
-        versionCode 14
-        versionName "2.1.4"
+        versionCode 15
+        versionName "2.1.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
     }
@@ -34,4 +40,89 @@ dependencies {
     //源码：https://github.com/licheedev/Android-SerialPort-API
     api 'com.licheedev:android-serialport:2.1.2'
 }
-apply from: 'toJar.gradle'
+
+//打包jar;doc;sources，请在Terminal中运行：gradlew makeJar，如果失败，先执行：gradlew assembleDebug --rerun-tasks
+def lib_name = 'yserialport'
+def lib_version = '2.1.5'
+def jarName = lib_name +"-"+ lib_version
+task makeJar(type: Copy) {
+    group = 'jar'
+    //删除存在的
+    delete 'build/libs/' + jarName + ".jar"
+    //设置拷贝的文件
+    from("build/intermediates/aar_main_jar/release")
+    //打进jar包后的文件目录,将classes.jar放入build/libs/目录下
+    into('build/libs/')
+    //要打包的jar文件
+    include('classes.jar')
+    //重命名
+    rename('classes.jar', jarName + ".jar")
+}
+//buid之后执行
+makeJar.dependsOn(build)
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+//生成源码
+task generateSourcesJar(type: Jar) {
+    group = 'jar'
+    if (project.hasProperty("kotlin")) {
+        from android.sourceSets.main.java.getSrcDirs()
+    } else if (project.hasProperty("android")) {
+        from android.sourceSets.main.java.sourceFiles
+    } else {
+        println project
+        from sourceSets.main.allSource
+    }
+    classifier = 'sources'
+    archiveName = jarName + '-sources.jar'
+}
+
+//加入到build
+artifacts {
+    archives generateSourcesJar
+    //archives generateJavadoc
+}
+
+
+//生成pom,先build再点击Gradle/publishing/publish  ，命令： gradlew publish
+def GROUP_ID = 'com.github.yutils'
+def ARTIFACT_ID = lib_name
+def VERSION_NAME = lib_version
+
+publishing {
+    publications {
+        aar_pub(MavenPublication) {
+            groupId = GROUP_ID
+            artifactId = ARTIFACT_ID
+            version = VERSION_NAME
+            artifact("$buildDir/outputs/aar/${project.getName()}-release.aar")
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+                configurations.implementation.allDependencies.withType(ModuleDependency) { ModuleDependency dp ->
+                    if (dp.version != "unspecified") { // 过滤项目内library引用
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', dp.group)
+                        dependencyNode.appendNode('artifactId', dp.name)
+                        dependencyNode.appendNode('version', dp.version)
+                        // for exclusions
+                        if (dp.excludeRules.size() > 0) {
+                            def exclusions = dependencyNode.appendNode('exclusions')
+                            dp.excludeRules.each { ExcludeRule ex ->
+                                def exclusion = exclusions.appendNode('exclusion')
+                                exclusion.appendNode('groupId', ex.group)
+                                exclusion.appendNode('artifactId', ex.module)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            url "$buildDir/repository"
+        }
+    }
+}

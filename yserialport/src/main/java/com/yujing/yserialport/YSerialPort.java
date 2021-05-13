@@ -548,10 +548,11 @@ public class YSerialPort {
         return serialPort.getInputStream();
     }
 
-    private void setMaxGroupPackageTimeDefault() {
+    public void setMaxGroupPackageTimeDefault() {
         if (baudRate != null) {
             int intBaudRate = Integer.parseInt(baudRate);
             maxGroupPackageTime = Math.round((5f / (intBaudRate / 115200f)) + 0.4999f);//向上取整
+            setAutoPackage(true);
         }
     }
 
