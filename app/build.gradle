@@ -11,8 +11,8 @@ android {
         applicationId "com.yujing.chuankou"
         minSdkVersion 22
         targetSdkVersion 30
-        versionCode 15
-        versionName "2.1.5"
+        versionCode 16
+        versionName "2.1.6"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         //bugly
         ndk{
@@ -110,8 +110,8 @@ dependencies {
 
     implementation 'androidx.recyclerview:recyclerview:1.2.0'
 
-    //implementation 'com.github.yutils:YSerialPort:2.1.4'
-    implementation 'com.github.yutils:yutils:1.5.1'
+    //implementation 'com.github.yutils:YSerialPort:2.1.5'
+    implementation 'com.github.yutils:yutils:1.5.2'
     implementation 'com.github.yutils:yhttp:1.0.8'
     implementation project(':yserialport')
 

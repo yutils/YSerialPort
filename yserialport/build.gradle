@@ -17,8 +17,8 @@ android {
     defaultConfig {
         minSdkVersion 22
         targetSdkVersion 30
-        versionCode 15
-        versionName "2.1.5"
+        versionCode 16
+        versionName "2.1.6"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
     }
@@ -43,7 +43,7 @@ dependencies {
 
 //打包jar;doc;sources，请在Terminal中运行：gradlew makeJar，如果失败，先执行：gradlew assembleDebug --rerun-tasks
 def lib_name = 'yserialport'
-def lib_version = '2.1.5'
+def lib_version = '2.1.6'
 def jarName = lib_name +"-"+ lib_version
 task makeJar(type: Copy) {
     group = 'jar'
@@ -84,7 +84,6 @@ artifacts {
     archives generateSourcesJar
     //archives generateJavadoc
 }
-
 
 //生成pom,先build再点击Gradle/publishing/publish  ，命令： gradlew publish
 def GROUP_ID = 'com.github.yutils'

@@ -74,7 +74,7 @@ public class SendActivity extends BaseActivity<ActivitySendBinding> {
         binding.tvResult.setText("");
         ySerialPort.clearDataListener();
         ySerialPort.addDataListener(dataListener);
-        YLog.e(ySerialPort.getDevice() + " " + ySerialPort.getBaudRate() + " " + str);
+        YLog.i(ySerialPort.getDevice() + " " + ySerialPort.getBaudRate() + " " + str);
         binding.etHex.setText(str);
         ySerialPort.send(YConvert.hexStringToByte(str));
         //保存数据，下次打开页面直接填写历史记录
