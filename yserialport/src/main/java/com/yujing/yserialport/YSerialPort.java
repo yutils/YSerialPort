@@ -189,6 +189,14 @@ public class YSerialPort {
      * 开始读取串口
      */
     public void start() {
+        start(null);
+    }
+
+    /**
+     * 开始读取串口
+     * @param sp 外部传入SerialPort
+     */
+    public void start(SerialPort sp) {
         if (readInputStream != null) {
             readInputStream.stop();
         }
@@ -197,7 +205,7 @@ public class YSerialPort {
             serialPort = null;
         }
         try {
-            serialPort = buildSerialPort();
+            serialPort = sp != null ? sp : buildSerialPort();
             outputStream = serialPort.getOutputStream();
             inputStream = serialPort.getInputStream();
             if (inputStreamReadListener != null) {
