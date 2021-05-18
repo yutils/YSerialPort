@@ -37,7 +37,7 @@ allprojects {
 ```
 dependencies {
     //更新地址  https://github.com/yutils/YSerialPort 建议过几天访问看下有没有新版本
-    implementation 'com.github.yutils:YSerialPort:2.1.6'
+    implementation 'com.github.yutils:YSerialPort:2.1.7'
 }
 ```
 
@@ -106,17 +106,14 @@ ySerialPort.setInputStreamReadListener(InputStreamReadListener inputStreamReadLi
 
 //举例：自定义组包
 ySerialPort.setInputStreamReadListener(inputStream -> {
-    // 网络传输时候，这样获取真正长度
     int count = 0;
-    while (count == 0) {
+    while (count == 0)
         count = inputStream.available();
-    }
     byte[] bytes = new byte[count];
-    // 一定要读取count个数据，如果inputStream.read(bytes);可能读不完
-    int readCount = 0; // 已经成功读取的字节的个数
-    while (readCount < count) {
+    //readCount，已经成功读取的字节的个数，这儿需读取count个数据，不够则循环读取，如果采用inputStream.read(bytes);可能读不完
+    int readCount = 0;
+    while (readCount < count)
         readCount += inputStream.read(bytes, readCount, count - readCount);
-    }
     return bytes;
 });
 ```

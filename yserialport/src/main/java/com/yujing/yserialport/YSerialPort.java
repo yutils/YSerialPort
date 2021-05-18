@@ -66,17 +66,14 @@ protected void onDestroy() {
 
 //自定义组包
 ySerialPort.setInputStreamReadListener(inputStream -> {
-    // 网络传输时候，这样获取真正长度
     int count = 0;
-    while (count == 0) {
+    while (count == 0)
         count = inputStream.available();
-    }
     byte[] bytes = new byte[count];
-    // 一定要读取count个数据，如果inputStream.read(bytes);可能读不完
-    int readCount = 0; // 已经成功读取的字节的个数
-    while (readCount < count) {
+    //readCount，已经成功读取的字节的个数，这儿需读取count个数据，不够则循环读取，如果采用inputStream.read(bytes);可能读不完
+    int readCount = 0;
+    while (readCount < count)
         readCount += inputStream.read(bytes, readCount, count - readCount);
-    }
     return bytes;
 });
  */
@@ -551,7 +548,7 @@ public class YSerialPort {
     public void setMaxGroupPackageTimeDefault() {
         if (baudRate != null) {
             int intBaudRate = Integer.parseInt(baudRate);
-            maxGroupPackageTime = Math.round((5f / (intBaudRate / 115200f)) + 0.4999f);//向上取整
+            maxGroupPackageTime = Math.round(10f + (2f / (intBaudRate / 115200f)) + 0.499999999f);//向上取整
             setAutoPackage(true);
         }
     }

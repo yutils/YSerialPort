@@ -10,6 +10,7 @@ import com.yujing.utils.YLog;
 import com.yujing.utils.YSharedPreferencesUtils;
 import com.yujing.utils.YToast;
 import com.yujing.yserialport.DataListener;
+import com.yujing.yserialport.YReadInputStream;
 import com.yujing.yserialport.YSerialPort;
 
 import java.nio.charset.Charset;
@@ -30,6 +31,9 @@ public class SendActivity extends BaseActivity<ActivitySendBinding> {
 
     @Override
     protected void init() {
+        YReadInputStream.setShowLog(true);
+        //非阻塞读取线程，轮询不休息，将增加cpu消耗
+        YReadInputStream.setSleep(false);
         //上次使用的数据
         binding.editText.setText(YSharedPreferencesUtils.get(this, SEND_STRING));
         binding.etHex.setText(YSharedPreferencesUtils.get(this, SEND_HEX));
@@ -39,19 +43,16 @@ public class SendActivity extends BaseActivity<ActivitySendBinding> {
         //初始化串口
         ySerialPort = new YSerialPort(this);
         ySerialPort.addDataListener(dataListener);
-//        //自定义组包
+//      自定义组包
 //        ySerialPort.setInputStreamReadListener(inputStream -> {
-//            // 网络传输时候，这样获取真正长度
-//            int count;
-//            do {
+//            int count = 0;
+//            while (count == 0)
 //                count = inputStream.available();
-//            } while (count == 0);
 //            byte[] bytes = new byte[count];
-//            // 一定要读取count个数据，如果inputStream.read(bytes);可能读不完
-//            int readCount = 0; // 已经成功读取的字节的个数
-//            while (readCount < count) {
+//            //readCount，已经成功读取的字节的个数，这儿需读取count个数据，不够则循环读取，如果采用inputStream.read(bytes);可能读不完
+//            int readCount = 0;
+//            while (readCount < count)
 //                readCount += inputStream.read(bytes, readCount, count - readCount);
-//            }
 //            return bytes;
 //        });
         ySerialPort.start();
@@ -74,7 +75,7 @@ public class SendActivity extends BaseActivity<ActivitySendBinding> {
         binding.tvResult.setText("");
         ySerialPort.clearDataListener();
         ySerialPort.addDataListener(dataListener);
-        YLog.i(ySerialPort.getDevice() + " " + ySerialPort.getBaudRate() + " " + str);
+        YLog.i("发送串口："+ySerialPort.getDevice() + "\t\t波特率：" + ySerialPort.getBaudRate() + "\t\t内容：" + str);
         binding.etHex.setText(str);
         ySerialPort.send(YConvert.hexStringToByte(str));
         //保存数据，下次打开页面直接填写历史记录

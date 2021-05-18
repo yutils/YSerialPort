@@ -9,19 +9,20 @@ import java.io.InputStream;
 /**
  * 读取InputStream
  *
- * @author yujing 2020年9月22日17:27:55
+ * @author yujing  2021年5月18日14:03:25
  */
-
 public class YReadInputStream {
     private static final String TAG = "YRead";
     private static boolean showLog = false;
+    //轮询时候，是否休息1毫秒。inputStream.available()，如果不休息将会增加CPU功耗。
+    private static boolean sleep = true;
     private InputStream inputStream;
     private YListener<byte[]> readListener;
     private ReadThread readThread;
     private boolean autoPackage = true;//自动组包
     private int maxGroupPackageTime = 1;//组包时间差，毫秒
     private int readLength = -1;//读取长度
-    private int readTimeout = -1;//读取超时时间
+    private int readTimeout = -1;//读取超时时间，大于0时候生效
     private boolean noDataNotReturn = true;//无数据不返回
 
     public YReadInputStream(InputStream inputStream, YListener<byte[]> readListener) {
@@ -46,13 +47,14 @@ public class YReadInputStream {
         @Override
         public void run() {
             log("开启一个读取线程");
-            while (!Thread.currentThread().isInterrupted()) {
+            while (!this.isInterrupted()) {
                 try {
                     //如果可读取消息为0，就不继续。防止InputStream.read阻塞
                     if (inputStream.available() == 0) {
-                        SystemClock.sleep(1);//休息1毫秒
+                        if (sleep) SystemClock.sleep(1);//休息1毫秒
                         continue;
                     }
+                    //如果读取到了数据，而且readListener不为空
                     if (readListener != null) {
                         byte[] bytes = (!autoPackage && readTimeout > 0 && readLength > 0) ?
                                 read(inputStream, readTimeout, readLength).getBytes() :
@@ -84,6 +86,13 @@ public class YReadInputStream {
         YReadInputStream.showLog = showLog;
     }
 
+    public static boolean isSleep() {
+        return sleep;
+    }
+
+    public static void setSleep(boolean sleep) {
+        YReadInputStream.sleep = sleep;
+    }
 
     public void setLengthAndTimeout(int readLength, int readTimeout) {
         this.readLength = readLength;
@@ -116,40 +125,35 @@ public class YReadInputStream {
     //★★★★★★★★★★★★★★★★★★★★★★★★★★★★★读流操作★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 
     /**
-     * 读取inputStream数据到 YBytes 每次组包时间不大于 groupPackageTime，如果groupPackageTime内有数据，继续组包，否则理解返回
+     * 读取inputStream数据到YBytes,一直不停组包，直到连续timeOut时间内都没数据，就返回
      *
-     * @param inputStream         inputStream
-     * @param maxGroupPackageTime 每次组包间隔不大于groupPackageTime
+     * @param inputStream inputStream
+     * @param timeOut     每次组包间隔不大于timeOut
      * @return YBytes
      * @throws IOException IO异常
      */
-    public static YBytes read(InputStream inputStream, int maxGroupPackageTime) throws IOException {
+    public static YBytes read(InputStream inputStream, int timeOut) throws IOException {
         final YBytes bytes = new YBytes();
-        final long startTime = System.currentTimeMillis();
+        long startTime = System.currentTimeMillis();//开始时间
+        long runTime;//运行时间
         int i = 0;//第几次组包
-        int available = inputStream.available();// 可读取多少字节内容
-        int packageTime = 0;//每次组包时间间隔
+        int count = inputStream.available();// 可读取多少字节内容
         do {
             byte[] newBytes = new byte[1024];
-            int newSize = inputStream.read(newBytes, 0, available);
+            int newSize = inputStream.read(newBytes, 0, count);
             if (newSize > 0) {
                 bytes.addByte(newBytes, newSize);
-                log("第" + (++i) + "次组包后长度：" + bytes.getBytes().length + "，\t组包间隔：" + (packageTime) + "，\t最大间隔：" + (maxGroupPackageTime) + "ms，\t已耗时：" + (System.currentTimeMillis() - startTime));
+                log("第" + (++i) + "次组包后长度：" + bytes.getBytes().length + "，\t已耗时：" + (System.currentTimeMillis() - startTime));
             }
-            SystemClock.sleep(1);//休息1毫秒
-            available = inputStream.available();// 可读取多少字节内容
-            packageTime = 1;//组包时间间隔1ms
-            //如果读取长度为0，那么休息1毫秒继续读取，如果在groupPackageTime时间内都没有数据，那么就退出循环
-            if (available == 0) {
-                for (int j = 0; j <= maxGroupPackageTime; j++) {
-                    SystemClock.sleep(1);//休息1毫秒
-                    packageTime++;//组包时间间隔+1ms
-                    available = inputStream.available();// 可读取多少字节内容
-                    if (available != 0) break;//如果读取到数据立即关闭循环
-                }
+            if (sleep) SystemClock.sleep(1);
+            count = inputStream.available();
+            runTime = System.currentTimeMillis();
+            //如果读取长度为0，那么休息1毫秒继续读取，如果在timeOut时间内都没有数据，那么就退出循环
+            while (count == 0 && System.currentTimeMillis() - runTime <= timeOut) {
+                if (sleep) SystemClock.sleep(1);
+                count = inputStream.available();
             }
-            //如果组包countLength0次后，大于设置的时间就退出读取
-        } while (packageTime <= maxGroupPackageTime);
+        } while (System.currentTimeMillis() - runTime <= timeOut);
         return bytes;
     }
 
@@ -171,7 +175,7 @@ public class YReadInputStream {
         while (bytes.getBytes().length < minReadLength && System.currentTimeMillis() - startTime < timeOut) {
             //如果可读取消息为0，就不继续。防止InputStream.read阻塞
             if (inputStream.available() == 0) {
-                SystemClock.sleep(1);//休息1毫秒
+                if (sleep) SystemClock.sleep(1);
                 continue;
             }
             byte[] newBytes = new byte[Math.max(minReadLength, 1024)];
