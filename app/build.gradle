@@ -9,7 +9,7 @@ android {
     buildToolsVersion = '30.0.3'
     defaultConfig {
         applicationId "com.yujing.chuankou"
-        minSdkVersion 22
+        minSdkVersion 19
         targetSdkVersion 30
         versionCode 17
         versionName "2.1.7"
