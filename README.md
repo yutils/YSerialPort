@@ -156,21 +156,6 @@ override fun onDestroy() {
 }
 ```
 
-## 注意
-
-1.因为Android-SerialPort-API的SDK最低版本22，低于22的用户请使用Android-SerialPort-API1.0.1，把YSerialPort里面的复制出来，稍加改动就可以使用。
-
-## 兼容4.4方法
-  如需安卓4.4支持，自行修改源码（也可以找我要），如下3步即可
-
-```
-  //1. build.gradle引用把2.1.1改成1.0.1
-  api 'com.github.licheedev:Android-SerialPort-API:1.0.1'
-  //2. build.gradle 把 minSdkVersion 22 改成  minSdkVersion 19
-  //3. YSerialPort中的buildSerialPort()方法最后一行改成
-  return new SerialPort(new File(device), Integer.parseInt(baudRate));//return SerialPort.newBuilder(new File(device), Integer.parseInt(baudRate)).build();
-```
-
 串口文件位置：/proc/tty/drivers
 
 [Android-SerialPort-API](https://github.com/licheedev/Android-SerialPort-API)
