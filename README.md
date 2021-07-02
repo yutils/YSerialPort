@@ -9,7 +9,7 @@
 [![last commit](https://img.shields.io/github/last-commit/yutils/YSerialPort.svg)](https://github.com/yutils/YSerialPort/commits/master)
 ![repo size](https://img.shields.io/github/repo-size/yutils/YSerialPort.svg)
 [![jitpack](https://jitpack.io/v/yutils/YSerialPort.svg)](https://jitpack.io/#yutils/YSerialPort)
-[![android studio](https://img.shields.io/badge/android%20studio-4.2.2-green.svg)](https://img.shields.io/badge/android%20studio-4.2.2-green.svg)
+![android studio](https://img.shields.io/badge/android%20studio-4.2.2-green.svg)]
 
 **[releases里面有APK文件。点击前往](https://github.com/yutils/YSerialPort/releases)**
 
