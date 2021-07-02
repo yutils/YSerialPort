@@ -5,10 +5,11 @@
 已经多次长时间测试：串口打印机命令，串口电子秤，串口条码读卡器，串口二维码读卡器，串口NFC读卡器，读M1区一次性读取64个扇区，读CPU区一次读取16KB数据。
 
 [![platform](https://img.shields.io/badge/platform-Android-lightgrey.svg)](https://developer.android.google.cn/studio/index.html)
-![Gradle](https://img.shields.io/badge/Gradle-6.1.1-brightgreen.svg)
+![Gradle](https://img.shields.io/badge/Gradle-6.9.0-brightgreen.svg)
 [![last commit](https://img.shields.io/github/last-commit/yutils/YSerialPort.svg)](https://github.com/yutils/YSerialPort/commits/master)
 ![repo size](https://img.shields.io/github/repo-size/yutils/YSerialPort.svg)
 [![jitpack](https://jitpack.io/v/yutils/YSerialPort.svg)](https://jitpack.io/#yutils/YSerialPort)
+[![android studio]](https://img.shields.io/badge/android%20studio-4.2.2-green)
 
 **[releases里面有APK文件。点击前往](https://github.com/yutils/YSerialPort/releases)**
 
