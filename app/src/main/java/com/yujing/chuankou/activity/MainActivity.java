@@ -6,7 +6,6 @@ import com.yujing.chuankou.R;
 import com.yujing.chuankou.activity.myTest.MyMainActivity;
 import com.yujing.chuankou.base.BaseActivity;
 import com.yujing.chuankou.databinding.ActivityMainBinding;
-import com.yujing.utils.YPermissions;
 import com.yujing.yserialport.YReadInputStream;
 
 /**
@@ -29,7 +28,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             builder.setMessage(R.string.about_msg);
             builder.show();
         });
-        YPermissions.requestAll(this);
         YReadInputStream.setShowLog(true);
     }
 }

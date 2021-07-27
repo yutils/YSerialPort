@@ -1,5 +1,4 @@
-
-package com.yujing.chuankou.activity;
+package com.yujing.chuankou.activity.myTest;
 
 import com.yujing.chuankou.R;
 import com.yujing.chuankou.base.BaseActivity;
@@ -8,24 +7,22 @@ import com.yujing.chuankou.utils.Setting;
 import com.yujing.utils.YConvert;
 import com.yujing.utils.YLog;
 import com.yujing.utils.YSharedPreferencesUtils;
-import com.yujing.utils.YToast;
-import com.yujing.yserialport.DataListener;
 import com.yujing.yserialport.YReadInputStream;
 import com.yujing.yserialport.YSerialPort;
 
-import java.nio.charset.Charset;
-
 /**
- * @author yujing
- * 2020年8月11日13:15:16
- * 可以参考此类用法
+ * 同步发送
+ *
+ * @author yujing 2021年7月27日10:57:10
  */
-public class SendActivity extends BaseActivity<ActivitySendBinding> {
-    YSerialPort ySerialPort;
+public class SyncActivity extends BaseActivity<ActivitySendBinding> {
+
     final String SEND_STRING = "SEND_STRING";
     final String SEND_HEX = "SEND_HEX";
+    String device = null;
+    String baudRate = null;
 
-    public SendActivity() {
+    public SyncActivity() {
         super(R.layout.activity_send);
     }
 
@@ -37,29 +34,20 @@ public class SendActivity extends BaseActivity<ActivitySendBinding> {
         //上次使用的数据
         binding.editText.setText(YSharedPreferencesUtils.get(this, SEND_STRING));
         binding.etHex.setText(YSharedPreferencesUtils.get(this, SEND_HEX));
+
         binding.editText.setSelection(binding.editText.getText().toString().length());
         binding.button.setOnClickListener(v -> sendString());
         binding.btHex.setOnClickListener(v -> sendHexString());
-        //初始化串口
-        ySerialPort = new YSerialPort(this);
-        ySerialPort.addDataListener(dataListener);
-//      自定义组包
-//        ySerialPort.setInputStreamReadListener(inputStream -> {
-//            int count = 0;
-//            while (count == 0)
-//                count = inputStream.available();
-//            byte[] bytes = new byte[count];
-//            //readCount，已经成功读取的字节的个数，这儿需读取count个数据，不够则循环读取，如果采用inputStream.read(bytes);可能读不完
-//            int readCount = 0;
-//            while (readCount < count)
-//                readCount += inputStream.read(bytes, readCount, count - readCount);
-//            return bytes;
-//        });
-        ySerialPort.start();
+
+        //串口波特率
+        device = YSerialPort.readDevice(this);
+        baudRate = YSerialPort.readBaudRate(this);
         //设置
         Setting.setting(this, binding.includeSet, () -> {
-            if (YSerialPort.readDevice(this) != null && YSerialPort.readBaudRate(this) != null)
-                ySerialPort.reStart(YSerialPort.readDevice(this), YSerialPort.readBaudRate(this));
+            if (YSerialPort.readDevice(this) != null && YSerialPort.readBaudRate(this) != null) {
+                device = YSerialPort.readDevice(this);
+                baudRate = YSerialPort.readBaudRate(this);
+            }
             binding.tvResult.setText("");
         });
         //退出
@@ -67,17 +55,31 @@ public class SendActivity extends BaseActivity<ActivitySendBinding> {
     }
 
     private void sendHexString() {
+        if (device == null || baudRate == null) {
+            show("请先配置串口！");
+            return;
+        }
         String str = binding.etHex.getText().toString().replaceAll("\n", "").replace(" ", "");
         if (str.isEmpty()) {
             show("未输入内容！");
             return;
         }
         binding.tvResult.setText("");
-        ySerialPort.clearDataListener();
-        ySerialPort.addDataListener(dataListener);
-        YLog.i("发送串口："+ySerialPort.getDevice() + "\t\t波特率：" + ySerialPort.getBaudRate() + "\t\t内容：" + str);
-        binding.etHex.setText(str);
-        ySerialPort.send(YConvert.hexStringToByte(str));
+        YLog.i("发送串口：" + device + "\t\t波特率：" + baudRate + "\t\t内容：" + str);
+
+        //发送
+        new Thread(() -> {
+            try {
+                //至少读取500毫秒
+                byte[] re = YSerialPort.sendSyncContinuity(device, baudRate, YConvert.hexStringToByte(str), 500);
+                //回显
+                runOnUiThread(() -> binding.tvResult.setText(YConvert.bytesToHexString(re)));
+            } catch (Exception e) {
+                //回显
+                runOnUiThread(() -> binding.tvResult.setText("发送失败，原因：" + e.getMessage()));
+            }
+        }).start();
+
         //保存数据，下次打开页面直接填写历史记录
         YSharedPreferencesUtils.write(getApplicationContext(), SEND_HEX, str);
     }
@@ -89,22 +91,26 @@ public class SendActivity extends BaseActivity<ActivitySendBinding> {
             return;
         }
         binding.tvResult.setText("");
-        ySerialPort.clearDataListener();
-        ySerialPort.addDataListener(dataListener);
-        ySerialPort.send(str.getBytes(Charset.forName("GB18030")), value -> {
-            if (!value) YToast.show(getApplicationContext(), "串口异常");
-        });
+        YLog.i("发送串口：" + device + "\t\t波特率：" + baudRate + "\t\t内容：" + str);
+
+        //发送
+        new Thread(() -> {
+            try {
+                //至少读取500毫秒
+                byte[] re = YSerialPort.sendSyncContinuity(device, baudRate, str.getBytes(),500,10);
+                //回显
+                runOnUiThread(() -> binding.tvResult.setText(YConvert.bytesToHexString(re)));
+            } catch (Exception e) {
+                //回显
+                runOnUiThread(() -> binding.tvResult.setText("发送失败，原因：" + e.getMessage()));
+            }
+        }).start();
         //保存数据，下次打开页面直接填写历史记录
         YSharedPreferencesUtils.write(getApplicationContext(), SEND_STRING, str);
     }
 
-    DataListener dataListener = (hexString, bytes) -> {
-        binding.tvResult.setText(binding.tvResult.getText().equals("") ? hexString : binding.tvResult.getText() + "\n" + hexString);
-    };
-
     @Override
     public void onDestroy() {
         super.onDestroy();
-        ySerialPort.onDestroy();
     }
 }

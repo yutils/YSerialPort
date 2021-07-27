@@ -26,5 +26,6 @@
         <activity android:name=".activity.SendActivity" />
         <activity android:name=".activity.myTest.SendFileActivity" />
         <activity android:name=".activity.myTest.MyMainActivity" />
+        <activity android:name=".activity.myTest.SyncActivity" />
     </application>
 </manifest>

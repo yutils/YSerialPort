@@ -38,7 +38,7 @@ allprojects {
 ```
 dependencies {
     //更新地址  https://github.com/yutils/YSerialPort 建议过几天访问看下有没有新版本
-    implementation 'com.github.yutils:YSerialPort:2.1.7'
+    implementation 'com.github.yutils:YSerialPort:2.1.8'
 }
 ```
 
@@ -62,6 +62,18 @@ dependencies {
 //YSerialPort.saveDevice(getApplication(), "/dev/ttyS4");//设置默认串口,可以不设置
 //YSerialPort.saveBaudRate(getApplication(), "9600");//设置默认波特率,可以不设置
 
+
+//同步：
+//读取到就返回，读取不到就一直等
+byte[] re = YSerialPort.sendSync("/dev/ttyS4", "9600", bytes);
+//读取到就返回。读取不到，一直等直到超时，如果超时则向上抛异常（500毫秒无响应，抛timeOut异常）
+byte[] re = YSerialPort.sendSync("/dev/ttyS4", "9600",bytes,500);
+//一直不停组包，至少读取时间：leastTime。（至少读取500毫秒）
+byte[] re = YSerialPort.sendSyncContinuity("/dev/ttyS4", "9600",bytes,500);
+//一直不停组包，至少读取时间：leastTime。但是期间读取长度达到minReadLength，立即返回。（至少读取500毫秒，但是如果读取数据长度大于10，立即返回）
+byte[] re = YSerialPort.sendSyncContinuity("/dev/ttyS4", "9600", bytes,500,10);
+
+//异步：
 //创建对象
 YSerialPort ySerialPort = new YSerialPort(this);
 //设置串口,设置波特率,如果设置了默认可以不用设置

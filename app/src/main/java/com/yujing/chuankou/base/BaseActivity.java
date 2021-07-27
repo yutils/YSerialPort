@@ -32,7 +32,7 @@ public abstract class BaseActivity<B extends ViewDataBinding> extends YBaseActiv
     @Override
     public void initBefore() {
         yTts = new YTts(this);
-        YPermissions.requestAll(this);
+        YPermissions.Companion.requestAll(this);
         binding = getBinding();
     }
 }

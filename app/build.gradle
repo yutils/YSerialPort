@@ -11,8 +11,8 @@ android {
         applicationId "com.yujing.chuankou"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 17
-        versionName "2.1.7"
+        versionCode 18
+        versionName "2.1.8"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         //bugly
@@ -101,7 +101,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.6.0'
     implementation 'androidx.appcompat:appcompat:1.4.0-alpha03'
-    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
@@ -112,7 +112,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
     //implementation 'com.github.yutils:YSerialPort:2.1.7'
-    implementation 'com.github.yutils:yutils:1.5.9'
+    implementation 'com.github.yutils:yutils:1.6.1'
     implementation 'com.github.yutils:yhttp:1.0.8'
     implementation project(':yserialport')
 
@@ -121,7 +121,7 @@ dependencies {
     implementation 'com.tencent.bugly:nativecrashreport:3.9.1'
 
     //gson  <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
-    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.google.code.gson:gson:2.8.7'
 
     //____________________________________________________________RxJava____________________________________________________________
     //rxjava2，https://mvnrepository.com/artifact/io.reactivex.rxjava2/rxjava
