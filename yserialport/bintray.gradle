@@ -12,7 +12,7 @@ apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'maven-publish'
 
 def lib_name = 'yserialport'
-def lib_version = '2.1.7'
+def lib_version = '2.1.8'
 def jarName = lib_name + "-" + lib_version
 
 task makeJar(type: Copy) {
