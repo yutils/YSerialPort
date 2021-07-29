@@ -22,18 +22,18 @@ import java.util.Locale;
 
 /**
  * 串口工具类，调用的此类的activity必须在onDestroy调用onDestroy方法
- * 默认50ms读取超时，读取长数据请设置读取长度和超时时间。
+ * 读取长数据请设置读取长度和超时时间。
  * 读取未知长度，请增大读取长度，并且增加组包时间差，组包时间差要小于读取超时时间。
- * 构造函数传入的是activity就返回到UI线程 传的是Context就返回到线程
+ * 构造函数传入的是activity或Context都将数据返回到UI线程
  *
- * @author yujing 2020年9月2日17:20:57
+ * @author yujing 2021年7月29日13:46:49
  */
 /*
 使用方法：
 同步：
-//读取到就返回，读取不到就一直等
+//读取到就返回，读取不到就一直等。
 byte[] re = YSerialPort.sendSync("/dev/ttyS4", "9600", bytes);
-//读取到就返回。读取不到，一直等直到超时，如果超时则向上抛异常
+//读取到就返回，读取不到就一直等。直到超时，如果超时则向上抛异常
 byte[] re = YSerialPort.sendSync("/dev/ttyS4", "9600",bytes,500);
 //一直不停组包，至少读取时间：leastTime。（至少读取500毫秒）
 byte[] re = YSerialPort.sendSyncContinuity("/dev/ttyS4", "9600",bytes,500);

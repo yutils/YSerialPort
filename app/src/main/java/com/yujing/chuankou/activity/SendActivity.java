@@ -55,7 +55,6 @@ public class SendActivity extends BaseActivity<ActivitySendBinding> {
 //                readCount += inputStream.read(bytes, readCount, count - readCount);
 //            return bytes;
 //        });
-//        ySerialPort.start();
         ySerialPort.start();
         //设置
         Setting.setting(this, binding.includeSet, () -> {

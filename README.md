@@ -64,9 +64,9 @@ dependencies {
 
 
 //同步：
-//读取到就返回，读取不到就一直等
+//读取到就返回，读取不到就一直等。
 byte[] re = YSerialPort.sendSync("/dev/ttyS4", "9600", bytes);
-//读取到就返回。读取不到，一直等直到超时，如果超时则向上抛异常（500毫秒无响应，抛timeOut异常）
+//读取到就返回，读取不到就一直等。直到超时，如果超时则向上抛异常
 byte[] re = YSerialPort.sendSync("/dev/ttyS4", "9600",bytes,500);
 //一直不停组包，至少读取时间：leastTime。（至少读取500毫秒）
 byte[] re = YSerialPort.sendSyncContinuity("/dev/ttyS4", "9600",bytes,500);
