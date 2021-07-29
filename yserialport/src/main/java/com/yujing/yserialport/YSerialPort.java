@@ -637,7 +637,7 @@ public class YSerialPort {
                     b.show();
                 });
             } else {
-                Toast.makeText(context, "错误:" + error, Toast.LENGTH_LONG).show();
+                handler.post(() -> Toast.makeText(context, "错误:" + error, Toast.LENGTH_LONG).show());
             }
         }
     }

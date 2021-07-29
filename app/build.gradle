@@ -11,8 +11,8 @@ android {
         applicationId "com.yujing.chuankou"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 18
-        versionName "2.1.8"
+        versionCode 19
+        versionName "2.1.9"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         //bugly
@@ -111,8 +111,8 @@ dependencies {
 
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
-    //implementation 'com.github.yutils:YSerialPort:2.1.7'
-    implementation 'com.github.yutils:yutils:1.6.1'
+    //implementation 'com.github.yutils:YSerialPort:2.1.8'
+    implementation 'com.github.yutils:yutils:1.6.2'
     implementation 'com.github.yutils:yhttp:1.0.8'
     implementation project(':yserialport')
 

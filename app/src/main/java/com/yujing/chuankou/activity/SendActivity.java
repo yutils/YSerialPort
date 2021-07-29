@@ -55,6 +55,7 @@ public class SendActivity extends BaseActivity<ActivitySendBinding> {
 //                readCount += inputStream.read(bytes, readCount, count - readCount);
 //            return bytes;
 //        });
+//        ySerialPort.start();
         ySerialPort.start();
         //设置
         Setting.setting(this, binding.includeSet, () -> {
@@ -75,7 +76,7 @@ public class SendActivity extends BaseActivity<ActivitySendBinding> {
         binding.tvResult.setText("");
         ySerialPort.clearDataListener();
         ySerialPort.addDataListener(dataListener);
-        YLog.i("发送串口："+ySerialPort.getDevice() + "\t\t波特率：" + ySerialPort.getBaudRate() + "\t\t内容：" + str);
+        YLog.i("发送串口：" + ySerialPort.getDevice() + "\t\t波特率：" + ySerialPort.getBaudRate() + "\t\t内容：" + str);
         binding.etHex.setText(str);
         ySerialPort.send(YConvert.hexStringToByte(str));
         //保存数据，下次打开页面直接填写历史记录
