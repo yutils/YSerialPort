@@ -8,10 +8,11 @@
 // 执行 ./gradlew publish
 // 如果失败，先执行：gradlew assembleDebug --rerun-tasks
 
-apply plugin: 'com.github.dcendents.android-maven'
+//apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'maven-publish'
 
-def lib_name = 'yserialport'
+
+def lib_name = 'YSerialPort'
 def lib_version = '2.1.9'
 def jarName = lib_name + "-" + lib_version
 
@@ -49,19 +50,19 @@ task sourcesJar(type: Jar) {
     archiveName = jarName + '-sources.jar'
 }
 
-//生成文档
-task javadoc(type: Javadoc) {
-    failOnError false
-    source = android.sourceSets.main.java.sourceFiles
-    options { encoding = "utf-8" }
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-    classpath += configurations.compile
-}
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-    archiveName = jarName + '-javadoc.jar'
-}
+////生成文档
+//task javadoc(type: Javadoc) {
+//    failOnError false
+//    source = android.sourceSets.main.java.sourceFiles
+//    options { encoding = "utf-8" }
+//    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+//    classpath += configurations.compile
+//}
+//task javadocJar(type: Jar, dependsOn: javadoc) {
+//    classifier = 'javadoc'
+//    from javadoc.destinationDir
+//    archiveName = jarName + '-javadoc.jar'
+//}
 
 //生成pom,先build再点击Gradle/publishing/publish ，命令： gradlew publish
 def GROUP_ID = 'com.github.yutils'
@@ -107,5 +108,5 @@ publishing {
 //加入到build
 artifacts {
     archives sourcesJar
-    archives javadocJar
+//    archives javadocJar
 }

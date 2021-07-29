@@ -30,7 +30,7 @@ allprojects {
         ...
         maven { url 'https://jitpack.io' }
         //或者
-        maven { url 'http://kotlinx.com/repository' }
+        maven { url 'https://kotlinx.com/repository' }
     }
 }
 ```
