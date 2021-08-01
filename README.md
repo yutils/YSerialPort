@@ -32,7 +32,7 @@ allprojects {
         ...
         mavenCentral()
         //或者
-        maven { url 'https://kotlinx.com/repository' }
+        maven { url 'https://kotlinx.com/nexus/repository/maven-public' }
     }
 }
 ```
