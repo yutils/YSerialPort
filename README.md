@@ -2,23 +2,25 @@
 
 源Android-SerialPort-API，重新封装代码，实现读取串口数据，实现重新组包一次性读取完整数据。可连续读取任意长度数据。
 
-已经多次长时间测试：串口打印机命令，串口电子秤，串口条码读卡器，串口二维码读卡器，串口NFC读卡器，读M1区一次性读取64个扇区，读CPU区一次读取16KB数据。
+已经多次长时间测试：串口打印机命令，PLC通信，串口电子秤，串口条码读卡器，串口二维码读卡器，串口LED屏，串口NFC读卡器，读M1区一次性读取64个扇区，读CPU区一次读取16KB数据。
 
 [![platform](https://img.shields.io/badge/platform-Android-lightgrey.svg)](https://developer.android.google.cn/studio/index.html)
-![Gradle](https://img.shields.io/badge/Gradle-6.9.0-brightgreen.svg)
+![Gradle](https://img.shields.io/badge/Gradle-7.1-brightgreen.svg)
 [![last commit](https://img.shields.io/github/last-commit/yutils/YSerialPort.svg)](https://github.com/yutils/YSerialPort/commits/master)
 ![repo size](https://img.shields.io/github/repo-size/yutils/YSerialPort.svg)
 [![jitpack](https://jitpack.io/v/yutils/YSerialPort.svg)](https://jitpack.io/#yutils/YSerialPort)
-![android studio](https://img.shields.io/badge/android%20studio-4.2.2-green.svg)
+![android studio](https://img.shields.io/badge/android%20studio-2020.3.1-green.svg)
 
 **[releases里面有APK文件。点击前往](https://github.com/yutils/YSerialPort/releases)**
 
 **[releases里面有AAR包。点击前往](https://github.com/yutils/YSerialPort/releases)**
 
 
-**如果拉取整个项目，请用AS4.0以上打开**
+**如果拉取整个项目，请用AS2020.3.1以上打开**
 
 # `不建议直接拉取项目编译，请仔细看完 ` #
+
+## 已经从jitpack.io仓库移动至maven中央仓库
 
 ## 引用
 
@@ -28,14 +30,14 @@
 allprojects {
     repositories {
         ...
-        maven { url 'https://jitpack.io' }
+        mavenCentral()
         //或者
         maven { url 'https://kotlinx.com/repository' }
     }
 }
 ```
 
-2. 子项目build.gradle添加依赖   版本号：[![](https://jitpack.io/v/yutils/YSerialPort.svg)](https://jitpack.io/#yutils/YSerialPort)
+2. 子module添加依赖，当前最新版：————> 2.1.9
 
 ```
 dependencies {

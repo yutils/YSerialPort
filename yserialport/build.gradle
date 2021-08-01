@@ -4,7 +4,6 @@ plugins {
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
 }
-group='com.github.yu1441'//github地址
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -43,4 +42,4 @@ dependencies {
     api 'com.licheedev:android-serialport:2.1.3'
 }
 
-apply from: './bintray.gradle'
+apply from: "${getRootDir().absolutePath}/gradles/publish-maven.gradle"
