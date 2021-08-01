@@ -29,10 +29,7 @@
 ```
 allprojects {
     repositories {
-        ...
         mavenCentral()
-        //或者
-        maven { url 'https://kotlinx.com/nexus/repository/maven-public' }
     }
 }
 ```
