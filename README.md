@@ -42,7 +42,7 @@ allprojects {
 ```
 dependencies {
     //更新地址  https://github.com/yutils/YSerialPort 建议过几天访问看下有没有新版本
-    implementation 'com.github.yutils:YSerialPort:2.1.9'
+    implementation 'com.github.yutils:yserialport:2.1.9'
 }
 ```
 
