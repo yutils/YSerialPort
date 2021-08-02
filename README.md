@@ -34,7 +34,7 @@ allprojects {
 }
 ```
 
-2. [子module添加依赖，当前最新版：————> 2.1.9 ![最新版](https://img.shields.io/badge/%E6%9C%80%E6%96%B0%E7%89%88-2.1.9-green.svg)](https://search.maven.org/artifact/com.kotlinx/yserialport)
+2. [子module添加依赖，当前最新版：————> 2.1.9　　　　![最新版](https://img.shields.io/badge/%E6%9C%80%E6%96%B0%E7%89%88-2.1.9-green.svg)](https://search.maven.org/artifact/com.kotlinx/yserialport)
 
 ```
 dependencies {
