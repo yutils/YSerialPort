@@ -8,7 +8,6 @@
 ![Gradle](https://img.shields.io/badge/Gradle-7.1-brightgreen.svg)
 [![last commit](https://img.shields.io/github/last-commit/yutils/YSerialPort.svg)](https://github.com/yutils/YSerialPort/commits/master)
 ![repo size](https://img.shields.io/github/repo-size/yutils/YSerialPort.svg)
-[![jitpack](https://jitpack.io/v/yutils/YSerialPort.svg)](https://jitpack.io/#yutils/YSerialPort)
 ![android studio](https://img.shields.io/badge/android%20studio-2020.3.1-green.svg)
 
 **[releases里面有APK文件。点击前往](https://github.com/yutils/YSerialPort/releases)**
@@ -34,7 +33,7 @@ allprojects {
 }
 ```
 
-2. 子module添加依赖，当前最新版：————> 2.1.9
+2. 子module添加依赖，当前最新版：————> 2.1.9 ![最新版](https://img.shields.io/badge/%E6%9C%80%E6%96%B0%E7%89%88-2.1.9-green.svg)
 
 ```
 dependencies {
