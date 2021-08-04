@@ -200,7 +200,7 @@ public class YBytes {
      * @return YBytes
      */
     public YBytes changeByte(List<Byte> b, int index) {
-        return changeByte(b, index, index + b.size());
+        return changeByte(b, index,  b.size());
     }
 
     /**

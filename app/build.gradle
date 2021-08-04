@@ -111,9 +111,10 @@ dependencies {
 
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
-    //implementation 'com.kotlinx:yserialport:2.1.9'
-    implementation 'com.kotlinx:yutils:1.6.2'
+    implementation 'com.kotlinx:yutils:1.6.3'
     implementation 'com.kotlinx:yhttp:1.0.8'
+
+    //implementation 'com.kotlinx:yserialport:2.1.9'
     implementation project(':yserialport')
 
     //bugly，异常采集
