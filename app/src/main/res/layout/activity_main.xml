@@ -28,6 +28,20 @@
                 android:textColor="@color/white" />
 
             <TextView
+                android:id="@+id/btn_to_wifi"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/bt_click"
+                android:gravity="center"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="串口转TCP（WiFi）"
+                android:textColor="@color/white" />
+
+            <TextView
                 android:id="@+id/btn_author"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

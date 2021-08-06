@@ -41,7 +41,7 @@ android {
             //app名称
             manifestPlaceholders = ["app_name": "@string/app_name_debug"]
             //包名后缀
-            applicationIdSuffix ".debug"
+            //applicationIdSuffix ".debug"
             //版本名后缀
             //versionNameSuffix "-debug"
             //混淆
@@ -78,6 +78,10 @@ android {
             it.outputFileName = "${appName}_v${versionName}_${versionCode}_${createDate}_${createTime}_${buildType.name}.apk"
         }
     }
+    //资源合并
+    sourceSets {
+        main { res.srcDirs = ['src/main/res', 'src/main/res_screen'] }
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -111,7 +115,7 @@ dependencies {
 
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
-    implementation 'com.kotlinx:yutils:1.6.3'
+    implementation 'com.kotlinx:yutils:1.6.5'
     implementation 'com.kotlinx:yhttp:1.0.8'
 
     //implementation 'com.kotlinx:yserialport:2.1.9'

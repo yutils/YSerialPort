@@ -34,12 +34,12 @@ allprojects {
 }
 ```
 
-2. [子module添加依赖，当前最新版：————> 2.1.9　　　　![最新版](https://img.shields.io/badge/%E6%9C%80%E6%96%B0%E7%89%88-2.1.9-green.svg)](https://search.maven.org/artifact/com.kotlinx/yserialport)
+2. [子module添加依赖，当前最新版：————> 2.2.0　　　　![最新版](https://img.shields.io/badge/%E6%9C%80%E6%96%B0%E7%89%88-2.2.0-green.svg)](https://search.maven.org/artifact/com.kotlinx/yserialport)
 
 ```
 dependencies {
     //更新地址  https://github.com/yutils/YSerialPort 建议过几天访问看下有没有新版本
-    implementation 'com.kotlinx:yserialport:2.1.9'
+    implementation 'com.kotlinx:yserialport:2.2.0'
 }
 ```
 

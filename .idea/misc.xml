@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/yujing/AndroidStudioProjects/lib/YSerialPort/app/src/main/res/drawable/item_click.xml" value="0.3848958333333333" />
+        <entry key="..\:/Users/yujing/AndroidStudioProjects/lib/YSerialPort/app/src/main/res/drawable/set_selector.xml" value="0.4462962962962963" />
+        <entry key="..\:/Users/yujing/AndroidStudioProjects/lib/YSerialPort/app/src/main/res/layout/activity_main.xml" value="0.3939064200217628" />
+        <entry key="..\:/Users/yujing/AndroidStudioProjects/lib/YSerialPort/app/src/main/res/layout/activity_my_main.xml" value="0.47854954034729313" />
+        <entry key="..\:/Users/yujing/AndroidStudioProjects/lib/YSerialPort/app/src/main/res/layout/activity_send.xml" value="0.4022222222222222" />
+        <entry key="..\:/Users/yujing/AndroidStudioProjects/lib/YSerialPort/app/src/main/res/layout/activity_send_file.xml" value="0.47854954034729313" />
+        <entry key="..\:/Users/yujing/AndroidStudioProjects/lib/YSerialPort/app/src/main/res/layout/activity_serialport_to_wifi.xml" value="0.3863393810032017" />
+        <entry key="..\:/Users/yujing/AndroidStudioProjects/lib/YSerialPort/app/src/main/res/layout/view_set.xml" value="0.47854954034729313" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

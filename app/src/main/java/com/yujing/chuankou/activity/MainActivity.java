@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 
 import com.yujing.chuankou.R;
 import com.yujing.chuankou.activity.myTest.MyMainActivity;
+import com.yujing.chuankou.activity.wifi.SerialPortToWiFiActivity;
 import com.yujing.chuankou.base.BaseActivity;
 import com.yujing.chuankou.databinding.ActivityMainBinding;
 import com.yujing.yserialport.YReadInputStream;
@@ -21,6 +22,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     protected void init() {
         binding.ButtonQuit.setOnClickListener(v -> finish());
         binding.btnAuthor.setOnClickListener(v -> startActivity(MyMainActivity.class));
+        binding.btnToWifi.setOnClickListener(v -> startActivity(SerialPortToWiFiActivity.class));
         binding.ButtonSendWords.setOnClickListener(v -> startActivity(SendActivity.class));
         binding.ButtonAbout.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -28,6 +30,5 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             builder.setMessage(R.string.about_msg);
             builder.show();
         });
-        YReadInputStream.setShowLog(true);
     }
 }

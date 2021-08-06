@@ -27,5 +27,7 @@
         <activity android:name=".activity.myTest.SendFileActivity" />
         <activity android:name=".activity.myTest.MyMainActivity" />
         <activity android:name=".activity.myTest.SyncActivity" />
+        <activity android:name=".activity.wifi.SerialPortToWiFiActivity"
+            android:screenOrientation="landscape"/>
     </application>
 </manifest>

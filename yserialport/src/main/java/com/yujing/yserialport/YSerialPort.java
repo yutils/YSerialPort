@@ -359,6 +359,10 @@ public class YSerialPort {
      */
     public boolean sendSynchronization(final byte[] bytes, final YListener<Integer> progressListener) {
         try {
+            if (bytes == null) {
+                Log.e(TAG, "发送的数据不能为null,sendSynchronization(null,progressListener)");
+                return false;
+            }
             if (serialPort != null) outputStream = serialPort.getOutputStream();
             final int sendLength = 1024;//每次写入长度
             int count = 0;//统计已经发送长度
