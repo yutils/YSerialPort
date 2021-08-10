@@ -126,6 +126,8 @@ class SerialPortToWiFiActivity :
             binding.tvResultWifi.text =
                 "HEX ${simpleDateFormat.format(Date())}：${YConvert.bytesToHexString(byteArray)}\n${binding.tvResultWifi.text}"
         }
+        //默认打开服务
+        wifiOpen()
     }
 
     //打开wifi
@@ -149,6 +151,10 @@ class SerialPortToWiFiActivity :
 
     //设置wifi串口
     private fun wifiSetting() {
+        if (server.server != null && !server.server!!.isClosed) {
+            YToast.show(this,"请先关闭服务")
+            return
+        }
         val editText = EditText(this)
         editText.setPadding(
             YScreenUtil.dp2px(YApp.get(), 10F),

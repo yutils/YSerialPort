@@ -1,7 +1,4 @@
-
 package com.yujing.chuankou.activity;
-
-import android.view.View;
 
 import com.yujing.chuankou.R;
 import com.yujing.chuankou.base.KBaseActivity;
@@ -21,7 +18,6 @@ import java.util.Locale;
 
 /**
  * @author yujing
- * 2020年8月11日13:15:16
  * 可以参考此类用法
  */
 public class SendActivity extends KBaseActivity<ActivitySendBinding> {
