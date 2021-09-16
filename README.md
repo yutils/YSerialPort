@@ -66,13 +66,19 @@ dependencies {
 
 //同步：
 //读取到就返回，读取不到就一直等。
-byte[] re = YSerialPort.sendSync("/dev/ttyS4", "9600", bytes);
+byte[] re = YSerialPort.sendSyncOnce("/dev/ttyS4", "9600", bytes);
+
 //读取到就返回，读取不到就一直等。直到超时，如果超时则向上抛异常
-byte[] re = YSerialPort.sendSync("/dev/ttyS4", "9600",bytes,500);
-//一直不停组包，至少读取时间：leastTime。（至少读取500毫秒）
-byte[] re = YSerialPort.sendSyncContinuity("/dev/ttyS4", "9600",bytes,500);
-//一直不停组包，至少读取时间：leastTime。但是期间读取长度达到minReadLength，立即返回。（至少读取500毫秒，但是如果读取数据长度大于10，立即返回）
-byte[] re = YSerialPort.sendSyncContinuity("/dev/ttyS4", "9600", bytes,500,10);
+byte[] re = YSerialPort.sendSyncOnce("/dev/ttyS4", "9600",bytes,500);
+
+//一直不停组包，（maxGroupTime每次组包时间）当在maxGroupTime时间内没有数据，就返回并关闭连接
+byte[] re = YSerialPort.sendSyncTime("/dev/ttyS4", "9600",bytes,500);
+
+//一直不停组包，（maxGroupTime每次组包时间）当在maxGroupTime时间内没有数据，就返回并关闭连接（如果一直有数据，最多接收时间为maxTime）
+byte[] re = YSerialPort.sendSyncTime("/dev/ttyS4", "9600",bytes,500,3000);
+
+//一直不停组包，当数据长度达到minLength或超时，返回并关闭连接
+byte[] re = YSerialPort.sendSyncLength("/dev/ttyS4", "9600", bytes,500,3000);
 
 //异步：
 //创建对象
