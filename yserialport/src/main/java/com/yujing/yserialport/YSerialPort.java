@@ -222,6 +222,7 @@ public class YSerialPort {
             inputStream = serialPort.getInputStream();
             if (inputStreamReadListener != null) {
                 readThread = new ReadThread();
+                readThread.setName("YSerialPort-读取线程");
                 readThread.start();
             } else {
                 readInputStream = new YReadInputStream(inputStream, bytes -> handler.post(() -> {
@@ -706,8 +707,8 @@ public class YSerialPort {
      * @param bytes    发送的数据
      * @return 读取的数据
      */
-    public static byte[] sendSync(String device, String baudRate, byte[] bytes) throws Exception {
-        return sendSync(device, baudRate, bytes, -1);
+    public static byte[] sendSyncOnce(String device, String baudRate, byte[] bytes) throws Exception {
+        return sendSyncOnce(device, baudRate, bytes, -1);
     }
 
     /**
@@ -719,7 +720,7 @@ public class YSerialPort {
      * @param timeOut  读取超时时间，最多等待timeOut时间，读取到数据立即返回
      * @return 读取的数据
      */
-    public static byte[] sendSync(String device, String baudRate, byte[] bytes, int timeOut) throws Exception {
+    public static byte[] sendSyncOnce(String device, String baudRate, byte[] bytes, int timeOut) throws Exception {
         //串口类
         SerialPort serialPort = null;
         OutputStream outputStream = null;
@@ -750,27 +751,27 @@ public class YSerialPort {
     /**
      * 同步发送数据，建立连接 ,发送完毕后，等待接收数据（至少读取leastTime时间），接收完毕后关闭连接
      *
-     * @param device    串口名称
-     * @param baudRate  波特率
-     * @param bytes     发送的数据
-     * @param leastTime 至少读取时间
+     * @param device       串口名称
+     * @param baudRate     波特率
+     * @param bytes        发送的数据
+     * @param maxGroupTime 每次组包时间
      * @return 读取的数据
      */
-    public static byte[] sendSyncContinuity(String device, String baudRate, byte[] bytes, int leastTime) throws Exception {
-        return sendSyncContinuity(device, baudRate, bytes, leastTime, -1);
+    public static byte[] sendSyncTime(String device, String baudRate, byte[] bytes, int maxGroupTime) throws Exception {
+        return sendSyncTime(device, baudRate, bytes, maxGroupTime, Integer.MAX_VALUE);
     }
 
     /**
-     * 同步发送数据，建立连接,发送完毕后，等待接收数据（至少读取leastTime时间），接收完毕后关闭连接
+     * 同步发送数据，建立连接 ,发送完毕后，等待接收数据（至少读取leastTime时间），接收完毕后关闭连接
      *
-     * @param device        串口名称
-     * @param baudRate      波特率
-     * @param bytes         发送的数据
-     * @param leastTime     至少读取时间
-     * @param minReadLength 至少读取长度，及时没有读取到timeOut时间，但是长度够了，直接返回
+     * @param device       串口名称
+     * @param baudRate     波特率
+     * @param bytes        发送的数据
+     * @param maxGroupTime 每次组包时间
+     * @param maxTime      最长读取时间
      * @return 读取的数据
      */
-    public static byte[] sendSyncContinuity(String device, String baudRate, byte[] bytes, int leastTime, int minReadLength) throws Exception {
+    public static byte[] sendSyncTime(String device, String baudRate, byte[] bytes, int maxGroupTime, int maxTime) throws Exception {
         //串口类
         SerialPort serialPort = null;
         OutputStream outputStream = null;
@@ -787,8 +788,50 @@ public class YSerialPort {
             for (byte[] item : list) {
                 outputStream.write(item);
             }
+//            outputStream.flush();
             //读取
-            YBytes yBytes = (minReadLength <= 0) ? YReadInputStream.read(inputStream, leastTime) : YReadInputStream.read(inputStream, leastTime, minReadLength);
+            YBytes yBytes = YReadInputStream.readTime(inputStream, maxGroupTime, maxTime);
+            return yBytes.getBytes();
+        } finally {
+            try {
+                if (outputStream != null) outputStream.close();
+                if (inputStream != null) inputStream.close();
+                if (serialPort != null) serialPort.close();
+            } catch (Exception ignored) {
+            }
+        }
+    }
+
+    /**
+     * 同步发送数据，建立连接,发送完毕后，等待接收数据（至少读取leastTime时间），接收完毕后关闭连接
+     *
+     * @param device    串口名称
+     * @param baudRate  波特率
+     * @param bytes     发送的数据
+     * @param maxTime   最多读取这么长时间
+     * @param minLength 至少读取长度，及时没有读取到timeOut时间，但是长度够了，直接返回
+     * @return 读取的数据
+     */
+    public static byte[] sendSyncLength(String device, String baudRate, byte[] bytes, int minLength, int maxTime) throws Exception {
+        //串口类
+        SerialPort serialPort = null;
+        OutputStream outputStream = null;
+        InputStream inputStream = null;
+        try {
+            serialPort = SerialPort.newBuilder(new File(device), Integer.parseInt(baudRate)).build();
+            outputStream = serialPort.getOutputStream();
+            inputStream = serialPort.getInputStream();
+
+            //发送
+            final int sendLength = 1024;//每次写入长度
+            //数据拆分
+            List<byte[]> list = YBytes.split(bytes, sendLength);
+            for (byte[] item : list) {
+                outputStream.write(item);
+            }
+//            outputStream.flush();
+            //读取
+            YBytes yBytes = YReadInputStream.readLength(inputStream, minLength, maxTime);
             return yBytes.getBytes();
         } finally {
             try {

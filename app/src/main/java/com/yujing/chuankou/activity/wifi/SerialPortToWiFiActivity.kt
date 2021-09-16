@@ -42,9 +42,9 @@ class SerialPortToWiFiActivity :
 
     override fun init() {
         //上次使用的数据
-        binding.editText.setText(YSharedPreferencesUtils.get(this, SEND_STRING))
-        binding.etHex.setText(YSharedPreferencesUtils.get(this, SEND_HEX))
-        binding.etHexWifi.setText(YSharedPreferencesUtils.get(this, SEND_WIFI_HEX))
+        binding.editText.setText(YShared.get(this, SEND_STRING))
+        binding.etHex.setText(YShared.get(this, SEND_HEX))
+        binding.etHexWifi.setText(YShared.get(this, SEND_WIFI_HEX))
         binding.editText.setSelection(binding.editText.text!!.length)
         binding.tvPort.text = "端口：$wifiPort"
         //按钮,退出
@@ -118,7 +118,6 @@ class SerialPortToWiFiActivity :
         server.readListener = YListener2<Socket, ByteArray> { socket, byteArray ->
             //转发给串口
             Thread { sendHexSerialPort(byteArray) }.start()
-
             //显示
             if (binding.tvResultWifi.text.toString().length > 10000)
                 binding.tvResultWifi.text =
@@ -152,7 +151,7 @@ class SerialPortToWiFiActivity :
     //设置wifi串口
     private fun wifiSetting() {
         if (server.server != null && !server.server!!.isClosed) {
-            YToast.show(this,"请先关闭服务")
+            YToast.show("请先关闭服务")
             return
         }
         val editText = EditText(this)
@@ -204,7 +203,7 @@ class SerialPortToWiFiActivity :
         binding.etHex.setText(str)
 
         //保存数据，下次打开页面直接填写历史记录
-        YSharedPreferencesUtils.write(applicationContext, SEND_HEX, str)
+        YShared.write(applicationContext, SEND_HEX, str)
         YLog.d(ySerialPort?.device + " " + ySerialPort?.baudRate + " " + str)
 
         sendHexSerialPort(YConvert.hexStringToByte(str))
@@ -231,7 +230,7 @@ class SerialPortToWiFiActivity :
         }
 
         //保存数据，下次打开页面直接填写历史记录
-        YSharedPreferencesUtils.write(applicationContext, SEND_STRING, str)
+        YShared.write(applicationContext, SEND_STRING, str)
 
         ySerialPort?.send(
             str.toByteArray(Charset.forName("GB18030"))
@@ -261,7 +260,7 @@ class SerialPortToWiFiActivity :
         binding.etHexWifi.setText(str)
 
         //保存数据，下次打开页面直接填写历史记录
-        YSharedPreferencesUtils.write(applicationContext, SEND_WIFI_HEX, str)
+        YShared.write(applicationContext, SEND_WIFI_HEX, str)
         sendHexWiFi(YConvert.hexStringToByte(str))
     }
 

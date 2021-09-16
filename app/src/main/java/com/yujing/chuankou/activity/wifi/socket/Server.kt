@@ -84,14 +84,14 @@ class Server {
                 } else {
                     YLog.e("服务已关闭", e)
                     YThread.runOnUiThread {
-                        YToast.show(YApp.get(), "服务已关闭")
+                        YToast.show("服务已关闭")
                         YTts.getInstance().speak("服务已关闭")
                     }
                 }
             } catch (e: Exception) {
                 YLog.e("启动服务失败", e)
                 YThread.runOnUiThread {
-                    YToast.show(YApp.get(), "启动服务失败")
+                    YToast.show("启动服务失败")
                     YTts.getInstance().speak("启动服务失败")
                 }
             }

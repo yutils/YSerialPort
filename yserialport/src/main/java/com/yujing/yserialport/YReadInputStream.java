@@ -3,7 +3,6 @@ package com.yujing.yserialport;
 import android.os.SystemClock;
 import android.util.Log;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.TimeoutException;
 
@@ -20,9 +19,9 @@ YReadInputStream.readOnce(inputStream);
 //只读一次，读取到就返回。读取不到，一直等直到超时，如果超时则向上抛异常
 YReadInputStream.readOnce(inputStream, timeOut);
 //读取inputStream数据到YBytes,一直不停组包，至少读取时间：leastTime。
-YReadInputStream.read(inputStream, leastTime);
+YReadInputStream.readTime(inputStream, leastTime);
 //读取inputStream数据到YBytes,一直不停组包，至少读取时间：leastTime。但是期间读取长度达到minReadLength，立即返回。
-YReadInputStream.read(inputStream, leastTime, minReadLength);
+YReadInputStream.readLength(inputStream, leastTime, minReadLength);
 
 异步：
 private YReadInputStream readInputStream;
@@ -62,6 +61,7 @@ public class YReadInputStream {
     //开始读取
     public void start() {
         readThread = new ReadThread();
+        readThread.setName("YSerialPort-YReadInputStream-读取线程");
         readThread.start();
     }
 
@@ -86,8 +86,8 @@ public class YReadInputStream {
                     //如果读取到了数据，而且readListener不为空
                     if (readListener != null) {
                         byte[] bytes = (!autoPackage && readTime > 0 && readLength > 0) ?
-                                read(inputStream, readTime, readLength).getBytes() :
-                                read(inputStream, maxGroupPackageTime).getBytes();
+                                readLength(inputStream, readTime, readLength).getBytes() :
+                                readTime(inputStream, maxGroupPackageTime).getBytes();
                         //无数据不返回
                         if (!noDataNotReturn || bytes.length != 0) readListener.value(bytes);
                     }
@@ -195,18 +195,23 @@ public class YReadInputStream {
         return bytes;
     }
 
+    public static YBytes readTime(InputStream inputStream, int maxGroupTime) throws Exception {
+        return readTime(inputStream, maxGroupTime, Integer.MAX_VALUE);
+    }
+
     /**
      * 读取inputStream数据到YBytes,一直不停组包，至少读取时间：leastTime。
      *
      * @param inputStream inputStream
-     * @param leastTime   读取超时时间，至少读取这么长时间
+     * @param maxGroupTime 最大组包时间，如果这个时间内有数据，就一直组包。如果这个时间都没数据，就返回。
+     * @param maxTime     最多读取这么长时间
      * @return YBytes
      * @throws Exception Exception
      */
-    public static YBytes read(InputStream inputStream, int leastTime) throws Exception {
+    public static YBytes readTime(InputStream inputStream, int maxGroupTime, int maxTime) throws Exception {
         final YBytes bytes = new YBytes();
         long startTime = System.currentTimeMillis();//开始时间
-        long runTime;//运行时间
+        long groupTime;//运行时间
         int i = 0;//第几次组包
         int count = inputStream.available();//可读取多少字节内容
         do {
@@ -218,44 +223,44 @@ public class YReadInputStream {
             }
             if (sleep) SystemClock.sleep(1);
             count = inputStream.available();
-            runTime = System.currentTimeMillis();
+            groupTime = System.currentTimeMillis();
             //如果读取长度为0，那么休息1毫秒继续读取，如果在timeOut时间内都没有数据，那么就退出循环
-            while (count == 0 && System.currentTimeMillis() - runTime <= leastTime) {
+            while (count == 0 && System.currentTimeMillis() - groupTime <= maxGroupTime) {
                 if (sleep) SystemClock.sleep(1);
                 count = inputStream.available();
             }
-        } while (System.currentTimeMillis() - runTime <= leastTime);
+        } while (System.currentTimeMillis() - groupTime <= maxGroupTime && System.currentTimeMillis() - startTime <= maxTime);
         return bytes;
     }
 
     /**
      * 读取inputStream数据到YBytes,一直不停组包，至少读取时间：leastTime。但是期间读取长度达到minReadLength，立即返回。
      *
-     * @param inputStream   inputStream
-     * @param leastTime     读取超时时间，至少读取这么长时间
-     * @param minReadLength 至少读取长度，即使没有读取到timeOut时间，只要读取长度大于等于minReadLength，直接返回
+     * @param inputStream inputStream
+     * @param maxTime   最多读取这么长时间
+     * @param minLength   至少读取长度，即使没有读取到timeOut时间，只要读取长度大于等于minReadLength，直接返回
      * @return YBytes
      * @throws Exception Exception
      */
-    public static YBytes read(final InputStream inputStream, final int leastTime, final int minReadLength) throws Exception {
+    public static YBytes readLength(final InputStream inputStream, final int minLength, final int maxTime) throws Exception {
         final YBytes bytes = new YBytes();
         long startTime = System.currentTimeMillis();
         int i = 0;
-        while (bytes.getBytes().length < minReadLength && System.currentTimeMillis() - startTime < leastTime) {
+        while (bytes.getBytes().length < minLength && System.currentTimeMillis() - startTime < maxTime) {
             //如果可读取消息为0，就不继续。防止InputStream.read阻塞
             if (inputStream.available() == 0) {
                 if (sleep) SystemClock.sleep(1);
                 continue;
             }
-            byte[] newBytes = new byte[Math.max(minReadLength, 1024)];
+            byte[] newBytes = new byte[Math.max(minLength, 1024)];
             int newSize = inputStream.read(newBytes, 0, inputStream.available());
             if (newSize > 0) {
                 bytes.addByte(newBytes, newSize);
-                log("第" + (++i) + "次组包后长度：" + bytes.getBytes().length + "，\t目标长度：" + minReadLength + "，\t已耗时：" + (System.currentTimeMillis() - startTime) + "ms，\t超时时间：" + leastTime + "ms");
+                log("第" + (++i) + "次组包后长度：" + bytes.getBytes().length + "，\t目标长度：" + minLength + "，\t已耗时：" + (System.currentTimeMillis() - startTime) + "ms，\t超时时间：" + maxTime + "ms");
             }
         }
-        if (System.currentTimeMillis() - startTime >= leastTime)
-            log("超时返回，超时时间：" + leastTime + "ms");
+        if (System.currentTimeMillis() - startTime >= maxTime)
+            log("超时返回，超时时间：" + maxTime + "ms");
         return bytes;
     }
 }

@@ -6,7 +6,7 @@ import com.yujing.chuankou.databinding.ActivitySendBinding;
 import com.yujing.chuankou.utils.Setting;
 import com.yujing.utils.YConvert;
 import com.yujing.utils.YLog;
-import com.yujing.utils.YSharedPreferencesUtils;
+import com.yujing.utils.YShared;
 import com.yujing.yserialport.YSerialPort;
 
 import java.text.SimpleDateFormat;
@@ -37,8 +37,8 @@ public class SyncActivity extends KBaseActivity<ActivitySendBinding> {
         //YReadInputStream.setSleep(false);
         binding.tvTitle.setText("同步发送数据");
         //上次使用的数据
-        binding.editText.setText(YSharedPreferencesUtils.get(this, SEND_STRING));
-        binding.etHex.setText(YSharedPreferencesUtils.get(this, SEND_HEX));
+        binding.editText.setText(YShared.get(this, SEND_STRING));
+        binding.etHex.setText(YShared.get(this, SEND_HEX));
 
         binding.editText.setSelection(binding.editText.getText().toString().length());
         binding.button.setOnClickListener(v -> sendString());
@@ -76,14 +76,14 @@ public class SyncActivity extends KBaseActivity<ActivitySendBinding> {
         binding.etHex.setText(str);
 
         //保存数据，下次打开页面直接填写历史记录
-        YSharedPreferencesUtils.write(getApplicationContext(), SEND_HEX, str);
+        YShared.write(getApplicationContext(), SEND_HEX, str);
 
         //发送
         YLog.i("发送串口：" + device + "\t\t波特率：" + baudRate + "\t\t内容：" + str);
         new Thread(() -> {
             try {
                 //最多等待500毫秒
-                byte[] re = YSerialPort.sendSync(device, baudRate, YConvert.hexStringToByte(str), 500);
+                byte[] re = YSerialPort.sendSyncTime(device, baudRate, YConvert.hexStringToByte(str), 500);
                 //至少读取100毫秒,读满10字节返回
 //                byte[] re = YSerialPort.sendSyncContinuity(device, baudRate, YConvert.hexStringToByte(str), 100,10);
                 //回显
@@ -109,14 +109,14 @@ public class SyncActivity extends KBaseActivity<ActivitySendBinding> {
             return;
         }
         //保存数据，下次打开页面直接填写历史记录
-        YSharedPreferencesUtils.write(getApplicationContext(), SEND_STRING, str);
+        YShared.write(getApplicationContext(), SEND_STRING, str);
 
         //发送
         YLog.i("发送串口：" + device + "\t\t波特率：" + baudRate + "\t\t内容：" + str);
         new Thread(() -> {
             try {
                 //最多等待500毫秒
-                byte[] re = YSerialPort.sendSync(device, baudRate, YConvert.hexStringToByte(str), 500);
+                byte[] re = YSerialPort.sendSyncTime(device, baudRate, YConvert.hexStringToByte(str), 500);
                 //至少读取100毫秒,读满10字节返回
                 //byte[] re = YSerialPort.sendSyncContinuity(device, baudRate, YConvert.hexStringToByte(str), 100,10);
                 //回显

@@ -7,6 +7,7 @@ import com.yujing.chuankou.activity.myTest.MyMainActivity;
 import com.yujing.chuankou.activity.wifi.SerialPortToWiFiActivity;
 import com.yujing.chuankou.base.BaseActivity;
 import com.yujing.chuankou.databinding.ActivityMainBinding;
+import com.yujing.utils.YPermissions;
 import com.yujing.yserialport.YReadInputStream;
 
 /**
@@ -20,6 +21,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
     @Override
     protected void init() {
+        YPermissions.Companion.requestAll(this);
         binding.ButtonQuit.setOnClickListener(v -> finish());
         binding.btnAuthor.setOnClickListener(v -> startActivity(MyMainActivity.class));
         binding.btnToWifi.setOnClickListener(v -> startActivity(SerialPortToWiFiActivity.class));

@@ -8,6 +8,7 @@ import com.yujing.chuankou.base.BaseActivity;
 import com.yujing.chuankou.databinding.ActivitySendFileBinding;
 import com.yujing.chuankou.utils.Setting;
 import com.yujing.utils.YConvert;
+import com.yujing.utils.YPermissions;
 import com.yujing.utils.YShow;
 import com.yujing.utils.YUri;
 import com.yujing.yserialport.YSerialPort;
@@ -24,6 +25,7 @@ public class SendFileActivity extends BaseActivity<ActivitySendFileBinding> {
 
     @Override
     protected void init() {
+        YPermissions.Companion.requestAll(this);
         //选择文件
         binding.buttonBrowse.setOnClickListener(v -> onClick());
         //发送文件

@@ -6,7 +6,7 @@ import com.yujing.chuankou.databinding.ActivitySendBinding;
 import com.yujing.chuankou.utils.Setting;
 import com.yujing.utils.YConvert;
 import com.yujing.utils.YLog;
-import com.yujing.utils.YSharedPreferencesUtils;
+import com.yujing.utils.YShared;
 import com.yujing.utils.YToast;
 import com.yujing.yserialport.DataListener;
 import com.yujing.yserialport.YSerialPort;
@@ -36,8 +36,8 @@ public class SendActivity extends KBaseActivity<ActivitySendBinding> {
         //非阻塞读取线程，轮询不休息，将增加cpu消耗
         //YReadInputStream.setSleep(false);
         //上次使用的数据
-        binding.editText.setText(YSharedPreferencesUtils.get(this, SEND_STRING));
-        binding.etHex.setText(YSharedPreferencesUtils.get(this, SEND_HEX));
+        binding.editText.setText(YShared.get(this, SEND_STRING));
+        binding.etHex.setText(YShared.get(this, SEND_HEX));
         binding.editText.setSelection(binding.editText.getText().toString().length());
         binding.button.setOnClickListener(v -> sendString());
         binding.btHex.setOnClickListener(v -> sendHexString());
@@ -83,7 +83,7 @@ public class SendActivity extends KBaseActivity<ActivitySendBinding> {
         binding.etHex.setText(str);
 
         //保存数据，下次打开页面直接填写历史记录
-        YSharedPreferencesUtils.write(getApplicationContext(), SEND_HEX, str);
+        YShared.write(getApplicationContext(), SEND_HEX, str);
 
         //发送
         YLog.i("发送串口：" + ySerialPort.getDevice() + "\t\t波特率：" + ySerialPort.getBaudRate() + "\t\t内容：" + str);
@@ -104,12 +104,12 @@ public class SendActivity extends KBaseActivity<ActivitySendBinding> {
         }
 
         //保存数据，下次打开页面直接填写历史记录
-        YSharedPreferencesUtils.write(getApplicationContext(), SEND_STRING, str);
+        YShared.write(getApplicationContext(), SEND_STRING, str);
 
         //发送
         YLog.i("发送串口：" + ySerialPort.getDevice() + "\t\t波特率：" + ySerialPort.getBaudRate() + "\t\t内容：" + str);
         ySerialPort.send(str.getBytes(Charset.forName("GB18030")), value -> {
-            if (!value) YToast.show(getApplicationContext(), "串口异常");
+            if (!value) YToast.show("串口异常");
         });
 
         //显示
