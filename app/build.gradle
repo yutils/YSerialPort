@@ -11,8 +11,8 @@ android {
         applicationId "com.yujing.chuankou"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 21
-        versionName "2.2.1"
+        versionCode 22
+        versionName "2.2.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         //bugly
@@ -115,7 +115,7 @@ dependencies {
 
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
-    implementation 'com.kotlinx:yutils:1.7.1'
+    implementation 'com.kotlinx:yutils:1.7.2'
     implementation 'com.kotlinx:yhttp:1.1.0'
 
     //implementation 'com.kotlinx:yserialport:2.2.1'

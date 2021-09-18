@@ -714,6 +714,7 @@ public class YSerialPort {
      * @param bytes    发送的数据
      * @return 读取的数据
      */
+    @Deprecated
     public static byte[] sendSyncOnce(String device, String baudRate, byte[] bytes) throws Exception {
         return sendSyncOnce(device, baudRate, bytes, -1);
     }
@@ -764,6 +765,7 @@ public class YSerialPort {
      * @param maxGroupTime 每次组包时间
      * @return 读取的数据
      */
+    @Deprecated
     public static byte[] sendSyncTime(String device, String baudRate, byte[] bytes, int maxGroupTime) throws Exception {
         return sendSyncTime(device, baudRate, bytes, maxGroupTime, Integer.MAX_VALUE);
     }

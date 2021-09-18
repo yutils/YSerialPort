@@ -160,6 +160,7 @@ public class YReadInputStream {
      * @return byte[]
      * @throws Exception Exception
      */
+    @Deprecated
     public static byte[] readOnce(InputStream inputStream) throws Exception {
         int count = 0;
         while (count == 0) count = inputStream.available();//获取真正长度
@@ -195,6 +196,7 @@ public class YReadInputStream {
         return bytes;
     }
 
+    @Deprecated
     public static YBytes readTime(InputStream inputStream, int maxGroupTime) throws Exception {
         return readTime(inputStream, maxGroupTime, Integer.MAX_VALUE);
     }
@@ -202,9 +204,9 @@ public class YReadInputStream {
     /**
      * 读取inputStream数据到YBytes,一直不停组包，至少读取时间：leastTime。
      *
-     * @param inputStream inputStream
+     * @param inputStream  inputStream
      * @param maxGroupTime 最大组包时间，如果这个时间内有数据，就一直组包。如果这个时间都没数据，就返回。
-     * @param maxTime     最多读取这么长时间
+     * @param maxTime      最多读取这么长时间
      * @return YBytes
      * @throws Exception Exception
      */
@@ -224,8 +226,8 @@ public class YReadInputStream {
             if (sleep) SystemClock.sleep(1);
             count = inputStream.available();
             groupTime = System.currentTimeMillis();
-            //如果读取长度为0，那么休息1毫秒继续读取，如果在timeOut时间内都没有数据，那么就退出循环
-            while (count == 0 && System.currentTimeMillis() - groupTime <= maxGroupTime) {
+            //如果读取长度为0，那么休息1毫秒继续读取，如果在maxGroupTime时间内都没有数据，那么就退出循环,或者超过maxTime
+            while (count == 0 && System.currentTimeMillis() - groupTime <= maxGroupTime && System.currentTimeMillis() - startTime <= maxTime) {
                 if (sleep) SystemClock.sleep(1);
                 count = inputStream.available();
             }
@@ -237,7 +239,7 @@ public class YReadInputStream {
      * 读取inputStream数据到YBytes,一直不停组包，至少读取时间：leastTime。但是期间读取长度达到minReadLength，立即返回。
      *
      * @param inputStream inputStream
-     * @param maxTime   最多读取这么长时间
+     * @param maxTime     最多读取这么长时间
      * @param minLength   至少读取长度，即使没有读取到timeOut时间，只要读取长度大于等于minReadLength，直接返回
      * @return YBytes
      * @throws Exception Exception
