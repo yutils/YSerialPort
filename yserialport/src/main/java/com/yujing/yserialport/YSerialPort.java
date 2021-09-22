@@ -47,6 +47,13 @@ byte[] re = YSerialPort.sendSyncTime("/dev/ttyS4", "9600",bytes,500,3000);
 //一直不停组包，当数据长度达到minLength或超时，返回并关闭连接
 byte[] re = YSerialPort.sendSyncLength("/dev/ttyS4", "9600", bytes,500,3000);
 
+//同步不用每次都创建serialPort对象
+SerialPort serialPort = SerialPort.newBuilder(new File("/dev/ttyS4"), 9600).build();
+byte[] bytes=YSerialPort.sendSyncOnce(serialPort,bys,1000);
+byte[] bytes=YSerialPort.sendSyncTime(serialPort,bys,20,1000);
+byte[] bytes=YSerialPort.sendSyncLength(serialPort,bys,20,1000);
+serialPort.tryClose();
+
 异步：
 YSerialPort ySerialPort = new YSerialPort(this);
 //设置串口,设置波特率,如果设置了默认可以不用设置
@@ -731,34 +738,53 @@ public class YSerialPort {
     public static byte[] sendSyncOnce(String device, String baudRate, byte[] bytes, int timeOut) throws Exception {
         //串口类
         SerialPort serialPort = null;
-        OutputStream outputStream = null;
-        InputStream inputStream = null;
         try {
             serialPort = SerialPort.newBuilder(new File(device), Integer.parseInt(baudRate)).build();
-            outputStream = serialPort.getOutputStream();
-            inputStream = serialPort.getInputStream();
-
-            //发送
-            final int sendLength = 1024;//每次写入长度
-            //数据拆分
-            List<byte[]> list = YBytes.split(bytes, sendLength);
-            for (byte[] item : list) {
-                outputStream.write(item);
-            }
-            return (timeOut <= 0) ? YReadInputStream.readOnce(inputStream) : YReadInputStream.readOnce(inputStream, timeOut);
+            return sendSyncOnce(serialPort, bytes, timeOut);
         } finally {
-            try {
-                if (outputStream != null) outputStream.close();
-                if (inputStream != null) inputStream.close();
-                if (serialPort != null) serialPort.close();
-            } catch (Exception ignored) {
-            }
+            if (serialPort != null) serialPort.tryClose();
         }
     }
 
     /**
+     * 同步发送数据，建立连接,发送完毕后，等待接收数据（读取到数据立即返回），接收完毕后关闭连接
+     * 用法：
+     *   SerialPort serialPort = SerialPort.newBuilder(new File("/dev/ttyS4"), 9600).build();
+     *   byte[] bytes=YSerialPort.sendSyncOnce(serialPort,bys);
+     * @param serialPort 串口
+     * @param bytes      发送的数据
+     * @return 读取的数据
+     */
+    @Deprecated
+    public static byte[] sendSyncOnce(SerialPort serialPort, byte[] bytes) throws Exception {
+        return sendSyncOnce(serialPort, bytes, -1);
+    }
+
+    /**
+     * 同步发送数据，建立连接,发送完毕后，等待接收数据（读取到数据立即返回），最多等待timeOut时间，接收完毕后关闭连接
+     * 用法：
+     *   SerialPort serialPort = SerialPort.newBuilder(new File("/dev/ttyS4"), 9600).build();
+     *   byte[] bytes=YSerialPort.sendSyncOnce(serialPort,bys,1000);
+     * @param serialPort 串口
+     * @param bytes      发送的数据
+     * @param timeOut    读取超时时间，最多等待timeOut时间，读取到数据立即返回
+     * @return 读取的数据
+     */
+    public static byte[] sendSyncOnce(SerialPort serialPort, byte[] bytes, int timeOut) throws Exception {
+        serialPort.getInputStream().skip(serialPort.getInputStream().available());
+        //发送
+        final int sendLength = 1024;//每次写入长度
+        //数据拆分
+        List<byte[]> list = YBytes.split(bytes, sendLength);
+        for (byte[] item : list) {
+            serialPort.getOutputStream().write(item);
+        }
+        serialPort.getOutputStream().flush();
+        return (timeOut <= 0) ? YReadInputStream.readOnce(serialPort.getInputStream()) : YReadInputStream.readOnce(serialPort.getInputStream(), timeOut);
+    }
+
+    /**
      * 同步发送数据，建立连接 ,发送完毕后，等待接收数据（maxGroupTime每次组包时间）当在maxGroupTime时间内没有数据，就返回并关闭连接
-     *
      * @param device       串口名称
      * @param baudRate     波特率
      * @param bytes        发送的数据
@@ -783,32 +809,52 @@ public class YSerialPort {
     public static byte[] sendSyncTime(String device, String baudRate, byte[] bytes, int maxGroupTime, int maxTime) throws Exception {
         //串口类
         SerialPort serialPort = null;
-        OutputStream outputStream = null;
-        InputStream inputStream = null;
         try {
             serialPort = SerialPort.newBuilder(new File(device), Integer.parseInt(baudRate)).build();
-            outputStream = serialPort.getOutputStream();
-            inputStream = serialPort.getInputStream();
-
-            //发送
-            final int sendLength = 1024;//每次写入长度
-            //数据拆分
-            List<byte[]> list = YBytes.split(bytes, sendLength);
-            for (byte[] item : list) {
-                outputStream.write(item);
-            }
-//            outputStream.flush();
-            //读取
-            YBytes yBytes = YReadInputStream.readTime(inputStream, maxGroupTime, maxTime);
-            return yBytes.getBytes();
+            return sendSyncTime(serialPort, bytes, maxGroupTime, maxTime);
         } finally {
-            try {
-                if (outputStream != null) outputStream.close();
-                if (inputStream != null) inputStream.close();
-                if (serialPort != null) serialPort.close();
-            } catch (Exception ignored) {
-            }
+            if (serialPort != null) serialPort.tryClose();
         }
+    }
+
+    /**
+     * 同步发送数据，建立连接 ,发送完毕后，等待接收数据（maxGroupTime每次组包时间）当在maxGroupTime时间内没有数据，就返回并关闭连接
+     * 用法：
+     *   SerialPort serialPort = SerialPort.newBuilder(new File("/dev/ttyS4"), 9600).build();
+     *   byte[] bytes=YSerialPort.sendSyncTime(serialPort,bys,20);
+     * @param serialPort   串口
+     * @param bytes        发送的数据
+     * @param maxGroupTime 每次组包时间
+     * @return 读取的数据
+     */
+    public static byte[] sendSyncTime(SerialPort serialPort, byte[] bytes, int maxGroupTime) throws Exception {
+        return sendSyncTime(serialPort, bytes, maxGroupTime, Integer.MAX_VALUE);
+    }
+
+    /**
+     * 同步发送数据，建立连接 ,发送完毕后，等待接收数据（maxGroupTime每次组包时间）当在maxGroupTime时间内没有数据，就返回并关闭连接（如果一直有数据，最多接收时间为maxTime）
+     * 用法：
+     *   SerialPort serialPort = SerialPort.newBuilder(new File("/dev/ttyS4"), 9600).build();
+     *   byte[] bytes=YSerialPort.sendSyncTime(serialPort,bys,20,1000);
+     * @param serialPort   串口
+     * @param bytes        发送的数据
+     * @param maxGroupTime 每次组包时间
+     * @param maxTime      最长读取时间
+     * @return 读取的数据
+     */
+    public static byte[] sendSyncTime(SerialPort serialPort, byte[] bytes, int maxGroupTime, int maxTime) throws Exception {
+        serialPort.getInputStream().skip(serialPort.getInputStream().available());
+        //发送
+        final int sendLength = 1024;//每次写入长度
+        //数据拆分
+        List<byte[]> list = YBytes.split(bytes, sendLength);
+        for (byte[] item : list) {
+            serialPort.getOutputStream().write(item);
+        }
+        serialPort.getOutputStream().flush();
+        //读取
+        YBytes yBytes = YReadInputStream.readTime(serialPort.getInputStream(), maxGroupTime, maxTime);
+        return yBytes.getBytes();
     }
 
     /**
@@ -824,31 +870,37 @@ public class YSerialPort {
     public static byte[] sendSyncLength(String device, String baudRate, byte[] bytes, int minLength, int maxTime) throws Exception {
         //串口类
         SerialPort serialPort = null;
-        OutputStream outputStream = null;
-        InputStream inputStream = null;
         try {
             serialPort = SerialPort.newBuilder(new File(device), Integer.parseInt(baudRate)).build();
-            outputStream = serialPort.getOutputStream();
-            inputStream = serialPort.getInputStream();
-
-            //发送
-            final int sendLength = 1024;//每次写入长度
-            //数据拆分
-            List<byte[]> list = YBytes.split(bytes, sendLength);
-            for (byte[] item : list) {
-                outputStream.write(item);
-            }
-//            outputStream.flush();
-            //读取
-            YBytes yBytes = YReadInputStream.readLength(inputStream, minLength, maxTime);
-            return yBytes.getBytes();
+            return sendSyncLength(serialPort, bytes, minLength, maxTime);
         } finally {
-            try {
-                if (outputStream != null) outputStream.close();
-                if (inputStream != null) inputStream.close();
-                if (serialPort != null) serialPort.close();
-            } catch (Exception ignored) {
-            }
+            if (serialPort != null) serialPort.tryClose();
         }
+    }
+
+    /**
+     * 同步发送数据，建立连接,发送完毕后，等待接收数据，一直不停接收，当数据长度达到minLength或超时，返回并关闭连接
+     * 用法：
+     *   SerialPort serialPort = SerialPort.newBuilder(new File("/dev/ttyS4"), 9600).build();
+     *   byte[] bytes=YSerialPort.sendSyncLength(serialPort,bys,20,1000);
+     * @param serialPort 串口
+     * @param bytes      发送的数据
+     * @param maxTime    最多读取这么长时间
+     * @param minLength  至少读取长度，及时没有读取到timeOut时间，但是长度够了，直接返回
+     * @return 读取的数据
+     */
+    public static byte[] sendSyncLength(SerialPort serialPort, byte[] bytes, int minLength, int maxTime) throws Exception {
+        serialPort.getInputStream().skip(serialPort.getInputStream().available());
+        //发送
+        final int sendLength = 1024;//每次写入长度
+        //数据拆分
+        List<byte[]> list = YBytes.split(bytes, sendLength);
+        for (byte[] item : list) {
+            serialPort.getOutputStream().write(item);
+        }
+        serialPort.getOutputStream().flush();
+        //读取
+        YBytes yBytes = YReadInputStream.readLength(serialPort.getInputStream(), minLength, maxTime);
+        return yBytes.getBytes();
     }
 }

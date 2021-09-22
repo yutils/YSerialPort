@@ -196,13 +196,21 @@ public class YReadInputStream {
         return bytes;
     }
 
+    /**
+     * 读取inputStream数据到YBytes,一直不停组包，每次组包时间maxGroupTime，如果maxGroupTime内没数据，就返回。
+     *
+     * @param inputStream  inputStream
+     * @param maxGroupTime 最大组包时间，如果这个时间内有数据，就一直组包。如果这个时间都没数据，就返回。
+     * @return YBytes
+     * @throws Exception Exception
+     */
     @Deprecated
     public static YBytes readTime(InputStream inputStream, int maxGroupTime) throws Exception {
         return readTime(inputStream, maxGroupTime, Integer.MAX_VALUE);
     }
 
     /**
-     * 读取inputStream数据到YBytes,一直不停组包，至少读取时间：leastTime。
+     * 读取inputStream数据到YBytes,一直不停组包，每次组包时间maxGroupTime，如果一直有数据，不超过maxTime。
      *
      * @param inputStream  inputStream
      * @param maxGroupTime 最大组包时间，如果这个时间内有数据，就一直组包。如果这个时间都没数据，就返回。
@@ -240,7 +248,7 @@ public class YReadInputStream {
      *
      * @param inputStream inputStream
      * @param maxTime     最多读取这么长时间
-     * @param minLength   至少读取长度，即使没有读取到timeOut时间，只要读取长度大于等于minReadLength，直接返回
+     * @param minLength   至少读取长度，即使没有读取到maxTime时间，只要读取长度大于等于minReadLength，直接返回
      * @return YBytes
      * @throws Exception Exception
      */
