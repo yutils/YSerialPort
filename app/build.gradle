@@ -11,8 +11,8 @@ android {
         applicationId "com.yujing.chuankou"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 23
-        versionName "2.2.3"
+        versionCode 24
+        versionName "2.2.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         //bugly
@@ -115,10 +115,10 @@ dependencies {
 
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
-    implementation 'com.kotlinx:yutils:1.7.3'
-    implementation 'com.kotlinx:yhttp:1.1.0'
+    implementation 'com.kotlinx:yutils:1.7.7'
+    implementation 'com.kotlinx:yhttp:1.1.2'
 
-    //implementation 'com.kotlinx:yserialport:2.2.3'
+    //implementation 'com.kotlinx:yserialport:2.2.4'
     implementation project(':yserialport')
 
     //bugly，异常采集

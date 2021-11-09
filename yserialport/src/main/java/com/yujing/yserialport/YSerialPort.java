@@ -6,10 +6,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
-import android.serialport.SerialPort;
-import android.serialport.SerialPortFinder;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.yujing.serialport.SerialPort;
+import com.yujing.serialport.SerialPortFinder;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,31 +31,26 @@ import java.util.Locale;
  */
 /*
 使用方法：
-同步：
 
-//读取到就返回，读取不到就一直等。
-byte[] re = YSerialPort.sendSyncOnce("/dev/ttyS4", "9600", bytes);
-
-//读取到就返回，读取不到就一直等。直到超时，如果超时则向上抛异常
-byte[] re = YSerialPort.sendSyncOnce("/dev/ttyS4", "9600",bytes,500);
-
-//一直不停组包，（maxGroupTime每次组包时间）当在maxGroupTime时间内没有数据，就返回并关闭连接
-byte[] re = YSerialPort.sendSyncTime("/dev/ttyS4", "9600",bytes,500);
-
-//一直不停组包，（maxGroupTime每次组包时间）当在maxGroupTime时间内没有数据，就返回并关闭连接（如果一直有数据，最多接收时间为maxTime）
-byte[] re = YSerialPort.sendSyncTime("/dev/ttyS4", "9600",bytes,500,3000);
-
-//一直不停组包，当数据长度达到minLength或超时，返回并关闭连接
-byte[] re = YSerialPort.sendSyncLength("/dev/ttyS4", "9600", bytes,500,3000);
-
-//同步不用每次都创建serialPort对象
+//同步收发 （不用每次都创建serialPort对象）
 SerialPort serialPort = SerialPort.newBuilder(new File("/dev/ttyS4"), 9600).build();
 byte[] bytes=YSerialPort.sendSyncOnce(serialPort,bys,1000);
 byte[] bytes=YSerialPort.sendSyncTime(serialPort,bys,20,1000);
 byte[] bytes=YSerialPort.sendSyncLength(serialPort,bys,20,1000);
 serialPort.tryClose();
 
-异步：
+byte[] re = YSerialPort.sendSyncOnce("/dev/ttyS4", "9600", bytes);
+//读取到就返回，读取不到就一直等。直到超时，如果超时则向上抛异常
+byte[] re = YSerialPort.sendSyncOnce("/dev/ttyS4", "9600",bytes,500);
+//一直不停组包，（maxGroupTime每次组包时间）当在maxGroupTime时间内没有数据，就返回并关闭连接
+byte[] re = YSerialPort.sendSyncTime("/dev/ttyS4", "9600",bytes,500);
+//一直不停组包，（maxGroupTime每次组包时间）当在maxGroupTime时间内没有数据，就返回并关闭连接（如果一直有数据，最多接收时间为maxTime）
+byte[] re = YSerialPort.sendSyncTime("/dev/ttyS4", "9600",bytes,500,3000);
+//一直不停组包，当数据长度达到minLength或超时，返回并关闭连接
+byte[] re = YSerialPort.sendSyncLength("/dev/ttyS4", "9600", bytes,500,3000);
+
+
+异步收发：
 YSerialPort ySerialPort = new YSerialPort(this);
 //设置串口,设置波特率,如果设置了默认可以不用设置
 ySerialPort.setDevice("/dev/ttyS4", "9600");
@@ -749,8 +745,9 @@ public class YSerialPort {
     /**
      * 同步发送数据，建立连接,发送完毕后，等待接收数据（读取到数据立即返回），接收完毕后关闭连接
      * 用法：
-     *   SerialPort serialPort = SerialPort.newBuilder(new File("/dev/ttyS4"), 9600).build();
-     *   byte[] bytes=YSerialPort.sendSyncOnce(serialPort,bys);
+     * SerialPort serialPort = SerialPort.newBuilder(new File("/dev/ttyS4"), 9600).build();
+     * byte[] bytes=YSerialPort.sendSyncOnce(serialPort,bys);
+     *
      * @param serialPort 串口
      * @param bytes      发送的数据
      * @return 读取的数据
@@ -763,8 +760,9 @@ public class YSerialPort {
     /**
      * 同步发送数据，建立连接,发送完毕后，等待接收数据（读取到数据立即返回），最多等待timeOut时间，接收完毕后关闭连接
      * 用法：
-     *   SerialPort serialPort = SerialPort.newBuilder(new File("/dev/ttyS4"), 9600).build();
-     *   byte[] bytes=YSerialPort.sendSyncOnce(serialPort,bys,1000);
+     * SerialPort serialPort = SerialPort.newBuilder(new File("/dev/ttyS4"), 9600).build();
+     * byte[] bytes=YSerialPort.sendSyncOnce(serialPort,bys,1000);
+     *
      * @param serialPort 串口
      * @param bytes      发送的数据
      * @param timeOut    读取超时时间，最多等待timeOut时间，读取到数据立即返回
@@ -785,6 +783,7 @@ public class YSerialPort {
 
     /**
      * 同步发送数据，建立连接 ,发送完毕后，等待接收数据（maxGroupTime每次组包时间）当在maxGroupTime时间内没有数据，就返回并关闭连接
+     *
      * @param device       串口名称
      * @param baudRate     波特率
      * @param bytes        发送的数据
@@ -820,8 +819,9 @@ public class YSerialPort {
     /**
      * 同步发送数据，建立连接 ,发送完毕后，等待接收数据（maxGroupTime每次组包时间）当在maxGroupTime时间内没有数据，就返回并关闭连接
      * 用法：
-     *   SerialPort serialPort = SerialPort.newBuilder(new File("/dev/ttyS4"), 9600).build();
-     *   byte[] bytes=YSerialPort.sendSyncTime(serialPort,bys,20);
+     * SerialPort serialPort = SerialPort.newBuilder(new File("/dev/ttyS4"), 9600).build();
+     * byte[] bytes=YSerialPort.sendSyncTime(serialPort,bys,20);
+     *
      * @param serialPort   串口
      * @param bytes        发送的数据
      * @param maxGroupTime 每次组包时间
@@ -834,8 +834,9 @@ public class YSerialPort {
     /**
      * 同步发送数据，建立连接 ,发送完毕后，等待接收数据（maxGroupTime每次组包时间）当在maxGroupTime时间内没有数据，就返回并关闭连接（如果一直有数据，最多接收时间为maxTime）
      * 用法：
-     *   SerialPort serialPort = SerialPort.newBuilder(new File("/dev/ttyS4"), 9600).build();
-     *   byte[] bytes=YSerialPort.sendSyncTime(serialPort,bys,20,1000);
+     * SerialPort serialPort = SerialPort.newBuilder(new File("/dev/ttyS4"), 9600).build();
+     * byte[] bytes=YSerialPort.sendSyncTime(serialPort,bys,20,1000);
+     *
      * @param serialPort   串口
      * @param bytes        发送的数据
      * @param maxGroupTime 每次组包时间
@@ -881,8 +882,9 @@ public class YSerialPort {
     /**
      * 同步发送数据，建立连接,发送完毕后，等待接收数据，一直不停接收，当数据长度达到minLength或超时，返回并关闭连接
      * 用法：
-     *   SerialPort serialPort = SerialPort.newBuilder(new File("/dev/ttyS4"), 9600).build();
-     *   byte[] bytes=YSerialPort.sendSyncLength(serialPort,bys,20,1000);
+     * SerialPort serialPort = SerialPort.newBuilder(new File("/dev/ttyS4"), 9600).build();
+     * byte[] bytes=YSerialPort.sendSyncLength(serialPort,bys,20,1000);
+     *
      * @param serialPort 串口
      * @param bytes      发送的数据
      * @param maxTime    最多读取这么长时间

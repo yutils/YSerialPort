@@ -2,7 +2,9 @@
 
 源Android-SerialPort-API，重新封装代码，实现读取串口数据，实现重新组包一次性读取完整数据。可连续读取任意长度数据。
 
-已经多次长时间测试：串口打印机命令，PLC通信，串口电子秤，串口条码读卡器，串口二维码读卡器，串口LED屏，串口NFC读卡器，读M1区一次性读取64个扇区，读CPU区一次读取16KB数据。
+重写串口so库名称和调用函数名称，不与其他串口工具形成so冲突或者类名冲突。
+
+已经多次长时间测试：串口打印机，PLC通信，串口电子秤，串口条码读卡器，串口二维码读卡器，串口LED屏，串口NFC读卡器，读M1区一次性读取64个扇区，读CPU区一次读取16KB数据。
 
 [![platform](https://img.shields.io/badge/platform-Android-lightgrey.svg)](https://developer.android.google.cn/studio/index.html)
 ![Gradle](https://img.shields.io/badge/Gradle-7.1-brightgreen.svg)
@@ -34,12 +36,12 @@ allprojects {
 }
 ```
 
-2. [子module添加依赖，当前最新版：————> 2.2.3　　　　![最新版](https://img.shields.io/badge/%E6%9C%80%E6%96%B0%E7%89%88-2.2.3-green.svg)](https://search.maven.org/artifact/com.kotlinx/yserialport)
+2. [子module添加依赖，当前最新版：————> 2.2.4　　　　![最新版](https://img.shields.io/badge/%E6%9C%80%E6%96%B0%E7%89%88-2.2.4-green.svg)](https://search.maven.org/artifact/com.kotlinx/yserialport)
 
 ```
 dependencies {
     //更新地址  https://github.com/yutils/YSerialPort 建议过几天访问看下有没有新版本
-    implementation 'com.kotlinx:yserialport:2.2.3'
+    implementation 'com.kotlinx:yserialport:2.2.4'
 }
 ```
 
@@ -62,13 +64,25 @@ dependencies {
 //String[] baudRate = YSerialPort.getBaudRates();//获取波特率列表
 //YSerialPort.saveDevice(getApplication(), "/dev/ttyS4");//设置默认串口,可以不设置
 //YSerialPort.saveBaudRate(getApplication(), "9600");//设置默认波特率,可以不设置
-//同步不用每次都创建serialPort对象
+
+
+//简单用法
+SerialPort serialPort = SerialPort.newBuilder(new File("/dev/ttyS4"), 9600).build();
+//获取输入流
+serialPort.getInputStream();
+//获取输出流
+serialPort.getOutputStream();
+//关闭
+serialPort.tryClose();
+
+
+
+//同步收发 （不用每次都创建serialPort对象）
 SerialPort serialPort = SerialPort.newBuilder(new File("/dev/ttyS4"), 9600).build();
 byte[] bytes=YSerialPort.sendSyncOnce(serialPort,bys,1000);
 byte[] bytes=YSerialPort.sendSyncTime(serialPort,bys,20,1000);
 byte[] bytes=YSerialPort.sendSyncLength(serialPort,bys,20,1000);
 serialPort.tryClose();
-
 //同步：
 //读取到就返回，读取不到就一直等。
 byte[] re = YSerialPort.sendSyncOnce("/dev/ttyS4", "9600", bytes);
@@ -85,7 +99,10 @@ byte[] re = YSerialPort.sendSyncTime("/dev/ttyS4", "9600",bytes,500,3000);
 //一直不停组包，当数据长度达到minLength或超时，返回并关闭连接
 byte[] re = YSerialPort.sendSyncLength("/dev/ttyS4", "9600", bytes,500,3000);
 
-//异步：
+
+
+
+//异步收发：
 //创建对象
 YSerialPort ySerialPort = new YSerialPort(this);
 //设置串口,设置波特率,如果设置了默认可以不用设置
@@ -172,7 +189,6 @@ ySerialPort.isAutoPackage = true
 ySerialPort.start()
 //发送文字
 ySerialPort.send("你好".toByteArray(Charset.forName("GB18030")))
-
 
 //退出页面时候注销
 override fun onDestroy() {
