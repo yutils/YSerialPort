@@ -57,8 +57,6 @@ dependencies {
 
 可以参考SendActivity.java 
 
-**java**
-
 ## 基础使用方法
 ```java
 YSerialPort ySerialPort = new YSerialPort(this,"/dev/ttyS4", "9600");
@@ -73,6 +71,7 @@ ySerialPort.start();
 ```
 
 ## 扩展使用方法
+**java**
 ```java
 //String[] device = YSerialPort.getDevices();//获取串口列表
 //String[] baudRate = YSerialPort.getBaudRates();//获取波特率列表
@@ -153,7 +152,6 @@ ySerialPort.setInputStreamReadListener(inputStream -> {
 });
 
 ```
-
 
 
 **kotlin**  
