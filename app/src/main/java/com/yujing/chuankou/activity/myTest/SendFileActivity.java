@@ -31,7 +31,7 @@ public class SendFileActivity extends BaseActivity<ActivitySendFileBinding> {
         //发送文件
         binding.btSend.setOnClickListener(v -> sendFile());
 
-        ySerialPort = new YSerialPort(this);
+        ySerialPort = new YSerialPort(this,YSerialPort.readDevice(this), YSerialPort.readBaudRate(this));
         ySerialPort.addDataListener((hexString, bytes2) -> runOnUiThread(() ->
                 binding.tvResult.setText(binding.tvResult.getText().equals("") ? hexString : binding.tvResult.getText() + "\n" + hexString))
         );

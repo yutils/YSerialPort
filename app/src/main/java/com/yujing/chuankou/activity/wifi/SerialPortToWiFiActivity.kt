@@ -78,7 +78,8 @@ class SerialPortToWiFiActivity :
             binding.tvSend.text= ""
         }
         //初始化串口
-        ySerialPort = YSerialPort(this)
+        ySerialPort = YSerialPort(this, YSerialPort.readDevice(this), YSerialPort.readBaudRate(this));
+
         //自定义组包
         ySerialPort?.setInputStreamReadListener { inputStream ->
             var count = 0

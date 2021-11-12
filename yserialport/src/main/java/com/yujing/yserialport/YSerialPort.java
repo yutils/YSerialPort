@@ -27,7 +27,7 @@ import java.util.Locale;
  * 读取未知长度，请增大读取长度，并且增加组包时间差，组包时间差要小于读取超时时间。
  * 构造函数传入的是activity或Context都将数据返回到UI线程
  *
- * @author yujing 2021年7月29日13:46:49
+ * @author yujing  2021年11月12日15:22:41
  */
 /*
 使用方法：
@@ -38,6 +38,7 @@ byte[] bytes=YSerialPort.sendSyncOnce(serialPort,bys,1000);
 byte[] bytes=YSerialPort.sendSyncTime(serialPort,bys,20,1000);
 byte[] bytes=YSerialPort.sendSyncLength(serialPort,bys,20,1000);
 serialPort.tryClose();
+
 
 byte[] re = YSerialPort.sendSyncOnce("/dev/ttyS4", "9600", bytes);
 //读取到就返回，读取不到就一直等。直到超时，如果超时则向上抛异常
@@ -51,9 +52,7 @@ byte[] re = YSerialPort.sendSyncLength("/dev/ttyS4", "9600", bytes,500,3000);
 
 
 异步收发：
-YSerialPort ySerialPort = new YSerialPort(this);
-//设置串口,设置波特率,如果设置了默认可以不用设置
-ySerialPort.setDevice("/dev/ttyS4", "9600");
+YSerialPort ySerialPort = new YSerialPort(this,"/dev/ttyS4", "9600");
 //设置数据监听
 ySerialPort.addDataListener(new DataListener() {
     @Override
@@ -65,15 +64,14 @@ ySerialPort.addDataListener(new DataListener() {
 });
 
 //设置自动组包，每次组包时长为40毫秒，如果40毫秒读取不到数据则返回结果
-ySerialPort.setAutoPackage(true);
-//ySerialPort.setMaxGroupPackageTime(40);
+ySerialPort.setToAuto(40);
 
-//或者,设置非自动组包，读取长度1000，超时时间为500毫秒。如果读取到1000立即返回，否则直到读取到超时为止
-//ySerialPort.setAutoPackage(false);
-//ySerialPort.setLengthAndTimeout(1000,500);
+//或者,设置手动组包，读取长度100，超时时间为50毫秒。如果读取到数据大于等于100立即返回，否则直到读取到超时为止
+//ySerialPort.setToManual(100,50);
 
 //启动
 ySerialPort.start();
+
 
 //发送文字
 ySerialPort.send("你好".getBytes(Charset.forName("GB18030")));
@@ -97,6 +95,7 @@ ySerialPort.setInputStreamReadListener(inputStream -> {
         readCount += inputStream.read(bytes, readCount, count - readCount);
     return bytes;
 });
+
  */
 @SuppressWarnings("unused")
 public class YSerialPort {
@@ -111,15 +110,16 @@ public class YSerialPort {
     private Context context;
     private String device;//串口
     private String baudRate;//波特率
-    private boolean autoPackage = true;//自动组包
-    private int maxGroupPackageTime = -1;//最大组包时间
-    private int readTime = -1;//至少读取时间
-    private int readLength = -1;//至少读取长度
     private boolean noDataNotReturn = true;//无数据不返回
-    private YReadInputStream readInputStream;
-    private InputStreamReadListener inputStreamReadListener;//自定义读取InputStream
+    private YReadInputStream readInputStream = new YReadInputStream();//读取InputStream
+    private boolean setAutoComplete = false;//设置组包状态完成
+
+    //自定义读取InputStream
+    private InputStreamReadListener inputStreamReadListener;
+
     //串口类
     private SerialPort serialPort;
+
     //串口查找列表类
     private static final SerialPortFinder mSerialPortFinder = new SerialPortFinder();
 
@@ -128,6 +128,7 @@ public class YSerialPort {
         return mSerialPortFinder;
     }
 
+    //获取设备列表
     public static String[] getDevices() {
         return getSerialPortFinder().getAllDevicesPath();
     }
@@ -139,59 +140,12 @@ public class YSerialPort {
 
     //回调结果
     private final List<DataListener> dataListeners = new ArrayList<>();
+
     //错误回调
     private ErrorListener errorListener;
-    //单例模式，全局只有一个串口通信使用
-    private static YSerialPort instance;
+
     //读取线程，当inputStreamReadListener 不为null时，启用
     private ReadThread readThread;
-
-    /**
-     * 单例模式，调用此方法前必须先调用getInstance(String ip, int port)
-     *
-     * @param context context
-     * @return YSerialPort
-     */
-    public static synchronized YSerialPort getInstance(Context context) {
-        if (instance == null) {
-            synchronized (YSerialPort.class) {
-                if (instance == null) {
-                    instance = new YSerialPort(context);
-                }
-            }
-        }
-        return instance;
-    }
-
-    /**
-     * 单例模式
-     *
-     * @param context  context
-     * @param device   串口
-     * @param baudRate 波特率
-     * @return YSerialPort
-     */
-    public static YSerialPort getInstance(Context context, String device, String baudRate) {
-        if (instance == null) {
-            synchronized (YSerialPort.class) {
-                if (instance == null) {
-                    instance = new YSerialPort(context, device, baudRate);
-                }
-            }
-        }
-        instance.setContext(context);
-        instance.setDevice(device, baudRate);
-        return instance;
-    }
-
-    /**
-     * 构造函数
-     *
-     * @param context context
-     */
-    public YSerialPort(Context context) {
-        this.context = context;
-    }
 
     /**
      * 构造函数
@@ -204,6 +158,41 @@ public class YSerialPort {
         this.context = context;
         this.device = device;
         this.baudRate = baudRate;
+
+    }
+
+    /**
+     * 设置为自动组包
+     */
+    public void setToAuto() {
+        //向上取整 所以 +0.499999999f
+        setToAuto(Math.round(10f + (2f / (Integer.parseInt(baudRate) / 115200f)) + 0.499999999f));
+    }
+
+    /**
+     * 设置为自动组包
+     * <p>
+     * 举例：现有串口设备，随时可能给设备发数据，且长度不固定，（根据波特率不同，可计算出每字节时间差，列：5毫秒至少1byte），那么这样设置 .setToAuto(10);
+     * 这儿设置成是不是5是因为考虑到波动或者阻塞等其他情况，可以设置大点。
+     *
+     * @param maxGroupPackageTime 组包时间差，毫秒，列：设置成10，意思是如果连续10毫秒没收到数据，就回调给应用层当前读取到的数据
+     */
+    public void setToAuto(int maxGroupPackageTime) {
+        readInputStream.setToAuto(maxGroupPackageTime);
+        setAutoComplete = true;
+    }
+
+    /**
+     * 设置为手动组包，指在规定时间内，每次至少组包到指定长度。
+     * <p>
+     * 举例：现有串口设备，每间隔2秒发送20字节到安卓（根据波特率不同，发送20个字节总时间不同，列：20字节大概10毫秒发完），那么这样设置 .setToManual(20,15);
+     *
+     * @param readLength 每次至少读取长度
+     * @param maxTime    最长读取时间
+     */
+    public void setToManual(int readLength, int maxTime) {
+        readInputStream.setToManual(readLength, maxTime);
+        setAutoComplete = true;
     }
 
     /**
@@ -219,15 +208,14 @@ public class YSerialPort {
      * @param sp 外部传入SerialPort
      */
     public void start(SerialPort sp) {
-        if (readInputStream != null) {
-            readInputStream.stop();
-        }
+        readInputStream.stop();
         if (serialPort != null) {
             serialPort.close();
             serialPort = null;
         }
         try {
-            serialPort = sp != null ? sp : buildSerialPort();
+            if (device == null || baudRate == null) throw new NullPointerException("串口或者波特率不能为空");
+            serialPort = sp != null ? sp : SerialPort.newBuilder(new File(device), Integer.parseInt(baudRate)).build();
             outputStream = serialPort.getOutputStream();
             inputStream = serialPort.getInputStream();
             if (inputStreamReadListener != null) {
@@ -235,18 +223,15 @@ public class YSerialPort {
                 readThread.setName("YSerialPort-读取线程");
                 readThread.start();
             } else {
-                readInputStream = new YReadInputStream(inputStream, bytes -> handler.post(() -> {
+                assert readInputStream != null;
+                readInputStream.setInputStream(inputStream);
+                readInputStream.setReadListener(bytes -> handler.post(() -> {
                     for (DataListener item : dataListeners) {
                         item.value(bytesToHexString(bytes), bytes);
                     }
                 }));
-                //至少读取长度，至少读取时间
-                readInputStream.setLengthAndTime(readLength, readTime);
-                //设置自动组包
-                readInputStream.setAutoPackage(autoPackage);
-                if (maxGroupPackageTime == -1) setMaxGroupPackageTimeDefault();//设置默认组包时间
-                //设置最大组包时间
-                readInputStream.setMaxGroupPackageTime(maxGroupPackageTime);
+                //如果没有设置组包方式
+                if (!setAutoComplete) setToAuto();
                 //设置无数据不返回
                 readInputStream.setNoDataNotReturn(noDataNotReturn);
                 //开始读取
@@ -296,25 +281,6 @@ public class YSerialPort {
         setDevice(device, baudRate);
         stop();
         start();
-    }
-
-    /**
-     * 构建SerialPort类
-     *
-     * @return SerialPort
-     * @throws SecurityException         串行端口权限
-     * @throws IOException               IO异常
-     * @throws InvalidParameterException 未配置串口
-     */
-    public SerialPort buildSerialPort() throws SecurityException, IOException, InvalidParameterException {
-        if (device == null || baudRate == null) {
-            if (readDevice(context) == null || readBaudRate(context) == null || (readDevice(context).length() == 0) || (readBaudRate(context).length() == 0)) {
-                throw new InvalidParameterException();
-            }
-            device = readDevice(context);
-            baudRate = readBaudRate(context);
-        }
-        return SerialPort.newBuilder(new File(device), Integer.parseInt(baudRate)).build();
     }
 
     /**
@@ -394,35 +360,6 @@ public class YSerialPort {
             Log.e(TAG, "发送失败", e);
             return false;
         }
-    }
-
-
-    //保存串口
-    public static void saveDevice(Context context, String device) {
-        SharedPreferences sp = context.getSharedPreferences(SERIAL_PORT, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putString(DEVICE, device);
-        editor.apply();
-    }
-
-    //读取上面方法保存的串口
-    public static String readDevice(Context context) {
-        SharedPreferences sp = context.getSharedPreferences(SERIAL_PORT, Context.MODE_PRIVATE);
-        return sp.getString(DEVICE, null);// null为默认值
-    }
-
-    //保存波特率
-    public static void saveBaudRate(Context context, String device) {
-        SharedPreferences sp = context.getSharedPreferences(SERIAL_PORT, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putString(BAUD_RATE, device);
-        editor.apply();
-    }
-
-    //读取上面方法保存的波特率
-    public static String readBaudRate(Context context) {
-        SharedPreferences sp = context.getSharedPreferences(SERIAL_PORT, Context.MODE_PRIVATE);
-        return sp.getString(BAUD_RATE, null);// null为默认值
     }
 
     public boolean isNoDataNotReturn() {
@@ -535,28 +472,6 @@ public class YSerialPort {
     }
 
     /**
-     * 获取组包最小时间差
-     *
-     * @return 毫秒
-     */
-    public int getMaxGroupPackageTime() {
-        return maxGroupPackageTime;
-    }
-
-    /**
-     * 设置组包最小时间差  方法互斥 setReadTimeOutAndLength
-     *
-     * @param maxGroupPackageTime 组包最小时间差,毫秒
-     */
-    public void setMaxGroupPackageTime(int maxGroupPackageTime) {
-        this.maxGroupPackageTime = maxGroupPackageTime;
-        if (readInputStream != null) {
-            readInputStream.setMaxGroupPackageTime(maxGroupPackageTime);
-            setAutoPackage(true);
-        }
-    }
-
-    /**
      * 获取SerialPort对象
      *
      * @return SerialPort
@@ -581,56 +496,6 @@ public class YSerialPort {
      */
     public InputStream getInputStream() {
         return serialPort.getInputStream();
-    }
-
-    public void setMaxGroupPackageTimeDefault() {
-        if (baudRate != null) {
-            int intBaudRate = Integer.parseInt(baudRate);
-            maxGroupPackageTime = Math.round(10f + (2f / (intBaudRate / 115200f)) + 0.499999999f);//向上取整
-            setAutoPackage(true);
-        }
-    }
-
-    /**
-     * 设置读取超时时间和读取最小长度 方法互斥 setGroupPackageTime
-     *
-     * @param readTimeout 读取超时时间
-     * @param readLength  读取最小长度
-     */
-    public void setLengthAndTimeout(int readLength, int readTimeout) {
-        this.readTime = readTimeout;
-        this.readLength = readLength;
-        if (readInputStream != null) {
-            readInputStream.setLengthAndTime(readLength, readTimeout);
-            setAutoPackage(false);
-        }
-    }
-
-    public boolean isAutoPackage() {
-        return autoPackage;
-    }
-
-    public void setAutoPackage(boolean autoPackage) {
-        this.autoPackage = autoPackage;
-        if (readInputStream != null) readInputStream.setAutoPackage(autoPackage);
-    }
-
-    /**
-     * bytesToHexString
-     *
-     * @param bArray bytes
-     * @return HexString
-     */
-    public static String bytesToHexString(byte[] bArray) {
-        StringBuilder sb = new StringBuilder(bArray.length);
-        String sTemp;
-        for (byte aBArray : bArray) {
-            sTemp = Integer.toHexString(0xFF & aBArray);
-            if (sTemp.length() < 2)
-                sb.append(0);
-            sb.append(sTemp.toUpperCase(Locale.US));
-        }
-        return sb.toString();
     }
 
     /**
@@ -708,6 +573,78 @@ public class YSerialPort {
 
 
     //****************************************************************静态方法****************************************************************
+
+    //单例模式，全局只有一个串口通信使用
+    private static YSerialPort instance;
+
+    /**
+     * 单例模式
+     *
+     * @param context  context
+     * @param device   串口
+     * @param baudRate 波特率
+     * @return YSerialPort
+     */
+    public static YSerialPort getInstance(Context context, String device, String baudRate) {
+        if (instance == null) {
+            synchronized (YSerialPort.class) {
+                if (instance == null) {
+                    instance = new YSerialPort(context, device, baudRate);
+                }
+            }
+        }
+        instance.setContext(context);
+        instance.setDevice(device, baudRate);
+        return instance;
+    }
+
+    /**
+     * bytesToHexString
+     *
+     * @param bArray bytes
+     * @return HexString
+     */
+    public static String bytesToHexString(byte[] bArray) {
+        StringBuilder sb = new StringBuilder(bArray.length);
+        String sTemp;
+        for (byte aBArray : bArray) {
+            sTemp = Integer.toHexString(0xFF & aBArray);
+            if (sTemp.length() < 2)
+                sb.append(0);
+            sb.append(sTemp.toUpperCase(Locale.US));
+        }
+        return sb.toString();
+    }
+
+
+    //保存串口
+    public static void saveDevice(Context context, String device) {
+        SharedPreferences sp = context.getSharedPreferences(SERIAL_PORT, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(DEVICE, device);
+        editor.apply();
+    }
+
+    //读取上面方法保存的串口
+    public static String readDevice(Context context) {
+        SharedPreferences sp = context.getSharedPreferences(SERIAL_PORT, Context.MODE_PRIVATE);
+        return sp.getString(DEVICE, null);// null为默认值
+    }
+
+    //保存波特率
+    public static void saveBaudRate(Context context, String device) {
+        SharedPreferences sp = context.getSharedPreferences(SERIAL_PORT, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(BAUD_RATE, device);
+        editor.apply();
+    }
+
+    //读取上面方法保存的波特率
+    public static String readBaudRate(Context context) {
+        SharedPreferences sp = context.getSharedPreferences(SERIAL_PORT, Context.MODE_PRIVATE);
+        return sp.getString(BAUD_RATE, null);// null为默认值
+    }
+
 
     /**
      * 同步发送数据，建立连接,发送完毕后，等待接收数据（读取到数据立即返回），接收完毕后关闭连接

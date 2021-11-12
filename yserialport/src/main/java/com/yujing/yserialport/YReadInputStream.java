@@ -9,7 +9,7 @@ import java.util.concurrent.TimeoutException;
 /**
  * 读取InputStream
  *
- * @author yujing  2021年5月18日14:03:25
+ * @author yujing  2021年11月12日15:20:08
  */
 /*
 用法：
@@ -28,14 +28,8 @@ private YReadInputStream readInputStream;
 readInputStream = new YReadInputStream(inputStream, bytes ->
     //读取到的数据：bytes
 );
-//至少读取长度，至少读取时间
-readInputStream.setLengthAndTime(readLength, readTime);
 //设置自动组包
-readInputStream.setAutoPackage(true);
-//设置最大组包时间
-readInputStream.setMaxGroupPackageTime(100);
-//设置无数据不返回
-readInputStream.setNoDataNotReturn(noDataNotReturn);
+readInputStream.setToAuto(10);
 //开始读取
 readInputStream.start();
  */
@@ -47,14 +41,28 @@ public class YReadInputStream {
     private InputStream inputStream;
     private YListener<byte[]> readListener;
     private ReadThread readThread;
+
     private boolean autoPackage = true;//自动组包
     private int maxGroupPackageTime = 1;//组包时间差，毫秒
+
     private int readLength = -1;//至少读取长度
-    private int readTime = -1;//至少读取时间，大于0时候生效
+    private int maxTime = -1;//至少读取时间，大于0时候生效
+
     private boolean noDataNotReturn = true;//无数据不返回
+
+    public YReadInputStream() {
+    }
 
     public YReadInputStream(InputStream inputStream, YListener<byte[]> readListener) {
         this.inputStream = inputStream;
+        this.readListener = readListener;
+    }
+
+    public void setInputStream(InputStream inputStream) {
+        this.inputStream = inputStream;
+    }
+
+    public void setReadListener(YListener<byte[]> readListener) {
         this.readListener = readListener;
     }
 
@@ -72,6 +80,34 @@ public class YReadInputStream {
         }
     }
 
+    /**
+     * 设置为自动组包
+     * <p>
+     * 举例：现有串口设备，随时可能给设备发数据，且长度不固定，（根据波特率不同，可计算出每字节时间差，列：5毫秒至少1byte），那么这样设置 .setToAuto(10);
+     * 这儿设置成是不是5是因为考虑到波动或者阻塞等其他情况，可以设置大点。
+     *
+     * @param maxGroupPackageTime 组包时间差，毫秒，列：设置成10，意思是如果连续10毫秒没收到数据，就回调给应用层当前读取到的数据
+     */
+    public void setToAuto(int maxGroupPackageTime) {
+        autoPackage = true;
+        this.maxGroupPackageTime = maxGroupPackageTime;
+    }
+
+    /**
+     * 设置为手动组包，指在规定时间内，每次至少组包到指定长度。
+     * <p>
+     * 举例：现有串口设备，每间隔2秒发送20字节到安卓（根据波特率不同，发送20个字节总时间不同，列：20字节大概10毫秒发完），那么这样设置 .setToManual(20,15);
+     *
+     * @param readLength 每次至少读取长度
+     * @param maxTime    最长读取时间
+     */
+    public void setToManual(int readLength, int maxTime) {
+        autoPackage = false;
+        this.readLength = readLength;
+        this.maxTime = maxTime;
+    }
+
+
     private class ReadThread extends Thread {
         @Override
         public void run() {
@@ -85,9 +121,7 @@ public class YReadInputStream {
                     }
                     //如果读取到了数据，而且readListener不为空
                     if (readListener != null) {
-                        byte[] bytes = (!autoPackage && readTime > 0 && readLength > 0) ?
-                                readLength(inputStream, readTime, readLength).getBytes() :
-                                readTime(inputStream, maxGroupPackageTime).getBytes();
+                        byte[] bytes = (autoPackage) ? readTime(inputStream, maxGroupPackageTime).getBytes() : readLength(inputStream, readLength, maxTime).getBytes();
                         //无数据不返回
                         if (!noDataNotReturn || bytes.length != 0) readListener.value(bytes);
                     }
@@ -123,25 +157,20 @@ public class YReadInputStream {
         YReadInputStream.sleep = sleep;
     }
 
-    public void setLengthAndTime(int readLength, int readTime) {
-        this.readLength = readLength;
-        this.readTime = readTime;
+    public boolean isAutoPackage() {
+        return autoPackage;
     }
 
     public int getMaxGroupPackageTime() {
         return maxGroupPackageTime;
     }
 
-    public void setMaxGroupPackageTime(int maxGroupPackageTime) {
-        this.maxGroupPackageTime = maxGroupPackageTime;
+    public int getReadLength() {
+        return readLength;
     }
 
-    public boolean isAutoPackage() {
-        return autoPackage;
-    }
-
-    public void setAutoPackage(boolean autoPackage) {
-        this.autoPackage = autoPackage;
+    public int getMaxTime() {
+        return maxTime;
     }
 
     public boolean isNoDataNotReturn() {
@@ -151,7 +180,8 @@ public class YReadInputStream {
     public void setNoDataNotReturn(boolean noDataNotReturn) {
         this.noDataNotReturn = noDataNotReturn;
     }
-    //★★★★★★★★★★★★★★★★★★★★★★★★★★★★★读流操作★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+
+    //★★★★★★★★★★★★★★★★★★★★★★★★★★★★★静态方法·读流操作★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 
     /**
      * 只读一次，读取到就返回，读取不到就一直等
@@ -248,7 +278,7 @@ public class YReadInputStream {
      *
      * @param inputStream inputStream
      * @param maxTime     最多读取这么长时间
-     * @param minLength   至少读取长度，即使没有读取到maxTime时间，只要读取长度大于等于minReadLength，直接返回
+     * @param minLength   至少读取长度，只要读取长度大于等于minLength，直接返回，最多读取maxTime时间
      * @return YBytes
      * @throws Exception Exception
      */

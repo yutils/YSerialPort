@@ -48,7 +48,7 @@ public class SendActivity extends KBaseActivity<ActivitySendBinding> {
         binding.llClearSerialPortSend.setOnClickListener(v -> binding.tvSend.setText(""));
 
         //初始化串口
-        ySerialPort = new YSerialPort(this);
+        ySerialPort = new YSerialPort(this, YSerialPort.readDevice(this), YSerialPort.readBaudRate(this));
 //      自定义组包
 //        ySerialPort.setInputStreamReadListener(inputStream -> {
 //            int count = 0;
@@ -64,6 +64,8 @@ public class SendActivity extends KBaseActivity<ActivitySendBinding> {
         //添加监听
         ySerialPort.addDataListener(dataListener);
         ySerialPort.start();
+
+
         //设置
         Setting.setting(this, binding.includeSet, () -> {
             if (YSerialPort.readDevice(this) != null && YSerialPort.readBaudRate(this) != null)

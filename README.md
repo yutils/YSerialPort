@@ -36,12 +36,12 @@ allprojects {
 }
 ```
 
-2. [子module添加依赖，当前最新版：————> 2.2.4　　　　![最新版](https://img.shields.io/badge/%E6%9C%80%E6%96%B0%E7%89%88-2.2.4-green.svg)](https://search.maven.org/artifact/com.kotlinx/yserialport)
+2. [子module添加依赖，当前最新版：————> 2.2.5　　　　![最新版](https://img.shields.io/badge/%E6%9C%80%E6%96%B0%E7%89%88-2.2.5-green.svg)](https://search.maven.org/artifact/com.kotlinx/yserialport)
 
 ```
 dependencies {
     //更新地址  https://github.com/yutils/YSerialPort 建议过几天访问看下有没有新版本
-    implementation 'com.kotlinx:yserialport:2.2.4'
+    implementation 'com.kotlinx:yserialport:2.2.5'
 }
 ```
 
@@ -76,37 +76,27 @@ serialPort.getOutputStream();
 serialPort.tryClose();
 
 
-
 //同步收发 （不用每次都创建serialPort对象）
 SerialPort serialPort = SerialPort.newBuilder(new File("/dev/ttyS4"), 9600).build();
 byte[] bytes=YSerialPort.sendSyncOnce(serialPort,bys,1000);
 byte[] bytes=YSerialPort.sendSyncTime(serialPort,bys,20,1000);
 byte[] bytes=YSerialPort.sendSyncLength(serialPort,bys,20,1000);
 serialPort.tryClose();
-//同步：
-//读取到就返回，读取不到就一直等。
-byte[] re = YSerialPort.sendSyncOnce("/dev/ttyS4", "9600", bytes);
 
+
+byte[] re = YSerialPort.sendSyncOnce("/dev/ttyS4", "9600", bytes);
 //读取到就返回，读取不到就一直等。直到超时，如果超时则向上抛异常
 byte[] re = YSerialPort.sendSyncOnce("/dev/ttyS4", "9600",bytes,500);
-
 //一直不停组包，（maxGroupTime每次组包时间）当在maxGroupTime时间内没有数据，就返回并关闭连接
 byte[] re = YSerialPort.sendSyncTime("/dev/ttyS4", "9600",bytes,500);
-
 //一直不停组包，（maxGroupTime每次组包时间）当在maxGroupTime时间内没有数据，就返回并关闭连接（如果一直有数据，最多接收时间为maxTime）
 byte[] re = YSerialPort.sendSyncTime("/dev/ttyS4", "9600",bytes,500,3000);
-
 //一直不停组包，当数据长度达到minLength或超时，返回并关闭连接
 byte[] re = YSerialPort.sendSyncLength("/dev/ttyS4", "9600", bytes,500,3000);
 
 
-
-
 //异步收发：
-//创建对象
-YSerialPort ySerialPort = new YSerialPort(this);
-//设置串口,设置波特率,如果设置了默认可以不用设置
-ySerialPort.setDevice("/dev/ttyS4", "9600");
+YSerialPort ySerialPort = new YSerialPort(this,"/dev/ttyS4", "9600");
 //设置数据监听
 ySerialPort.addDataListener(new DataListener() {
     @Override
@@ -114,19 +104,19 @@ ySerialPort.addDataListener(new DataListener() {
         //结果回调:haxString
         //结果回调:bytes
         //结果回调:size
-    }
-});
+        }
+    });
 
 //设置自动组包，每次组包时长为40毫秒，如果40毫秒读取不到数据则返回结果
-ySerialPort.setAutoPackage(true);
-//ySerialPort.setMaxGroupPackageTime(40);
+ySerialPort.setToAuto();
+//ySerialPort.setToAuto(40);
 
-//或者,设置非自动组包，读取长度1000，超时时间为500毫秒。如果读取到1000立即返回，否则直到读取到超时为止
-//ySerialPort.setAutoPackage(false);
-//ySerialPort.setLengthAndTimeout(1000,500);
+//或者,设置手动组包，读取长度100，超时时间为50毫秒。如果读取到数据大于等于100立即返回，否则直到读取到超时为止
+//ySerialPort.setToManual(100,50);
 
 //启动
 ySerialPort.start();
+
 
 //发送文字
 ySerialPort.send("你好".getBytes(Charset.forName("GB18030")));
@@ -138,15 +128,7 @@ protected void onDestroy() {
     ySerialPort.onDestroy();
 }
 
-```
-
-**如果要自己解析inputStream，请在start()之前实现此方法**  
-
-```java
 //如果要自己解析inputStream，请在start()之前实现此方法
-ySerialPort.setInputStreamReadListener(InputStreamReadListener inputStreamReadListener)
-
-//举例：自定义组包
 ySerialPort.setInputStreamReadListener(inputStream -> {
     int count = 0;
     while (count == 0)
@@ -158,7 +140,10 @@ ySerialPort.setInputStreamReadListener(inputStream -> {
         readCount += inputStream.read(bytes, readCount, count - readCount);
     return bytes;
 });
+
 ```
+
+
 
 **kotlin**  
 ```kotlin
@@ -168,9 +153,7 @@ ySerialPort.setInputStreamReadListener(inputStream -> {
 //YSerialPort.saveBaudRate(application, "9600") //设置默认波特率,可以不设置
 
 //创建对象
-val ySerialPort = YSerialPort(this)
-//设置串口,设置波特率,如果设置了默认可以不用设置
-ySerialPort.setDevice("/dev/ttyS4", "9600")
+val ySerialPort = YSerialPort(this,"/dev/ttyS4", "9600")
 //设置数据监听
 ySerialPort.addDataListener { hexString, bytes ->
     //结果回调:haxString
@@ -178,12 +161,11 @@ ySerialPort.addDataListener { hexString, bytes ->
     //结果回调:size
 }
 //设置自动组包，每次组包时长为40毫秒，如果40毫秒读取不到数据则返回结果
-ySerialPort.isAutoPackage = true
-//ySerialPort.maxGroupPackageTime = 40
+ySerialPort.setToAuto()
+//ySerialPort.setToAuto(40)
 
-//或者,设置非自动组包，读取长度1000，超时时间为500毫秒。如果读取到1000立即返回，否则直到读取到超时为止
-//ySerialPort.isAutoPackage = false
-//ySerialPort.setLengthAndTimeout(1000, 500)
+//或者,设置手动组包，读取长度100，超时时间为50毫秒。如果读取到数据大于等于100立即返回，否则直到读取到超时为止
+//ySerialPort.setToManual(100,50)
 
 //启动
 ySerialPort.start()
@@ -197,8 +179,86 @@ override fun onDestroy() {
 }
 ```
 
+
+## 根据协议头组包完整示例
+
+```kotlin
+//原理就是准备一个字符串，每次都数据都拼接到后面，然后判断协议头是否正确？（对了就取对应长度数据然后剪掉用过的数据长度）:（如果不对就剪掉协议头数据，重新开始）
+class Test {
+    var ySerialPort: YSerialPort? = null
+    //log
+    var showLog = false
+    //最后一次组包剩余数据
+    private var oldSurplus = ""
+
+    fun test() {
+        ySerialPort = YSerialPort(context, "/dev/ttyS2", "9600")
+        ySerialPort?.addDataListener { hexString, bytes ->
+            dataFilter(hexString)
+        }
+        ySerialPort?.start()
+    }
+
+    //拆包组包，举例：数据包：02 2B 30 30 30 30 30 30 30 31 42 03  //其中：协议头 02  2B正2D负   6位重量  1位小数点位数  2位校验(2B到30) 03结束位
+    @Synchronized
+    fun dataFilter(hexStr: String) {
+        //先组装上一次剩余数据
+        oldSurplus += hexStr.replace(" ", "")
+        if (oldSurplus.isEmpty()) return
+        //判断长度
+        if (oldSurplus.length < 36) {
+            if (showLog) YLog.d("数据长度不够，等一手！$oldSurplus")
+            return
+        }
+        //验证协议头，非02开头就抛弃
+        if (oldSurplus.substring(0, 2) != "02") {
+            if (showLog) YLog.d("数据异常，抛弃！$oldSurplus")
+            oldSurplus = oldSurplus.substring(2)
+            if (oldSurplus.length >= 24)
+                dataFilter("")
+            return
+        }
+
+        //验证协议尾，同上
+        
+        //验证校验码
+        //......
+
+        //获取数据处理
+        val dataByteArray = YConvert.hexStringToByte(oldSurplus.substring(0, 36))
+        //这儿就是一个完整的数据包！！！这儿就是一个完整的数据包！！！这儿就是一个完整的数据包！！！
+        data(dataByteArray)
+
+        //减去用过的数据
+        oldSurplus = oldSurplus.substring(36)
+
+        //剩余数据可能还能有完整包。所以递归一次
+        if (oldSurplus.length >= 36)
+            dataFilter("")
+    }
+
+
+    //处理数据。dataByteArray的长度应该是8
+    private fun data(dataByteArray: ByteArray) {
+        //处理分析，转换成对象obj
+        //.....
+
+        //通知前端
+        //YBusUtil.post("某某设备发送的数据", obj)
+    }
+
+
+    //退出页面时候注销
+    fun onDestroy() {
+        ySerialPort?.onDestroy()
+    }
+}
+```
+
 串口文件位置：/proc/tty/drivers
 
 [Android-SerialPort-API](https://github.com/licheedev/Android-SerialPort-API)
 
 不懂的问我QQ：3373217 （别问我为啥手机没串口，别问我模拟器怎么调试串口，别问我USB转的串口为什么不能识别）
+
+
