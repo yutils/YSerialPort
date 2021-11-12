@@ -11,8 +11,8 @@ android {
         applicationId "com.yujing.chuankou"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 24
-        versionName "2.2.4"
+        versionCode 25
+        versionName "2.2.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         //bugly
