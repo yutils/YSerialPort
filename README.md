@@ -59,6 +59,20 @@ dependencies {
 
 **java**
 
+## 基础使用方法
+```java
+YSerialPort ySerialPort = new YSerialPort(this,"/dev/ttyS4", "9600");
+//设置数据监听
+ySerialPort.addDataListener(new DataListener() {
+@Override
+public void value(String hexString, byte[] bytes) {
+        //结果回调:haxString , bytes
+        }
+        });
+ySerialPort.start();
+```
+
+## 扩展使用方法
 ```java
 //String[] device = YSerialPort.getDevices();//获取串口列表
 //String[] baudRate = YSerialPort.getBaudRates();//获取波特率列表
@@ -66,7 +80,7 @@ dependencies {
 //YSerialPort.saveBaudRate(getApplication(), "9600");//设置默认波特率,可以不设置
 
 
-//简单用法
+//拿流用法
 SerialPort serialPort = SerialPort.newBuilder(new File("/dev/ttyS4"), 9600).build();
 //获取输入流
 serialPort.getInputStream();
@@ -101,11 +115,9 @@ YSerialPort ySerialPort = new YSerialPort(this,"/dev/ttyS4", "9600");
 ySerialPort.addDataListener(new DataListener() {
     @Override
     public void value(String hexString, byte[] bytes) {
-        //结果回调:haxString
-        //结果回调:bytes
-        //结果回调:size
-        }
-    });
+        //结果回调:haxString , bytes
+    }
+});
 
 //设置自动组包，每次组包时长为40毫秒，如果40毫秒读取不到数据则返回结果
 ySerialPort.setToAuto();
@@ -113,7 +125,6 @@ ySerialPort.setToAuto();
 
 //或者,设置手动组包，读取长度100，超时时间为50毫秒。如果读取到数据大于等于100立即返回，否则直到读取到超时为止
 //ySerialPort.setToManual(100,50);
-
 //启动
 ySerialPort.start();
 
@@ -156,9 +167,7 @@ ySerialPort.setInputStreamReadListener(inputStream -> {
 val ySerialPort = YSerialPort(this,"/dev/ttyS4", "9600")
 //设置数据监听
 ySerialPort.addDataListener { hexString, bytes ->
-    //结果回调:haxString
-    //结果回调:bytes
-    //结果回调:size
+    //结果回调:haxString , bytes
 }
 //设置自动组包，每次组包时长为40毫秒，如果40毫秒读取不到数据则返回结果
 ySerialPort.setToAuto()
