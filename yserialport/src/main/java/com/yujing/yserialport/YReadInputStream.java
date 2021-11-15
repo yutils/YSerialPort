@@ -30,6 +30,8 @@ readInputStream = new YReadInputStream(inputStream, bytes ->
 );
 //设置自动组包
 readInputStream.setToAuto(10);
+//设置手自动组包，读取长度100，超时时间为50毫秒。如果读取到数据大于等于100立即返回，否则直到读取到超时为止
+//readInputStream.setToManual(100,50);
 //开始读取
 readInputStream.start();
  */
@@ -69,7 +71,7 @@ public class YReadInputStream {
     //开始读取
     public void start() {
         readThread = new ReadThread();
-        readThread.setName("YSerialPort-YReadInputStream-读取线程");
+        readThread.setName("YReadInputStream-读取线程");
         readThread.start();
     }
 
