@@ -19,6 +19,7 @@ class ClientSocket(val socket: Socket) {
     var closeListener: YListener? = null
 
     //读取
+    @Synchronized
     fun init() {
         readThread?.interrupt()
         readThread = Thread {

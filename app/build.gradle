@@ -104,17 +104,17 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.aar'])
     
     implementation 'androidx.core:core-ktx:1.6.0'
-    implementation 'androidx.appcompat:appcompat:1.4.0-rc01'
+    implementation 'androidx.appcompat:appcompat:1.4.0'
     implementation 'com.google.android.material:material:1.4.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
-    implementation 'com.kotlinx:yutils:1.7.7'
-    implementation 'com.kotlinx:yhttp:1.1.2'
+    implementation 'com.kotlinx:yutils:1.7.9'
+    implementation 'com.kotlinx:yhttp:1.1.4'
 
     //implementation 'com.kotlinx:yserialport:2.2.5'
     implementation project(':yserialport')

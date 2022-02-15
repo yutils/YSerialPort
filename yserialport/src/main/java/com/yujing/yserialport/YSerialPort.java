@@ -22,56 +22,71 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * 串口工具类，调用的此类的activity必须在onDestroy调用onDestroy方法
- * 读取长数据请设置读取长度和超时时间。
+ * 串口工具类
+ * 如果是异步，创建此类后使用完毕在释放时，必须调用onDestroy方法
  * 读取未知长度，请增大读取长度，并且增加组包时间差，组包时间差要小于读取超时时间。
  * 构造函数传入的是activity或Context都将数据返回到UI线程
  *
- * @author yujing  2021年11月12日15:22:41
+ * @author yujing  最后调整：2022年2月15日10:59:11
  */
+
 /*
-使用方法：
+获取串口
+//String[] device = YSerialPort.getDevices();//获取串口列表
+//String[] baudRate = YSerialPort.getBaudRates();//获取波特率列表
+
+//YSerialPort.saveDevice(getApplication(), "/dev/ttyS4");//设置默认串口,可以不设置
+//String device=YSerialPort.readDevice(getApplication());//获取上面设置的串口
+
+//YSerialPort.saveBaudRate(getApplication(), "9600");//设置默认波特率,可以不设置
+//String baudRate=YSerialPort.readBaudRate(getApplication());//获取上面设置的波特率
+*/
+
+/*
+使用方法：（同步）
+//拿流用法，自己通过流收发数据
+SerialPort serialPort = SerialPort.newBuilder(new File("/dev/ttyS4"), 9600).build();
+serialPort.getInputStream();//获取输入流
+serialPort.getOutputStream();//获取输出流
+serialPort.tryClose();//关闭
 
 //同步收发 （不用每次都创建serialPort对象）
 SerialPort serialPort = SerialPort.newBuilder(new File("/dev/ttyS4"), 9600).build();
 byte[] bytes=YSerialPort.sendSyncOnce(serialPort,bys,1000);
 byte[] bytes=YSerialPort.sendSyncTime(serialPort,bys,20,1000);
 byte[] bytes=YSerialPort.sendSyncLength(serialPort,bys,20,1000);
-serialPort.tryClose();
+serialPort.tryClose();//关闭
 
-
-byte[] re = YSerialPort.sendSyncOnce("/dev/ttyS4", "9600", bytes);
-//读取到就返回，读取不到就一直等。直到超时，如果超时则向上抛异常
-byte[] re = YSerialPort.sendSyncOnce("/dev/ttyS4", "9600",bytes,500);
+//发送并等待返回，死等
+byte[] bytes = YSerialPort.sendSyncOnce("/dev/ttyS4", "9600", bytes);
+//发送并等待返回，直到超时，如果超时则向上抛异常
+byte[] bytes = YSerialPort.sendSyncOnce("/dev/ttyS4", "9600",bytes,500);
 //一直不停组包，（maxGroupTime每次组包时间）当在maxGroupTime时间内没有数据，就返回并关闭连接
-byte[] re = YSerialPort.sendSyncTime("/dev/ttyS4", "9600",bytes,500);
+byte[] bytes = YSerialPort.sendSyncTime("/dev/ttyS4", "9600",bytes,500);
 //一直不停组包，（maxGroupTime每次组包时间）当在maxGroupTime时间内没有数据，就返回并关闭连接（如果一直有数据，最多接收时间为maxTime）
-byte[] re = YSerialPort.sendSyncTime("/dev/ttyS4", "9600",bytes,500,3000);
+byte[] bytes = YSerialPort.sendSyncTime("/dev/ttyS4", "9600",bytes,500,3000);
 //一直不停组包，当数据长度达到minLength或超时，返回并关闭连接
-byte[] re = YSerialPort.sendSyncLength("/dev/ttyS4", "9600", bytes,500,3000);
+byte[] bytes = YSerialPort.sendSyncLength("/dev/ttyS4", "9600", bytes,500,3000);
+*/
 
+/*
+使用方法：（异步）
 
-异步收发：
+//异步收发（推荐）
 YSerialPort ySerialPort = new YSerialPort(this,"/dev/ttyS4", "9600");
 //设置数据监听
 ySerialPort.addDataListener(new DataListener() {
     @Override
     public void value(String hexString, byte[] bytes) {
-        //结果回调:haxString
-        //结果回调:bytes
-        //结果回调:size
+        //结果回调:haxString , bytes
     }
 });
-
 //设置自动组包，每次组包时长为40毫秒，如果40毫秒读取不到数据则返回结果
-ySerialPort.setToAuto(40);
-
+ySerialPort.setToAuto(); //ySerialPort.setToAuto(40);
 //或者,设置手动组包，读取长度100，超时时间为50毫秒。如果读取到数据大于等于100立即返回，否则直到读取到超时为止
 //ySerialPort.setToManual(100,50);
-
 //启动
 ySerialPort.start();
-
 
 //发送文字
 ySerialPort.send("你好".getBytes(Charset.forName("GB18030")));
@@ -95,7 +110,6 @@ ySerialPort.setInputStreamReadListener(inputStream -> {
         readCount += inputStream.read(bytes, readCount, count - readCount);
     return bytes;
 });
-
  */
 @SuppressWarnings("unused")
 public class YSerialPort {
