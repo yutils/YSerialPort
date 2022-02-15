@@ -68,7 +68,7 @@ ySerialPort.start();
 
 **java**  
 
-同步：  
+**同步** 
 
 ```java
 //拿流用法，自己通过流收发数据
@@ -97,7 +97,7 @@ byte[]bytes=YSerialPort.sendSyncLength("/dev/ttyS4","9600",bytes,500,3000);
 
 ```
 
-异步：  
+**异步：（推荐）**
 
 ```java
 
@@ -110,7 +110,7 @@ byte[]bytes=YSerialPort.sendSyncLength("/dev/ttyS4","9600",bytes,500,3000);
 //YSerialPort.saveBaudRate(getApplication(), "9600");//设置默认波特率,可以不设置
 //String baudRate=YSerialPort.readBaudRate(getApplication());//获取上面设置的波特率
 
-//异步收发（推荐）
+//异步收发
 YSerialPort ySerialPort=new YSerialPort(this,"/dev/ttyS4","9600");
 //设置数据监听
 ySerialPort.addDataListener(new DataListener(){
@@ -135,7 +135,6 @@ protected void onDestroy(){
     ySerialPort.onDestroy();
 }
 
-
 //如果要自己解析inputStream，请在start()之前实现此方法
 ySerialPort.setInputStreamReadListener(inputStream->{
     int count=0;
@@ -151,7 +150,7 @@ ySerialPort.setInputStreamReadListener(inputStream->{
 ```
 
 
-**kotlin**
+**kotlin（推荐）**
 
 ```kotlin
 //创建对象

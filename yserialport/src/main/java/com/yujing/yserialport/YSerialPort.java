@@ -72,7 +72,7 @@ byte[] bytes = YSerialPort.sendSyncLength("/dev/ttyS4", "9600", bytes,500,3000);
 /*
 使用方法：（异步）
 
-//异步收发（推荐）
+//异步收发
 YSerialPort ySerialPort = new YSerialPort(this,"/dev/ttyS4", "9600");
 //设置数据监听
 ySerialPort.addDataListener(new DataListener() {
