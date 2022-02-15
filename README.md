@@ -259,7 +259,7 @@ class Test {
 
 串口文件位置：/proc/tty/drivers
 
-[Android-SerialPort-API](https://github.com/licheedev/Android-SerialPort-API)
+感谢：[Android-SerialPort-API](https://github.com/licheedev/Android-SerialPort-API)
 
 不懂的问我QQ：3373217 （别问我为啥手机没串口，别问我模拟器怎么调试串口，别问我USB转的串口为什么不能识别）
 
