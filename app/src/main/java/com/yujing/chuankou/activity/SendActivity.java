@@ -9,6 +9,7 @@ import com.yujing.utils.YLog;
 import com.yujing.utils.YShared;
 import com.yujing.utils.YToast;
 import com.yujing.yserialport.DataListener;
+import com.yujing.yserialport.ThreadMode;
 import com.yujing.yserialport.YSerialPort;
 
 import java.nio.charset.Charset;
@@ -63,9 +64,8 @@ public class SendActivity extends KBaseActivity<ActivitySendBinding> {
 //        });
         //添加监听
         ySerialPort.addDataListener(dataListener);
+        ySerialPort.setThreadMode(ThreadMode.MAIN);//设置回调线程为主线程
         ySerialPort.start();
-
-
         //设置
         Setting.setting(this, binding.includeSet, () -> {
             if (YSerialPort.readDevice(this) != null && YSerialPort.readBaudRate(this) != null)

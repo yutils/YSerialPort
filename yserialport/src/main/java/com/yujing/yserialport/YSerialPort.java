@@ -1,9 +1,8 @@
 package com.yujing.yserialport;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -25,7 +24,7 @@ import java.util.Locale;
  * 串口工具类
  * 如果是异步，创建此类后使用完毕在释放时，必须调用onDestroy方法
  * 读取未知长度，请增大读取长度，并且增加组包时间差，组包时间差要小于读取超时时间。
- * 构造函数传入的是activity或Context都将数据返回到UI线程
+ * 数据默认返回到UI线程
  *
  * @author yujing  最后调整：2022年2月15日10:59:11
  */
@@ -81,6 +80,8 @@ ySerialPort.addDataListener(new DataListener() {
         //结果回调:haxString , bytes
     }
 });
+//设置回调线程为主线程，默认主线程
+ySerialPort.setThreadMode(ThreadMode.MAIN);
 //设置自动组包，每次组包时长为40毫秒，如果40毫秒读取不到数据则返回结果
 ySerialPort.setToAuto(); //ySerialPort.setToAuto(40);
 //或者,设置手动组包，读取长度100，超时时间为50毫秒。如果读取到数据大于等于100立即返回，否则直到读取到超时为止
@@ -127,6 +128,7 @@ public class YSerialPort {
     private boolean noDataNotReturn = true;//无数据不返回
     private YReadInputStream readInputStream = new YReadInputStream();//读取InputStream
     private boolean setAutoComplete = false;//设置组包状态完成
+    private ThreadMode threadMode = ThreadMode.MAIN; //返回数据在哪个线程
 
     //自定义读取InputStream
     private InputStreamReadListener inputStreamReadListener;
@@ -235,15 +237,20 @@ public class YSerialPort {
             if (inputStreamReadListener != null) {
                 readThread = new ReadThread();
                 readThread.setName("YSerialPort-读取线程");
+                readThread.setReadListener(bytes ->
+                        post(() -> {
+                            for (DataListener item : dataListeners) item.value(bytesToHexString(bytes), bytes);
+                        })
+                );
                 readThread.start();
             } else {
                 assert readInputStream != null;
                 readInputStream.setInputStream(inputStream);
-                readInputStream.setReadListener(bytes -> handler.post(() -> {
-                    for (DataListener item : dataListeners) {
-                        item.value(bytesToHexString(bytes), bytes);
-                    }
-                }));
+                readInputStream.setReadListener(bytes ->
+                        post(() -> {
+                            for (DataListener item : dataListeners) item.value(bytesToHexString(bytes), bytes);
+                        })
+                );
                 //如果没有设置组包方式
                 if (!setAutoComplete) setToAuto();
                 //设置无数据不返回
@@ -260,18 +267,21 @@ public class YSerialPort {
         }
     }
 
+    //自定义读线程
     protected class ReadThread extends Thread {
+        private YListener<byte[]> readListener;
+
+        public void setReadListener(YListener<byte[]> readListener) {
+            this.readListener = readListener;
+        }
+
         @Override
         public void run() {
             while (!isInterrupted()) {
                 try {
-                    byte[] resultBytes = inputStreamReadListener.inputStreamToBytes(inputStream);
-                    handler.post(() -> {
-                        for (DataListener item : dataListeners) {
-                            item.value(bytesToHexString(resultBytes), resultBytes);
-                        }
-                    });
-                } catch (Exception ignored) {
+                    if (readListener != null) readListener.value(inputStreamReadListener.inputStreamToBytes(inputStream));
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -326,8 +336,9 @@ public class YSerialPort {
     public void send(final byte[] bytes, final YListener<Boolean> listener, final YListener<Integer> progressListener) {
         new Thread(() -> {
             boolean result = sendSynchronization(bytes, progressListener);
-            if (listener != null)
-                handler.post(() -> listener.value(result));
+            if (listener != null) {
+                post(() -> listener.value(result));
+            }
         }).start();
     }
 
@@ -366,13 +377,45 @@ public class YSerialPort {
                 //回调进度
                 if (progressListener != null) {
                     final int finalCount = count;
-                    handler.post(() -> progressListener.value(finalCount));
+                    post(() -> progressListener.value(finalCount));
                 }
             }
             return true;
         } catch (Exception e) {
             Log.e(TAG, "发送失败", e);
             return false;
+        }
+    }
+
+    //判断当前线程是否是主线程
+    private boolean isMainThread() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            return handler.getLooper().isCurrentThread();
+        else
+            return Looper.getMainLooper().getThread() == Thread.currentThread();
+    }
+
+    //通知外部接收到数据
+    private void post(Runnable runnable) {
+        switch (threadMode) {
+            case CURRENT:
+                runnable.run();
+                break;
+            case NEW:
+                new Thread(runnable).start();
+                break;
+            case MAIN:
+                if (isMainThread())
+                    runnable.run();
+                else
+                    handler.post(runnable);
+                break;
+            case IO:
+                if (isMainThread())
+                    new Thread(runnable).start();
+                else
+                    runnable.run();
+                break;
         }
     }
 
@@ -513,23 +556,34 @@ public class YSerialPort {
     }
 
     /**
+     * 获取返回线程类型
+     *
+     * @return 返回线程类型
+     */
+    public ThreadMode getThreadMode() {
+        return threadMode;
+    }
+
+    /**
+     * 设置返回线程类型
+     *
+     * @param threadMode 返回线程类型
+     */
+    public void setThreadMode(ThreadMode threadMode) {
+        this.threadMode = threadMode;
+    }
+
+    /**
      * 错误处理
      *
      * @param error 错误消息
      */
     private void DisplayError(String error) {
         if (errorListener != null) {
-            errorListener.error(error);
+            post(() -> errorListener.error(error));
         } else {
-            if (context instanceof Activity) {
-                Activity activity = (Activity) context;
-                activity.runOnUiThread(() -> {
-                    AlertDialog.Builder b = new AlertDialog.Builder(activity);
-                    b.setTitle("错误");
-                    b.setMessage(error);
-                    b.setPositiveButton("确定", null);
-                    b.show();
-                });
+            if (isMainThread()) {
+                Toast.makeText(context, "错误:" + error, Toast.LENGTH_LONG).show();
             } else {
                 handler.post(() -> Toast.makeText(context, "错误:" + error, Toast.LENGTH_LONG).show());
             }
@@ -636,7 +690,11 @@ public class YSerialPort {
         SharedPreferences sp = context.getSharedPreferences(SERIAL_PORT, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(DEVICE, device);
-        editor.apply();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+            editor.apply();
+        } else {
+            editor.commit();
+        }
     }
 
     //读取上面方法保存的串口
@@ -650,7 +708,11 @@ public class YSerialPort {
         SharedPreferences sp = context.getSharedPreferences(SERIAL_PORT, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(BAUD_RATE, device);
-        editor.apply();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+            editor.apply();
+        } else {
+            editor.commit();
+        }
     }
 
     //读取上面方法保存的波特率

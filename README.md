@@ -27,12 +27,12 @@
 
 ## 引用
 
-### [子module添加依赖，当前最新版：————> 2.2.5　　　　![最新版](https://img.shields.io/badge/%E6%9C%80%E6%96%B0%E7%89%88-2.2.5-green.svg)](https://search.maven.org/artifact/com.kotlinx/yserialport)
+### [子module添加依赖，当前最新版：————> 2.2.6　　　　![最新版](https://img.shields.io/badge/%E6%9C%80%E6%96%B0%E7%89%88-2.2.6-green.svg)](https://search.maven.org/artifact/com.kotlinx/yserialport)
 
 ```
 dependencies {
     //更新地址  https://github.com/yutils/YSerialPort 建议过几天访问看下有没有新版本
-    implementation 'com.kotlinx:yserialport:2.2.5'
+    implementation 'com.kotlinx:yserialport:2.2.6'
 }
 ```
 
@@ -119,6 +119,8 @@ public void value(String hexString,byte[]bytes){
     //结果回调:haxString , bytes
     }
 });
+//设置回调线程为主线程，默认主线程
+ySerialPort.setThreadMode(ThreadMode.MAIN);
 //设置自动组包，每次组包时长为40毫秒，如果40毫秒读取不到数据则返回结果
 ySerialPort.setToAuto(); //ySerialPort.setToAuto(40);
 //或者,设置手动组包，读取长度100，超时时间为50毫秒。如果读取到数据大于等于100立即返回，否则直到读取到超时为止
@@ -227,6 +229,7 @@ class Test {
 
         //验证协议尾，同上
 
+        
         //验证校验码
         //......
 

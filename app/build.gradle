@@ -11,8 +11,8 @@ android {
         applicationId "com.yujing.chuankou"
         minSdkVersion 19
         targetSdkVersion 31
-        versionCode 25
-        versionName "2.2.5"
+        versionCode 26
+        versionName "2.2.6"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         //bugly
@@ -92,20 +92,12 @@ android {
     buildFeatures {
         dataBinding = true
     }
-    //支持AAR
-    repositories {
-        flatDir {
-            dirs 'libs'
-        }
-    }
 }
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation fileTree(dir: 'libs', include: ['*.aar'])
-    
-    implementation 'androidx.core:core-ktx:1.6.0'
+    implementation fileTree(dir: 'libs', include: ['*.jar','*.aar'])
+    implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.0'
-    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'com.google.android.material:material:1.5.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
@@ -113,22 +105,17 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
-    implementation 'com.kotlinx:yutils:1.7.9'
+    implementation 'com.kotlinx:yutils:1.8.8'
     implementation 'com.kotlinx:yhttp:1.1.4'
 
     //implementation 'com.kotlinx:yserialport:2.2.5'
     implementation project(':yserialport')
 
     //bugly，异常采集
-    implementation 'com.tencent.bugly:crashreport:3.4.4'
+    implementation 'com.tencent.bugly:crashreport:4.0.0'
     implementation 'com.tencent.bugly:nativecrashreport:3.9.2'
 
     //gson  <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
-    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'com.google.code.gson:gson:2.9.0'
 
-    //____________________________________________________________RxJava____________________________________________________________
-    //rxjava2，https://mvnrepository.com/artifact/io.reactivex.rxjava2/rxjava
-    implementation group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.2.21'
-    //rxandroid，https://mvnrepository.com/artifact/io.reactivex.rxjava2/rxandroid
-    implementation group: 'io.reactivex.rxjava2', name: 'rxandroid', version: '2.1.1'
 }

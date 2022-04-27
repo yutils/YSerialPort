@@ -34,6 +34,6 @@ class App : Application() {
         YLog.delDaysAgo(30)
         // 初始化Bugly
         CrashReport.initCrashReport(this, "a365f21e2f", true)
-        androidx.multidex.MultiDex.install(this)
+//        androidx.multidex.MultiDex.install(this)
     }
 }
