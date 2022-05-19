@@ -7,6 +7,7 @@ import com.yujing.chuankou.utils.Setting;
 import com.yujing.utils.YConvert;
 import com.yujing.utils.YLog;
 import com.yujing.utils.YShared;
+import com.yujing.utils.YToast;
 import com.yujing.yserialport.YSerialPort;
 
 import java.text.SimpleDateFormat;
@@ -64,12 +65,12 @@ public class SyncActivity extends KBaseActivity<ActivitySendBinding> {
 
     private void sendHexString() {
         if (device == null || baudRate == null) {
-            show("请先配置串口！");
+            YToast.show("请先配置串口！");
             return;
         }
         String str = binding.etHex.getText().toString().replaceAll("\n", "").replace(" ", "");
         if (str.isEmpty()) {
-            show("未输入内容！");
+            YToast.show("未输入内容！");
             return;
         }
         //去空格后
@@ -105,7 +106,7 @@ public class SyncActivity extends KBaseActivity<ActivitySendBinding> {
     private void sendString() {
         String str = binding.editText.getText().toString();
         if (str.isEmpty()) {
-            show("未输入内容！");
+            YToast.show("未输入内容！");
             return;
         }
         //保存数据，下次打开页面直接填写历史记录

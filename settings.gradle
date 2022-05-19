@@ -1,2 +1,28 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        //google()
+        mavenCentral()
+        maven { url 'https://kotlinx.com/nexus/repository/maven-public' }
+        //maven {
+        //    allowInsecureProtocol = true
+        //    url 'http://192.168.1.85:8081/repository/maven-public'
+        //}
+        //maven { url "C:/Users/yujing/.m2/repository" }
+        maven { url 'https://maven.aliyun.com/repository/central' }
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        maven { url 'https://jitpack.io' }
+    }
+}
 include ':app' , ':yserialport'
 rootProject.name='串口测试APP'

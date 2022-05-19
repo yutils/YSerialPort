@@ -78,7 +78,7 @@ public class SendActivity extends KBaseActivity<ActivitySendBinding> {
     private void sendHexString() {
         String str = binding.etHex.getText().toString().replace("\n", "").replace(" ", "");
         if (str.isEmpty()) {
-            show("未输入内容！");
+            YToast.show("未输入内容！");
             return;
         }
         //去空格后
@@ -101,7 +101,7 @@ public class SendActivity extends KBaseActivity<ActivitySendBinding> {
     private void sendString() {
         String str = binding.editText.getText().toString();
         if (str.isEmpty()) {
-            show("未输入内容！");
+            YToast.show("未输入内容！");
             return;
         }
 

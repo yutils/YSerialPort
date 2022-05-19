@@ -145,7 +145,7 @@ class SerialPortToWiFiActivity :
                 binding.tvServerStatusTips.text = "单击打开服务"
             }
         } else {
-            showSpeak("端口不正确")
+            YToast.showSpeak("端口不正确")
         }
     }
 
@@ -188,7 +188,7 @@ class SerialPortToWiFiActivity :
                     binding.tvPort.text = "端口：$wifiPort"
                 }
             } else {
-                showSpeak("端口不正确")
+                YToast.showSpeak("端口不正确")
             }
         }
     }
@@ -197,7 +197,7 @@ class SerialPortToWiFiActivity :
     private fun sendHexSerialPort() {
         val str: String = binding.etHex.text.toString().replace("\n", "").replace(" ", "")
         if (str.isEmpty()) {
-            showSpeak("未输入内容")
+            YToast.showSpeak("未输入内容")
             return
         }
         //去空格后
@@ -226,7 +226,7 @@ class SerialPortToWiFiActivity :
     private fun sendStringSerialPort() {
         val str = binding.editText.text.toString()
         if (str.isEmpty()) {
-            showSpeak("未输入内容")
+            YToast.showSpeak("未输入内容")
             return
         }
 
@@ -236,7 +236,7 @@ class SerialPortToWiFiActivity :
         ySerialPort?.send(
             str.toByteArray(Charset.forName("GB18030"))
         ) { value: Boolean? ->
-            if (!value!!) showSpeak("串口异常")
+            if (!value!!) YToast.showSpeak("串口异常")
         }
 
         //显示
@@ -249,12 +249,12 @@ class SerialPortToWiFiActivity :
     //发送16进制给wifi
     private fun sendHexWiFi() {
         if (server.socketList.isEmpty()) {
-            showSpeak("没有已连接的设备")
+            YToast.showSpeak("没有已连接的设备")
             return
         }
         val str: String = binding.etHexWifi.text.toString().replace("\n", "").replace(" ", "")
         if (str.isEmpty()) {
-            showSpeak("未输入内容")
+            YToast.showSpeak("未输入内容")
             return
         }
         //去空格后

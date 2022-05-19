@@ -10,6 +10,7 @@ import com.yujing.chuankou.utils.Setting;
 import com.yujing.utils.YConvert;
 import com.yujing.utils.YPermissions;
 import com.yujing.utils.YShow;
+import com.yujing.utils.YToast;
 import com.yujing.utils.YUri;
 import com.yujing.yserialport.YSerialPort;
 
@@ -48,23 +49,23 @@ public class SendFileActivity extends BaseActivity<ActivitySendFileBinding> {
     //直接发送文件到串口
     private void sendFile() {
         if (sendFile == null) {
-            show("请先选择文件");
+            YToast.show("请先选择文件");
             return;
         }
         byte[] bytes = YConvert.fileToByte(sendFile);
         YShow.show(this, "发送中...", "进度：" + 0 + "/" + bytes.length);
         //初始化
         ySerialPort.send(bytes,
-                aBoolean -> show("发送：" + (aBoolean ? "成功" : "失败")),
+                aBoolean -> YToast.show("发送：" + (aBoolean ? "成功" : "失败")),
                 integer -> {
                     YShow.setMessageOther("进度：" + integer + "/" + bytes.length);
                     if (integer == bytes.length) {
                         YShow.finish();
-                        show("发送完成");
+                        YToast.show("发送完成");
                         ySerialPort.onDestroy();
                     }
                 });
-        show("正在发送请稍后...");
+        YToast.show("正在发送请稍后...");
     }
 
     public void onClick() {
