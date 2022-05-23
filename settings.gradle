@@ -3,6 +3,7 @@ pluginManagement {
         gradlePluginPortal()
         google()
         mavenCentral()
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
     }
 }
 
@@ -10,17 +11,20 @@ dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         //google()
-        mavenCentral()
-        maven { url 'https://kotlinx.com/nexus/repository/maven-public' }
+        //mavenCentral()
+
         //maven {
         //    allowInsecureProtocol = true
         //    url 'http://192.168.1.85:8081/repository/maven-public'
         //}
         //maven { url "C:/Users/yujing/.m2/repository" }
+        //maven { url 'https://archiva-maven-storage-prod.oss-cn-beijing.aliyuncs.com/repository/central' }
+
+        maven { url 'https://repo1.maven.org/maven2' }
         maven { url 'https://maven.aliyun.com/repository/central' }
         maven { url 'https://maven.aliyun.com/repository/public' }
         maven { url 'https://maven.aliyun.com/repository/google' }
-        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        maven { url 'https://kotlinx.com/nexus/repository/maven-public' }
         maven { url 'https://jitpack.io' }
     }
 }

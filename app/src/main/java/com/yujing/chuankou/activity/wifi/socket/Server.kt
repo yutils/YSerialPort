@@ -2,7 +2,9 @@ package com.yujing.chuankou.activity.wifi.socket
 
 import com.yujing.contract.YListener
 import com.yujing.contract.YListener2
-import com.yujing.utils.*
+import com.yujing.utils.YLog
+import com.yujing.utils.YThread
+import com.yujing.utils.YToast
 import java.net.ServerSocket
 import java.net.Socket
 import java.net.SocketException
@@ -84,15 +86,13 @@ class Server {
                 } else {
                     YLog.e("服务已关闭", e)
                     YThread.runOnUiThread {
-                        YToast.show("服务已关闭")
-                        YTts.getInstance().speak("服务已关闭")
+                        YToast.showSpeak("服务已关闭")
                     }
                 }
             } catch (e: Exception) {
                 YLog.e("启动服务失败", e)
                 YThread.runOnUiThread {
-                    YToast.show("启动服务失败")
-                    YTts.getInstance().speak("启动服务失败")
+                    YToast.showSpeak("启动服务失败")
                 }
             }
         }.start()
@@ -121,11 +121,11 @@ class Server {
 
     //检查当前列表
     @Synchronized
-    private  fun check() {
+    private fun check() {
         //删除——循环
         var i = 0
         while (i < socketList.size) {
-            val next=socketList[i]
+            val next = socketList[i]
             if (next.socket.isClosed) {
                 next.close()
                 socketList.removeAt(i)
@@ -142,7 +142,7 @@ class Server {
     fun send(bytes: ByteArray) {
         var i = 0
         while (i < socketList.size) {
-            val item=socketList[i]
+            val item = socketList[i]
             item.send(bytes)
             i++
         }

@@ -5,8 +5,10 @@ import android.content.DialogInterface
 import android.graphics.Color
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import com.yujing.chuankou.R
 import com.yujing.chuankou.activity.wifi.socket.Server
 import com.yujing.chuankou.base.KBaseActivity
+import com.yujing.chuankou.config.Config
 import com.yujing.chuankou.databinding.ActivitySerialportToWifiBinding
 import com.yujing.chuankou.utils.Setting
 import com.yujing.contract.YListener
@@ -17,7 +19,6 @@ import java.net.Socket
 import java.nio.charset.Charset
 import java.text.SimpleDateFormat
 import java.util.*
-import com.yujing.chuankou.R
 
 /**
  * 串口转TCP（WiFi）
@@ -69,17 +70,16 @@ class SerialPortToWiFiActivity :
         binding.tvIp.text = "本机IP：" + YUtils.getIPv4().toTypedArray().contentToString()
         //设置
         Setting.setting(this, binding.includeSet) {
-            if (YSerialPort.readDevice(this) != null && YSerialPort.readBaudRate(this) != null)
+            if (Config.device != null && Config.baudRate != null)
                 ySerialPort?.reStart(
-                    YSerialPort.readDevice(this),
-                    YSerialPort.readBaudRate(this)
+                    Config.device,
+                    Config.baudRate
                 )
             binding.tvResult.text = ""
-            binding.tvSend.text= ""
+            binding.tvSend.text = ""
         }
         //初始化串口
-        ySerialPort = YSerialPort(this, YSerialPort.readDevice(this), YSerialPort.readBaudRate(this));
-
+        ySerialPort = YSerialPort(this, Config.device, Config.baudRate)
         //自定义组包
         ySerialPort?.setInputStreamReadListener { inputStream ->
             var count = 0

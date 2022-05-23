@@ -5,10 +5,6 @@ import com.tencent.bugly.crashreport.CrashReport
 import com.yujing.utils.*
 
 class App : Application() {
-    //标准单列
-//    companion object {
-//        val instance: App by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {App()}
-//    }
     //单列
     companion object {
         private var instance: App? = null

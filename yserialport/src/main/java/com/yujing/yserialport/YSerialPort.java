@@ -686,6 +686,7 @@ public class YSerialPort {
 
 
     //保存串口
+    @Deprecated
     public static void saveDevice(Context context, String device) {
         SharedPreferences sp = context.getSharedPreferences(SERIAL_PORT, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
@@ -698,12 +699,14 @@ public class YSerialPort {
     }
 
     //读取上面方法保存的串口
+    @Deprecated
     public static String readDevice(Context context) {
         SharedPreferences sp = context.getSharedPreferences(SERIAL_PORT, Context.MODE_PRIVATE);
         return sp.getString(DEVICE, null);// null为默认值
     }
 
     //保存波特率
+    @Deprecated
     public static void saveBaudRate(Context context, String device) {
         SharedPreferences sp = context.getSharedPreferences(SERIAL_PORT, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
@@ -716,11 +719,11 @@ public class YSerialPort {
     }
 
     //读取上面方法保存的波特率
+    @Deprecated
     public static String readBaudRate(Context context) {
         SharedPreferences sp = context.getSharedPreferences(SERIAL_PORT, Context.MODE_PRIVATE);
         return sp.getString(BAUD_RATE, null);// null为默认值
     }
-
 
     /**
      * 同步发送数据，建立连接,发送完毕后，等待接收数据（读取到数据立即返回），接收完毕后关闭连接

@@ -2,6 +2,7 @@ package com.yujing.chuankou.activity.myTest;
 
 import com.yujing.chuankou.R;
 import com.yujing.chuankou.base.KBaseActivity;
+import com.yujing.chuankou.config.Config;
 import com.yujing.chuankou.databinding.ActivitySendBinding;
 import com.yujing.chuankou.utils.Setting;
 import com.yujing.utils.YConvert;
@@ -50,13 +51,13 @@ public class SyncActivity extends KBaseActivity<ActivitySendBinding> {
         binding.llClearSerialPortResult.setOnClickListener(v -> binding.tvResult.setText(""));
         binding.llClearSerialPortSend.setOnClickListener(v -> binding.tvSend.setText(""));
         //串口波特率
-        device = YSerialPort.readDevice(this);
-        baudRate = YSerialPort.readBaudRate(this);
+        device = Config.getDevice();
+        baudRate = Config.getBaudRate();
         //设置
         Setting.setting(this, binding.includeSet, () -> {
-            if (YSerialPort.readDevice(this) != null && YSerialPort.readBaudRate(this) != null) {
-                device = YSerialPort.readDevice(this);
-                baudRate = YSerialPort.readBaudRate(this);
+            if (Config.getDevice() != null && Config.getBaudRate() != null) {
+                device = Config.getDevice();
+                baudRate = Config.getBaudRate();
             }
             binding.tvResult.setText("");
             binding.tvSend.setText("");

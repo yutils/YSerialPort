@@ -5,6 +5,7 @@ import android.net.Uri;
 
 import com.yujing.chuankou.R;
 import com.yujing.chuankou.base.BaseActivity;
+import com.yujing.chuankou.config.Config;
 import com.yujing.chuankou.databinding.ActivitySendFileBinding;
 import com.yujing.chuankou.utils.Setting;
 import com.yujing.utils.YConvert;
@@ -32,15 +33,15 @@ public class SendFileActivity extends BaseActivity<ActivitySendFileBinding> {
         //发送文件
         binding.btSend.setOnClickListener(v -> sendFile());
 
-        ySerialPort = new YSerialPort(this,YSerialPort.readDevice(this), YSerialPort.readBaudRate(this));
+        ySerialPort = new YSerialPort(this, Config.getDevice(), Config.getBaudRate());
         ySerialPort.addDataListener((hexString, bytes2) -> runOnUiThread(() ->
                 binding.tvResult.setText(binding.tvResult.getText().equals("") ? hexString : binding.tvResult.getText() + "\n" + hexString))
         );
         ySerialPort.start();
         //设置
         Setting.setting(this, binding.includeSet, () -> {
-            if (YSerialPort.readDevice(this) != null && YSerialPort.readBaudRate(this) != null)
-                ySerialPort.reStart(YSerialPort.readDevice(this), YSerialPort.readBaudRate(this));
+            if (Config.getDevice() != null && Config.getBaudRate() != null)
+                ySerialPort.reStart(Config.getDevice(), Config.getBaudRate());
             binding.tvResult.setText("");
         });
         binding.ButtonQuit.setOnClickListener(v -> finish());

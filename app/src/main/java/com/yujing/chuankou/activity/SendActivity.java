@@ -2,6 +2,7 @@ package com.yujing.chuankou.activity;
 
 import com.yujing.chuankou.R;
 import com.yujing.chuankou.base.KBaseActivity;
+import com.yujing.chuankou.config.Config;
 import com.yujing.chuankou.databinding.ActivitySendBinding;
 import com.yujing.chuankou.utils.Setting;
 import com.yujing.utils.YConvert;
@@ -27,6 +28,7 @@ public class SendActivity extends KBaseActivity<ActivitySendBinding> {
     final String SEND_HEX = "SEND_HEX";
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("[HH:mm:ss.SSS]", Locale.getDefault());
 
+
     public SendActivity() {
         super(R.layout.activity_send);
     }
@@ -49,7 +51,7 @@ public class SendActivity extends KBaseActivity<ActivitySendBinding> {
         binding.llClearSerialPortSend.setOnClickListener(v -> binding.tvSend.setText(""));
 
         //初始化串口
-        ySerialPort = new YSerialPort(this, YSerialPort.readDevice(this), YSerialPort.readBaudRate(this));
+        ySerialPort = new YSerialPort(this, Config.getDevice(), Config.getBaudRate());
 //      自定义组包
 //        ySerialPort.setInputStreamReadListener(inputStream -> {
 //            int count = 0;
@@ -65,11 +67,12 @@ public class SendActivity extends KBaseActivity<ActivitySendBinding> {
         //添加监听
         ySerialPort.addDataListener(dataListener);
         ySerialPort.setThreadMode(ThreadMode.MAIN);//设置回调线程为主线程
-        ySerialPort.start();
+        if (Config.getDevice() != null && Config.getBaudRate() != null)
+            ySerialPort.start();
         //设置
         Setting.setting(this, binding.includeSet, () -> {
-            if (YSerialPort.readDevice(this) != null && YSerialPort.readBaudRate(this) != null)
-                ySerialPort.reStart(YSerialPort.readDevice(this), YSerialPort.readBaudRate(this));
+            if (Config.getDevice() != null && Config.getBaudRate() != null)
+                ySerialPort.reStart(Config.getDevice(), Config.getBaudRate());
             binding.tvResult.setText("");
             binding.tvSend.setText("");
         });

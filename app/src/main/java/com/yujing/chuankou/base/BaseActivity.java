@@ -3,8 +3,6 @@ package com.yujing.chuankou.base;
 import androidx.databinding.ViewDataBinding;
 
 import com.yujing.base.YBaseActivity;
-import com.yujing.utils.YPermissions;
-import com.yujing.utils.YTts;
 
 /**
  * 基础activity
@@ -23,7 +21,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
 */
 public abstract class BaseActivity<B extends ViewDataBinding> extends YBaseActivity<B> {
     protected B binding;
-    protected YTts yTts;
 
     public BaseActivity(int layout) {
         super(layout);
@@ -31,7 +28,6 @@ public abstract class BaseActivity<B extends ViewDataBinding> extends YBaseActiv
 
     @Override
     public void initBefore() {
-        yTts = new YTts(this);
         binding = getBinding();
     }
 }
