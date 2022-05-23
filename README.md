@@ -36,12 +36,15 @@ dependencies {
 }
 ```
 
-注：如果引用失败，或者工程未引入mavenCentral，请引入：mavenCentral()
+注：如果引用失败，看下面方案
 ```
 allprojects {
     repositories {
-        mavenCentral()
-        //阿里云等...
+        //如果mavenCentral不容易拉取,可以试试直接用maven.org
+        //mavenCentral()
+        maven { url 'https://repo1.maven.org/maven2' }
+        //或者
+        maven { url 'https://maven.aliyun.com/repository/central' }
     }
 }
 ```
