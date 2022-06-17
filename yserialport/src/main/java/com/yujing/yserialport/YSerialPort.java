@@ -44,7 +44,11 @@ import java.util.Locale;
 /*
 使用方法：（同步）
 //拿流用法，自己通过流收发数据
-SerialPort serialPort = SerialPort.newBuilder(new File("/dev/ttyS4"), 9600).build();
+SerialPort serialPort = SerialPort.newBuilder(new File("/dev/ttyS4"), 9600)
+    .parity(0) // 校验位；0:无校验位(NONE，默认)；1:奇校验位(ODD);2:偶校验位(EVEN)
+    .dataBits(8) // 数据位,默认8；可选值为5~8
+    .stopBits(1) // 停止位，默认1；1:1位停止位；2:2位停止位
+    .build();
 serialPort.getInputStream();//获取输入流
 serialPort.getOutputStream();//获取输出流
 serialPort.tryClose();//关闭

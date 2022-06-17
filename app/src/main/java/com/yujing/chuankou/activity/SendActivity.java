@@ -13,6 +13,7 @@ import com.yujing.yserialport.DataListener;
 import com.yujing.yserialport.ThreadMode;
 import com.yujing.yserialport.YSerialPort;
 
+import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -131,7 +132,6 @@ public class SendActivity extends KBaseActivity<ActivitySendBinding> {
         binding.tvResult.setText(
                 "HEX " + simpleDateFormat.format(new Date()) + "：" + YConvert.bytesToHexString(bytes) + "\n" + binding.tvResult.getText().toString());
     };
-
 
     @Override
     public void onDestroy() {
