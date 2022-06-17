@@ -85,21 +85,21 @@ serialPort.tryClose();//关闭
         
 //同步收发 （不用每次都创建serialPort对象）
 SerialPort serialPort=SerialPort.newBuilder(new File("/dev/ttyS4"),9600).build();
-byte[]bytes=YSerialPort.sendSyncOnce(serialPort,bys,1000);
-byte[]bytes=YSerialPort.sendSyncTime(serialPort,bys,20,1000);
-byte[]bytes=YSerialPort.sendSyncLength(serialPort,bys,20,1000);
+byte[] bytes=YSerialPort.sendSyncOnce(serialPort,bys,1000);
+byte[] bytes=YSerialPort.sendSyncTime(serialPort,bys,20,1000);
+byte[] bytes=YSerialPort.sendSyncLength(serialPort,bys,20,1000);
 serialPort.tryClose();//关闭
         
 //发送并等待返回，死等
-byte[]bytes=YSerialPort.sendSyncOnce("/dev/ttyS4","9600",bytes);
+byte[] bytes=YSerialPort.sendSyncOnce("/dev/ttyS4","9600",bytes);
 //发送并等待返回，直到超时，如果超时则向上抛异常
-byte[]bytes=YSerialPort.sendSyncOnce("/dev/ttyS4","9600",bytes,500);
+byte[] bytes=YSerialPort.sendSyncOnce("/dev/ttyS4","9600",bytes,500);
 //一直不停组包，（maxGroupTime每次组包时间）当在maxGroupTime时间内没有数据，就返回并关闭连接
-byte[]bytes=YSerialPort.sendSyncTime("/dev/ttyS4","9600",bytes,500);
+byte[] bytes=YSerialPort.sendSyncTime("/dev/ttyS4","9600",bytes,500);
 //一直不停组包，（maxGroupTime每次组包时间）当在maxGroupTime时间内没有数据，就返回并关闭连接（如果一直有数据，最多接收时间为maxTime）
-byte[]bytes=YSerialPort.sendSyncTime("/dev/ttyS4","9600",bytes,500,3000);
+byte[] bytes=YSerialPort.sendSyncTime("/dev/ttyS4","9600",bytes,500,3000);
 //一直不停组包，当数据长度达到minLength或超时，返回并关闭连接
-byte[]bytes=YSerialPort.sendSyncLength("/dev/ttyS4","9600",bytes,500,3000);
+byte[] bytes=YSerialPort.sendSyncLength("/dev/ttyS4","9600",bytes,500,3000);
 
 ```
 
