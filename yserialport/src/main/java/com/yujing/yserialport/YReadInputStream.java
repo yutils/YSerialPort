@@ -194,14 +194,7 @@ public class YReadInputStream {
      */
     @Deprecated
     public static byte[] readOnce(InputStream inputStream) throws Exception {
-        int count = 0;
-        while (count == 0) count = inputStream.available();//获取真正长度
-        byte[] bytes = new byte[count];
-        // 一定要读取count个数据，如果inputStream.read(bytes);可能读不完
-        int readCount = 0; // 已经成功读取的字节的个数
-        while (readCount < count)
-            readCount += inputStream.read(bytes, readCount, count - readCount);
-        return bytes;
+        return readOnce(inputStream, Long.MAX_VALUE);
     }
 
     /**

@@ -23,6 +23,10 @@
 
 # `不建议直接拉取项目编译，请仔细看完 ` #
 
+## Gradle采用java17！！！ java17！！！java17！！！
+
+### 设置方法： Project Structure ----> SDK Location ----> JDK location was moved to Gradle Settings. ---->  Gradle JDK ---->  JDK17
+
 ## 已经从jitpack.io仓库移动至maven中央仓库
 
 ## 引用
