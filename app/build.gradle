@@ -40,7 +40,7 @@ android {
             //版本名后缀
             //versionNameSuffix "-debug"
             //混淆
-            minifyEnabled false
+            minifyEnabled true
             //Zipalign优化
             zipAlignEnabled false
             // 移除无用的resource文件
@@ -52,7 +52,7 @@ android {
             //app名称
             manifestPlaceholders = ["app_name": "@string/app_name"]
             //混淆
-            minifyEnabled false
+            minifyEnabled true
             //Zipalign优化
             zipAlignEnabled false
             //移除无用的resource文件
@@ -64,12 +64,12 @@ android {
         }
     }
     //打包
-    android.applicationVariants.all { variant ->
+    android.applicationVariants.configureEach { variant ->
         //def appName = variant.productFlavors[0].name //获取渠道名称
         def appName = "YSerialPort" //rootProject.name
         def createDate = new Date().format("YYYYMMdd", TimeZone.getTimeZone("GMT+08:00"))
         def createTime = new Date().format("HHmmss", TimeZone.getTimeZone("GMT+08:00"))
-        variant.outputs.all {
+        variant.outputs.configureEach {
             it.outputFileName = "${appName}_v${versionName}_${versionCode}_${createDate}_${createTime}_${buildType.name}.apk"
         }
     }
@@ -90,21 +90,21 @@ android {
 }
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar','*.aar'])
-    implementation 'androidx.core:core-ktx:1.10.0'
+    implementation 'androidx.core:core-ktx:1.10.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.6.0'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.6.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    implementation 'com.kotlinx:yutils:2.1.7'
+    implementation 'com.kotlinx:yutils:2.2.5'
     implementation 'com.kotlinx:yhttp:1.1.4'
     //implementation 'com.kotlinx:yserialport:2.2.7'
     implementation project(':yserialport')
     //bugly，异常采集
-    implementation 'com.tencent.bugly:crashreport:4.1.9.2'
-        //gson  <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+    implementation 'com.tencent.bugly:crashreport:4.1.9.3'
+    //gson  <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
     implementation 'com.google.code.gson:gson:2.10.1'
 }

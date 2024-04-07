@@ -79,7 +79,6 @@ public class SyncActivity extends KBaseActivity<ActivitySendBinding> {
 
         //保存数据，下次打开页面直接填写历史记录
         YShared.write(getApplicationContext(), SEND_HEX, str);
-
         //发送
         YLog.i("发送串口：" + device + "\t\t波特率：" + baudRate + "\t\t内容：" + str);
         new Thread(() -> {
@@ -96,12 +95,10 @@ public class SyncActivity extends KBaseActivity<ActivitySendBinding> {
             }
         }).start();
 
-
         //显示
         if (binding.tvSend.getText().toString().length() > 10000)
             binding.tvSend.setText(binding.tvSend.getText().toString().substring(0, 2000));
-        binding.tvSend.setText(
-                "HEX " + simpleDateFormat.format(new Date()) + "：" + str + "\n" + binding.tvSend.getText().toString());
+        binding.tvSend.setText("HEX " + simpleDateFormat.format(new Date()) + "：" + str + "\n" + binding.tvSend.getText().toString());
     }
 
     private void sendString() {

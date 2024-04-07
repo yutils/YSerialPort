@@ -13,7 +13,6 @@ import com.yujing.yserialport.DataListener;
 import com.yujing.yserialport.ThreadMode;
 import com.yujing.yserialport.YSerialPort;
 
-import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,7 +27,6 @@ public class SendActivity extends KBaseActivity<ActivitySendBinding> {
     final String SEND_STRING = "SEND_STRING";
     final String SEND_HEX = "SEND_HEX";
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("[HH:mm:ss.SSS]", Locale.getDefault());
-
 
     public SendActivity() {
         super(R.layout.activity_send);
@@ -72,8 +70,7 @@ public class SendActivity extends KBaseActivity<ActivitySendBinding> {
             ySerialPort.start();
         //设置
         Setting.setting(this, binding.includeSet, () -> {
-            if (Config.getDevice() != null && Config.getBaudRate() != null)
-                ySerialPort.reStart(Config.getDevice(), Config.getBaudRate());
+            if (Config.getDevice() != null && Config.getBaudRate() != null) ySerialPort.reStart(Config.getDevice(), Config.getBaudRate());
             binding.tvResult.setText("");
             binding.tvSend.setText("");
         });
@@ -96,10 +93,8 @@ public class SendActivity extends KBaseActivity<ActivitySendBinding> {
         ySerialPort.send(YConvert.hexStringToByte(str));
 
         //显示
-        if (binding.tvSend.getText().toString().length() > 10000)
-            binding.tvSend.setText(binding.tvSend.getText().toString().substring(0, 2000));
-        binding.tvSend.setText(
-                "HEX " + simpleDateFormat.format(new Date()) + "：" + str + "\n" + binding.tvSend.getText().toString());
+        if (binding.tvSend.getText().toString().length() > 10000) binding.tvSend.setText(binding.tvSend.getText().toString().substring(0, 2000));
+        binding.tvSend.setText("HEX " + simpleDateFormat.format(new Date()) + "：" + str + "\n" + binding.tvSend.getText().toString());
     }
 
     private void sendString() {
@@ -108,7 +103,6 @@ public class SendActivity extends KBaseActivity<ActivitySendBinding> {
             YToast.show("未输入内容！");
             return;
         }
-
         //保存数据，下次打开页面直接填写历史记录
         YShared.write(getApplicationContext(), SEND_STRING, str);
 
@@ -119,18 +113,14 @@ public class SendActivity extends KBaseActivity<ActivitySendBinding> {
         });
 
         //显示
-        if (binding.tvSend.getText().toString().length() > 10000)
-            binding.tvSend.setText(binding.tvSend.getText().toString().substring(0, 2000));
-        binding.tvSend.setText(
-                "STR " + simpleDateFormat.format(new Date()) + "：" + str + "\n" + binding.tvSend.getText().toString());
+        if (binding.tvSend.getText().toString().length() > 10000) binding.tvSend.setText(binding.tvSend.getText().toString().substring(0, 2000));
+        binding.tvSend.setText("STR " + simpleDateFormat.format(new Date()) + "：" + str + "\n" + binding.tvSend.getText().toString());
     }
 
     DataListener dataListener = (hexString, bytes) -> {
         //显示
-        if (binding.tvResult.getText().toString().length() > 10000)
-            binding.tvResult.setText(binding.tvResult.getText().toString().substring(0, 2000));
-        binding.tvResult.setText(
-                "HEX " + simpleDateFormat.format(new Date()) + "：" + YConvert.bytesToHexString(bytes) + "\n" + binding.tvResult.getText().toString());
+        if (binding.tvResult.getText().toString().length() > 10000) binding.tvResult.setText(binding.tvResult.getText().toString().substring(0, 2000));
+        binding.tvResult.setText("HEX " + simpleDateFormat.format(new Date()) + "：" + YConvert.bytesToHexString(bytes) + "\n" + binding.tvResult.getText().toString());
     };
 
     @Override

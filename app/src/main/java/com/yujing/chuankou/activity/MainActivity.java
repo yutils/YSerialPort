@@ -8,7 +8,6 @@ import com.yujing.chuankou.activity.wifi.SerialPortToWiFiActivity;
 import com.yujing.chuankou.base.BaseActivity;
 import com.yujing.chuankou.databinding.ActivityMainBinding;
 import com.yujing.utils.YPermissions;
-import com.yujing.yserialport.YReadInputStream;
 
 /**
  * 首页

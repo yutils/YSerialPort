@@ -44,13 +44,9 @@ dependencies {
 ```
 allprojects {
     repositories {
-        //google()
+        google()
         //mavenCentral()
         
-        //阿里云镜像
-        maven { url 'https://maven.aliyun.com/repository/public' }
-        maven { url 'https://maven.aliyun.com/repository/google' }
-
         //如果还是不容易拉取,可以试试直接用maven.org
         maven { url 'https://repo1.maven.org/maven2' }
     }
@@ -111,7 +107,7 @@ byte[] bytes=YSerialPort.sendSyncLength("/dev/ttyS4","9600",bytes,500,3000);
 
 ```
 
-**异步：（推荐）**
+**异步**
 
 ```java
 
@@ -166,7 +162,7 @@ ySerialPort.setInputStreamReadListener(inputStream->{
 ```
 
 
-**kotlin（推荐）**
+**kotlin**
 
 ```kotlin
 //创建对象
@@ -190,6 +186,16 @@ override fun onDestroy() {
     super.onDestroy()
     ySerialPort.onDestroy()
 }
+```
+
+## 代码混淆
+```
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+#-keep class com.yujing.** { *; }
+-keep class com.yujing.serialport.* { *; }
+-keep class com.yujing.yserialport.* { *; }
 ```
 
 ## 根据协议头组包完整示例
@@ -278,7 +284,7 @@ class Test {
 
 感谢：[Android-SerialPort-API](https://github.com/licheedev/Android-SerialPort-API)
 
-不懂的问我QQ：3373217 （别问我为啥手机没串口，别问我模拟器怎么调试串口，别问我USB转的串口为什么不能识别）
+不懂的问我QQ：3373217 （别问为啥手机没串口，别问模拟器怎么调试串口(可以映射)，别问USB转的串口为什么不能识别）
 
 如果是USB转串口，请参考这个工程：
 

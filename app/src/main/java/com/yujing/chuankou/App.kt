@@ -47,7 +47,7 @@ class App : Application() {
         })
         strategy.deviceID = YUtils.getAndroidId() //设置id
         strategy.appPackageName = packageName //App的包名
-        CrashReport.setIsDevelopmentDevice(this, BuildConfig.DEBUG) //是否是debug
+        //CrashReport.setIsDevelopmentDevice(this, BuildConfig.DEBUG) //是否是debug
         CrashReport.initCrashReport(this, "a365f21e2f", YUtils.isDebug(this), strategy) //初始化Bugly
     }
 }
