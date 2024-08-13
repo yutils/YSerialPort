@@ -5,7 +5,6 @@ package com.yujing.chuankou.base
 import android.annotation.SuppressLint
 import androidx.databinding.ViewDataBinding
 import com.yujing.base.YBaseActivity
-import com.yujing.utils.YPermissions
 import com.yujing.utils.YUtils
 
 /**

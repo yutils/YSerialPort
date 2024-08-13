@@ -5,11 +5,11 @@ plugins {
     id 'kotlin-parcelize'
 }
 android {
-    compileSdk 33
+    compileSdk 34
     namespace 'com.yujing.yserialport'
     defaultConfig {
-        minSdk 14
-        targetSdk 33
+        minSdk 19
+        targetSdk 34
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
     }
@@ -23,6 +23,18 @@ android {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
+//    ndkVersion "27.0.12077973" //最低安卓版本21
+//    ndkVersion "26.3.11579264" //最低安卓版本21
+//    ndkVersion "25.2.9519653" //最低安卓版本19
+//    ndkVersion "24.0.8215888" //最低安卓版本19
+//    ndkVersion "23.2.8568313" //最低安卓版本16
+//    ndkVersion "22.1.7171670" //最低安卓版本16
+//    ndkVersion "21.4.7075529" //最低安卓版本16
+//    ndkVersion "20.1.5948944" //最低安卓版本16
+//    ndkVersion "19.2.5345600" //最低安卓版本16
+//    ndkVersion "18.1.5063045" //最低安卓版本16
+//    ndkVersion "17.2.4988734" //最低安卓版本14
+    ndkVersion "25.2.9519653"
     externalNativeBuild {
         cmake {
             path 'CMakeLists.txt'
@@ -32,4 +44,4 @@ android {
 dependencies {
 }
 //maven配置和签名文件，请注释掉该行
-apply from: "${getRootDir().absolutePath}/gradles/publish-maven.gradle"
+//apply from: "${getRootDir().absolutePath}/gradles/publish-maven.gradle"
