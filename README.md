@@ -8,6 +8,8 @@
 
 理论上兼容 安卓4.0~安卓13.0
 
+2.2.7之后版本最低支撑安卓4.4，api19
+
 [![platform](https://img.shields.io/badge/platform-Android-lightgrey.svg)](https://developer.android.google.cn/studio/index.html)
 ![Gradle](https://img.shields.io/badge/Gradle-7.5.1-brightgreen.svg)
 [![last commit](https://img.shields.io/github/last-commit/yutils/YSerialPort.svg)](https://github.com/yutils/YSerialPort/commits/master)
@@ -19,11 +21,11 @@
 
 **[releases里面有AAR包。点击前往](https://github.com/yutils/YSerialPort/releases)**
 
-**如果拉取整个项目，请用最新AS（AS2021.3.1以上）打开**
+**如果拉取整个项目，请用最新AS（AS2024.1.1以上）打开**
 
 # `不建议直接拉取项目编译，请仔细看完 ` #
 
-## Gradle采用java17！！！ java17！！！java17！！！
+## Gradle采用java17
 
 ### 设置方法： Project Structure ----> SDK Location ----> JDK location was moved to Gradle Settings. ---->  Gradle JDK ---->  JDK17
 
