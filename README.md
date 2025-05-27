@@ -8,13 +8,13 @@
 
 理论上兼容 安卓4.4~安卓14.0
 
-2.2.7之后版本最低支撑安卓4.4，api19
+2.2.7之后版本最低支撑安卓4.4（api19）
 
 [![platform](https://img.shields.io/badge/platform-Android-lightgrey.svg)](https://developer.android.google.cn/studio/index.html)
-![Gradle](https://img.shields.io/badge/Gradle-7.5.1-brightgreen.svg)
+![Gradle](https://img.shields.io/badge/Gradle-8.14.1-brightgreen.svg)
 [![last commit](https://img.shields.io/github/last-commit/yutils/YSerialPort.svg)](https://github.com/yutils/YSerialPort/commits/master)
 ![repo size](https://img.shields.io/github/repo-size/yutils/YSerialPort.svg)
-![android studio](https://img.shields.io/badge/android%20studio-2021.3.1-green.svg)
+![android studio](https://img.shields.io/badge/android%20studio-2024.3.2-green.svg)
 [![maven](https://img.shields.io/badge/maven-address-green.svg)](https://search.maven.org/artifact/com.kotlinx/yserialport)
 
 **[releases里面有APK文件。点击前往](https://github.com/yutils/YSerialPort/releases)**
