@@ -11,8 +11,8 @@ android {
         applicationId "com.yujing.chuankou"
         minSdk 19
         targetSdk 34
-        versionCode 27
-        versionName "2.2.7"
+        versionCode 28
+        versionName "2.2.8"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -93,7 +93,7 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.13.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'//再高 minSdk 就不能是 19 了
     implementation 'com.google.android.material:material:1.12.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4' //再高 minSdk 就不能是 19 了
     implementation 'androidx.navigation:navigation-fragment-ktx:2.6.0'
     implementation 'androidx.navigation:navigation-ui-ktx:2.6.0'
     testImplementation 'junit:junit:4.13.2'

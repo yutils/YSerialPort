@@ -6,7 +6,7 @@
 
 已经多次长时间测试：串口打印机，PLC通信，串口电子秤，串口条码读卡器，串口二维码读卡器，串口LED屏，串口NFC读卡器，读M1区一次性读取64个扇区，读CPU区一次读取16KB数据。
 
-理论上兼容 安卓4.0~安卓13.0
+理论上兼容 安卓4.4~安卓14.0
 
 2.2.7之后版本最低支撑安卓4.4，api19
 
@@ -21,7 +21,7 @@
 
 **[releases里面有AAR包。点击前往](https://github.com/yutils/YSerialPort/releases)**
 
-**如果拉取整个项目，请用最新AS（AS2024.1.1以上）打开**
+**如果拉取整个项目，请用最新AS（AS2024.3.2以上）打开**
 
 # `不建议直接拉取项目编译，请仔细看完 ` #
 
@@ -33,12 +33,12 @@
 
 ## 引用
 
-### [添加依赖，当前最新版：————> 2.2.7　　　　![最新版](https://img.shields.io/badge/%E6%9C%80%E6%96%B0%E7%89%88-2.2.7-green.svg)](https://search.maven.org/artifact/com.kotlinx/yserialport)
+### [添加依赖，当前最新版：————> 2.2.8　　　　![最新版](https://img.shields.io/badge/%E6%9C%80%E6%96%B0%E7%89%88-2.2.7-green.svg)](https://search.maven.org/artifact/com.kotlinx/yserialport)
 
 ```
 dependencies {
     //更新地址  https://github.com/yutils/YSerialPort 建议过几天访问看下有没有新版本
-    implementation 'com.kotlinx:yserialport:2.2.7'
+    implementation 'com.kotlinx:yserialport:2.2.8'
 }
 ```
 

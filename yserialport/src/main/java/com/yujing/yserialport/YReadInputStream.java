@@ -70,6 +70,7 @@ public class YReadInputStream {
 
     //开始读取
     public void start() {
+        stop();
         readThread = new ReadThread();
         readThread.setName("YReadInputStream-读取线程");
         readThread.start();
@@ -114,7 +115,7 @@ public class YReadInputStream {
         @Override
         public void run() {
             log("开启一个读取线程");
-            while (!this.isInterrupted()) {
+            while (!Thread.currentThread().isInterrupted()) {
                 try {
                     //如果可读取消息为0，就不继续。防止InputStream.read阻塞
                     if (inputStream.available() == 0) {

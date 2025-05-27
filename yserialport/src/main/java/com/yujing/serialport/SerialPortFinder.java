@@ -35,18 +35,18 @@ public class SerialPortFinder {
     Vector<Driver> getDrivers() throws IOException {
         if (mDrivers == null) {
             mDrivers = new Vector<>();
-            LineNumberReader r = new LineNumberReader(new FileReader("/proc/tty/drivers"));
-            String l;
-            while ((l = r.readLine()) != null) {
-                // 由于驱动程序名可能包含空格，我们不使用split（）提取驱动程序名
-                String driverName = l.substring(0, 0x15).trim();
-                String[] w = l.split(" +");
-                if ((w.length >= 5) && (w[w.length - 1].equals("serial"))) {
-                    Log.d(TAG, "Found new driver " + driverName + " on " + w[w.length - 4]);
-                    mDrivers.add(new Driver(driverName, w[w.length - 4]));
+            try (LineNumberReader r = new LineNumberReader(new FileReader("/proc/tty/drivers"))) {
+                String l;
+                while ((l = r.readLine()) != null) {
+                    // 由于驱动程序名可能包含空格，我们不使用split（）提取驱动程序名
+                    String driverName = l.substring(0, 0x15).trim();
+                    String[] w = l.split(" +");
+                    if ((w.length >= 5) && (w[w.length - 1].equals("serial"))) {
+                        Log.d(TAG, "Found new driver " + driverName + " on " + w[w.length - 4]);
+                        mDrivers.add(new Driver(driverName, w[w.length - 4]));
+                    }
                 }
             }
-            r.close();
         }
         return mDrivers;
     }

@@ -19,6 +19,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    aaptOptions {
+        noCompress "so" // 不对.so文件进行压缩
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
@@ -39,6 +42,9 @@ android {
         cmake {
             path 'CMakeLists.txt'
         }
+    }
+    androidResources {
+        noCompress 'so'
     }
 }
 dependencies {

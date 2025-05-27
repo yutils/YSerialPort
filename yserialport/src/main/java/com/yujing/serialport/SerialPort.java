@@ -62,7 +62,12 @@ public final class SerialPort {
     public native void close();
 
     static {
-        System.loadLibrary("YSerialPort");
+        try {
+            System.loadLibrary("YSerialPort");
+        } catch (UnsatisfiedLinkError e) {
+            Log.e(TAG, "加载JNI库失败，请检查环境配置", e);
+            //throw new RuntimeException("无法加载串口库", e);
+        }
     }
 
     public static void setSuPath(String suPath) {
