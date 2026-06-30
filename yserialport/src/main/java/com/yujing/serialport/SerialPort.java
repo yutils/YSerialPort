@@ -205,12 +205,18 @@ public final class SerialPort {
      */
     public void tryClose() {
         try {
-            mFileInputStream.close();
+            if (mFileInputStream != null) {
+                mFileInputStream.close();
+                mFileInputStream = null;
+            }
         } catch (IOException ignored) {
         }
 
         try {
-            mFileOutputStream.close();
+            if (mFileOutputStream != null) {
+                mFileOutputStream.close();
+                mFileOutputStream = null;
+            }
         } catch (IOException ignored) {
         }
 

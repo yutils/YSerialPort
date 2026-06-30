@@ -228,8 +228,15 @@ JNIEXPORT void JNICALL Java_com_yujing_serialport_SerialPort_close(JNIEnv *env, 
     jfieldID descriptorID = (*env)->GetFieldID(env, FileDescriptorClass, "descriptor", "I");
 
     jobject mFd = (*env)->GetObjectField(env, thiz, mFdID);
+    if (mFd == NULL) {
+        return;
+    }
     jint descriptor = (*env)->GetIntField(env, mFd, descriptorID);
+    if (descriptor == -1) {
+        return;
+    }
     LOGD("close(fd = %d)", descriptor);
     close(descriptor);
+    (*env)->SetIntField(env, mFd, descriptorID, -1);
 }
 

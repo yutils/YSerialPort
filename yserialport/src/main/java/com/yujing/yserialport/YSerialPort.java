@@ -230,7 +230,7 @@ public class YSerialPort {
     public void start(SerialPort sp) {
         readInputStream.stop();
         if (serialPort != null) {
-            serialPort.close();
+            serialPort.tryClose();
             serialPort = null;
         }
         try {
@@ -609,14 +609,6 @@ public class YSerialPort {
             if (readInputStream != null) {
                 readInputStream.stop();
             }
-            if (inputStream != null) {
-                inputStream.close();
-                inputStream = null;
-            }
-            if (outputStream != null) {
-                outputStream.close();
-                outputStream = null;
-            }
             if (readThread != null) {
                 readThread.interrupt();
                 readThread = null;
@@ -624,9 +616,11 @@ public class YSerialPort {
         } catch (Throwable e) {
             Log.e(TAG, "stop异常", e);
         } finally {
+            inputStream = null;
+            outputStream = null;
             if (serialPort != null) {
                 try {
-                    serialPort.close();
+                    serialPort.tryClose();
                 } catch (Throwable ignored) {
                 }
                 serialPort = null;

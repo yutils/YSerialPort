@@ -251,8 +251,8 @@ public class YReadInputStream {
         int i = 0;//第几次组包
         int count = inputStream.available();//可读取多少字节内容
         do {
-            byte[] newBytes = new byte[1024];
-            int newSize = inputStream.read(newBytes, 0, count);
+            byte[] newBytes = new byte[Math.min(Math.max(count, 1), 4096)];
+            int newSize = inputStream.read(newBytes, 0, Math.min(count, newBytes.length));
             if (newSize > 0) {
                 bytes.addByte(newBytes, newSize);
                 log("第" + (++i) + "次组包后长度：" + bytes.getBytes().length + "，\t已耗时：" + (System.currentTimeMillis() - startTime));
@@ -288,8 +288,9 @@ public class YReadInputStream {
                 if (sleep) SystemClock.sleep(1);
                 continue;
             }
-            byte[] newBytes = new byte[Math.max(minLength, 1024)];
-            int newSize = inputStream.read(newBytes, 0, inputStream.available());
+            int available = inputStream.available();
+            byte[] newBytes = new byte[Math.max(Math.min(available, Math.max(minLength, 1024)), 1)];
+            int newSize = inputStream.read(newBytes, 0, Math.min(available, newBytes.length));
             if (newSize > 0) {
                 bytes.addByte(newBytes, newSize);
                 log("第" + (++i) + "次组包后长度：" + bytes.getBytes().length + "，\t目标长度：" + minLength + "，\t已耗时：" + (System.currentTimeMillis() - startTime) + "ms，\t超时时间：" + maxTime + "ms");
