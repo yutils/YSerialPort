@@ -24,7 +24,18 @@ public class Setting {
             includeSet.tvBtl.setText(Config.getBaudRate());
         }
         includeSet.llCk.setOnClickListener(v -> {
-            int index = 0;//单选框默认值：从0开始
+            //单选框默认值：当前已保存的设备
+            int index = 0;
+            String currentDevice = YSerialPort.readDevice(activity);
+            String[] devicesPath = YSerialPort.getSerialPortFinder().getAllDevicesPath();
+            if (currentDevice != null && devicesPath != null) {
+                for (int i = 0; i < devicesPath.length; i++) {
+                    if (currentDevice.equals(devicesPath[i])) {
+                        index = i;
+                        break;
+                    }
+                }
+            }
             new AlertDialog.Builder(activity)
                     .setTitle("选择串口")//设置对话框标题
                     .setIcon(android.R.drawable.ic_menu_info_details)//设置对话框图标
@@ -39,7 +50,18 @@ public class Setting {
                     .show();
         });
         includeSet.llBtl.setOnClickListener(v -> {
-            int index = 0;//单选框默认值：从0开始
+            //单选框默认值：当前已保存的波特率
+            int index = 0;
+            String currentBaudRate = YSerialPort.readBaudRate(activity);
+            String[] baudRates = YSerialPort.getBaudRates();
+            if (currentBaudRate != null && baudRates != null) {
+                for (int i = 0; i < baudRates.length; i++) {
+                    if (currentBaudRate.equals(baudRates[i])) {
+                        index = i;
+                        break;
+                    }
+                }
+            }
             new AlertDialog.Builder(activity)
                     .setTitle("选择波特率")//设置对话框标题
                     .setIcon(android.R.drawable.ic_menu_info_details)//设置对话框图标
