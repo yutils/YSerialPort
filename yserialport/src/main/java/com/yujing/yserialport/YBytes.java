@@ -1,12 +1,13 @@
 package com.yujing.yserialport;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * byte拼接类
  *
- * @author YuJing 2019年12月5日09:39:55
+ * @author 余静 2019年12月5日09:39:55
  */
 @SuppressWarnings("unused")
 public class YBytes {
@@ -25,7 +26,7 @@ public class YBytes {
      * @param i byte[]长度
      */
     public YBytes(int i) {
-        bytes = new byte[i];
+        bytes = new byte[Math.max(0, i)];
     }
 
     /**
@@ -34,6 +35,10 @@ public class YBytes {
      * @param b 初始数组
      */
     public YBytes(byte[] b) {
+        if (b == null) {
+            bytes = new byte[0];
+            return;
+        }
         this.bytes = new byte[b.length];
         System.arraycopy(b, 0, this.bytes, 0, b.length);
     }
@@ -59,6 +64,7 @@ public class YBytes {
      * @return YBytes
      */
     public YBytes addByte(byte[] bs) {
+        if (bs == null) return this;
         byte[] temp = new byte[bytes.length + bs.length];
         System.arraycopy(bytes, 0, temp, 0, bytes.length);
         System.arraycopy(bs, 0, temp, bytes.length, bs.length);
@@ -74,9 +80,11 @@ public class YBytes {
      * @return Bytes
      */
     public YBytes addByte(byte[] bs, int length) {
-        byte[] temp = new byte[bytes.length + length];
+        if (bs == null || length <= 0) return this;
+        int real = Math.min(length, bs.length);//越界时截断
+        byte[] temp = new byte[bytes.length + real];
         System.arraycopy(bytes, 0, temp, 0, bytes.length);
-        System.arraycopy(bs, 0, temp, bytes.length, length);
+        System.arraycopy(bs, 0, temp, bytes.length, real);
         bytes = temp;
         return this;
     }
@@ -90,9 +98,11 @@ public class YBytes {
      * @return Bytes
      */
     public YBytes addByte(byte[] bs, int start, int length) {
-        byte[] temp = new byte[bytes.length + length];
+        if (bs == null || start < 0 || length <= 0 || start >= bs.length) return this;
+        int real = Math.min(length, bs.length - start);//越界时截断
+        byte[] temp = new byte[bytes.length + real];
         System.arraycopy(bytes, 0, temp, 0, bytes.length);
-        System.arraycopy(bs, start, temp, bytes.length, length);
+        System.arraycopy(bs, start, temp, bytes.length, real);
         bytes = temp;
         return this;
     }
@@ -104,6 +114,7 @@ public class YBytes {
      * @return YBytes
      */
     public YBytes addByte(List<Byte> bs) {
+        if (bs == null) return this;
         byte[] temp = new byte[bytes.length + bs.size()];
         System.arraycopy(bytes, 0, temp, 0, bytes.length);
         for (int i = 0; i < bs.size(); i++) {
@@ -121,9 +132,11 @@ public class YBytes {
      * @return Bytes
      */
     public YBytes addByte(List<Byte> bs, int length) {
-        byte[] temp = new byte[bytes.length + length];
+        if (bs == null || length <= 0) return this;
+        int real = Math.min(length, bs.size());//越界时截断
+        byte[] temp = new byte[bytes.length + real];
         System.arraycopy(bytes, 0, temp, 0, bytes.length);
-        for (int i = 0; i < length; i++) {
+        for (int i = 0; i < real; i++) {
             temp[bytes.length + i] = bs.get(i);
         }
         bytes = temp;
@@ -139,9 +152,11 @@ public class YBytes {
      * @return Bytes
      */
     public YBytes addByte(List<Byte> bs, int start, int length) {
-        byte[] temp = new byte[bytes.length + length];
+        if (bs == null || start < 0 || length <= 0 || start >= bs.size()) return this;
+        int real = Math.min(length, bs.size() - start);//越界时截断
+        byte[] temp = new byte[bytes.length + real];
         System.arraycopy(bytes, 0, temp, 0, bytes.length);
-        for (int i = 0; i < length; i++) {
+        for (int i = 0; i < real; i++) {
             temp[bytes.length + i] = bs.get(i + start);
         }
         bytes = temp;
@@ -170,7 +185,7 @@ public class YBytes {
      * @return YBytes
      */
     public YBytes changeByte(byte[] b, int index) {
-        return changeByte(b, index, index + b.length);
+        return changeByte(b, index, b.length);
     }
 
     /**
@@ -178,16 +193,13 @@ public class YBytes {
      *
      * @param b      数据
      * @param start  起始位置
-     * @param length 结束位置
+     * @param length 连续修改的位数
      * @return YBytes
      */
     public YBytes changeByte(byte[] b, int start, int length) {
-        if (start >= 0 && length > 0) {
-            for (int i = 0; i < length; i++) {
-                if (start + i < bytes.length) {
-                    bytes[start + i] = b[i];
-                }
-            }
+        if (b == null || start < 0 || length <= 0) return this;
+        for (int i = 0; i < length && i < b.length && start + i < bytes.length; i++) {
+            bytes[start + i] = b[i];
         }
         return this;
     }
@@ -200,7 +212,7 @@ public class YBytes {
      * @return YBytes
      */
     public YBytes changeByte(List<Byte> b, int index) {
-        return changeByte(b, index,  b.size());
+        return changeByte(b, index, b.size());
     }
 
     /**
@@ -208,16 +220,13 @@ public class YBytes {
      *
      * @param b      数据
      * @param start  起始位置
-     * @param length 结束位置
+     * @param length 连续修改的位数
      * @return YBytes
      */
     public YBytes changeByte(List<Byte> b, int start, int length) {
-        if (start >= 0 && length > 0) {
-            for (int i = 0; i < length; i++) {
-                if (start + i < bytes.length) {
-                    bytes[start + i] = b.get(i);
-                }
-            }
+        if (b == null || start < 0 || length <= 0) return this;
+        for (int i = 0; i < length && i < b.size() && start + i < bytes.length; i++) {
+            bytes[start + i] = b.get(i);
         }
         return this;
     }
@@ -228,7 +237,11 @@ public class YBytes {
      * @param bytes bytes
      */
     public void setBytes(byte[] bytes) {
-        this.bytes = bytes;
+        if (bytes == null) {
+            this.bytes = new byte[0];
+            return;
+        }
+        this.bytes = Arrays.copyOf(bytes, bytes.length);
     }
 
     /**
@@ -240,6 +253,7 @@ public class YBytes {
      */
     public static List<byte[]> split(byte[] bytes, int length) {
         List<byte[]> list = new ArrayList<>();
+        if (bytes == null || length <= 0) return list;
         int count = 0;//统计已经发送长度
         while (true) {
             //剩余长度
@@ -275,5 +289,21 @@ public class YBytes {
      */
     public byte[] getBytes() {
         return bytes;
+    }
+
+    /**
+     * 获取bytes数组长度
+     *
+     * @return length
+     */
+    public int size() {
+        return bytes.length;
+    }
+
+    /**
+     * 清空数据
+     */
+    public void clear() {
+        bytes = new byte[0];
     }
 }

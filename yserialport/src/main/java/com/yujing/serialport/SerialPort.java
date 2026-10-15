@@ -101,18 +101,45 @@ public final class SerialPort {
 
         /* 检查访问权限 */
         if (!device.canRead() || !device.canWrite()) {
+            Process su = null;
             try {
-                /* 缺少读/写权限，正在尝试对文件进行chmod */
-                Process su;
                 su = Runtime.getRuntime().exec(suPath);
+                // 消费stdout、stderr，防止缓冲区塞满阻塞进程
+                final Process process = su;
+                new Thread(() -> {
+                    try {
+                        byte[] buf = new byte[1024];
+                        while (process.getInputStream().read(buf) != -1) ;
+                    } catch (IOException ignored) {
+                    }
+                }).start();
+                new Thread(() -> {
+                    try {
+                        byte[] buf = new byte[1024];
+                        while (process.getErrorStream().read(buf) != -1) ;
+                    } catch (IOException ignored) {
+                    }
+                }).start();
+
                 String cmd = "chmod 666 " + device.getAbsolutePath() + "\n" + "exit\n";
                 su.getOutputStream().write(cmd.getBytes());
-                if ((su.waitFor() != 0) || !device.canRead() || !device.canWrite()) {
-                    throw new SecurityException();
+                su.getOutputStream().flush(); // 强制刷入命令
+                su.getOutputStream().close();
+
+                int exitCode = su.waitFor();
+                // 重新new File，刷新Java权限缓存
+                File newDevice = new File(device.getAbsolutePath());
+                if (exitCode != 0 || !newDevice.canRead() || !newDevice.canWrite()) {
+                    throw new SecurityException("chmod失败");
                 }
+                // 更新引用
+                device = newDevice;
             } catch (Exception e) {
                 e.printStackTrace();
-                throw new SecurityException();
+                if (su != null) {
+                    su.destroy();
+                }
+                throw new SecurityException("没有权限，chmod失败", e);
             }
         }
 
@@ -205,6 +232,11 @@ public final class SerialPort {
      */
     public void tryClose() {
         try {
+            close();
+        } catch (Exception ignored) {
+        }
+
+        try {
             if (mFileInputStream != null) {
                 mFileInputStream.close();
                 mFileInputStream = null;
@@ -218,11 +250,6 @@ public final class SerialPort {
                 mFileOutputStream = null;
             }
         } catch (IOException ignored) {
-        }
-
-        try {
-            close();
-        } catch (Exception ignored) {
         }
     }
 

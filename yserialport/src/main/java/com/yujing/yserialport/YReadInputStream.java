@@ -209,8 +209,10 @@ public class YReadInputStream {
     public static byte[] readOnce(InputStream inputStream, long timeOut) throws Exception {
         long startTime = System.currentTimeMillis();
         int count = 0;
-        while (count == 0 && System.currentTimeMillis() - startTime < timeOut)
+        while (count == 0 && System.currentTimeMillis() - startTime < timeOut) {
             count = inputStream.available();//获取真正长度
+            if (sleep) SystemClock.sleep(1);//休息1毫秒
+        }
         if (System.currentTimeMillis() - startTime >= timeOut) {
             throw new TimeoutException("读取超时");
         }
@@ -255,7 +257,7 @@ public class YReadInputStream {
             int newSize = inputStream.read(newBytes, 0, Math.min(count, newBytes.length));
             if (newSize > 0) {
                 bytes.addByte(newBytes, newSize);
-                log("第" + (++i) + "次组包后长度：" + bytes.getBytes().length + "，\t已耗时：" + (System.currentTimeMillis() - startTime));
+                log("第" + (++i) + "次组包后长度：" + bytes.size() + "，\t已耗时：" + (System.currentTimeMillis() - startTime));
             }
             if (sleep) SystemClock.sleep(1);
             count = inputStream.available();
@@ -282,7 +284,7 @@ public class YReadInputStream {
         final YBytes bytes = new YBytes();
         long startTime = System.currentTimeMillis();
         int i = 0;
-        while (bytes.getBytes().length < minLength && System.currentTimeMillis() - startTime < maxTime) {
+        while (bytes.size() < minLength && System.currentTimeMillis() - startTime < maxTime) {
             //如果可读取消息为0，就不继续。防止InputStream.read阻塞
             if (inputStream.available() == 0) {
                 if (sleep) SystemClock.sleep(1);
@@ -293,7 +295,7 @@ public class YReadInputStream {
             int newSize = inputStream.read(newBytes, 0, Math.min(available, newBytes.length));
             if (newSize > 0) {
                 bytes.addByte(newBytes, newSize);
-                log("第" + (++i) + "次组包后长度：" + bytes.getBytes().length + "，\t目标长度：" + minLength + "，\t已耗时：" + (System.currentTimeMillis() - startTime) + "ms，\t超时时间：" + maxTime + "ms");
+                log("第" + (++i) + "次组包后长度：" + bytes.size() + "，\t目标长度：" + minLength + "，\t已耗时：" + (System.currentTimeMillis() - startTime) + "ms，\t超时时间：" + maxTime + "ms");
             }
         }
         if (System.currentTimeMillis() - startTime >= maxTime)

@@ -11,17 +11,17 @@
 2.2.7之后版本最低支撑安卓4.4（api19）
 
 [![platform](https://img.shields.io/badge/platform-Android-lightgrey.svg)](https://developer.android.google.cn/studio/index.html)
-![Gradle](https://img.shields.io/badge/Gradle-8.14.1-brightgreen.svg)
+![Gradle](https://img.shields.io/badge/Gradle-9.8.1-brightgreen.svg)
 [![last commit](https://img.shields.io/github/last-commit/yutils/YSerialPort.svg)](https://github.com/yutils/YSerialPort/commits/master)
 ![repo size](https://img.shields.io/github/repo-size/yutils/YSerialPort.svg)
-![android studio](https://img.shields.io/badge/android%20studio-2024.3.2-green.svg)
+![android studio](https://img.shields.io/badge/android%20studio-2026.2.1-green.svg)
 [![maven](https://img.shields.io/badge/maven-address-green.svg)](https://search.maven.org/artifact/com.kotlinx/yserialport)
 
 **[releases里面有APK文件。点击前往](https://github.com/yutils/YSerialPort/releases)**
 
 **[releases里面有AAR包。点击前往](https://github.com/yutils/YSerialPort/releases)**
 
-**如果拉取整个项目，请用最新AS（AS2024.3.2以上）打开**
+**如果拉取整个项目，请用最新AS（AS2026.2.1以上）打开**
 
 # `不建议直接拉取项目编译，请仔细看完 ` #
 
@@ -33,12 +33,12 @@
 
 ## 引用
 
-### [添加依赖，当前最新版：————> 2.2.8　　　　![最新版](https://img.shields.io/badge/%E6%9C%80%E6%96%B0%E7%89%88-2.2.7-green.svg)](https://search.maven.org/artifact/com.kotlinx/yserialport)
+### [添加依赖，当前最新版：————> 2.2.6　　　　![最新版](https://img.shields.io/badge/%E6%9C%80%E6%96%B0%E7%89%88-2.2.9-green.svg)](https://search.maven.org/artifact/com.kotlinx/yserialport)
 
 ```
 dependencies {
     //更新地址  https://github.com/yutils/YSerialPort 建议过几天访问看下有没有新版本
-    implementation 'com.kotlinx:yserialport:2.2.8'
+    implementation 'com.kotlinx:yserialport:2.2.9'
 }
 ```
 

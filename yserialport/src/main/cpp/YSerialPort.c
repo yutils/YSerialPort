@@ -148,6 +148,8 @@ JNIEXPORT jobject JNICALL Java_com_yujing_serialport_SerialPort_open(JNIEnv *env
         cfmakeraw(&cfg);
         cfsetispeed(&cfg, speed);
         cfsetospeed(&cfg, speed);
+        cfg.c_cflag |= (CLOCAL | CREAD);
+        cfg.c_cflag &= ~CRTSCTS;
 
         cfg.c_cflag &= ~CSIZE;
         switch (dataBits) {
@@ -207,9 +209,21 @@ JNIEXPORT jobject JNICALL Java_com_yujing_serialport_SerialPort_open(JNIEnv *env
     /* 创建相应的文件描述符 */
     {
         jclass cFileDescriptor = (*env)->FindClass(env, "java/io/FileDescriptor");
+        if (cFileDescriptor == NULL) {
+            close(fd);
+            return NULL;
+        }
         jmethodID iFileDescriptor = (*env)->GetMethodID(env, cFileDescriptor, "<init>", "()V");
         jfieldID descriptorID = (*env)->GetFieldID(env, cFileDescriptor, "descriptor", "I");
+        if (iFileDescriptor == NULL || descriptorID == NULL) {
+            close(fd);
+            return NULL;
+        }
         mFileDescriptor = (*env)->NewObject(env, cFileDescriptor, iFileDescriptor);
+        if (mFileDescriptor == NULL) {
+            close(fd);
+            return NULL;
+        }
         (*env)->SetIntField(env, mFileDescriptor, descriptorID, (jint) fd);
     }
     return mFileDescriptor;

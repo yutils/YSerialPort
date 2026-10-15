@@ -1,6 +1,5 @@
 plugins {
     id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
 }
 android {
     compileSdk 34
@@ -9,8 +8,8 @@ android {
         applicationId "com.yujing.chuankou"
         minSdk 19
         targetSdk 34
-        versionCode 28
-        versionName "2.2.8"
+        versionCode 29
+        versionName "2.2.9"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -61,16 +60,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    //打包
-    android.applicationVariants.configureEach { variant ->
-        //def appName = variant.productFlavors[0].name //获取渠道名称
-        def appName = "YSerialPort" //rootProject.name
-        def createDate = new Date().format("YYYYMMdd", TimeZone.getTimeZone("GMT+08:00"))
-        def createTime = new Date().format("HHmmss", TimeZone.getTimeZone("GMT+08:00"))
-        variant.outputs.configureEach {
-            it.outputFileName = "${appName}_v${versionName}_${versionCode}_${createDate}_${createTime}_${buildType.name}.apk"
-        }
-    }
     //资源合并
     sourceSets {
         main { res.srcDirs = ['src/main/res', 'src/main/res_screen'] }
@@ -79,11 +68,19 @@ android {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = '17'
-    }
     buildFeatures {
         dataBinding = true
+        resValues = true
+    }
+}
+androidComponents {
+    onVariants(selector().all()) { variant ->
+        def appName = "YSerialPort"
+        def createDate = new Date().format("YYYYMMdd", TimeZone.getTimeZone("GMT+08:00"))
+        def createTime = new Date().format("HHmmss", TimeZone.getTimeZone("GMT+08:00"))
+        variant.outputs.forEach { output ->
+            output.outputFileName.set("${appName}_v${output.versionName.get()}_${output.versionCode.get()}_${createDate}_${createTime}_${variant.buildType}.apk")
+        }
     }
 }
 dependencies {

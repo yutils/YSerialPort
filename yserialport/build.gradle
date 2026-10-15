@@ -1,15 +1,12 @@
 plugins {
     id 'com.android.library'
-    id 'org.jetbrains.kotlin.android'
-    id 'kotlin-kapt'
-    id 'kotlin-parcelize'
+    id 'com.vanniktech.maven.publish' version "0.37.0" apply true //maven上传插件
 }
 android {
     compileSdk 34
     namespace 'com.yujing.yserialport'
     defaultConfig {
         minSdk 19
-        targetSdk 34
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
     }
@@ -19,15 +16,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    aaptOptions {
-        noCompress "so" // 不对.so文件进行压缩
-    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = '17'
     }
 //    ndkVersion "27.0.12077973" //最低安卓版本21
 //    ndkVersion "26.3.11579264" //最低安卓版本21
@@ -49,8 +40,14 @@ android {
     androidResources {
         noCompress 'so'
     }
+    lint {
+        targetSdk 34
+    }
+    testOptions {
+        targetSdk 34
+    }
 }
 dependencies {
 }
 //maven配置和签名文件，请注释掉该行
-//apply from: "${getRootDir().absolutePath}/gradles/publish-maven.gradle"
+apply from: "${getRootDir().absolutePath}/gradles/publish-maven-central.gradle"
