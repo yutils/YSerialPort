@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/et_name"
+        style="@style/Widget.YS.EditText.Small"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="规则名称，例如：温度查询应答"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        tools:ignore="LabelFor" />
+
+    <!-- ===== 匹配 ===== -->
+    <TextView
+        style="@style/Text.YS.SectionLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="接收匹配" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.yujing.chuankou.ui.widget.SegmentedControl
+            android:id="@+id/seg_match_type"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/chip_match_mode"
+            style="@style/Widget.YS.ChipText"
+            android:layout_marginStart="8dp"
+            android:drawableEnd="@drawable/ic_chevron_down"
+            app:drawableTint="?attr/colorOnSurfaceVariant"
+            tools:text="包含" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/et_match"
+        style="@style/Widget.YS.EditText.Mono"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="top|start"
+        android:hint="HEX 支持通配：01 03 ?? ?? 00 0A"
+        android:importantForAutofill="no"
+        android:inputType="textMultiLine|textNoSuggestions"
+        android:maxLines="4"
+        android:minLines="2"
+        tools:ignore="LabelFor" />
+
+    <!-- ===== 应答 ===== -->
+    <TextView
+        style="@style/Text.YS.SectionLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="应答内容" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.yujing.chuankou.ui.widget.SegmentedControl
+            android:id="@+id/seg_reply_type"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/chip_newline"
+            style="@style/Widget.YS.ChipText"
+            android:layout_marginStart="8dp"
+            android:drawableEnd="@drawable/ic_chevron_down"
+            app:drawableTint="?attr/colorOnSurfaceVariant"
+            tools:text="结束符: 无" />
+
+        <TextView
+            android:id="@+id/chip_escape"
+            style="@style/Widget.YS.ChipText"
+            android:layout_marginStart="6dp"
+            android:text="转义" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/et_reply"
+        style="@style/Widget.YS.EditText.Mono"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="top|start"
+        android:hint="应答的 HEX 或文本内容"
+        android:importantForAutofill="no"
+        android:inputType="textMultiLine|textNoSuggestions"
+        android:maxLines="4"
+        android:minLines="2"
+        tools:ignore="LabelFor" />
+
+    <!-- ===== 选项 ===== -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/Text.YS.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="应答延时(ms)" />
+
+        <EditText
+            android:id="@+id/et_delay"
+            style="@style/Widget.YS.EditText.Small"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            tools:ignore="LabelFor" />
+
+        <TextView
+            android:id="@+id/chip_once"
+            style="@style/Widget.YS.ChipText"
+            android:layout_marginStart="8dp"
+            android:text="仅应答一次" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_preview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_panel_soft"
+        android:fontFamily="monospace"
+        android:padding="8dp"
+        android:textColor="@color/c_text_secondary"
+        android:textSize="11sp"
+        tools:text="应答预览：01 03 02 00 1A" />
+
+</LinearLayout>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- ===================== 应用主主题（Material 3 · 支持日夜） ===================== -->
+    <style name="Theme.YSerialPort" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- 主色 -->
+        <item name="colorPrimary">@color/c_primary</item>
+        <item name="colorOnPrimary">@color/c_on_primary</item>
+        <item name="colorPrimaryContainer">@color/c_primary_container</item>
+        <item name="colorOnPrimaryContainer">@color/c_on_primary_container</item>
+        <!-- 次色 -->
+        <item name="colorSecondary">@color/c_secondary</item>
+        <item name="colorOnSecondary">@color/c_on_secondary</item>
+        <item name="colorSecondaryContainer">@color/c_secondary_container</item>
+        <item name="colorOnSecondaryContainer">@color/c_on_secondary_container</item>
+        <!-- 三级色 -->
+        <item name="colorTertiary">@color/c_secondary</item>
+        <item name="colorOnTertiary">@color/c_on_secondary</item>
+        <item name="colorTertiaryContainer">@color/c_secondary_container</item>
+        <item name="colorOnTertiaryContainer">@color/c_on_secondary_container</item>
+        <!-- 错误 -->
+        <item name="colorError">@color/c_error</item>
+        <item name="colorOnError">@color/c_on_error</item>
+        <item name="colorErrorContainer">@color/c_error_container</item>
+        <item name="colorOnErrorContainer">@color/c_on_error_container</item>
+        <!-- 表面 -->
+        <item name="android:colorBackground">@color/c_bg</item>
+        <item name="colorOnBackground">@color/c_text_primary</item>
+        <item name="colorSurface">@color/c_surface</item>
+        <item name="colorOnSurface">@color/c_text_primary</item>
+        <item name="colorSurfaceVariant">@color/c_surface_variant</item>
+        <item name="colorOnSurfaceVariant">@color/c_text_secondary</item>
+        <!-- 描边 -->
+        <item name="colorOutline">@color/c_outline</item>
+        <item name="colorOutlineVariant">@color/c_outline_variant</item>
+        <!-- 文本 -->
+        <item name="android:textColorPrimary">@color/c_text_primary</item>
+        <item name="android:textColorSecondary">@color/c_text_secondary</item>
+        <item name="android:textColorTertiary">@color/c_text_tertiary</item>
+        <item name="android:textColorHint">@color/c_text_tertiary</item>
+        <item name="android:textColorLink">@color/c_secondary</item>
+        <item name="colorControlHighlight">@color/c_ripple</item>
+        <item name="colorControlActivated">@color/c_primary</item>
+        <item name="colorAccent">@color/c_secondary</item>
+        <!-- 窗口 -->
+        <item name="android:windowBackground">@color/c_bg</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <!-- 对话框 -->
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.YS.Dialog</item>
+    </style>
+
+    <!-- ===================== 对话框主题 ===================== -->
+    <style name="ThemeOverlay.YS.Dialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="colorSurface">@color/c_surface_elevated</item>
+        <item name="colorOnSurface">@color/c_text_primary</item>
+        <item name="colorSurfaceVariant">@color/c_surface_variant</item>
+        <item name="colorOnSurfaceVariant">@color/c_text_secondary</item>
+        <item name="colorPrimary">@color/c_primary</item>
+    </style>
+
+    <!-- ===================== Activity 过渡动画 ===================== -->
+</resources>

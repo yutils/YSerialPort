@@ -1,10 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">串口通信</string>
-    <string name="app_name_debug">串口通信(测试)</string>
-    <string name="about_msg">串口通信\n\n
-        安卓主板（工控机）原生串口支持，部分USB转串口支持。\n\n
-        作者：余静  QQ：3373217\n
-该程序是Android开源项目。\n\n
-github地址：https://github.com/yutils/YSerialPort\n\n
-	</string>
+    <string name="app_name">串口调试助手</string>
+    <string name="app_name_debug">串口调试助手(Debug)</string>
+
+    <!-- 导航 -->
+    <!-- 通用 -->
+    <!-- 串口 -->
+    <!-- 接收 -->
+    <!-- 关于 -->
 </resources>

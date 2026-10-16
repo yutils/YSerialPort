@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  本应用是串口 / 网络调试工具，需要能连本机或局域网内的明文（非 TLS）调试端，
+  因此放行明文流量，这是有意为之、不是疏漏。
+
+  说明：串口 ↔ TCP 透传走的是裸 TCP Socket，不受此配置约束；本应用也不使用
+  HTTP 客户端，所以此处放行不会引入额外的明文 HTTP 风险面。
+-->
 <network-security-config>
     <base-config cleartextTrafficPermitted="true" />
 </network-security-config>

@@ -230,6 +230,182 @@ JNIEXPORT jobject JNICALL Java_com_yujing_serialport_SerialPort_open(JNIEnv *env
 }
 
 /**
+ * 打开串口（增强版，与 open() 完全向后兼容）
+ *
+ * 相比 open() 额外支持：
+ *  - parity      : 0:NONE 1:ODD 2:EVEN 3:MARK 4:SPACE
+ *  - stopBits    : 1:1位 2:2位 3:1.5位（需配合 5 位数据位）
+ *  - flowControl : 0:无 1:硬件 RTS/CTS 2:软件 XON/XOFF
+ *  - 打开后清空输入/输出缓冲，避免残留脏数据
+ */
+JNIEXPORT jobject JNICALL Java_com_yujing_serialport_SerialPort_openEx(
+        JNIEnv *env, jobject thiz, jstring path, jint baudRate, jint dataBits,
+        jint parity, jint stopBits, jint flags, jint flowControl) {
+    int fd;
+    speed_t speed;
+    jobject mFileDescriptor;
+
+    /* 检查参数 */
+    speed = getBaudrate(baudRate);
+    if (speed == -1) {
+        LOGE("波特率不正常: %d", (int) baudRate);
+        return NULL;
+    }
+
+    /* 打开设备 */
+    {
+        jboolean iscopy;
+        const char *path_utf = (*env)->GetStringUTFChars(env, path, &iscopy);
+        LOGD("openEx %s flags 0x%x flow %d", path_utf, flags, flowControl);
+        fd = open(path_utf, O_RDWR | flags);
+        (*env)->ReleaseStringUTFChars(env, path, path_utf);
+        if (fd == -1) {
+            LOGE("不能打开串口");
+            return NULL;
+        }
+    }
+
+    /* 配置设备 */
+    {
+        struct termios cfg;
+        if (tcgetattr(fd, &cfg)) {
+            LOGE("获取终端参数失败");
+            close(fd);
+            return NULL;
+        }
+        cfmakeraw(&cfg);
+        cfsetispeed(&cfg, speed);
+        cfsetospeed(&cfg, speed);
+        cfg.c_cflag |= (CLOCAL | CREAD);
+
+        /* ---- 数据位 ---- */
+        cfg.c_cflag &= ~CSIZE;
+        switch (dataBits) {
+            case 5: cfg.c_cflag |= CS5; break;
+            case 6: cfg.c_cflag |= CS6; break;
+            case 7: cfg.c_cflag |= CS7; break;
+            case 8:
+            default: cfg.c_cflag |= CS8; break;
+        }
+
+        /* ---- 校验位 ---- */
+        switch (parity) {
+            case 0:
+                cfg.c_cflag &= ~PARENB;
+                break;
+            case 1:
+                cfg.c_cflag |= (PARODD | PARENB);
+                cfg.c_iflag &= ~(IGNPAR | PARMRK);
+                cfg.c_iflag |= INPCK;
+                break;
+            case 2:
+                cfg.c_cflag |= PARENB;
+                cfg.c_cflag &= ~PARODD;
+                cfg.c_iflag &= ~(IGNPAR | PARMRK);
+                cfg.c_iflag |= INPCK;
+                break;
+            case 3: /* MARK */
+#ifdef CMSPAR
+                cfg.c_cflag |= (PARODD | PARENB | CMSPAR);
+#else
+                cfg.c_cflag |= (PARODD | PARENB);
+#endif
+                break;
+            case 4: /* SPACE */
+#ifdef CMSPAR
+                cfg.c_cflag |= (PARENB | CMSPAR);
+                cfg.c_cflag &= ~PARODD;
+#else
+                cfg.c_cflag |= PARENB;
+                cfg.c_cflag &= ~PARODD;
+#endif
+                break;
+            default:
+                cfg.c_cflag &= ~PARENB;
+                break;
+        }
+
+        /* ---- 停止位 ---- */
+        switch (stopBits) {
+            case 2:
+                cfg.c_cflag |= CSTOPB;
+                break;
+            case 3: /* 1.5 位 */
+                cfg.c_cflag |= CSTOPB;
+                break;
+            case 1:
+            default:
+                cfg.c_cflag &= ~CSTOPB;
+                break;
+        }
+
+        /* ---- 流控 ---- */
+        cfg.c_cflag &= ~CRTSCTS;
+        cfg.c_iflag &= ~(IXON | IXOFF | IXANY);
+        switch (flowControl) {
+            case 1: /* 硬件 RTS/CTS */
+#ifdef CRTSCTS
+                cfg.c_cflag |= CRTSCTS;
+#endif
+                break;
+            case 2: /* 软件 XON/XOFF */
+                cfg.c_iflag |= (IXON | IXOFF | IXANY);
+                break;
+            case 0:
+            default:
+                break;
+        }
+
+        /* ---- 阻塞模式与 open() 保持一致：cfmakeraw 默认 VMIN=1 / VTIME=0 ---- */
+
+        if (tcsetattr(fd, TCSANOW, &cfg)) {
+            LOGE("设置终端参数失败");
+            close(fd);
+            return NULL;
+        }
+        /* 清空残留数据 */
+        tcflush(fd, TCIOFLUSH);
+    }
+
+    /* 创建相应的文件描述符 */
+    {
+        jclass cFileDescriptor = (*env)->FindClass(env, "java/io/FileDescriptor");
+        if (cFileDescriptor == NULL) {
+            close(fd);
+            return NULL;
+        }
+        jmethodID iFileDescriptor = (*env)->GetMethodID(env, cFileDescriptor, "<init>", "()V");
+        jfieldID descriptorID = (*env)->GetFieldID(env, cFileDescriptor, "descriptor", "I");
+        if (iFileDescriptor == NULL || descriptorID == NULL) {
+            close(fd);
+            return NULL;
+        }
+        mFileDescriptor = (*env)->NewObject(env, cFileDescriptor, iFileDescriptor);
+        if (mFileDescriptor == NULL) {
+            close(fd);
+            return NULL;
+        }
+        (*env)->SetIntField(env, mFileDescriptor, descriptorID, (jint) fd);
+    }
+    return mFileDescriptor;
+}
+
+/**
+ * 清空串口收发缓冲
+ */
+JNIEXPORT jint JNICALL Java_com_yujing_serialport_SerialPort_flushBuffers(JNIEnv *env, jobject thiz) {
+    jclass SerialPortClass = (*env)->GetObjectClass(env, thiz);
+    jclass FileDescriptorClass = (*env)->FindClass(env, "java/io/FileDescriptor");
+    jfieldID mFdID = (*env)->GetFieldID(env, SerialPortClass, "mFd", "Ljava/io/FileDescriptor;");
+    jfieldID descriptorID = (*env)->GetFieldID(env, FileDescriptorClass, "descriptor", "I");
+    jobject mFd = (*env)->GetObjectField(env, thiz, mFdID);
+    if (mFd == NULL) return -1;
+    jint descriptor = (*env)->GetIntField(env, mFd, descriptorID);
+    if (descriptor == -1) return -1;
+    return (jint) tcflush((int) descriptor, TCIOFLUSH);
+}
+
+/**
  * 关闭串口
  * @param env
  * @param thiz

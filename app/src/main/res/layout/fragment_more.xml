@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:padding="@dimen/sp_8"
+    android:scrollbars="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- 应用信息 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_panel"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:background="@drawable/bg_accent_soft"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_monitor"
+                    app:tint="?attr/colorPrimary" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_app_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    tools:text="串口调试助手" />
+
+                <TextView
+                    android:id="@+id/tv_version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:textColor="@color/c_text_tertiary"
+                    android:textSize="12sp"
+                    tools:text="版本 3.0.0 (30)" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:text="作者：余静 · 开源：github.com/yutils/YSerialPort"
+                    android:textColor="@color/c_text_tertiary"
+                    android:textSize="11sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 网络透传 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_panel"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Text.YS.SectionLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="6dp"
+                android:text="网络" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@drawable/div_setting"
+                android:orientation="vertical"
+                android:showDividers="middle">
+
+                <include
+                    android:id="@+id/row_tcp"
+                    layout="@layout/view_setting_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 个性化 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_panel"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Text.YS.SectionLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="6dp"
+                android:text="个性化" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@drawable/div_setting"
+                android:orientation="vertical"
+                android:showDividers="middle">
+
+                <include
+                    android:id="@+id/row_theme"
+                    layout="@layout/view_setting_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include
+                    android:id="@+id/row_bg_mode"
+                    layout="@layout/view_setting_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include
+                    android:id="@+id/row_pick_image"
+                    layout="@layout/view_setting_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include
+                    android:id="@+id/row_bg_scrim"
+                    layout="@layout/view_setting_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include
+                    android:id="@+id/row_font"
+                    layout="@layout/view_setting_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 数据与维护 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_panel"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Text.YS.SectionLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="6dp"
+                android:text="数据与维护" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@drawable/div_setting"
+                android:orientation="vertical"
+                android:showDividers="middle">
+
+                <include
+                    android:id="@+id/row_export_history"
+                    layout="@layout/view_setting_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include
+                    android:id="@+id/row_export_dir"
+                    layout="@layout/view_setting_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include
+                    android:id="@+id/row_reset"
+                    layout="@layout/view_setting_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:lineSpacingExtra="4dp"
+            android:text="本工具用于调试串口设备，支持 ASCII / HEX 收发、\n文件发送、周期发送、自动应答、校验计算等能力。\n\n串口库 YSerialPort · 不与其他串口工具产生 so 冲突"
+            android:textColor="@color/c_text_tertiary"
+            android:textSize="11sp" />
+
+    </LinearLayout>
+</ScrollView>

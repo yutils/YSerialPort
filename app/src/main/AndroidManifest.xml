@@ -1,43 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.yujing.chuankou">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!--网络-->
+    <!--网络（串口转TCP）-->
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- SD卡权限 -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- 存储（日志 / 导出 / 背景图） -->
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/icon"
         android:label="${app_name}"
+        android:largeHeap="true"
         android:networkSecurityConfig="@xml/network_config"
-        android:roundIcon="@mipmap/icon"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
+        android:theme="@style/Theme.YSerialPort"
         tools:replace="android:label">
 
         <activity
-            android:name=".activity.MainActivity"
-            android:exported="true">
+            android:name=".ui.MainActivity"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden|density"
+            android:exported="true"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.SendActivity" />
-        <activity android:name=".activity.myTest.SendFileActivity" />
-        <activity android:name=".activity.myTest.MyMainActivity" />
-        <activity android:name=".activity.myTest.SyncActivity" />
         <activity
-            android:name=".activity.wifi.SerialPortToWiFiActivity"
-            android:screenOrientation="landscape" />
+            android:name=".ui.tcp.TcpActivity"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
     </application>
 </manifest>

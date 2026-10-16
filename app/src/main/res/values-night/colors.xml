@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  YSerialPort 设计系统 —— 色彩令牌（深色 · 默认主题）
+-->
+<resources>
+
+    <!-- ============ 基础品牌色 ============ -->
+    <!-- ============ 语义令牌（深色） ============ -->
+    <color name="c_bg">#0C1116</color>
+    <color name="c_surface">#151C24</color>
+    <color name="c_surface_variant">#1D2731</color>
+    <color name="c_surface_elevated">#1A2330</color>
+    <color name="c_outline">#2C3846</color>
+    <color name="c_outline_variant">#222C38</color>
+
+    <color name="c_primary">#2FD8A8</color>
+    <color name="c_on_primary">#04241C</color>
+    <color name="c_primary_container">#123C33</color>
+    <color name="c_on_primary_container">#9FF0D8</color>
+
+    <color name="c_secondary">#58A6FF</color>
+    <color name="c_on_secondary">#04182E</color>
+    <color name="c_secondary_container">#13314F</color>
+    <color name="c_on_secondary_container">#BFDDFF</color>
+
+    <color name="c_error">#FF6B6B</color>
+    <color name="c_on_error">#3A0705</color>
+    <color name="c_error_container">#4A1512</color>
+    <color name="c_on_error_container">#FFC9C5</color>
+
+    <color name="c_text_primary">#E6EDF3</color>
+    <color name="c_text_secondary">#93A1B0</color>
+    <color name="c_text_tertiary">#6B7A8A</color>
+    <color name="c_text_disabled">#4C5A69</color>
+    <!-- 数据流语义色 -->
+    <color name="c_rx">#6FE39A</color>
+    <color name="c_tx">#FFB454</color>
+    <color name="c_info">#58A6FF</color>
+    <color name="c_warn">#FFC46B</color>
+    <color name="c_success">#2FD8A8</color>
+    <!-- 导航 -->
+    <color name="c_nav_selected">#2FD8A8</color>
+    <color name="c_nav_unselected">#7C8B9A</color>
+    <color name="c_nav_indicator">#332FD8A8</color>
+
+    <!-- 终端显示区 -->
+    <color name="c_terminal_bg">#0A0F14</color>
+    <color name="c_terminal_text">#D7E3EE</color>
+    <color name="c_terminal_meta">#5E6E7E</color>
+
+    <!-- 交互态 -->
+    <color name="c_ripple">#30FFFFFF</color>
+    <!-- 常用纯色 -->
+    <!-- ============ 兼容旧引用 ============ -->
+</resources>

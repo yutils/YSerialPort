@@ -1,15 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme_old" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+
+    <!-- ============ 排版 ============ -->
+    <style name="Text.YS.Caption" parent="">
+        <item name="android:textSize">@dimen/fs_caption</item>
+        <item name="android:textColor">@color/c_text_tertiary</item>
     </style>
 
-    <!-- 按钮带颜色的主题 -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="Text.YS.SectionLabel" parent="">
+        <item name="android:textSize">@dimen/fs_small</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/c_text_tertiary</item>
+        <item name="android:letterSpacing">0.06</item>
     </style>
+
+    <!-- ============ 按钮 ============ -->
+    <style name="Widget.YS.Button.Primary" parent="Widget.Material3.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/btn_h</item>
+        <item name="android:textSize">@dimen/fs_body</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.01</item>
+        <item name="cornerRadius">@dimen/radius_md</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="iconPadding">6dp</item>
+        <item name="iconGravity">textStart</item>
+    </style>
+
+    <style name="Widget.YS.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/btn_h</item>
+        <item name="android:textSize">@dimen/fs_body</item>
+        <item name="cornerRadius">@dimen/radius_md</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="strokeColor">?attr/colorOutline</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="iconPadding">6dp</item>
+    </style>
+
+    <style name="Widget.YS.Button.Tonal" parent="Widget.Material3.Button.TonalButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/btn_h</item>
+        <item name="android:textSize">@dimen/fs_body</item>
+        <item name="cornerRadius">@dimen/radius_md</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="iconPadding">6dp</item>
+    </style>
+
+    <!-- 纯图标按钮 -->
+    <style name="Widget.YS.IconButton" parent="Widget.Material3.Button.IconButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/bg_ripple_circle</item>
+        <item name="iconTint">?attr/colorOnSurfaceVariant</item>
+        <item name="iconSize">@dimen/icon_md</item>
+    </style>
+
+    <!-- ============ Chip ============ -->
+    <!-- ============ 输入 ============ -->
+    <!-- ============ 卡片 ============ -->
+    <!-- ============ 分割线 ============ -->
+    <!-- ============ 列表项 ============ -->
+    <!-- ============ 对话框按钮 ============ -->
+    <!-- ============ 轻量 Chip（TextView 版本，用于下拉/开关） ============ -->
+    <style name="Widget.YS.ChipText" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">@dimen/chip_h</item>
+        <item name="android:background">@drawable/bg_chip</item>
+        <item name="android:textSize">@dimen/fs_small</item>
+        <item name="android:textColor">@color/sel_chip_text</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:drawablePadding">4dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <!-- ============ 小图标按钮（32dp） ============ -->
+    <style name="Widget.YS.IconButton.Small" parent="Widget.YS.IconButton">
+        <item name="android:layout_width">34dp</item>
+        <item name="android:layout_height">34dp</item>
+        <item name="iconSize">18dp</item>
+    </style>
+
+    <!-- ============ 紧凑输入框 ============ -->
+    <style name="Widget.YS.EditText" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/bg_input</item>
+        <item name="android:textSize">@dimen/fs_body</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:textColorHint">@color/c_text_tertiary</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="Widget.YS.EditText.Mono" parent="Widget.YS.EditText">
+        <item name="android:fontFamily">monospace</item>
+        <item name="android:textSize">@dimen/fs_mono</item>
+    </style>
+
+    <style name="Widget.YS.EditText.Small" parent="Widget.YS.EditText">
+        <item name="android:minHeight">38dp</item>
+        <item name="android:textSize">@dimen/fs_small</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:paddingBottom">6dp</item>
+    </style>
+
+    <!-- ============ 面板标题 ============ -->
+    <style name="Text.YS.PanelTitle" parent="">
+        <item name="android:textSize">@dimen/fs_body</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- ============ 设置项 ============ -->
 </resources>
+

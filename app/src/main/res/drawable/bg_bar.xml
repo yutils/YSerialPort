@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  顶栏 / 底栏背景：面板底色 + 底部 1dp 分割线。
+
+  分割线高度用 shape 内的 <size>（drawable 固有尺寸）配合 layer-list 的
+  android:gravity="bottom" 实现，而不是 <item android:height="...">——
+  后者需要 API 23，在 minSdk 21 上会被忽略，导致分割线铺满整个背景。
+-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="?attr/colorSurface" />
+        </shape>
+    </item>
+    <item android:gravity="bottom">
+        <shape android:shape="rectangle">
+            <size android:height="@dimen/divider" />
+            <solid android:color="?attr/colorOutlineVariant" />
+        </shape>
+    </item>
+</layer-list>

@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/sp_8">
+
+    <com.yujing.chuankou.ui.widget.SplitLayout
+        android:id="@+id/split"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <!-- ============================ 接收面板 ============================ -->
+        <LinearLayout
+            android:id="@+id/panel_rx"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_panel"
+            android:orientation="vertical"
+            android:padding="@dimen/panel_padding">
+
+            <!-- 标题行 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/icon_sm"
+                    android:layout_height="@dimen/icon_sm"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_arrow_down"
+                    app:tint="@color/c_rx" />
+
+                <TextView
+                    style="@style/Text.YS.PanelTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:text="接收区" />
+
+                <TextView
+                    android:id="@+id/tv_rx_stats"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textSize="11sp"
+                    android:textColor="@color/c_text_tertiary"
+                    tools:text="0 B · 0 包" />
+
+                <com.yujing.chuankou.ui.widget.SegmentedControl
+                    android:id="@+id/seg_rx_mode"
+                    android:layout_width="118dp"
+                    android:layout_height="wrap_content" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_rx_pause"
+                    style="@style/Widget.YS.IconButton.Small"
+                    android:layout_marginStart="4dp"
+                    android:contentDescription="暂停显示"
+                    app:icon="@drawable/ic_pause"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_rx_save"
+                    style="@style/Widget.YS.IconButton.Small"
+                    android:contentDescription="保存到文件"
+                    app:icon="@drawable/ic_save"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_rx_clear"
+                    style="@style/Widget.YS.IconButton.Small"
+                    android:contentDescription="清空接收区"
+                    app:icon="@drawable/ic_clear"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp" />
+            </LinearLayout>
+
+            <!-- 接收选项 -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/chip_charset"
+                        style="@style/Widget.YS.ChipText"
+                        android:drawableEnd="@drawable/ic_chevron_down"
+                        app:drawableTint="?attr/colorOnSurfaceVariant"
+                        tools:text="UTF-8" />
+
+                    <TextView
+                        android:id="@+id/chip_rx_time"
+                        style="@style/Widget.YS.ChipText"
+                        android:layout_marginStart="6dp"
+                        android:text="时间戳" />
+
+                    <TextView
+                        android:id="@+id/chip_rx_wrap"
+                        style="@style/Widget.YS.ChipText"
+                        android:layout_marginStart="6dp"
+                        android:text="自动换行" />
+
+                    <TextView
+                        android:id="@+id/chip_hex_sep"
+                        style="@style/Widget.YS.ChipText"
+                        android:layout_marginStart="6dp"
+                        android:drawableEnd="@drawable/ic_chevron_down"
+                        android:visibility="gone"
+                        app:drawableTint="?attr/colorOnSurfaceVariant"
+                        tools:text="空格" />
+
+                    <TextView
+                        android:id="@+id/chip_rx_echo"
+                        style="@style/Widget.YS.ChipText"
+                        android:layout_marginStart="6dp"
+                        android:text="回显发送" />
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <!-- 终端显示 -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1">
+
+                <ScrollView
+                    android:id="@+id/sv_rx"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_terminal"
+                    android:fillViewport="true"
+                    android:scrollbars="vertical">
+
+                    <com.yujing.chuankou.ui.widget.TerminalView
+                        android:id="@+id/terminal_rx"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="120dp" />
+                </ScrollView>
+
+                <!-- 用户上滑查看历史时出现，点击回到最新数据 -->
+                <TextView
+                    android:id="@+id/chip_back_to_bottom"
+                    style="@style/Widget.YS.ChipText"
+                    android:layout_gravity="bottom|end"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bg_segment_selected"
+                    android:drawableStart="@drawable/ic_arrow_down"
+                    android:elevation="4dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="12dp"
+                    android:text="回到底部"
+                    android:textColor="@color/c_on_primary"
+                    android:visibility="gone"
+                    app:drawableTint="@color/c_on_primary"
+                    tools:ignore="UnusedAttribute" />
+            </FrameLayout>
+        </LinearLayout>
+
+        <!-- 分栏间隔 -->
+        <com.yujing.chuankou.ui.widget.SplitDivider
+            android:id="@+id/split_divider"
+            android:layout_width="8dp"
+            android:layout_height="match_parent" />
+
+        <!-- ============================ 发送面板 ============================ -->
+        <LinearLayout
+            android:id="@+id/panel_tx"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_panel"
+            android:orientation="vertical"
+            android:padding="@dimen/panel_padding">
+
+            <!-- 标题行 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/icon_sm"
+                    android:layout_height="@dimen/icon_sm"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_arrow_up"
+                    app:tint="@color/c_tx" />
+
+                <TextView
+                    style="@style/Text.YS.PanelTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:text="发送区" />
+
+                <TextView
+                    android:id="@+id/tv_tx_stats"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textColor="@color/c_text_tertiary"
+                    android:textSize="11sp"
+                    tools:text="0 B · 0 包" />
+
+                <com.yujing.chuankou.ui.widget.SegmentedControl
+                    android:id="@+id/seg_tx_mode"
+                    android:layout_width="164dp"
+                    android:layout_height="wrap_content" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_tx_clear"
+                    style="@style/Widget.YS.IconButton.Small"
+                    android:layout_marginStart="4dp"
+                    android:contentDescription="清空输入"
+                    app:icon="@drawable/ic_clear"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp" />
+            </LinearLayout>
+
+            <!-- 编辑区 -->
+            <LinearLayout
+                android:id="@+id/ll_tx_editor"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/et_send"
+                    style="@style/Widget.YS.EditText.Mono"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="top|start"
+                    android:hint="输入要发送的内容…"
+                    android:importantForAutofill="no"
+                    android:inputType="textMultiLine|textNoSuggestions"
+                    android:maxLines="20"
+                    android:minHeight="72dp"
+                    android:scrollbars="vertical"
+                    android:textColorHint="@color/c_text_tertiary"
+                    tools:ignore="LabelFor" />
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/chip_tx_charset"
+                            style="@style/Widget.YS.ChipText"
+                            android:drawableEnd="@drawable/ic_chevron_down"
+                            app:drawableTint="?attr/colorOnSurfaceVariant"
+                            tools:text="UTF-8" />
+
+                        <TextView
+                            android:id="@+id/chip_tx_escape"
+                            style="@style/Widget.YS.ChipText"
+                            android:layout_marginStart="6dp"
+                            android:text="转义" />
+
+                        <TextView
+                            android:id="@+id/chip_tx_newline"
+                            style="@style/Widget.YS.ChipText"
+                            android:layout_marginStart="6dp"
+                            android:drawableEnd="@drawable/ic_chevron_down"
+                            app:drawableTint="?attr/colorOnSurfaceVariant"
+                            tools:text="结束符: 无" />
+                    </LinearLayout>
+                </HorizontalScrollView>
+            </LinearLayout>
+
+            <!-- 文件发送区 -->
+            <LinearLayout
+                android:id="@+id/ll_tx_file"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_pick_file"
+                    style="@style/Widget.YS.Button.Outlined"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/btn_h"
+                    android:icon="@drawable/ic_folder"
+                    android:text="选择文件" />
+
+                <TextView
+                    android:id="@+id/tv_file_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_input"
+                    android:padding="10dp"
+                    android:textSize="12sp"
+                    android:textColor="@color/c_text_secondary"
+                    tools:text="未选择文件" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/Text.YS.Caption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="分包" />
+
+                    <EditText
+                        android:id="@+id/et_chunk"
+                        style="@style/Widget.YS.EditText.Small"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_weight="1"
+                        android:importantForAutofill="no"
+                        android:inputType="number"
+                        tools:ignore="LabelFor" />
+
+                    <TextView
+                        style="@style/Text.YS.Caption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="延时(ms)" />
+
+                    <EditText
+                        android:id="@+id/et_file_delay"
+                        style="@style/Widget.YS.EditText.Small"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_weight="1"
+                        android:importantForAutofill="no"
+                        android:inputType="number"
+                        tools:ignore="LabelFor" />
+                </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/pb_file"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:max="100"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tv_file_progress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textSize="12sp"
+                    android:textColor="@color/c_text_secondary"
+                    android:visibility="gone" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <!-- 周期发送配置 -->
+            <LinearLayout
+                android:id="@+id/ll_loop_config"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_panel_soft"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="8dp"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/Text.YS.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="间隔(ms)" />
+
+                <EditText
+                    android:id="@+id/et_loop_interval"
+                    style="@style/Widget.YS.EditText.Small"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_weight="1"
+                    android:importantForAutofill="no"
+                    android:inputType="number"
+                    tools:ignore="LabelFor" />
+
+                <TextView
+                    style="@style/Text.YS.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="次数(0=无限)" />
+
+                <EditText
+                    android:id="@+id/et_loop_count"
+                    style="@style/Widget.YS.EditText.Small"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_weight="1"
+                    android:importantForAutofill="no"
+                    android:inputType="number"
+                    tools:ignore="LabelFor" />
+            </LinearLayout>
+
+            <!-- 操作行 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/chip_history"
+                    style="@style/Widget.YS.ChipText"
+                    android:drawableEnd="@drawable/ic_history"
+                    android:text="历史"
+                    app:drawableTint="?attr/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/chip_tx_loop"
+                    style="@style/Widget.YS.ChipText"
+                    android:layout_marginStart="6dp"
+                    android:text="周期" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_send"
+                    style="@style/Widget.YS.Button.Primary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/btn_h"
+                    android:minWidth="104dp"
+                    android:text="发送"
+                    app:icon="@drawable/ic_play"
+                    app:iconGravity="textStart"
+                    app:iconSize="16dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </com.yujing.chuankou.ui.widget.SplitLayout>
+
+</LinearLayout>

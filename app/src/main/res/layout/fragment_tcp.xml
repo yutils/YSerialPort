@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/sp_8">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_bar"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="6dp"
+        android:paddingEnd="12dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_back"
+            style="@style/Widget.YS.IconButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:contentDescription="返回"
+            app:icon="@drawable/ic_chevron_left"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconSize="22dp" />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_network"
+            app:tint="?attr/colorPrimary" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:text="串口 ↔ TCP 透传"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_header_state"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:background="@drawable/bg_status_closed"
+            android:gravity="center"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="未启动"
+            android:textColor="#FFFFFF"
+            android:textSize="11sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_panel"
+        android:orientation="vertical"
+        android:padding="@dimen/panel_padding">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/Text.YS.PanelTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="工作模式" />
+
+            <com.yujing.chuankou.ui.widget.SegmentedControl
+                android:id="@+id/seg_mode"
+                android:layout_width="164dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_panel_soft"
+            android:padding="10dp"
+            android:textColor="@color/c_text_secondary"
+            android:textSize="12sp"
+            tools:text="未启动" />
+
+        <!-- 服务端 -->
+        <LinearLayout
+            android:id="@+id/ll_server"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/Text.YS.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="监听端口" />
+
+            <EditText
+                android:id="@+id/et_port"
+                style="@style/Widget.YS.EditText.Small"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                tools:ignore="LabelFor" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_start_server"
+                style="@style/Widget.YS.Button.Primary"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/btn_h"
+                android:layout_marginStart="8dp"
+                android:minWidth="96dp"
+                android:text="启动" />
+        </LinearLayout>
+
+        <!-- 客户端 -->
+        <LinearLayout
+            android:id="@+id/ll_client"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                style="@style/Text.YS.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="远端 IP" />
+
+            <EditText
+                android:id="@+id/et_host"
+                style="@style/Widget.YS.EditText.Small"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="2"
+                android:importantForAutofill="no"
+                android:inputType="textUri"
+                tools:ignore="LabelFor" />
+
+            <EditText
+                android:id="@+id/et_remote_port"
+                style="@style/Widget.YS.EditText.Small"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                tools:ignore="LabelFor" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_start_client"
+                style="@style/Widget.YS.Button.Primary"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/btn_h"
+                android:layout_marginStart="8dp"
+                android:minWidth="96dp"
+                android:text="连接" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_local_ip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/c_text_tertiary"
+            android:textSize="11sp"
+            tools:text="本机 IP：192.168.1.100" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_panel"
+        android:orientation="vertical"
+        android:padding="@dimen/panel_padding">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/Text.YS.PanelTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="透传日志" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_clear_log"
+                style="@style/Widget.YS.IconButton.Small"
+                android:contentDescription="清空日志"
+                app:icon="@drawable/ic_clear"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp" />
+        </LinearLayout>
+
+        <ScrollView
+            android:id="@+id/sv_log"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_terminal"
+            android:scrollbars="vertical">
+
+            <TextView
+                android:id="@+id/tv_log"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:padding="10dp"
+                android:textColor="@color/c_terminal_text"
+                android:textSize="12sp"
+                tools:text="等待启动…" />
+        </ScrollView>
+    </LinearLayout>
+
+</LinearLayout>

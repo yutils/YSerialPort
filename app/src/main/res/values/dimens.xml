@@ -1,5 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
+    <!-- 间距栅格 4/8/12/16/24 -->
+    <dimen name="sp_8">8dp</dimen>
+    <!-- 圆角 -->
+    <dimen name="radius_sm">6dp</dimen>
+    <dimen name="radius_md">10dp</dimen>
+    <dimen name="radius_lg">14dp</dimen>
+    <dimen name="radius_full">999dp</dimen>
+
+    <!-- 字号 -->
+    <dimen name="fs_caption">11sp</dimen>
+    <dimen name="fs_small">12sp</dimen>
+    <dimen name="fs_body">14sp</dimen>
+    <dimen name="fs_mono">13sp</dimen>
+    <!-- 组件尺寸 -->
+    <dimen name="toolbar_h">52dp</dimen>
+    <dimen name="nav_rail_w">92dp</dimen>
+    <dimen name="nav_bar_h">62dp</dimen>
+    <dimen name="btn_h">44dp</dimen>
+    <dimen name="chip_h">32dp</dimen>
+    <dimen name="divider">1dp</dimen>
+    <dimen name="icon_sm">18dp</dimen>
+    <dimen name="icon_md">22dp</dimen>
+    <!-- 面板 -->
+    <dimen name="panel_padding">12dp</dimen>
 </resources>

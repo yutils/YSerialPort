@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/sp_8">
+
+    <com.yujing.chuankou.ui.widget.SegmentedControl
+        android:id="@+id/seg_tool"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1">
+
+        <!-- ==================== 校验计算器 ==================== -->
+        <LinearLayout
+            android:id="@+id/panel_checksum"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.yujing.chuankou.ui.widget.SplitLayout
+                android:id="@+id/split_checksum"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <!-- 输入 -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_panel"
+                    android:orientation="vertical"
+                    android:padding="@dimen/panel_padding">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/Text.YS.PanelTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="输入数据" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_weight="1" />
+
+                        <com.yujing.chuankou.ui.widget.SegmentedControl
+                            android:id="@+id/seg_input_type"
+                            android:layout_width="132dp"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/et_input"
+                        style="@style/Widget.YS.EditText.Mono"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_weight="1"
+                        android:gravity="top|start"
+                        android:hint="HEX 例：01 03 00 00 00 0A&#10;ASCII 例：123456789"
+                        android:importantForAutofill="no"
+                        android:inputType="textMultiLine|textNoSuggestions"
+                        android:minHeight="90dp"
+                        tools:ignore="LabelFor" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/chip_charset"
+                            style="@style/Widget.YS.ChipText"
+                            android:drawableEnd="@drawable/ic_chevron_down"
+                            app:drawableTint="?attr/colorOnSurfaceVariant"
+                            tools:text="UTF-8" />
+
+                        <TextView
+                            android:id="@+id/chip_escape"
+                            style="@style/Widget.YS.ChipText"
+                            android:layout_marginStart="6dp"
+                            android:text="转义" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:id="@+id/tv_input_info"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/c_text_tertiary"
+                            android:textSize="11sp"
+                            tools:text="0 字节" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <com.yujing.chuankou.ui.widget.SplitDivider
+                    android:id="@+id/divider_checksum"
+                    android:layout_width="8dp"
+                    android:layout_height="match_parent" />
+
+                <!-- 设置 + 结果 -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_panel"
+                    android:orientation="vertical"
+                    android:padding="@dimen/panel_padding">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/Text.YS.PanelTitle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="校验算法" />
+
+                        <TextView
+                            android:id="@+id/chip_algo"
+                            style="@style/Widget.YS.ChipText"
+                            android:drawableEnd="@drawable/ic_chevron_down"
+                            app:drawableTint="?attr/colorOnSurfaceVariant"
+                            tools:text="CRC-16/MODBUS" />
+                    </LinearLayout>
+
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:scrollbars="none">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/chip_high_first"
+                                style="@style/Widget.YS.ChipText"
+                                android:text="高字节在前" />
+
+                            <TextView
+                                android:id="@+id/chip_refin"
+                                style="@style/Widget.YS.ChipText"
+                                android:layout_marginStart="6dp"
+                                android:text="输入反转" />
+
+                            <TextView
+                                android:id="@+id/chip_refout"
+                                style="@style/Widget.YS.ChipText"
+                                android:layout_marginStart="6dp"
+                                android:text="输出反转" />
+
+                            <TextView
+                                android:id="@+id/chip_invert"
+                                style="@style/Widget.YS.ChipText"
+                                android:layout_marginStart="6dp"
+                                android:text="结果取反" />
+
+                            <TextView
+                                android:id="@+id/chip_xor"
+                                style="@style/Widget.YS.ChipText"
+                                android:layout_marginStart="6dp"
+                                android:drawableEnd="@drawable/ic_edit"
+                                app:drawableTint="?attr/colorOnSurfaceVariant"
+                                tools:text="异或 0x00" />
+
+                            <TextView
+                                android:id="@+id/chip_width"
+                                style="@style/Widget.YS.ChipText"
+                                android:layout_marginStart="6dp"
+                                android:drawableEnd="@drawable/ic_chevron_down"
+                                app:drawableTint="?attr/colorOnSurfaceVariant"
+                                tools:text="位宽 16" />
+                        </LinearLayout>
+                    </HorizontalScrollView>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_calc"
+                        style="@style/Widget.YS.Button.Primary"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/btn_h"
+                        android:layout_marginTop="10dp"
+                        android:text="计算校验值"
+                        app:icon="@drawable/ic_calculator"
+                        app:iconGravity="textStart"
+                        app:iconSize="18dp" />
+
+                    <TextView
+                        android:id="@+id/tv_desc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:textColor="@color/c_text_tertiary"
+                        android:textSize="11sp"
+                        tools:text="多项式 0x8005 · 初值 0xFFFF · 反转 in/out" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_terminal"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <TextView
+                            android:id="@+id/tv_result_hex"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="monospace"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="22sp"
+                            android:textStyle="bold"
+                            tools:text="4B 37" />
+
+                        <TextView
+                            android:id="@+id/tv_result_dec"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:fontFamily="monospace"
+                            android:textColor="@color/c_terminal_text"
+                            android:textSize="13sp"
+                            tools:text="DEC: 19255    HEX: 0x4B37" />
+
+                        <TextView
+                            android:id="@+id/tv_result_bin"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:fontFamily="monospace"
+                            android:textColor="@color/c_text_tertiary"
+                            android:textSize="11sp"
+                            tools:text="BIN: 01001011 00110111" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btn_copy_result"
+                                style="@style/Widget.YS.Button.Outlined"
+                                android:layout_width="0dp"
+                                android:layout_height="38dp"
+                                android:layout_weight="1"
+                                android:text="复制"
+                                android:textSize="13sp"
+                                app:icon="@drawable/ic_copy"
+                                app:iconGravity="textStart"
+                                app:iconPadding="4dp"
+                                app:iconSize="15dp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btn_append"
+                                style="@style/Widget.YS.Button.Tonal"
+                                android:layout_width="0dp"
+                                android:layout_height="38dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_weight="1"
+                                android:text="填入发送框"
+                                android:textSize="13sp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btn_send_result"
+                                style="@style/Widget.YS.Button.Primary"
+                                android:layout_width="0dp"
+                                android:layout_height="38dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_weight="1"
+                                android:text="追加到数据并发送"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.yujing.chuankou.ui.widget.SplitLayout>
+        </LinearLayout>
+
+        <!-- ==================== ASCII 码表 ==================== -->
+        <LinearLayout
+            android:id="@+id/panel_ascii"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_panel"
+            android:orientation="vertical"
+            android:padding="@dimen/panel_padding"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/Text.YS.PanelTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ASCII 码表" />
+
+                <com.yujing.chuankou.ui.widget.SegmentedControl
+                    android:id="@+id/seg_ascii_range"
+                    android:layout_width="168dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_search"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp">
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_search"
+                        app:tint="@color/c_text_tertiary" />
+
+                    <EditText
+                        android:id="@+id/et_ascii_search"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:hint="搜索字符 / 十六进制 / 名称"
+                        android:importantForAutofill="no"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textColorHint="@color/c_text_tertiary"
+                        android:textSize="13sp"
+                        tools:ignore="LabelFor" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_ascii_hint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="点击任意单元格可复制 / 填入发送框"
+                android:textColor="@color/c_text_tertiary"
+                android:textSize="11sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_ascii"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:clipToPadding="false"
+                android:paddingBottom="8dp" />
+        </LinearLayout>
+    </FrameLayout>
+
+</LinearLayout>

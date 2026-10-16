@@ -51,6 +51,7 @@ public final class SerialPort {
     private int parity; //奇偶校验；0:无校验位(NONE，默认)；1:奇校验位(ODD);2:偶校验位(EVEN)
     private int stopBits; //停止位；默认1；1:1位停止位；2:2位停止位
     private int flags;//默认0
+    private int flowControl;//流控；0:无(默认) 1:硬件RTS/CTS 2:软件XON/XOFF
     private FileDescriptor mFd;
     private FileInputStream mFileInputStream;
     private FileOutputStream mFileOutputStream;
@@ -58,8 +59,19 @@ public final class SerialPort {
     //JNI 打开串口
     private native FileDescriptor open(String absolutePath, int baudRate, int dataBits, int parity, int stopBits, int flags);
 
+    /**
+     * JNI 打开串口（增强版）
+     * parity 额外支持 3:MARK 4:SPACE；stopBits 额外支持 3:1.5位；并支持流控
+     */
+    private native FileDescriptor openEx(String absolutePath, int baudRate, int dataBits, int parity, int stopBits, int flags, int flowControl);
+
     //JNI 关闭串口
     public native void close();
+
+    /**
+     * 清空串口收发缓冲，返回 0 表示成功
+     */
+    public native int flushBuffers();
 
     static {
         try {
@@ -92,12 +104,31 @@ public final class SerialPort {
      * @throws IOException
      */
     public SerialPort(File device, int baudRate, int dataBits, int parity, int stopBits, int flags) throws SecurityException, IOException {
+        this(device, baudRate, dataBits, parity, stopBits, flags, 0);
+    }
+
+    /**
+     * 串口
+     *
+     * @param device      串口设备文件
+     * @param baudRate    波特率
+     * @param dataBits    数据位；默认8,可选值为5~8
+     * @param parity      奇偶校验；0:无校验位(NONE，默认)；1:奇校验位(ODD);2:偶校验位(EVEN);3:MARK;4:SPACE
+     * @param stopBits    停止位；默认1；1:1位停止位；2:2位停止位;3:1.5位停止位(需5位数据位)
+     * @param flags       默认0
+     * @param flowControl 流控；0:无(默认) 1:硬件RTS/CTS 2:软件XON/XOFF
+     * @throws SecurityException
+     * @throws IOException
+     */
+    public SerialPort(File device, int baudRate, int dataBits, int parity, int stopBits, int flags, int flowControl)
+            throws SecurityException, IOException {
         this.device = device;
         this.baudRate = baudRate;
         this.dataBits = dataBits;
         this.parity = parity;
         this.stopBits = stopBits;
         this.flags = flags;
+        this.flowControl = flowControl;
 
         /* 检查访问权限 */
         if (!device.canRead() || !device.canWrite()) {
@@ -143,7 +174,11 @@ public final class SerialPort {
             }
         }
 
-        mFd = open(device.getAbsolutePath(), baudRate, dataBits, parity, stopBits, flags);
+        // 仅在用到扩展参数时才走 openEx，保证原有行为完全不变
+        boolean needExt = flowControl != 0 || parity > 2 || stopBits == 3;
+        mFd = needExt
+                ? openEx(device.getAbsolutePath(), baudRate, dataBits, parity, stopBits, flags, flowControl)
+                : open(device.getAbsolutePath(), baudRate, dataBits, parity, stopBits, flags);
         if (mFd == null) {
             Log.e(TAG, "打开串口失败");
             throw new IOException();
@@ -228,6 +263,13 @@ public final class SerialPort {
     }
 
     /**
+     * 流控；0:无 1:硬件RTS/CTS 2:软件XON/XOFF
+     */
+    public int getFlowControl() {
+        return flowControl;
+    }
+
+    /**
      * 关闭流和串口，已经try-catch
      */
     public void tryClose() {
@@ -269,6 +311,7 @@ public final class SerialPort {
         private int parity = 0; //奇偶校验；0:无校验位(NONE，默认)；1:奇校验位(ODD);2:偶校验位(EVEN)
         private int stopBits = 1;  //停止位；默认1；1:1位停止位；2:2位停止位
         private int flags = 0; //默认0
+        private int flowControl = 0; //流控；0:无(默认) 1:硬件RTS/CTS 2:软件XON/XOFF
 
         private Builder(File device, int baudRate) {
             this.device = device;
@@ -324,6 +367,17 @@ public final class SerialPort {
         }
 
         /**
+         * 流控
+         *
+         * @param flowControl 0:无(默认) 1:硬件RTS/CTS 2:软件XON/XOFF
+         * @return
+         */
+        public Builder flowControl(int flowControl) {
+            this.flowControl = flowControl;
+            return this;
+        }
+
+        /**
          * 打开并返回串口
          *
          * @return
@@ -331,7 +385,7 @@ public final class SerialPort {
          * @throws IOException
          */
         public SerialPort build() throws SecurityException, IOException {
-            return new SerialPort(device, baudRate, dataBits, parity, stopBits, flags);
+            return new SerialPort(device, baudRate, dataBits, parity, stopBits, flags, flowControl);
         }
     }
 }

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.yujing.chuankou.ui.widget.SegmentedControl
+        android:id="@+id/seg_type"
+        android:layout_width="190dp"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/et_name"
+        style="@style/Widget.YS.EditText.Small"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="指令名称，例如：读取温度"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        tools:ignore="LabelFor" />
+
+    <LinearLayout
+        android:id="@+id/ll_content_ascii"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/chip_charset"
+            style="@style/Widget.YS.ChipText"
+            android:drawableEnd="@drawable/ic_chevron_down"
+            app:drawableTint="?attr/colorOnSurfaceVariant"
+            tools:text="UTF-8" />
+
+        <TextView
+            android:id="@+id/chip_escape"
+            style="@style/Widget.YS.ChipText"
+            android:layout_marginStart="6dp"
+            android:text="转义" />
+
+        <TextView
+            android:id="@+id/chip_newline"
+            style="@style/Widget.YS.ChipText"
+            android:layout_marginStart="6dp"
+            android:drawableEnd="@drawable/ic_chevron_down"
+            app:drawableTint="?attr/colorOnSurfaceVariant"
+            tools:text="结束符: 无" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/et_content"
+        style="@style/Widget.YS.EditText.Mono"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="top|start"
+        android:hint="HEX 例：01 03 00 00 00 0A C5 CD"
+        android:importantForAutofill="no"
+        android:inputType="textMultiLine|textNoSuggestions"
+        android:maxLines="6"
+        android:minLines="3"
+        tools:ignore="LabelFor" />
+
+</LinearLayout>

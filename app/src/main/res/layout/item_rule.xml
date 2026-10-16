@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="6dp"
+    android:background="@drawable/bg_list_item_round"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="vertical"
+    android:padding="12dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/sw_enabled"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="64dp"
+            android:minHeight="44dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="8dp"
+            tools:checked="true" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:text="温度查询应答" />
+
+        <TextView
+            android:id="@+id/tv_hits"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:background="@drawable/bg_badge"
+            android:gravity="center"
+            android:paddingStart="7dp"
+            android:paddingEnd="7dp"
+            android:textColor="@color/c_on_secondary_container"
+            android:textSize="11sp"
+            tools:text="命中 0" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_more"
+            style="@style/Widget.YS.IconButton.Small"
+            android:layout_marginStart="4dp"
+            android:contentDescription="更多操作"
+            app:icon="@drawable/ic_settings"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_accent_soft"
+            android:gravity="center"
+            android:minWidth="34dp"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:text="匹配"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="11sp" />
+
+        <TextView
+            android:id="@+id/tv_match"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:fontFamily="monospace"
+            android:maxLines="2"
+            android:textColor="@color/c_rx"
+            android:textSize="12sp"
+            tools:text="01 03 ?? ?? 00 0A" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_badge"
+            android:gravity="center"
+            android:minWidth="34dp"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:text="应答"
+            android:textColor="@color/c_on_secondary_container"
+            android:textSize="11sp" />
+
+        <TextView
+            android:id="@+id/tv_reply"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:fontFamily="monospace"
+            android:maxLines="2"
+            android:textColor="@color/c_tx"
+            android:textSize="12sp"
+            tools:text="01 03 02 00 1A" />
+    </LinearLayout>
+
+</LinearLayout>

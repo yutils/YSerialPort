@@ -8,7 +8,8 @@
 
 理论上兼容 安卓4.4~安卓14.0
 
-2.2.7之后版本最低支撑安卓4.4（api19）
+demo 2.2.7 - 2.2.9 安卓4.4（API），2.3.0+ 安卓5.0+ （API21）
+lib API19+
 
 [![platform](https://img.shields.io/badge/platform-Android-lightgrey.svg)](https://developer.android.google.cn/studio/index.html)
 ![Gradle](https://img.shields.io/badge/Gradle-9.8.1-brightgreen.svg)
@@ -23,8 +24,6 @@
 
 **如果拉取整个项目，请用最新AS（AS2026.2.1以上）打开**
 
-# `不建议直接拉取项目编译，请仔细看完 ` #
-
 ## Gradle采用java17
 
 ### 设置方法： Project Structure ----> SDK Location ----> JDK location was moved to Gradle Settings. ---->  Gradle JDK ---->  JDK17
@@ -33,12 +32,12 @@
 
 ## 引用
 
-### [添加依赖，当前最新版：————> 2.2.6　　　　![最新版](https://img.shields.io/badge/%E6%9C%80%E6%96%B0%E7%89%88-2.2.9-green.svg)](https://search.maven.org/artifact/com.kotlinx/yserialport)
+### [添加依赖，当前最新版：————> 2.3.0　　　　![最新版](https://img.shields.io/badge/%E6%9C%80%E6%96%B0%E7%89%88-2.3.0-green.svg)](https://search.maven.org/artifact/com.kotlinx/yserialport)
 
 ```
 dependencies {
     //更新地址  https://github.com/yutils/YSerialPort 建议过几天访问看下有没有新版本
-    implementation 'com.kotlinx:yserialport:2.2.9'
+    implementation 'com.kotlinx:yserialport:2.3.0'
 }
 ```
 
@@ -53,6 +52,71 @@ allprojects {
         maven { url 'https://repo1.maven.org/maven2' }
     }
 ```
+---
+
+# v3.0.0 · 演示 App 全量 UI 重构
+
+`app` 模块已使用 Kotlin + ViewBinding 完全重写（Material 3 设计语言），**横屏工控优先、竖屏自动适配**。
+
+### 界面结构
+
+| 页面 | 说明 |
+| --- | --- |
+| 终端 | 收发一体：接收区（ASCII/HEX、字符集、时间戳、自动换行、2 万字符上限、长按复制）+ 发送区（ASCII/HEX/文件、转义字符、结束符、周期发送） |
+| 历史 | 收发记录检索 / 筛选 / 搜索 / 复制 / 回填发送框 / 导出文件 |
+| 指令 | 快捷指令增删改、HEX/ASCII 类型、一键发送 |
+| 应答 | 自动应答规则（包含/相等/前缀/后缀/正则，HEX 支持 `??` 通配）、延时、仅应答一次 |
+| 工具 | 校验算法计算器（31 种 CRC + SUM/XOR/LRC/BCC/Fletcher/Adler，可调高低字节序、输入/输出反转、异或、取反、位宽）+ ASCII 码表（0–255，可复制/发送） |
+| 设置 | 串口全参数（串口/波特率/数据位/停止位/校验位/流控/断帧间隔）、接收配置、发送配置、外观（主题/背景图/字号/常亮） |
+| 更多 | 串口 ↔ TCP 透传（服务端/客户端）、主题切换、内置/自定义背景图、导出记录、恢复默认 |
+
+![img](docs/screenshots/01.png)
+![img](docs/screenshots/05-command.png)
+![img](docs/screenshots/08-ascii-table.png)
+![img](docs/screenshots/09-settings.png)
+![img](docs/screenshots/10-more.png)
+
+### 自适应布局
+
+- 横屏：左侧竖向导航栏 + 右侧多列内容（终端页接收/发送左右分栏）
+- 竖屏：顶部状态栏 + 单列内容 + 底部横向导航（终端页接收/发送上下分栏）
+- 分栏容器按自身宽高比自动切换方向，旋转无需重建 Activity
+
+### 其他
+
+- 深色工业风为默认主题，支持浅色主题切换与「跟随系统」
+- 内置 AI 生成的电路板壁纸，支持从相册自定义背景图并调节遮罩
+- 壁纸遮蔽度、终端字号、历史条数等均可配置，配置持久化
+
+设计文档见 [`docs/REFACTOR_PLAN.md`](docs/REFACTOR_PLAN.md)，测试截图见 [`docs/screenshots`](docs/screenshots)。
+
+### 构建与代码质量
+
+- 依赖版本按本地 Gradle 缓存锁定，支持 `./gradlew --offline` 完全离线构建
+- 发布包开启 `minifyEnabled` + `shrinkResources`，release APK 约 2.8 MB
+- 已通过 Android Lint 清理（无用资源 125 项、编译告警 0 条）；有意保留的检查项在 [`app/lint.xml`](app/lint.xml) 中注明原因
+- 调试脚本：[`docs/tools/t.sh`](docs/tools/t.sh)（ADB 点击/截图/控件定位）、[`docs/crc_check.py`](docs/crc_check.py)（CRC 预设与 reveng 标准值交叉验证）
+
+---
+
+## 库增强（v3.0.0，向后兼容）
+
+`yserialport` 新增增强串口入口，**原有 API 行为完全不变**：
+
+```java
+SerialPort serialPort = SerialPort.newBuilder(new File("/dev/ttyS1"), 115200)
+        .dataBits(8)          // 5 ~ 8
+        .parity(0)            // 0:NONE 1:ODD 2:EVEN 3:MARK 4:SPACE
+        .stopBits(1)          // 1:1位 2:2位 3:1.5位（需 5 位数据位）
+        .flowControl(0)       // 0:无 1:硬件RTS/CTS 2:软件XON/XOFF  ← 新增
+        .build();
+serialPort.flushBuffers();    // 新增：清空收发缓冲
+```
+
+> 仅当使用到扩展参数（流控 / MARK / SPACE / 1.5 停止位）时才走新的 JNI 入口 `openEx`，其余情况仍走原有 `open`，保证兼容性。
+
+---
+
 
 # 使用方法
 

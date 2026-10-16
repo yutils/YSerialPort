@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Lint 配置
+
+  原则：只抑制「本项目有意为之」的检查项，并写明原因；其余检查全部保持开启，
+  以便 `./gradlew lint` 的输出始终是可执行的问题清单。
+-->
+<lint>
+
+    <!-- 应用仅面向中文用户，界面文案直接以中文字面量写在布局 / 代码中，不做多语言资源化。
+         若日后需要多语言，再移除这两项抑制并抽取 strings.xml。 -->
+    <issue id="HardcodedText" severity="ignore" />
+    <issue id="SetTextI18n" severity="ignore" />
+
+    <!-- 依赖版本按本地 Gradle 缓存锁定，以保证离线可构建；联网时再统一升级。 -->
+    <issue id="GradleDependency" severity="ignore" />
+    <issue id="AndroidGradlePluginVersion" severity="ignore" />
+
+    <!-- minSdk 21 已支持 TextView 的 drawableStart/drawableEnd（API 17 起），
+         无需 AppCompat 的 *Compat 版本，此告警不适用。 -->
+    <issue id="UseCompatTextViewDrawableXml" severity="ignore" />
+
+</lint>

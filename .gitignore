@@ -6,5 +6,19 @@
 /build
 /captures
 .externalNativeBuild
+
+# Kotlin 编译器会话目录
+/.kotlin
+**/.kotlin
+
+# 从旧版工程移除后遗留的目录（构建产物，不再使用）
+/res_screen
+
+# 调试用的 UI 层级 dump（由 docs/tools/t.sh dump 生成）
+/docs/ui.xml
+/docs/screenshots/*.tmp
+
+# 含签名私钥，切勿提交
 /gradles/
 /gradle/gradle-daemon-jvm.properties
+/.workbuddy

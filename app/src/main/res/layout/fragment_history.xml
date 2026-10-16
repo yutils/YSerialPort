@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/sp_8">
+
+    <!-- 工具条 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_panel"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <com.yujing.chuankou.ui.widget.SegmentedControl
+            android:id="@+id/seg_filter"
+            android:layout_width="190dp"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_search"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_search"
+                app:tint="@color/c_text_tertiary" />
+
+            <EditText
+                android:id="@+id/et_search"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:hint="搜索内容 / HEX"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textColor="?attr/colorOnSurface"
+                android:textColorHint="@color/c_text_tertiary"
+                android:textSize="13sp"
+                tools:ignore="LabelFor" />
+
+            <ImageView
+                android:id="@+id/btn_search_clear"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/bg_ripple_circle"
+                android:importantForAccessibility="no"
+                android:padding="2dp"
+                android:src="@drawable/ic_close"
+                android:visibility="gone"
+                app:tint="@color/c_text_tertiary" />
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_export"
+            style="@style/Widget.YS.IconButton.Small"
+            android:layout_marginStart="6dp"
+            android:contentDescription="导出记录"
+            app:icon="@drawable/ic_export"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_clear"
+            style="@style/Widget.YS.IconButton.Small"
+            android:contentDescription="清空记录"
+            app:icon="@drawable/ic_trash"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="4dp"
+        android:textColor="@color/c_text_tertiary"
+        android:textSize="11sp"
+        tools:text="共 0 条记录" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="6dp"
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="8dp"
+            android:scrollbars="vertical" />
+
+        <LinearLayout
+            android:id="@+id/ll_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_history"
+                app:tint="@color/c_text_disabled" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="暂无收发记录"
+                android:textColor="@color/c_text_tertiary"
+                android:textSize="13sp" />
+        </LinearLayout>
+    </FrameLayout>
+
+</LinearLayout>

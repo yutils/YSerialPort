@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/topbar"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/toolbar_h"
+    android:background="@drawable/bg_bar"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="14dp"
+    android:paddingEnd="6dp">
+
+    <!-- 品牌标识 -->
+    <ImageView
+        android:id="@+id/iv_logo"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:importantForAccessibility="no"
+        android:src="@drawable/ic_monitor"
+        app:tint="?attr/colorPrimary" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_page_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="终端" />
+
+        <TextView
+            android:id="@+id/tv_page_sub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:textColor="@color/c_text_tertiary"
+            android:textSize="11sp"
+            tools:text="串口收发 · 实时监控" />
+    </LinearLayout>
+
+    <!-- 串口状态 -->
+    <LinearLayout
+        android:id="@+id/ll_status"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:background="@drawable/bg_status_closed"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp">
+
+        <View
+            android:id="@+id/v_dot"
+            android:layout_width="7dp"
+            android:layout_height="7dp"
+            android:background="@drawable/bg_dot" />
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="未连接"
+            android:textColor="#FFFFFF"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
+
+    <!-- 打开/关闭串口 -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_power"
+        style="@style/Widget.YS.IconButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="4dp"
+        android:contentDescription="打开或关闭串口"
+        app:icon="@drawable/ic_power"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconSize="20dp" />
+
+    <!-- 主题切换 -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_theme"
+        style="@style/Widget.YS.IconButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:contentDescription="切换主题"
+        app:icon="@drawable/ic_sun"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconSize="20dp" />
+
+</LinearLayout>
