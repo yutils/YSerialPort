@@ -174,16 +174,23 @@ class TerminalView @JvmOverloads constructor(
         scrollView = null
     }
 
+    /**
+     * 内容底部在滚动坐标系中的位置。
+     * TerminalView 是 ScrollView 的唯一子 View，其 height 已包含自身 padding，
+     * 所以这里只能用 ScrollView 的 paddingTop（早期版本误用了本 View 的 paddingTop，
+     * 会把底部判定线抬高 8dp）。
+     */
+    private fun contentBottom(sv: ScrollView): Int = sv.paddingTop + height + sv.paddingBottom
+
     /** 当前滚动位置是否已在底部 */
     private fun atBottom(scrollY: Int): Boolean {
         val sv = scrollView ?: return true
-        val contentBottom = paddingTop + height + sv.paddingBottom
-        return scrollY + sv.height >= contentBottom - dpInt(16f)
+        return scrollY + sv.height >= contentBottom(sv) - dpInt(16f)
     }
 
     private fun scrollToBottomNow() {
         val sv = scrollView ?: parent as? ScrollView ?: return
-        val contentBottom = paddingTop + height + sv.paddingBottom
+        val contentBottom = contentBottom(sv)
         val target = (contentBottom - sv.height).coerceAtLeast(0)
         programmaticScroll = true
         runCatching { sv.scrollTo(sv.scrollX, target) }

@@ -39,7 +39,8 @@ class TerminalFragment : BaseFragment<FragmentTerminalBinding>(FragmentTerminalB
 
     private val ui = Handler(Looper.getMainLooper())
     private val io = Executors.newSingleThreadExecutor { r -> Thread(r, "terminal-io").apply { isDaemon = true } }
-    private val timeFmt = SimpleDateFormat("HH:mm:ss.SSS", Locale.getDefault())
+    // 时间格式是纯数字，必须锁 Locale.ROOT：否则阿拉伯语等 locale 下会输出非 ASCII 数字
+    private val timeFmt = SimpleDateFormat("HH:mm:ss.SSS", Locale.ROOT)
 
     private var rxMode = 0      // 0 ASCII / 1 HEX
     private var txMode = 0      // 0 ASCII / 1 HEX / 2 FILE
@@ -485,8 +486,8 @@ class TerminalFragment : BaseFragment<FragmentTerminalBinding>(FragmentTerminalB
 
     private fun formatSize(size: Long): String = when {
         size < 1024 -> "$size B"
-        size < 1024 * 1024 -> String.format(Locale.getDefault(), "%.1f KB", size / 1024f)
-        else -> String.format(Locale.getDefault(), "%.2f MB", size / 1024f / 1024f)
+        size < 1024 * 1024 -> String.format(Locale.ROOT, "%.1f KB", size / 1024f)
+        else -> String.format(Locale.ROOT, "%.2f MB", size / 1024f / 1024f)
     }
 
     // ==================================================================
@@ -644,7 +645,8 @@ class TerminalFragment : BaseFragment<FragmentTerminalBinding>(FragmentTerminalB
             if (view == null) return@post
             binding.pbFile.visibility = View.VISIBLE
             binding.tvFileProgress.visibility = View.VISIBLE
-            binding.pbFile.progress = if (total > 0) sent * 100 / total else 0
+            // sent * 100 用 Long 计算：大文件（>21MB）下 Int 会溢出成负数
+            binding.pbFile.progress = if (total > 0) (sent.toLong() * 100 / total).toInt() else 0
             binding.tvFileProgress.text = "已发送 $sent / $total 字节"
             if (sent >= total) {
                 ui.postDelayed({

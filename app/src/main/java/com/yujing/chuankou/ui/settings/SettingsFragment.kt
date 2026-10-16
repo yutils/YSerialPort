@@ -26,6 +26,9 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
 
     private var config: SerialConfig = SerialConfig()
 
+    /** 最近一次扫描到的串口数量（-1 = 还没扫过）。避免每次 refresh 都遍历一遍 /dev */
+    private var deviceCount: Int = -1
+
     override fun onInit(view: View, savedInstanceState: Bundle?) {
         config = SerialConfig.fromPrefs()
         initSerialSection()
@@ -140,6 +143,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
             // 「刷新串口」已并入本行：每次点击重新扫描并展示
             val paths = YSerialPort.getDevices() ?: emptyArray()
             val names = YSerialPort.getSerialPortFinder().allDevices ?: emptyArray()
+            deviceCount = paths.size
             refreshSerialSection()
             if (paths.isEmpty()) {
                 Dialogs.info(requireContext(), "串口列表", "未扫描到串口设备。\n请确认设备已开放串口权限（/dev/ttyS*）。")
@@ -174,7 +178,8 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
         setValue(binding.rowParity, "校验位", SerialConfig.PARITY_NAMES.getOrElse(config.parity) { "无校验" })
         setValue(binding.rowFlow, "流控", SerialConfig.FLOW_NAMES.getOrElse(config.flowControl) { "无流控" })
         setValue(binding.rowFrameGap, "断帧组包间隔", if (config.frameGapMs <= 0) "自动" else "${config.frameGapMs} ms")
-        setValue(binding.rowScan, "串口列表", "已发现 ${YSerialPort.getDevices()?.size ?: 0} 个", "点击重新扫描并查看设备名称与路径")
+        if (deviceCount < 0) deviceCount = runCatching { YSerialPort.getDevices()?.size ?: 0 }.getOrDefault(0)
+        setValue(binding.rowScan, "串口列表", "已发现 $deviceCount 个", "点击重新扫描并查看设备名称与路径")
 
         val open = SerialManager.isOpen
         binding.chipSerialToggle.text = if (open) "关闭串口" else "打开串口"

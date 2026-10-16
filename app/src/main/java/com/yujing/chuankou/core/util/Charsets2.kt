@@ -19,7 +19,8 @@ private fun decodeEscaping(
     bytes: ByteArray,
     offset: Int,
     length: Int,
-    charset: Charset
+    charset: Charset,
+    endOfInput: Boolean = true
 ): String {
     if (length <= 0) return ""
     // ISO-8859-1 每个字节都能映射到 U+0000~U+00FF，不存在解不出来的字节
@@ -33,7 +34,9 @@ private fun decodeEscaping(
     while (inBuf.hasRemaining()) {
         // 输出缓冲按最多 2 char/byte 估算，不够就再循环一次
         val outBuf = CharBuffer.allocate(maxOf(8, inBuf.remaining() * 2))
-        val result = decoder.decode(inBuf, outBuf, false)
+        // 一次性解码 endOfInput=true：末尾残留的半个多字节序列会被判为 malformed 并转义，
+        // 而不是像流式解码那样留着等下一包（一次性场景下没有"下一包"，留着等于静默丢字节）
+        val result = decoder.decode(inBuf, outBuf, endOfInput)
         outBuf.flip()
         sb.append(outBuf)
         when {

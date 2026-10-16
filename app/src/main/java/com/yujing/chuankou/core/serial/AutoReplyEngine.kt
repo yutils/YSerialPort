@@ -58,7 +58,8 @@ object AutoReplyEngine {
             if (!rule.enabled) continue
             if (match(rule)) {
                 anyHit = true
-                rule.hitCount++
+                // 走 Store 的节流落盘，直接 rule.hitCount++ 只改内存，重启后计数会归零
+                Store.bumpRuleHit(rule)
                 deliver(rule)
                 if (rule.once) Store.toggleRule(rule, false)
             }
@@ -163,9 +164,16 @@ object AutoReplyEngine {
                     if (i < s.length && (s[i] == '?' || s[i] == '*')) i++
                 }
                 else -> {
-                    if (i + 1 >= s.length) return out
-                    out.add(s.substring(i, i + 2))
-                    i += 2
+                    if (i + 1 >= s.length) {
+                        // 末尾只剩单个字符：按低半字节补 0（"3" → "03"）。
+                        // 早期版本在这里直接 return，尾部字节被静默丢弃，
+                        // 用户写的规则永远匹配不上又看不出原因。
+                        out.add("0$c")
+                        i++
+                    } else {
+                        out.add(s.substring(i, i + 2))
+                        i += 2
+                    }
                 }
             }
         }

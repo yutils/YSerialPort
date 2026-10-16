@@ -21,7 +21,10 @@ class App : Application() {
 
     companion object {
         private var instance: App? = null
-        fun get(): App = instance!!
+
+        /** 只能在 Application.onCreate 之后调用（所有组件都晚于它，正常不会为空） */
+        fun get(): App = instance
+            ?: error("App 尚未初始化：App.get() 只能在 Application.onCreate 之后调用")
     }
 
     override fun onCreate() {

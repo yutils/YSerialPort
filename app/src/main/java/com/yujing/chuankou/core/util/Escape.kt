@@ -39,7 +39,17 @@ object Escape {
                 'r' -> raw = 0x0D
                 'n' -> raw = 0x0A
                 't' -> raw = 0x09
-                '0' -> raw = 0x00
+                '0' -> {
+                    // 与八进制分支统一处理：\0 = NUL，\012 = 八进制 012。
+                    // 若按「\0 固定为 NUL」优先，则 \012 会被切成 NUL + "12"，与 C / 多数串口工具不一致。
+                    var oct = ""
+                    var k = i + 1
+                    while (k < text.length && oct.length < 3 && text[k] in '0'..'7') {
+                        oct += text[k]; k++
+                    }
+                    raw = oct.toInt(8).toByte()
+                    consumed = k - i
+                }
                 'a' -> raw = 0x07
                 'b' -> raw = 0x08
                 'f' -> raw = 0x0C

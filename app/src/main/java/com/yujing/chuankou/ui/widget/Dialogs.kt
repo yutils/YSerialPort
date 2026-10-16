@@ -118,7 +118,10 @@ object Dialogs {
             .show()
     }
 
-    /** 确认框 */
+    /**
+     * 确认框
+     * @param danger true 时把确认按钮染成错误色（用于「清空 / 恢复默认 / 退出」这类破坏性操作）
+     */
     fun confirm(
         context: Context,
         title: String,
@@ -127,12 +130,21 @@ object Dialogs {
         danger: Boolean = false,
         onOk: () -> Unit
     ) {
-        MaterialAlertDialogBuilder(context)
+        val dialog = MaterialAlertDialogBuilder(context)
             .setTitle(title)
             .setMessage(message)
             .setPositiveButton(okText) { _, _ -> onOk() }
             .setNegativeButton("取消", null)
-            .show()
+            .create()
+        if (danger) {
+            // 按钮文字颜色只能在 show 之后取到，故用 OnShowListener
+            dialog.setOnShowListener {
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE)?.setTextColor(
+                    context.getThemeColor(com.google.android.material.R.attr.colorError)
+                )
+            }
+        }
+        dialog.show()
     }
 
     /** 信息框 */

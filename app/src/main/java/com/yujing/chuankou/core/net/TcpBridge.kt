@@ -128,7 +128,7 @@ object TcpBridge {
                 if (n == 0) continue
                 val data = buf.copyOf(n)
                 val ok = SerialManager.send(data, DataType.HEX, "TCP透传", fromUser = false)
-                log("TCP → 串口：${data.size} 字节（${if (ok) "已提交" else "失败：串口未打开"}）")
+                logData("TCP → 串口：${data.size} 字节（${if (ok) "已提交" else "失败：串口未打开"}）")
             }
         } catch (e: Exception) {
             if (running && !c.closed) log("读取结束：${e.message ?: e.javaClass.simpleName}")
@@ -162,7 +162,7 @@ object TcpBridge {
                     if (n == 0) continue
                     val data = buf.copyOf(n)
                     val ok = SerialManager.send(data, DataType.HEX, "TCP透传", fromUser = false)
-                    log("TCP → 串口：${data.size} 字节（${if (ok) "已提交" else "失败：串口未打开"}）")
+                    logData("TCP → 串口：${data.size} 字节（${if (ok) "已提交" else "失败：串口未打开"}）")
                 }
                 if (running) log("远端已断开")
             } catch (e: Exception) {
@@ -221,14 +221,14 @@ object TcpBridge {
                             closeClient(c)
                         }
                     }
-                    if (sent > 0) log("串口 → TCP：${payload.size} 字节 × $sent 个客户端")
+                    if (sent > 0) logData("串口 → TCP：${payload.size} 字节 × $sent 个客户端")
                 }
                 Mode.CLIENT -> {
                     val s = clientSocket ?: return@execute
                     try {
                         s.getOutputStream().write(payload)
                         s.getOutputStream().flush()
-                        log("串口 → TCP：${payload.size} 字节")
+                        logData("串口 → TCP：${payload.size} 字节")
                     } catch (e: Exception) {
                         log("发送失败：${e.javaClass.simpleName} ${e.message ?: ""}")
                     }
@@ -251,6 +251,17 @@ object TcpBridge {
         handler.post { listeners.toList().forEach { runCatching { it.onLog(msg) } } }
     }
 
+    /** 透传是高频路径，每包都往主线程 post 一条日志会把消息队列压满，这里做节流 */
+    private val lastDataLogMs = java.util.concurrent.atomic.AtomicLong(0L)
+
+    /** 数据转发日志：最多每 500ms 一条 */
+    private fun logData(msg: String) {
+        val now = System.currentTimeMillis()
+        val last = lastDataLogMs.get()
+        if (now - last < DATA_LOG_INTERVAL) return
+        if (lastDataLogMs.compareAndSet(last, now)) log(msg)
+    }
+
     private fun notifyState() {
         val m = mode
         val r = running
@@ -263,4 +274,6 @@ object TcpBridge {
         val output: OutputStream = socket.getOutputStream()
         @Volatile var closed = false
     }
+
+    private const val DATA_LOG_INTERVAL = 500L
 }

@@ -59,6 +59,13 @@ class CharsetsTest {
     }
 
     @Test
+    fun oneShotDecodingEscapesTruncatedTail() {
+        // 一次性解码没有"下一包"，末尾半个多字节序列必须转义输出，不能静默丢弃
+        assertEquals("\\xE4\\xB8", Charsets2.decode(byteArrayOf(0xE4.toByte(), 0xB8.toByte()), "UTF-8"))
+        assertEquals("\\xD6", Charsets2.decode(byteArrayOf(0xD6.toByte()), "GBK"))
+    }
+
+    @Test
     fun decodeNeverProducesReplacementChar() {
         // 0x80~0xFF 全量投喂 UTF-8，不应出现 U+FFFD
         val out = Charsets2.decode(ByteArray(128) { (0x80 + it).toByte() }, "UTF-8")

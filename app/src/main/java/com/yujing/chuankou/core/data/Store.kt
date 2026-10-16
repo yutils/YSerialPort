@@ -271,6 +271,24 @@ object Store {
         handler.post { ArrayList(ruleListeners).forEach { runCatching { it() } } }
     }
 
+    /**
+     * 规则命中计数自增并落盘。
+     * 命中是高频事件（一秒可能几十次），每次都序列化整份规则再写 SP 会把主线程压满，
+     * 所以这里合并到最多每 1s 保存一次；进程被杀最多丢最后 1s 的计数。
+     */
+    fun bumpRuleHit(rule: AutoReplyRule) {
+        rule.hitCount++
+        if (rulesSaveScheduled) return
+        rulesSaveScheduled = true
+        handler.postDelayed(rulesSaveRunnable, RULES_SAVE_INTERVAL)
+    }
+
+    private var rulesSaveScheduled = false
+    private val rulesSaveRunnable = Runnable {
+        rulesSaveScheduled = false
+        Prefs.put(K_RULES, AutoReplyRule.listToJson(_rules))
+    }
+
     fun addRuleListener(l: () -> Unit) {
         if (!ruleListeners.contains(l)) ruleListeners.add(l)
     }
@@ -298,4 +316,5 @@ object Store {
 
     private const val K_COMMANDS = "quick_commands_json"
     private const val K_RULES = "auto_reply_rules_json"
+    private const val RULES_SAVE_INTERVAL = 1000L
 }
