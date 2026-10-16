@@ -6,10 +6,10 @@
 
 已经多次长时间测试：串口打印机，PLC通信，串口电子秤，串口条码读卡器，串口二维码读卡器，串口LED屏，串口NFC读卡器，读M1区一次性读取64个扇区，读CPU区一次读取16KB数据。
 
-理论上兼容 安卓4.4~安卓14.0
+理论上兼容 安卓4.4~安卓14.0+
 
-demo 2.2.7 - 2.2.9 安卓4.4（API），2.3.0+ 安卓5.0+ （API21）
-lib API19+
+demo这个APK 2.2.7 - 2.2.9 安卓4.4（API），2.3.0+ 安卓6.0+ （API23）
+引用这个lib 只需要 API19+
 
 [![platform](https://img.shields.io/badge/platform-Android-lightgrey.svg)](https://developer.android.google.cn/studio/index.html)
 ![Gradle](https://img.shields.io/badge/Gradle-9.8.1-brightgreen.svg)
@@ -27,8 +27,6 @@ lib API19+
 ## Gradle采用java17
 
 ### 设置方法： Project Structure ----> SDK Location ----> JDK location was moved to Gradle Settings. ---->  Gradle JDK ---->  JDK17
-
-## 已经从jitpack.io仓库移动至maven中央仓库
 
 ## 引用
 
@@ -54,7 +52,7 @@ allprojects {
 ```
 ---
 
-# v3.0.0 · 演示 App 全量 UI 重构
+# v2.3.0 · 演示 App 全量 UI 重构
 
 `app` 模块已使用 Kotlin + ViewBinding 完全重写（Material 3 设计语言），**横屏工控优先、竖屏自动适配**。
 
@@ -70,6 +68,7 @@ allprojects {
 | 设置 | 串口全参数（串口/波特率/数据位/停止位/校验位/流控/断帧间隔）、接收配置、发送配置、外观（主题/背景图/字号/常亮） |
 | 更多 | 串口 ↔ TCP 透传（服务端/客户端）、主题切换、内置/自定义背景图、导出记录、恢复默认 |
 
+### 截图
 ![img](docs/screenshots/01.png)
 ![img](docs/screenshots/05-command.png)
 ![img](docs/screenshots/08-ascii-table.png)
@@ -99,7 +98,7 @@ allprojects {
 
 ---
 
-## 库增强（v3.0.0，向后兼容）
+## 库增强（v2.3.0，向后兼容）
 
 `yserialport` 新增增强串口入口，**原有 API 行为完全不变**：
 

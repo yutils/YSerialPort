@@ -8,6 +8,7 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.kotlinx.appUpdate.AppUpdate
 import com.yujing.chuankou.App
 import com.yujing.chuankou.R
 import com.yujing.chuankou.core.data.Prefs
@@ -78,6 +79,11 @@ class MainActivity : AppCompatActivity(), SerialManager.Listener {
             ?: intent?.getStringExtra(EXTRA_PAGE)
             ?: "terminal"
         selectPage(startId)
+
+        //检查更新
+        AppUpdate.baseUrl = "http://apk.kotlinx.com:9999"
+        AppUpdate.showCheckUpdateErrorToast = false
+        AppUpdate().checkAndUpdate(this)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

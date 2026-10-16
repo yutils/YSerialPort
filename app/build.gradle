@@ -6,10 +6,10 @@ android {
     namespace 'com.yujing.chuankou'
     defaultConfig {
         applicationId "com.yujing.chuankou"
-        minSdk 21
+        minSdk 23
         targetSdk 34
         versionCode 30
-        versionName "3.0.0"
+        versionName "2.3.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
@@ -97,5 +97,6 @@ dependencies {
     }
     //bugly，异常采集
     implementation 'com.tencent.bugly:crashreport:4.1.9.3'
+    implementation 'com.kotlinx:appUpdate:0.0.5'
     implementation project(':yserialport')
 }

@@ -50,4 +50,4 @@ android {
 dependencies {
 }
 //maven配置和签名文件，请注释掉该行
-apply from: "${getRootDir().absolutePath}/gradles/publish-maven-central.gradle"
+//apply from: "${getRootDir().absolutePath}/gradles/publish-maven-central.gradle"

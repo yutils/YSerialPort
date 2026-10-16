@@ -18,7 +18,7 @@
     <application
         android:name=".App"
         android:allowBackup="true"
-        android:icon="@mipmap/icon"
+        android:icon="@mipmap/logo512"
         android:label="${app_name}"
         android:largeHeap="true"
         android:networkSecurityConfig="@xml/network_config"
