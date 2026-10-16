@@ -110,6 +110,16 @@ object Store {
         handler.postDelayed(persistRunnable, 2500)
     }
 
+    /**
+     * 立即落盘待写入的历史（退出应用前调用）。
+     * 防抖队列里可能还压着一次写入，这里取消并同步写一次，避免丢记录。
+     */
+    fun flush() {
+        handler.removeCallbacks(persistRunnable)
+        persistScheduled = false
+        persistHistoryNow()
+    }
+
     private fun persistHistoryNow() {
         persistScheduled = false
         val file = historyFile()

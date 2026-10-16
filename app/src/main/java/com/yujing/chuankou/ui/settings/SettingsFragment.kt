@@ -219,7 +219,10 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
     }
 
     private fun refreshRxSection() {
-        setValue(binding.rowRxCharset, "字符集", Charsets2.displayOf(Prefs.rxCharset), "用于 ASCII 模式解码，支持 GB18030 等中文编码")
+        setValue(
+            binding.rowRxCharset, "字符集", Charsets2.displayOf(Prefs.rxCharset),
+            "用于 ASCII 模式解码；解不出来的字节显示为 \\xNN（如 \\xA1），而不是替换符"
+        )
         setSwitchValue(binding.rowRxTime, "显示时间戳", Prefs.rxShowTime)
         setSwitchValue(binding.rowRxWrap, "自动换行", Prefs.rxAutoWrap)
         setValue(binding.rowRxSep, "HEX 分隔符", listOf("空格", "无分隔", "逗号", "横线").getOrElse(Prefs.rxHexSeparator) { "空格" })

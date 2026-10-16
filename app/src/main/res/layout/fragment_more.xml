@@ -62,12 +62,47 @@
                     tools:text="版本 3.0.0 (30)" />
 
                 <TextView
+                    android:id="@+id/tv_author"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
-                    android:text="作者：余静 · 开源：github.com/yutils/YSerialPort"
+                    android:text="作者：余静"
                     android:textColor="@color/c_text_tertiary"
                     android:textSize="11sp" />
+
+                <!-- 开源地址：点击弹出「复制地址 / 浏览器打开」 -->
+                <LinearLayout
+                    android:id="@+id/row_source"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:minHeight="44dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_source_url"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="开源地址：github.com/yutils/YSerialPort"
+                        android:textColor="?attr/colorPrimary"
+                        android:textSize="11sp" />
+
+                    <ImageView
+                        android:id="@+id/iv_source_open"
+                        android:layout_width="13dp"
+                        android:layout_height="13dp"
+                        android:layout_marginStart="4dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_open_in_new"
+                        app:tint="?attr/colorPrimary" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
@@ -200,6 +235,29 @@
 
                 <include
                     android:id="@+id/row_reset"
+                    layout="@layout/view_setting_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 退出应用 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_panel"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@drawable/div_setting"
+                android:orientation="vertical"
+                android:showDividers="middle">
+
+                <include
+                    android:id="@+id/row_exit"
                     layout="@layout/view_setting_row"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />

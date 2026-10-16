@@ -144,6 +144,55 @@ object Dialogs {
             .show()
     }
 
+    /**
+     * 列表动作选择：用于「复制地址 / 浏览器打开」这类并列操作。
+     *
+     * 坑：AlertDialog 的 message 与 items 共用同一个内容槽，同时设置会顶掉列表，
+     * 所以副标题（如要复制的 URL）走自定义标题视图，而不是 setMessage。
+     */
+    fun actions(
+        context: Context,
+        title: String,
+        subtitle: String? = null,
+        items: List<String>,
+        onPick: (Int) -> Unit
+    ) {
+        val builder = MaterialAlertDialogBuilder(context)
+        if (subtitle.isNullOrBlank()) {
+            builder.setTitle(title)
+        } else {
+            builder.setCustomTitle(buildTitleView(context, title, subtitle))
+        }
+        builder.setItems(items.toTypedArray()) { d, which ->
+            d.dismiss()
+            onPick(which)
+        }
+        builder.setNegativeButton("取消", null)
+        builder.show()
+    }
+
+    /** 对话框自定义标题：主标题 + 可长按复制的小字副标题 */
+    private fun buildTitleView(context: Context, title: String, subtitle: String): View {
+        val pad = (24 * context.resources.displayMetrics.density).toInt()
+        val padBottom = (12 * context.resources.displayMetrics.density).toInt()
+        return LinearLayout(context).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(pad, pad, pad, padBottom)
+            addView(TextView(context).apply {
+                text = title
+                textSize = 19f
+                setTextColor(context.getThemeColor(com.google.android.material.R.attr.colorOnSurface))
+            })
+            addView(TextView(context).apply {
+                text = subtitle
+                textSize = 12f
+                setPadding(0, padBottom, 0, 0)
+                setTextColor(context.getThemeColor(com.google.android.material.R.attr.colorOnSurfaceVariant))
+                setTextIsSelectable(true)
+            })
+        }
+    }
+
     /** 自定义 View 弹窗 */
     fun custom(
         context: Context,
