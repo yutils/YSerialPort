@@ -1,5 +1,7 @@
 # YSerialPort
 
+**简体中文** | [English](README_en.MD)
+
 源Android-SerialPort-API，重新封装代码，实现读取串口数据，实现重新组包一次性读取完整数据。可连续读取任意长度数据。
 
 重写串口so库名称和调用函数名称，不与其他串口工具形成so冲突或者类名冲突。
@@ -62,11 +64,11 @@ allprojects {
 | --- | --- |
 | 终端 | 收发一体：接收区（ASCII/HEX、字符集、时间戳、自动换行、2 万字符上限、长按复制）+ 发送区（ASCII/HEX/文件、转义字符、结束符、周期发送） |
 | 历史 | 收发记录检索 / 筛选 / 搜索 / 复制 / 回填发送框 / 导出文件 |
-| 指令 | 快捷指令增删改、HEX/ASCII 类型、一键发送 |
-| 应答 | 自动应答规则（包含/相等/前缀/后缀/正则，HEX 支持 `??` 通配）、延时、仅应答一次 |
+| 快捷指令 | 快捷指令增删改、HEX/ASCII 类型、一键发送 |
+| 自动应答 | 自动应答规则（包含/相等/前缀/后缀/正则，HEX 支持 `??` 通配）、延时、仅应答一次 |
 | 工具 | 校验算法计算器（31 种 CRC + SUM/XOR/LRC/BCC/Fletcher/Adler，可调高低字节序、输入/输出反转、异或、取反、位宽）+ ASCII 码表（0–255，可复制/发送） |
 | 设置 | 串口全参数（串口/波特率/数据位/停止位/校验位/流控/断帧间隔）、接收配置、发送配置、外观（主题/背景图/字号/常亮） |
-| 更多 | 串口 ↔ TCP 透传（服务端/客户端）、主题切换、内置/自定义背景图、导出记录、恢复默认 |
+| 更多 | 串口 ↔ TCP 透传（服务端/客户端）、主题切换、内置/自定义背景图、导出记录、恢复默认、开源地址（可复制/跳转）、退出应用 |
 
 ### 截图
 ![img](docs/screenshots/01.png)
@@ -119,17 +121,17 @@ serialPort.flushBuffers();    // 新增：清空收发缓冲
 
 # 使用方法
 
-可以参考SendActivity.java
+可以参考 `app` 模块中的实现：串口收发封装见 [`core/serial/SerialManager.kt`](app/src/main/java/com/yujing/chuankou/core/serial/SerialManager.kt)，界面见 [`ui/terminal/TerminalFragment.kt`](app/src/main/java/com/yujing/chuankou/ui/terminal/TerminalFragment.kt)
 
 ## 基础使用方法
 
 ```java
-YSerialPort ySerialPort=new YSerialPort(this,"/dev/ttyS4","9600");
+YSerialPort ySerialPort = new YSerialPort(this, "/dev/ttyS4", "9600");
 //设置数据监听
-ySerialPort.addDataListener(new DataListener(){
-@Override
-public void value(String hexString,byte[]bytes){
-    //结果回调:haxString , bytes
+ySerialPort.addDataListener(new DataListener() {
+    @Override
+    public void value(String hexString, byte[] bytes) {
+        //结果回调：hexString , bytes
     }
 });
 ySerialPort.start();
@@ -151,14 +153,17 @@ SerialPort serialPort = SerialPort.newBuilder(new File("/dev/ttyS4"), 9600)
 serialPort.getInputStream();//获取输入流
 serialPort.getOutputStream();//获取输出流
 serialPort.tryClose();//关闭
-        
+```
+
+```java
 //同步收发 （不用每次都创建serialPort对象）
 SerialPort serialPort=SerialPort.newBuilder(new File("/dev/ttyS4"),9600).build();
-byte[] bytes=YSerialPort.sendSyncOnce(serialPort,bys,1000);
-byte[] bytes=YSerialPort.sendSyncTime(serialPort,bys,20,1000);
-byte[] bytes=YSerialPort.sendSyncLength(serialPort,bys,20,1000);
+byte[] bytes=YSerialPort.sendSyncOnce(serialPort,sendBytes,1000);
+byte[] bytes=YSerialPort.sendSyncTime(serialPort,sendBytes,20,1000);
+byte[] bytes=YSerialPort.sendSyncLength(serialPort,sendBytes,20,1000);
 serialPort.tryClose();//关闭
-        
+
+//不持有serialPort对象的用法（内部开、关串口）
 //发送并等待返回，死等
 byte[] bytes=YSerialPort.sendSyncOnce("/dev/ttyS4","9600",bytes);
 //发送并等待返回，直到超时，如果超时则向上抛异常
@@ -188,10 +193,10 @@ byte[] bytes=YSerialPort.sendSyncLength("/dev/ttyS4","9600",bytes,500,3000);
 //异步收发
 YSerialPort ySerialPort=new YSerialPort(this,"/dev/ttyS4","9600");
 //设置数据监听
-ySerialPort.addDataListener(new DataListener(){
-@Override
-public void value(String hexString,byte[]bytes){
-    //结果回调:haxString , bytes
+ySerialPort.addDataListener(new DataListener() {
+    @Override
+    public void value(String hexString, byte[] bytes) {
+        //结果回调：hexString , bytes
     }
 });
 //设置回调线程为主线程，默认主线程
@@ -234,7 +239,7 @@ ySerialPort.setInputStreamReadListener(inputStream->{
 val ySerialPort = YSerialPort(this, "/dev/ttyS4", "9600")
 //设置数据监听
 ySerialPort.addDataListener { hexString, bytes ->
-    //结果回调:haxString , bytes
+    //结果回调：hexString , bytes
 }
 //设置自动组包，每次组包时长为40毫秒，如果40毫秒读取不到数据则返回结果
 ySerialPort.setToAuto() //ySerialPort.setToAuto(40)
@@ -354,5 +359,9 @@ class Test {
 如果是USB转串口，请参考这个工程：
 
 [CH340/CH341的USB转串口](https://github.com/yutils/CH34xUART)
+
+---
+
+**简体中文** | [English](README_en.MD)
 
 
