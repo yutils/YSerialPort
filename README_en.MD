@@ -37,12 +37,12 @@ Theoretically compatible with **Android 4.4 ~ Android 14.0+**
 
 ## Dependency
 
-### [Add the dependency. Latest version: ——> 2.3.0　　[latest version](https://img.shields.io/badge/latest-2.3.0-green.svg)](https://search.maven.org/artifact/com.kotlinx/yserialport)
+### [Add the dependency. Latest version: ——> 2.3.1　　[latest version](https://img.shields.io/badge/latest-2.3.1-green.svg)](https://search.maven.org/artifact/com.kotlinx/yserialport)
 
 ```
 dependencies {
-    // Update page: https://github.com/yutils/YSerialPort — check back in a few days for new versions
-    implementation 'com.kotlinx:yserialport:2.3.0'
+    // Update page: https://github.com/yutils/YSerialPort
+    implementation 'com.kotlinx:yserialport:2.3.1'
 }
 ```
 
@@ -377,7 +377,7 @@ Serial port device files are listed at: `/proc/tty/drivers`
 
 Thanks to: [Android-SerialPort-API](https://github.com/licheedev/Android-SerialPort-API)
 
-Questions are welcome at QQ: 3373217 (please do not ask why phones have no serial port, how to debug a serial port on an emulator — mapping is possible — or why a USB-to-serial adapter is not recognized).
+Questions are welcome at QQ: 3373217
 
 For USB-to-serial, please refer to this project:
 

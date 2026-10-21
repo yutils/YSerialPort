@@ -594,14 +594,10 @@ class TerminalFragment : BaseFragment<FragmentTerminalBinding>(FragmentTerminalB
 
     private fun updateSerialHint() {
         if (view == null) return
-        if (!SerialManager.isOpen) {
-            binding.etSend.isEnabled = false
-            binding.etSend.hint = getString(R.string.terminal_serial_not_open)
-        } else {
-            binding.etSend.isEnabled = true
-            binding.etSend.hint = if (txMode == 1) getString(R.string.terminal_hint_hex)
-            else getString(R.string.terminal_hint_input)
-        }
+        // 未连接时也允许编辑发送区，仅在点击发送时提示「串口未打开」
+        binding.etSend.isEnabled = true
+        binding.etSend.hint = if (txMode == 1) getString(R.string.terminal_hint_hex)
+        else getString(R.string.terminal_hint_input)
     }
 
     private fun scheduleStats() {

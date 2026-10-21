@@ -32,12 +32,12 @@ demo这个APK 2.2.7 - 2.2.9 安卓4.4（API），2.3.0+ 安卓6.0+ （API23）
 
 ## 引用
 
-### [添加依赖，当前最新版：————> 2.3.0　　　　![最新版](https://img.shields.io/badge/%E6%9C%80%E6%96%B0%E7%89%88-2.3.0-green.svg)](https://search.maven.org/artifact/com.kotlinx/yserialport)
+### [添加依赖，当前最新版：————> 2.3.1　　　　![最新版](https://img.shields.io/badge/%E6%9C%80%E6%96%B0%E7%89%88-2.3.1-green.svg)](https://search.maven.org/artifact/com.kotlinx/yserialport)
 
 ```
 dependencies {
-    //更新地址  https://github.com/yutils/YSerialPort 建议过几天访问看下有没有新版本
-    implementation 'com.kotlinx:yserialport:2.3.0'
+    //更新地址  https://github.com/yutils/YSerialPort
+    implementation 'com.kotlinx:yserialport:2.3.1'
 }
 ```
 
