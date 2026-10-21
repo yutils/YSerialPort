@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 串口管理：状态与错误 -->
+    <string name="serial_state_open">已连接</string>
+    <string name="serial_state_error_short">错误</string>
+    <string name="serial_err_no_permission">无串口读写权限：%1$s</string>
+    <string name="serial_err_no_permission_hint">请确认设备已 root 或串口权限已开放</string>
+    <string name="serial_err_open_failed">打开串口失败：%1$s</string>
+    <string name="serial_not_open">串口未打开</string>
+    <string name="serial_send_failed">发送失败，请检查串口连接</string>
+    <string name="serial_file_busy">正在发送文件，请稍候</string>
+    <string name="serial_file_bytes">[文件] %1$d 字节</string>
+    <string name="serial_file_send_note">文件发送</string>
+    <string name="serial_file_interrupted">文件发送中断（已发送 %1$d / %2$d 字节）</string>
+    <string name="serial_loop_note">周期发送</string>
+    <string name="serial_rx_note">接收</string>
+
+    <!-- 字符集展示名 -->
+    <string name="charset_gb18030">GB18030（国标）</string>
+    <string name="charset_big5">BIG5（繁体）</string>
+    <string name="charset_utf16le">UTF-16LE（小端）</string>
+    <string name="charset_utf16be">UTF-16BE（大端）</string>
+    <string name="charset_iso_8859_1">ISO-8859-1（Latin-1）</string>
+    <string name="charset_shift_jis">Shift_JIS（日文）</string>
+    <string name="charset_euc_kr">EUC-KR（韩文）</string>
+
+    <!-- 校验算法：分组 -->
+    <string name="checksum_group_common">常用</string>
+
+    <!-- 校验算法：名称 -->
+    <string name="checksum_algo_sum8">累加和 SUM8</string>
+    <string name="checksum_algo_sum16">累加和 SUM16</string>
+    <string name="checksum_algo_xor8">异或校验 XOR8</string>
+    <string name="checksum_algo_xor16">异或校验 XOR16</string>
+    <string name="checksum_algo_bcc">BCC 块校验</string>
+    <string name="checksum_algo_lrc">LRC 纵向冗余校验</string>
+    <string name="checksum_algo_lrc16">LRC16 纵向冗余校验</string>
+    <string name="checksum_algo_twos8">二进制补码 SUM8</string>
+
+    <!-- 校验算法：描述 -->
+    <string name="checksum_desc_sum8">所有字节求和，取低 8 位</string>
+    <string name="checksum_desc_sum16">所有字节求和，取低 16 位</string>
+    <string name="checksum_desc_xor8">所有字节逐字节异或，取低 8 位</string>
+    <string name="checksum_desc_xor16">所有字节逐字节异或，取低 16 位</string>
+    <string name="checksum_desc_bcc">同 XOR8，用于条码/磁卡</string>
+    <string name="checksum_desc_lrc">累加和取反加一（MODBUS ASCII）</string>
+    <string name="checksum_desc_lrc16">16 位累加和取反加一</string>
+    <string name="checksum_desc_twos8">累加和取反加一</string>
+
+    <!-- 文件 -->
+    <string name="file_share_chooser">分享文件</string>
+
+    <!-- 数据仓库：历史导出 -->
+    <string name="store_export_title">串口收发记录</string>
+    <string name="store_export_time">导出时间：%1$s</string>
+    <string name="store_export_columns">方向\t时间\t类型\t长度\tHEX\t文本</string>
+    <string name="store_dir_rx">接收</string>
+    <string name="store_dir_tx">发送</string>
+    <string name="store_dir_sys">系统</string>
+
+    <!-- 数据仓库：默认快捷指令 -->
+    <string name="store_cmd_at">AT 指令</string>
+    <string name="store_cmd_modbus">Modbus 读保持寄存器</string>
+    <string name="store_cmd_handshake">握手帧</string>
+    <string name="store_cmd_reset">复位</string>
+    <string name="store_cmd_newline">回车换行</string>
+</resources>

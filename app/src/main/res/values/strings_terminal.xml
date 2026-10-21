@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 终端页：面板与控件 -->
+    <string name="terminal_panel_rx">接收区</string>
+    <string name="terminal_panel_tx">发送区</string>
+    <string name="terminal_timestamp">时间戳</string>
+    <string name="terminal_echo">回显发送</string>
+    <string name="terminal_back_to_bottom">回到底部</string>
+    <string name="terminal_escape">转义</string>
+    <string name="terminal_history">历史</string>
+    <string name="terminal_loop">周期</string>
+    <string name="terminal_send">发送</string>
+    <string name="terminal_mode_file">文件</string>
+    <string name="terminal_pick_file">选择文件</string>
+    <string name="terminal_chunk">分包</string>
+    <string name="terminal_delay_ms">延时(ms)</string>
+    <string name="terminal_interval_ms">间隔(ms)</string>
+    <string name="terminal_loop_count_hint">次数(0=无限)</string>
+    <string name="terminal_rx_pause_desc">暂停显示</string>
+    <string name="terminal_rx_save_desc">保存到文件</string>
+    <string name="terminal_rx_clear_desc">清空接收区</string>
+    <string name="terminal_tx_clear_desc">清空输入</string>
+
+    <!-- 终端页：提示消息 -->
+    <string name="terminal_filled">已填入发送框</string>
+    <string name="terminal_rx_cleared">接收区已清空</string>
+    <string name="terminal_display_paused">已暂停显示（数据仍在接收并记录）</string>
+    <string name="terminal_display_resumed">已恢复显示</string>
+    <string name="terminal_nothing_to_save">没有可保存的内容</string>
+    <string name="terminal_save_failed">保存失败</string>
+    <string name="terminal_saved">已保存：%1$s</string>
+    <string name="terminal_share">分享</string>
+    <string name="terminal_rx_charset_set">接收字符集：%1$s</string>
+    <string name="terminal_escape_on">已启用转义字符解析</string>
+    <string name="terminal_escape_off">已关闭转义字符解析</string>
+    <string name="terminal_serial_not_open">串口未打开，请先点击右上角电源按钮</string>
+    <string name="terminal_pick_file_first">请选择要发送的文件</string>
+    <string name="terminal_input_first">请输入要发送的内容</string>
+    <string name="terminal_no_history">暂无发送历史</string>
+    <string name="terminal_recent_sends">最近发送</string>
+    <string name="terminal_read_file_failed">读取文件失败</string>
+    <string name="terminal_unknown_file">未知文件</string>
+    <string name="terminal_loaded">已加载：%1$s（%2$d 字节）</string>
+    <string name="terminal_source_manual">手动发送</string>
+
+    <!-- 终端页：结束符 -->
+    <string name="terminal_newline">结束符</string>
+    <string name="terminal_newline_format">结束符: %1$s</string>
+
+    <!-- 终端页：发送按钮状态 -->
+    <string name="terminal_btn_stop">停止</string>
+    <string name="terminal_btn_loop">开始周期</string>
+
+    <!-- 终端页：周期发送 -->
+    <string name="terminal_loop_started_count">周期发送已启动：间隔 %1$dms · 共 %2$d 次</string>
+    <string name="terminal_loop_started_infinite">周期发送已启动：间隔 %1$dms · 无限循环</string>
+    <string name="terminal_loop_progress">周期 %1$d/%2$d</string>
+    <string name="terminal_sent_times">已发 %1$d 次</string>
+    <string name="terminal_loop_finished">周期发送结束，共 %1$d 次</string>
+
+    <!-- 终端页：文件发送 -->
+    <string name="terminal_no_file">未选择文件\n支持任意文件，可按需启用转义字符解析后发送</string>
+    <string name="terminal_file_info">%1$s\n大小：%2$d 字节（%3$s）</string>
+    <string name="terminal_file_echo">[文件 %1$d 字节]</string>
+    <string name="terminal_file_progress">已发送 %1$d / %2$d 字节</string>
+
+    <!-- 终端页：统计 -->
+    <string name="terminal_rx_stats">收 %1$s · %2$d 包</string>
+    <string name="terminal_tx_stats">发 %1$s · %2$d 包</string>
+
+    <!-- 终端页：输入提示 -->
+    <string name="terminal_hint_hex">输入十六进制，例如 01 03 00 00 00 0A</string>
+    <string name="terminal_hint_input">输入要发送的内容…</string>
+</resources>

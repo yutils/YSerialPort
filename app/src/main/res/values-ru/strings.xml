@@ -1,0 +1,712 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ==================== strings.xml ==================== -->
+
+    <string name="app_name">Serial Tool</string>
+    <string name="app_name_debug">Serial Tool(Debug)</string>
+
+    <!-- 语言 -->
+    <string name="lang_follow_system">Как в системе (%1$s)</string>
+    <string name="lang_follow_system_plain">Как в системе</string>
+    <string name="settings_section_general">Общие</string>
+    <string name="settings_language">Язык</string>
+    <string name="settings_language_sub">Переключение языка интерфейса; сохраняется после перезапуска</string>
+    <string name="settings_language_dialog_title">Выбор языка</string>
+
+    <!-- 导航 -->
+    <string name="nav_terminal">Терминал</string>
+    <string name="nav_terminal_sub">Приём/передача · мониторинг в реальном времени</string>
+    <string name="nav_history">История</string>
+    <string name="nav_history_sub">Журнал приёма/передачи · поиск и экспорт</string>
+    <string name="nav_command">Быстрые команды</string>
+    <string name="nav_command_sub">Отправка в один клик · типовые пакеты</string>
+    <string name="nav_autoreply">Автоответ</string>
+    <string name="nav_autoreply_sub">Правила сопоставления · автоматический ответ</string>
+    <string name="nav_tool">Инструменты</string>
+    <string name="nav_tool_sub">Контрольные суммы · таблица ASCII</string>
+    <string name="nav_settings">Настройки</string>
+    <string name="nav_settings_sub">Порт · приём/передача · оформление</string>
+    <string name="nav_more">Ещё</string>
+    <string name="nav_more_sub">Сетевая прозрачная передача · о программе</string>
+
+    <!-- 通用 -->
+    <string name="common_ok">ОК</string>
+    <string name="common_cancel">Отмена</string>
+    <string name="common_got_it">Понятно</string>
+    <string name="common_auto">Авто</string>
+    <string name="common_none">Нет</string>
+    <string name="common_none_selected">Не выбрано</string>
+    <string name="common_copied">Скопировано в буфер обмена</string>
+    <string name="common_ms_format">%1$d ms</string>
+
+    <!-- 顶栏 -->
+    <string name="topbar_power_desc">Открыть или закрыть последовательный порт</string>
+    <string name="topbar_theme_desc">Переключить тему</string>
+
+    <!-- 数据模型：匹配模式 / 结束符 / 校验 / 流控 -->
+    <string name="match_contains">Содержит</string>
+    <string name="match_equals">Полное совпадение</string>
+    <string name="match_prefix">Префикс</string>
+    <string name="match_suffix">Суффикс</string>
+    <string name="match_regex">Регулярное выражение</string>
+    <string name="parity_none">Нет (None)</string>
+    <string name="parity_odd">Нечётная (Odd)</string>
+    <string name="parity_even">Чётная (Even)</string>
+    <string name="parity_mark">Маркер (Mark)</string>
+    <string name="parity_space">Пробел (Space)</string>
+    <string name="flow_none">Без управления потоком</string>
+    <string name="flow_hardware">Аппаратное (RTS/CTS)</string>
+    <string name="flow_software">Программное (XON/XOFF)</string>
+
+    <!-- 串口 -->
+    <string name="serial_state_closed">Не подключено</string>
+    <string name="serial_state_opening">Открытие…</string>
+    <string name="serial_state_closing">Закрытие…</string>
+    <string name="serial_state_error">Ошибка последовательного порта</string>
+    <string name="serial_select_in_settings">Сначала выберите последовательный порт в настройках</string>
+    <string name="serial_open">Открыть порт</string>
+    <string name="serial_close">Закрыть порт</string>
+
+    <!-- 设置：分区 -->
+    <string name="settings_section_serial">Параметры последовательного порта</string>
+    <string name="settings_section_rx">Настройки приёма</string>
+    <string name="settings_section_tx">Настройки передачи</string>
+    <string name="settings_section_appearance">Оформление и отображение</string>
+    <string name="settings_rx_note">Примечание: при выключенном «автопереносе» принятые данные склеиваются в одну строку; для сохранения целостности данных метки времени автоматически игнорируются.</string>
+    <string name="settings_autosave_note">Настройки сохраняются автоматически и действуют после перезапуска</string>
+
+    <!-- 设置：串口参数 -->
+    <string name="serial_select_device">Выбор последовательного порта</string>
+    <string name="serial_no_devices_found">Последовательные порты не найдены</string>
+    <string name="serial_select_baud">Выбор скорости (бод)</string>
+    <string name="serial_data_bits">Биты данных</string>
+    <string name="serial_stop_bits">Стоповые биты</string>
+    <string name="serial_parity">Чётность</string>
+    <string name="serial_flow_control">Управление потоком</string>
+    <string name="serial_frame_gap">Интервал разбиения кадров</string>
+    <string name="serial_frame_gap_hint">мс, 0 = автоматически по скорости</string>
+    <string name="serial_frame_gap_sub">Тишина указанной длительности после приёма данных означает конец кадра</string>
+    <string name="serial_device_list">Список последовательных портов</string>
+    <string name="serial_scan_empty">Последовательные порты не найдены.\nУбедитесь, что на устройстве разрешён доступ к портам (/dev/ttyS*).</string>
+    <string name="serial_list_count">Список портов (всего: %1$d)</string>
+    <string name="serial_select_first">Сначала выберите последовательный порт</string>
+    <string name="serial_reconnected">Переподключено с новыми параметрами</string>
+    <string name="serial_connected_snack">Последовательный порт подключён</string>
+    <string name="settings_serial_device">Устройство (порт)</string>
+    <string name="settings_serial_device_sub">Например /dev/ttyS1; список — результат сканирования системных портов</string>
+    <string name="settings_baud_rate">Скорость (бод)</string>
+    <string name="settings_baud_sub">Типичные: 9600 / 115200 / 921600</string>
+    <string name="settings_data_bits_sub">От 5 до 8 бит</string>
+    <string name="settings_bits_format">%1$d бит</string>
+    <string name="settings_scan_count">Найдено: %1$d</string>
+    <string name="settings_scan_sub">Нажмите для повторного сканирования и просмотра имён и путей устройств</string>
+
+    <!-- 设置：接收 -->
+    <string name="settings_rx_charset_dialog">Кодировка приёма</string>
+    <string name="settings_charset">Кодировка</string>
+    <string name="settings_charset_sub">Для декодирования в режиме ASCII; нераспознанные байты отображаются как \\xNN (например \\xA1), а не как символ замены</string>
+    <string name="settings_rx_time">Показывать метки времени</string>
+    <string name="settings_rx_time_sub">При выключенном автопереносе метки времени игнорируются</string>
+    <string name="settings_rx_wrap">Автоперенос</string>
+    <string name="settings_rx_wrap_sub">При выключении данные склеиваются в одну строку без переносов</string>
+    <string name="settings_rx_sep">Разделитель HEX</string>
+    <string name="sep_space">Пробел</string>
+    <string name="sep_none">Без разделителя</string>
+    <string name="sep_comma">Запятая</string>
+    <string name="sep_dash">Дефис</string>
+    <string name="settings_rx_max">Максимум отображаемых символов</string>
+    <string name="settings_rx_max_sub">При превышении данные автоматически обрезаются с начала</string>
+    <string name="settings_rx_echo">Эхо отправленных данных в области приёма</string>
+
+    <!-- 设置：发送 -->
+    <string name="settings_tx_charset_dialog">Кодировка передачи</string>
+    <string name="settings_tx_escape">Разбирать escape-последовательности</string>
+    <string name="settings_tx_escape_sub">Поддерживаются \\r \\n \\t \\0 \\xNN \\uHHHH</string>
+    <string name="settings_tx_newline">Признак конца строки по умолчанию</string>
+    <string name="settings_tx_chunk">Размер блока файла</string>
+    <string name="settings_tx_chunk_hint">байт, 1 ~ 4096</string>
+    <string name="settings_bytes_format">%1$d байт</string>
+    <string name="settings_tx_delay">Пауза между блоками файла</string>
+    <string name="settings_ms_hint">мс</string>
+
+    <!-- 设置：外观 -->
+    <string name="settings_theme">Тема</string>
+    <string name="theme_follow_system">Как в системе</string>
+    <string name="theme_dark">Тёмная</string>
+    <string name="theme_light">Светлая</string>
+    <string name="settings_bg">Фоновое изображение</string>
+    <string name="bg_none">Без фона</string>
+    <string name="bg_builtin">Встроенные обои</string>
+    <string name="bg_custom">Пользовательское (изображение выбирается на странице «Ещё»)</string>
+    <string name="bg_custom_short">Пользовательское</string>
+    <string name="settings_bg_scrim">Затемнение фона</string>
+    <string name="settings_bg_scrim_hint">0 ~ 100, чем больше, тем темнее фон (рекомендуется 70 ~ 90)</string>
+    <string name="settings_percent_format">%1$d %%</string>
+    <string name="settings_font_size">Размер шрифта терминала</string>
+    <string name="settings_font_hint">единицы sp, 9 ~ 24</string>
+    <string name="settings_sp_format">%1$d sp</string>
+    <string name="settings_keep_screen">Не выключать экран</string>
+    <string name="settings_history_limit">Лимит истории</string>
+    <string name="settings_history_limit_hint">записей, 100 ~ 50000</string>
+    <string name="settings_history_count">Лимит: %1$d записей (сейчас: %2$d)</string>
+
+    <!-- ==================== strings_terminal.xml ==================== -->
+
+    <!-- 终端页：面板与控件 -->
+    <string name="terminal_panel_rx">Область приёма</string>
+    <string name="terminal_panel_tx">Область передачи</string>
+    <string name="terminal_timestamp">Метка времени</string>
+    <string name="terminal_echo">Эхо отправки</string>
+    <string name="terminal_back_to_bottom">Прокрутить вниз</string>
+    <string name="terminal_escape">Escape</string>
+    <string name="terminal_history">История</string>
+    <string name="terminal_loop">Цикл</string>
+    <string name="terminal_send">Отправить</string>
+    <string name="terminal_mode_file">Файл</string>
+    <string name="terminal_pick_file">Выбрать файл</string>
+    <string name="terminal_chunk">Блок</string>
+    <string name="terminal_delay_ms">Пауза (ms)</string>
+    <string name="terminal_interval_ms">Интервал (ms)</string>
+    <string name="terminal_loop_count_hint">Повторы (0 = бесконечно)</string>
+    <string name="terminal_rx_pause_desc">Приостановить отображение</string>
+    <string name="terminal_rx_save_desc">Сохранить в файл</string>
+    <string name="terminal_rx_clear_desc">Очистить область приёма</string>
+    <string name="terminal_tx_clear_desc">Очистить поле ввода</string>
+
+    <!-- 终端页：提示消息 -->
+    <string name="terminal_filled">Вставлено в поле отправки</string>
+    <string name="terminal_rx_cleared">Область приёма очищена</string>
+    <string name="terminal_display_paused">Отображение приостановлено (приём и запись данных продолжаются)</string>
+    <string name="terminal_display_resumed">Отображение возобновлено</string>
+    <string name="terminal_nothing_to_save">Нет данных для сохранения</string>
+    <string name="terminal_save_failed">Не удалось сохранить</string>
+    <string name="terminal_saved">Сохранено: %1$s</string>
+    <string name="terminal_share">Поделиться</string>
+    <string name="terminal_rx_charset_set">Кодировка приёма: %1$s</string>
+    <string name="terminal_escape_on">Разбор escape-последовательностей включён</string>
+    <string name="terminal_escape_off">Разбор escape-последовательностей выключен</string>
+    <string name="terminal_serial_not_open">Последовательный порт не открыт; сначала нажмите кнопку питания в правом верхнем углу</string>
+    <string name="terminal_pick_file_first">Сначала выберите файл для отправки</string>
+    <string name="terminal_input_first">Введите данные для отправки</string>
+    <string name="terminal_no_history">История отправок пуста</string>
+    <string name="terminal_recent_sends">Недавние отправки</string>
+    <string name="terminal_read_file_failed">Не удалось прочитать файл</string>
+    <string name="terminal_unknown_file">Неизвестный файл</string>
+    <string name="terminal_loaded">Загружено: %1$s (%2$d байт)</string>
+    <string name="terminal_source_manual">Ручная отправка</string>
+
+    <!-- 终端页：结束符 -->
+    <string name="terminal_newline">Признак конца строки</string>
+    <string name="terminal_newline_format">Признак конца строки: %1$s</string>
+
+    <!-- 终端页：发送按钮状态 -->
+    <string name="terminal_btn_stop">Стоп</string>
+    <string name="terminal_btn_loop">Запустить цикл</string>
+
+    <!-- 终端页：周期发送 -->
+    <string name="terminal_loop_started_count">Циклическая отправка запущена: интервал %1$dms · всего %2$d повторов</string>
+    <string name="terminal_loop_started_infinite">Циклическая отправка запущена: интервал %1$dms · бесконечный цикл</string>
+    <string name="terminal_loop_progress">Цикл %1$d/%2$d</string>
+    <string name="terminal_sent_times">Отправок: %1$d</string>
+    <string name="terminal_loop_finished">Циклическая отправка завершена (всего повторов: %1$d)</string>
+
+    <!-- 终端页：文件发送 -->
+    <string name="terminal_no_file">Файл не выбран\nПоддерживается любой файл; при необходимости включите разбор escape-последовательностей перед отправкой</string>
+    <string name="terminal_file_info">%1$s\nРазмер: %2$d байт (%3$s)</string>
+    <string name="terminal_file_echo">[Файл %1$d байт]</string>
+    <string name="terminal_file_progress">Отправлено %1$d из %2$d байт</string>
+
+    <!-- 终端页：统计 -->
+    <string name="terminal_rx_stats">Приём: %1$s · пакетов: %2$d</string>
+    <string name="terminal_tx_stats">Передача: %1$s · пакетов: %2$d</string>
+
+    <!-- 终端页：输入提示 -->
+    <string name="terminal_hint_hex">Введите HEX, например 01 03 00 00 00 0A</string>
+    <string name="terminal_hint_input">Введите данные для отправки…</string>
+
+    <!-- ==================== strings_tool_more.xml ==================== -->
+
+    <!-- ==================== 工具页：校验计算器 ==================== -->
+    <string name="tool_tab_checksum">Калькулятор контрольных сумм</string>
+    <string name="tool_tab_ascii">Таблица ASCII</string>
+    <string name="tool_input_data">Входные данные</string>
+    <string name="tool_input_hint_full">HEX, например: 01 03 00 00 00 0A\nASCII, например: 123456789</string>
+    <string name="tool_input_hint_hex">HEX, например: 01 03 00 00 00 0A</string>
+    <string name="tool_input_hint_ascii">ASCII, например: 123456789</string>
+    <string name="tool_escape">Escape</string>
+    <string name="tool_input_invalid">Неверный формат</string>
+    <string name="tool_input_format_invalid">Неверный формат ввода</string>
+    <string name="tool_hex_rule">В HEX допустимы только 0-9, A-F и разделители</string>
+    <string name="tool_checksum_algo">Алгоритм контрольной суммы</string>
+    <string name="tool_high_byte_first">Старший байт первым</string>
+    <string name="tool_refin">Отражение входа</string>
+    <string name="tool_refout">Отражение выхода</string>
+    <string name="tool_invert">Инверсия результата</string>
+    <string name="tool_algo_group">Группа алгоритмов</string>
+    <string name="tool_output_width">Разрядность результата</string>
+    <string name="tool_width_opt_follow">Как у алгоритма</string>
+    <string name="tool_width_opt_8">8 бит</string>
+    <string name="tool_width_opt_16">16 бит</string>
+    <string name="tool_width_opt_32">32 бита</string>
+    <string name="tool_width_chip_follow">Разрядность: как у алгоритма</string>
+    <string name="tool_width_chip_format">Разрядность %1$d</string>
+    <string name="tool_xor_chip_format">XOR 0x%1$s</string>
+    <string name="tool_xor_value">Значение XOR результата</string>
+    <string name="tool_xor_value_hint">Допускается префикс 0x или десятичное значение, например: 0xFF</string>
+    <string name="tool_calc">Вычислить контрольную сумму</string>
+    <string name="tool_algo_desc_crc">Разрядность %1$d · полином 0x%2$s · начальное значение 0x%3$s · XorOut 0x%4$s · RefIn=%5$b RefOut=%6$b</string>
+    <string name="tool_algo_desc_check">" · эталонная контрольная сумма 0x%1$s"</string>
+    <string name="tool_copy">Копировать</string>
+    <string name="tool_fill_send">Вставить в поле отправки</string>
+    <string name="tool_append_send">Добавить к данным и отправить</string>
+    <string name="tool_copied_checksum_format">Контрольная сумма скопирована: %1$s</string>
+    <string name="tool_serial_not_open">Последовательный порт не открыт</string>
+    <string name="tool_note_checksum_format">Данные+%1$s</string>
+    <string name="tool_sent_with_checksum">Отправлено %1$d байт (данные + контрольная сумма)</string>
+
+    <!-- ==================== 工具页：ASCII 码表 ==================== -->
+    <string name="tool_ascii_search_hint">Поиск: символ / HEX / название</string>
+    <string name="tool_ascii_hint">Нажмите на любую ячейку, чтобы скопировать её или вставить в поле отправки</string>
+    <string name="tool_ascii_hint_count_format">Нажмите на любую ячейку, чтобы скопировать её или вставить в поле отправки (всего: %1$d)</string>
+    <string name="tool_ascii_hint_search_format">По запросу «%1$s» найдено: %2$d</string>
+    <string name="tool_ascii_space">Пробел</string>
+    <string name="tool_ascii_del">Удаление</string>
+    <string name="tool_ascii_digit_format">Цифра %1$s</string>
+    <string name="tool_ascii_upper_format">Заглавная буква %1$s</string>
+    <string name="tool_ascii_lower_format">Строчная буква %1$s</string>
+    <string name="tool_menu_copy_hex_format">Копировать HEX (%1$s)</string>
+    <string name="tool_menu_send_byte">Отправить байт</string>
+    <string name="tool_menu_fill_hex">Вставить в поле отправки (HEX)</string>
+    <string name="tool_menu_copy_char_format">Копировать символ «%1$s»</string>
+    <string name="tool_copied_char">Символ скопирован</string>
+    <string name="tool_copied_hex">HEX скопирован</string>
+    <string name="tool_sent_hex_format">Отправлено 0x%1$s</string>
+
+    <!-- 0 ~ 31 控制字符说明 -->
+    <string name="tool_ctrl_nul">Нулевой символ</string>
+    <string name="tool_ctrl_soh">Начало заголовка</string>
+    <string name="tool_ctrl_stx">Начало текста</string>
+    <string name="tool_ctrl_etx">Конец текста</string>
+    <string name="tool_ctrl_eot">Конец передачи</string>
+    <string name="tool_ctrl_enq">Запрос</string>
+    <string name="tool_ctrl_ack">Подтверждение</string>
+    <string name="tool_ctrl_bel">Звонок</string>
+    <string name="tool_ctrl_bs">Возврат на шаг</string>
+    <string name="tool_ctrl_ht">Горизонтальная табуляция</string>
+    <string name="tool_ctrl_lf">Перевод строки</string>
+    <string name="tool_ctrl_vt">Вертикальная табуляция</string>
+    <string name="tool_ctrl_ff">Перевод страницы</string>
+    <string name="tool_ctrl_cr">Возврат каретки</string>
+    <string name="tool_ctrl_so">Сдвиг наружу</string>
+    <string name="tool_ctrl_si">Сдвиг внутрь</string>
+    <string name="tool_ctrl_dle">Экранирование канала данных</string>
+    <string name="tool_ctrl_dc1">Управление устройством 1</string>
+    <string name="tool_ctrl_dc2">Управление устройством 2</string>
+    <string name="tool_ctrl_dc3">Управление устройством 3</string>
+    <string name="tool_ctrl_dc4">Управление устройством 4</string>
+    <string name="tool_ctrl_nak">Отрицательный ответ</string>
+    <string name="tool_ctrl_syn">Синхронизация</string>
+    <string name="tool_ctrl_etb">Конец блока передачи</string>
+    <string name="tool_ctrl_can">Отмена</string>
+    <string name="tool_ctrl_em">Конец носителя</string>
+    <string name="tool_ctrl_sub">Замена</string>
+    <string name="tool_ctrl_esc">Экранирование</string>
+    <string name="tool_ctrl_fs">Разделитель файлов</string>
+    <string name="tool_ctrl_gs">Разделитель групп</string>
+    <string name="tool_ctrl_rs">Разделитель записей</string>
+    <string name="tool_ctrl_us">Разделитель элементов</string>
+
+    <!-- 128 ~ 191 扩展字符说明（windows-1252 / Latin-1 上半区） -->
+    <string name="tool_ext_euro">Знак евро</string>
+    <string name="tool_ext_undefined">Не определён</string>
+    <string name="tool_ext_quote_low_single">Нижняя одинарная кавычка</string>
+    <string name="tool_ext_florin">Курсивная f</string>
+    <string name="tool_ext_quote_low_double">Нижняя двойная кавычка</string>
+    <string name="tool_ext_ellipsis">Многоточие</string>
+    <string name="tool_ext_dagger">Кинжал</string>
+    <string name="tool_ext_dagger_double">Двойной кинжал</string>
+    <string name="tool_ext_circumflex">Циркумфлекс</string>
+    <string name="tool_ext_permille">Промилле</string>
+    <string name="tool_ext_s_caron">S с гачеком</string>
+    <string name="tool_ext_langle_single">Одинарная левая угловая кавычка</string>
+    <string name="tool_ext_oe_ligature">Лигатура OE</string>
+    <string name="tool_ext_z_caron">Z с гачеком</string>
+    <string name="tool_ext_quote_left_single">Левая одинарная кавычка</string>
+    <string name="tool_ext_quote_right_single">Правая одинарная кавычка</string>
+    <string name="tool_ext_quote_left_double">Левая двойная кавычка</string>
+    <string name="tool_ext_quote_right_double">Правая двойная кавычка</string>
+    <string name="tool_ext_bullet">Маркер списка</string>
+    <string name="tool_ext_dash_en">Короткое тире</string>
+    <string name="tool_ext_dash_em">Длинное тире</string>
+    <string name="tool_ext_tilde">Тильда</string>
+    <string name="tool_ext_trademark">Товарный знак</string>
+    <string name="tool_ext_s_caron_lower">s с гачеком</string>
+    <string name="tool_ext_rangle_single">Одинарная правая угловая кавычка</string>
+    <string name="tool_ext_oe_ligature_lower">Лигатура oe</string>
+    <string name="tool_ext_z_caron_lower">z с гачеком</string>
+    <string name="tool_ext_y_diaeresis">Y с диерезисом</string>
+    <string name="tool_ext_nbsp">Неразрывный пробел</string>
+    <string name="tool_ext_exclaim_inverted">Перевёрнутый восклицательный знак</string>
+    <string name="tool_ext_cent">Цент</string>
+    <string name="tool_ext_pound">Фунт</string>
+    <string name="tool_ext_currency">Знак валюты</string>
+    <string name="tool_ext_yen">Иена</string>
+    <string name="tool_ext_broken_bar">Разорванная вертикальная черта</string>
+    <string name="tool_ext_section">Знак параграфа</string>
+    <string name="tool_ext_diaeresis">Диерезис</string>
+    <string name="tool_ext_copyright">Знак авторского права</string>
+    <string name="tool_ext_ordinal_f">Женский порядковый показатель</string>
+    <string name="tool_ext_langle_double">Левая двойная угловая кавычка</string>
+    <string name="tool_ext_not">Логическое НЕ</string>
+    <string name="tool_ext_shy">Мягкий перенос</string>
+    <string name="tool_ext_registered">Зарегистрированный товарный знак</string>
+    <string name="tool_ext_macron">Макрон</string>
+    <string name="tool_ext_degree">Градус</string>
+    <string name="tool_ext_plus_minus">Плюс-минус</string>
+    <string name="tool_ext_superscript_two">Надстрочная 2</string>
+    <string name="tool_ext_superscript_three">Надстрочная 3</string>
+    <string name="tool_ext_acute">Акут</string>
+    <string name="tool_ext_micro">Микро</string>
+    <string name="tool_ext_paragraph">Знак абзаца</string>
+    <string name="tool_ext_middle_dot">Средняя точка</string>
+    <string name="tool_ext_cedilla">Седиль</string>
+    <string name="tool_ext_superscript_one">Надстрочная 1</string>
+    <string name="tool_ext_ordinal_m">Мужской порядковый показатель</string>
+    <string name="tool_ext_rangle_double">Правая двойная угловая кавычка</string>
+    <string name="tool_ext_quarter">Одна четверть</string>
+    <string name="tool_ext_half">Одна вторая</string>
+    <string name="tool_ext_three_quarters">Три четверти</string>
+    <string name="tool_ext_question_inverted">Перевёрнутый вопросительный знак</string>
+    <string name="tool_ext_multiply">Знак умножения</string>
+    <string name="tool_ext_divide">Знак деления</string>
+
+    <!-- ==================== 更多页 ==================== -->
+    <string name="more_tcp_title">Прозрачная передача: последовательный порт ↔ TCP</string>
+    <string name="more_tcp_value">Сервер / Клиент</string>
+    <string name="more_tcp_sub">Пересылка данных из последовательного порта в сеть и из сети в последовательный порт</string>
+    <string name="more_bg_custom">Пользовательское изображение</string>
+    <string name="more_bg_scrim_hint">0 ~ 100, чем больше, тем темнее фон</string>
+    <string name="more_no_history">История пуста</string>
+    <string name="more_export_failed">Не удалось экспортировать</string>
+    <string name="more_exported_format">Экспортировано: %1$s</string>
+    <string name="more_share">Поделиться</string>
+    <string name="more_export_history">Экспорт журнала приёма/передачи</string>
+    <string name="more_count_format">%1$d записей</string>
+    <string name="more_export_dir">Каталог экспорта</string>
+    <string name="more_export_dir_msg">%1$s\n\nФайл можно получить через файловый менеджер или adb pull.</string>
+    <string name="more_view">Открыть</string>
+    <string name="more_reset">Сброс к настройкам по умолчанию</string>
+    <string name="more_reset_msg">Все настройки будут очищены (параметры порта, приём/передача, оформление и т.д.).\nБыстрые команды и правила автоответа не удаляются.</string>
+    <string name="more_reset_btn">Сбросить</string>
+    <string name="more_reset_done">Настройки сброшены к значениям по умолчанию</string>
+    <string name="more_reset_careful">Осторожно</string>
+    <string name="more_pick_image">Выбор пользовательского фона</string>
+    <string name="more_selected">Выбрано</string>
+    <string name="more_pick_image_sub">Выбор изображения из галереи; рекомендуется большое изображение в альбомной ориентации</string>
+    <string name="more_exit">Выйти из приложения</string>
+    <string name="more_exit_serial_open">Сначала закрыть порт</string>
+    <string name="more_exit_normal">Освободить ресурсы и выйти</string>
+    <string name="more_exit_confirm_serial_open">Соединение последовательного порта будет закрыто, журнал приёма/передачи сохранён, после чего приложение завершится.\nВыйти?</string>
+    <string name="more_exit_confirm_normal">Журнал приёма/передачи будет сохранён, после чего приложение завершится.\nВыйти?</string>
+    <string name="more_exit_btn">Выйти</string>
+    <string name="more_source">Адрес исходного кода</string>
+    <string name="more_copy_url">Копировать адрес</string>
+    <string name="more_open_browser">Открыть в браузере</string>
+    <string name="more_url_copied">Адрес скопирован</string>
+    <string name="more_no_browser_copied">Не удалось открыть браузер; адрес скопирован</string>
+    <string name="more_bg_set">Фон установлен</string>
+    <string name="more_bg_read_failed">Не удалось прочитать изображение</string>
+    <string name="more_section_network">Сеть</string>
+    <string name="more_section_personal">Персонализация</string>
+    <string name="more_section_data">Данные и обслуживание</string>
+
+    <!-- ==================== 关于 ==================== -->
+    <string name="about_version_format">Версия %1$s (%2$d)</string>
+    <string name="about_author">Автор: Yu Jing</string>
+    <string name="about_source_url">Адрес исходного кода: github.com/yutils/YSerialPort</string>
+    <string name="about_footer">Инструмент для отладки устройств с последовательным портом: приём/передача ASCII / HEX,\nотправка файлов, циклическая отправка, автоответ, вычисление контрольных сумм и др.\n\nБиблиотека YSerialPort · без конфликтов .so с другими инструментами</string>
+
+    <!-- ==================== strings_command_autoreply.xml ==================== -->
+
+    <!-- ==================== 指令页 ==================== -->
+
+    <!-- 页面 -->
+    <string name="command_title">Быстрые команды</string>
+    <string name="command_add">Добавить</string>
+    <string name="command_add_desc">Добавить команду</string>
+    <string name="command_empty_title">Быстрых команд пока нет</string>
+    <string name="command_empty_sub">Нажмите «Добавить» в правом верхнем углу, чтобы создать типовые пакеты</string>
+    <string name="command_count_format">Всего: %1$d · нажмите «Отправить» для мгновенной отправки</string>
+
+    <!-- 列表项 -->
+    <string name="command_send">Отправить</string>
+    <string name="command_more_desc">Другие действия</string>
+    <string name="command_item_unnamed">Без названия</string>
+
+    <!-- 发送 -->
+    <string name="command_serial_not_open">Последовательный порт не открыт; сначала откройте его</string>
+    <string name="command_content_invalid">Содержимое команды пустое или имеет неверный формат</string>
+    <string name="command_note">Быстрая команда</string>
+    <string name="command_note_name">Быстрая команда: %1$s</string>
+    <string name="command_sent_bytes">Отправлено %1$d байт</string>
+
+    <!-- 卡片点击菜单 -->
+    <string name="command_fallback_name">Команда</string>
+    <string name="command_action_send_now">Отправить сейчас</string>
+    <string name="command_action_fill">Вставить в поле отправки</string>
+
+    <!-- 更多菜单 -->
+    <string name="command_unnamed">Команда без названия</string>
+    <string name="command_menu_edit">Изменить</string>
+    <string name="command_menu_duplicate">Дублировать</string>
+    <string name="command_menu_move_up">Вверх</string>
+    <string name="command_menu_move_down">Вниз</string>
+    <string name="command_delete">Удалить</string>
+    <string name="command_copy_format">%1$s (копия)</string>
+    <string name="command_delete_title">Удаление команды</string>
+    <string name="command_delete_confirm">Удалить «%1$s»?</string>
+
+    <!-- 编辑对话框 -->
+    <string name="command_add_title">Новая быстрая команда</string>
+    <string name="command_edit_title">Изменение быстрой команды</string>
+    <string name="command_save">Сохранить</string>
+    <string name="command_name_hint">Название команды, например: чтение температуры</string>
+    <string name="command_hint_hex">HEX, например: 01 03 00 00 00 0A C5 CD</string>
+    <string name="command_hint_ascii">Текст, например: AT+RESET</string>
+    <string name="command_escape_chip">Escape</string>
+    <string name="command_newline_chip">Признак конца строки: %1$s</string>
+    <string name="command_newline_title">Признак конца строки</string>
+    <string name="command_escape_on">При отправке будут разобраны escape-последовательности \\r \\n \\xNN и др.</string>
+    <string name="command_escape_off">Разбор escape-последовательностей выключен</string>
+
+    <!-- 校验提示 -->
+    <string name="command_error_content_empty">Заполните содержимое команды</string>
+    <string name="command_error_hex_invalid">Неверный формат HEX; проверьте, нет ли недопустимых символов</string>
+    <string name="command_default_name_hex">HEX-команда</string>
+    <string name="command_default_name_ascii">Текстовая команда</string>
+    <string name="command_saved">Сохранено</string>
+
+    <!-- ==================== 应答页 ==================== -->
+
+    <!-- 页面 -->
+    <string name="autoreply_title">Автоответ</string>
+    <string name="autoreply_add">Добавить</string>
+    <string name="autoreply_empty_title">Правил автоответа пока нет</string>
+    <string name="autoreply_empty_sub">При получении совпадающих данных автоматически отправляется заданный ответ</string>
+    <string name="autoreply_count_format">Правил: %1$d · активно: %2$d · автоматический ответ при совпадении данных</string>
+    <string name="autoreply_enabled_toast">Автоответ включён</string>
+    <string name="autoreply_disabled_toast">Автоответ выключен</string>
+
+    <!-- 列表项 -->
+    <string name="autoreply_more_desc">Другие действия</string>
+    <string name="autoreply_unnamed">Правило без названия</string>
+    <string name="autoreply_hits_format">Совпадений: %1$d</string>
+    <string name="autoreply_match_label">Совпадение</string>
+    <string name="autoreply_reply_label">Ответ</string>
+
+    <!-- 更多菜单 -->
+    <string name="autoreply_fallback_name">Правило</string>
+    <string name="autoreply_menu_enable">Включить правило</string>
+    <string name="autoreply_menu_disable">Выключить правило</string>
+    <string name="autoreply_menu_edit">Изменить</string>
+    <string name="autoreply_menu_test">Проверить ответ (отправить один раз)</string>
+    <string name="autoreply_menu_duplicate">Дублировать</string>
+    <string name="autoreply_menu_move_up">Вверх</string>
+    <string name="autoreply_menu_move_down">Вниз</string>
+    <string name="autoreply_delete">Удалить</string>
+    <string name="autoreply_rule_enabled">Правило «%1$s» включено</string>
+    <string name="autoreply_rule_disabled">Правило «%1$s» выключено</string>
+    <string name="autoreply_reply_invalid">Содержимое ответа пустое или имеет неверный формат</string>
+    <string name="autoreply_test_note">Тестовый ответ</string>
+    <string name="autoreply_test_sent">Отправлен тестовый ответ: %1$d байт</string>
+    <string name="autoreply_copy_format">%1$s (копия)</string>
+    <string name="autoreply_delete_title">Удаление правила</string>
+    <string name="autoreply_delete_confirm">Удалить «%1$s»?</string>
+
+    <!-- 编辑对话框 -->
+    <string name="autoreply_add_title">Новое правило автоответа</string>
+    <string name="autoreply_edit_title">Изменение правила автоответа</string>
+    <string name="autoreply_save">Сохранить</string>
+    <string name="autoreply_name_hint">Название правила, например: ответ на запрос температуры</string>
+    <string name="autoreply_section_match">Условие срабатывания</string>
+    <string name="autoreply_section_reply">Содержимое ответа</string>
+    <string name="autoreply_match_hint_hex">HEX с подстановочными знаками: 01 03 ?? ?? 00 0A</string>
+    <string name="autoreply_match_hint_ascii">Текст для сопоставления</string>
+    <string name="autoreply_reply_hint">Ответ в виде HEX или текста</string>
+    <string name="autoreply_match_mode_title">Режим сопоставления</string>
+    <string name="autoreply_newline_chip">Признак конца строки: %1$s</string>
+    <string name="autoreply_newline_title">Признак конца строки</string>
+    <string name="autoreply_escape_chip">Escape</string>
+    <string name="autoreply_delay_label">Задержка ответа (ms)</string>
+    <string name="autoreply_once_chip">Ответить один раз</string>
+    <string name="autoreply_preview_empty">Предпросмотр ответа: (пусто)</string>
+    <string name="autoreply_preview_format">Предпросмотр ответа: %1$s</string>
+
+    <!-- 校验提示 -->
+    <string name="autoreply_error_match_empty">Заполните условие срабатывания</string>
+    <string name="autoreply_error_reply_empty">Заполните содержимое ответа</string>
+    <string name="autoreply_error_match_hex">Неверный формат HEX в условии срабатывания</string>
+    <string name="autoreply_error_reply_hex">Неверный формат HEX в ответе</string>
+    <string name="autoreply_default_name">Правило автоответа</string>
+    <string name="autoreply_saved">Сохранено</string>
+
+    <!-- 引擎（无 Context） -->
+    <string name="autoreply_note">Автоответ</string>
+    <string name="autoreply_note_name">Автоответ: %1$s</string>
+
+    <!-- ==================== strings_history_tcp.xml ==================== -->
+
+    <!-- 历史记录页：筛选 / 搜索 / 记录项 -->
+    <string name="history_filter_all">Все</string>
+    <string name="history_filter_rx">Приём</string>
+    <string name="history_filter_tx">Передача</string>
+    <string name="history_dir_rx">Приём</string>
+    <string name="history_dir_tx">Передача</string>
+    <string name="history_dir_system">Система</string>
+    <string name="history_search_hint">Поиск по содержимому / HEX</string>
+    <string name="history_export_desc">Экспортировать записи</string>
+    <string name="history_clear_desc">Очистить записи</string>
+    <string name="history_empty">Журнал приёма/передачи пуст</string>
+    <string name="history_no_records">Записей нет</string>
+    <string name="history_clear_title">Очистка записей</string>
+    <string name="history_clear_message">Все записи журнала приёма/передачи (%1$d) будут удалены без возможности восстановления.</string>
+    <string name="history_cleared">Очищено</string>
+    <string name="history_count_format">Записей: %1$d (всего: %2$d)</string>
+    <string name="history_no_export">Нет записей для экспорта</string>
+    <string name="history_export_failed">Не удалось экспортировать</string>
+    <string name="history_exported_format">Экспортировано: %1$s</string>
+    <string name="history_export_share">Поделиться</string>
+    <string name="history_menu_title">Действия с записью</string>
+    <string name="history_menu_copy_hex">Копировать HEX</string>
+    <string name="history_menu_copy_text">Копировать текст</string>
+    <string name="history_menu_fill_hex">Вставить в поле отправки (HEX)</string>
+    <string name="history_menu_fill_ascii">Вставить в поле отправки (ASCII)</string>
+    <string name="history_menu_send_hex">Отправить HEX в один клик</string>
+    <string name="history_menu_delete">Удалить запись</string>
+    <string name="history_copied_hex">HEX скопирован</string>
+    <string name="history_copied_text">Текст скопирован</string>
+    <string name="history_deleted">Удалено</string>
+
+    <!-- TCP 透传页：界面 -->
+    <string name="tcp_title">Прозрачная передача: последовательный порт ↔ TCP</string>
+    <string name="tcp_back_desc">Назад</string>
+    <string name="tcp_mode_title">Режим работы</string>
+    <string name="tcp_mode_server">Сервер</string>
+    <string name="tcp_mode_client">Клиент</string>
+    <string name="tcp_listen_port">Порт прослушивания</string>
+    <string name="tcp_remote_ip">Удалённый IP</string>
+    <string name="tcp_start">Запустить</string>
+    <string name="tcp_stop">Остановить</string>
+    <string name="tcp_connect">Подключить</string>
+    <string name="tcp_disconnect">Отключить</string>
+    <string name="tcp_log_title">Журнал прозрачной передачи</string>
+    <string name="tcp_clear_log_desc">Очистить журнал</string>
+    <string name="tcp_state_stopped">Не запущено</string>
+    <string name="tcp_state_running">Работает</string>
+    <string name="tcp_state_running_server">Работает · сервер прослушивает порт %1$s · подключено клиентов: %2$d</string>
+    <string name="tcp_state_running_client">Работает · подключено к %1$s:%2$s</string>
+
+    <!-- TCP 透传页：日志与提示 -->
+    <string name="tcp_intro">Прозрачная передача перенаправляет данные, принятые из последовательного порта, в TCP, а данные, принятые из TCP, записывает в последовательный порт.</string>
+    <string name="tcp_local_ip_format">Локальный IP: %1$s</string>
+    <string name="tcp_ip_unavailable">Не определён</string>
+    <string name="tcp_port_invalid_title">Недопустимый порт</string>
+    <string name="tcp_port_invalid_message">Введите номер порта от 1 до 65535</string>
+    <string name="tcp_host_invalid_title">Недопустимый адрес</string>
+    <string name="tcp_host_invalid_message">Введите IP-адрес или доменное имя удалённого узла</string>
+    <string name="tcp_connecting">Подключение к %1$s:%2$d…</string>
+    <string name="tcp_serial_not_configured">Подсказка: последовательный порт не настроен; сначала выберите и откройте его в «Настройках»</string>
+    <string name="tcp_serial_auto_opening">Порт не открыт, выполняется автоматическое открытие %1$s…</string>
+    <string name="tcp_serial_opened">Порт открыт: %1$s</string>
+    <string name="tcp_serial_open_failed">Не удалось открыть порт: %1$s</string>
+    <string name="tcp_unknown_error">Неизвестная ошибка</string>
+    <string name="tcp_note">Прозрачная передача TCP</string>
+
+    <!-- TCP 透传桥：日志 -->
+    <string name="tcp_log_server_started">Сервер запущен, порт прослушивания %1$d</string>
+    <string name="tcp_log_start_failed">Не удалось запустить: %1$s %2$s</string>
+    <string name="tcp_log_accept_ended">accept завершён: %1$s</string>
+    <string name="tcp_log_client_joined">Клиент подключился: %1$s:%2$d (сейчас клиентов: %3$d)</string>
+    <string name="tcp_log_client_init_failed">Не удалось инициализировать клиента: %1$s</string>
+    <string name="tcp_log_read_ended">Чтение завершено: %1$s</string>
+    <string name="tcp_log_tcp_to_serial_ok">TCP → последовательный порт: %1$d байт (передано)</string>
+    <string name="tcp_log_tcp_to_serial_failed">TCP → последовательный порт: %1$d байт (ошибка: порт не открыт)</string>
+    <string name="tcp_log_connected">Подключено к %1$s:%2$d</string>
+    <string name="tcp_log_remote_disconnected">Удалённый узел отключился</string>
+    <string name="tcp_log_connect_ended">Соединение завершено: %1$s %2$s</string>
+    <string name="tcp_log_stopped">Прозрачная передача остановлена</string>
+    <string name="tcp_log_write_client_failed">Не удалось записать данные клиенту: %1$s %2$s</string>
+    <string name="tcp_log_serial_to_tcp_clients">Последовательный порт → TCP: %1$d байт, клиентов: %2$d</string>
+    <string name="tcp_log_serial_to_tcp">Последовательный порт → TCP: %1$d байт</string>
+    <string name="tcp_log_send_failed">Не удалось отправить: %1$s %2$s</string>
+    <string name="tcp_log_client_left">Клиент отключился (осталось: %1$d)</string>
+
+    <!-- ==================== strings_core.xml ==================== -->
+
+    <!-- 串口管理：状态与错误 -->
+    <string name="serial_state_open">Подключено</string>
+    <string name="serial_state_error_short">Ошибка</string>
+    <string name="serial_err_no_permission">Нет прав на чтение/запись последовательного порта: %1$s</string>
+    <string name="serial_err_no_permission_hint">Убедитесь, что на устройстве получен root или разрешён доступ к порту</string>
+    <string name="serial_err_open_failed">Не удалось открыть последовательный порт: %1$s</string>
+    <string name="serial_not_open">Последовательный порт не открыт</string>
+    <string name="serial_send_failed">Не удалось отправить; проверьте соединение порта</string>
+    <string name="serial_file_busy">Идёт отправка файла, подождите</string>
+    <string name="serial_file_bytes">[Файл] %1$d байт</string>
+    <string name="serial_file_send_note">Отправка файла</string>
+    <string name="serial_file_interrupted">Отправка файла прервана (отправлено %1$d из %2$d байт)</string>
+    <string name="serial_loop_note">Циклическая отправка</string>
+    <string name="serial_rx_note">Приём</string>
+
+    <!-- 字符集展示名 -->
+    <string name="charset_gb18030">GB18030 (китайский стандарт)</string>
+    <string name="charset_big5">BIG5 (традиционный китайский)</string>
+    <string name="charset_utf16le">UTF-16LE (младшим байтом вперёд)</string>
+    <string name="charset_utf16be">UTF-16BE (старшим байтом вперёд)</string>
+    <string name="charset_iso_8859_1">ISO-8859-1 (Latin-1)</string>
+    <string name="charset_shift_jis">Shift_JIS (японский)</string>
+    <string name="charset_euc_kr">EUC-KR (корейский)</string>
+
+    <!-- 校验算法：分组 -->
+    <string name="checksum_group_common">Часто используемые</string>
+
+    <!-- 校验算法：名称 -->
+    <string name="checksum_algo_sum8">Сумма байтов SUM8</string>
+    <string name="checksum_algo_sum16">Сумма байтов SUM16</string>
+    <string name="checksum_algo_xor8">Исключающее ИЛИ XOR8</string>
+    <string name="checksum_algo_xor16">Исключающее ИЛИ XOR16</string>
+    <string name="checksum_algo_bcc">Блочная контрольная сумма BCC</string>
+    <string name="checksum_algo_lrc">Продольная избыточная проверка LRC</string>
+    <string name="checksum_algo_lrc16">Продольная избыточная проверка LRC16</string>
+    <string name="checksum_algo_twos8">Дополнительный код SUM8</string>
+
+    <!-- 校验算法：描述 -->
+    <string name="checksum_desc_sum8">Сумма всех байтов, младшие 8 бит</string>
+    <string name="checksum_desc_sum16">Сумма всех байтов, младшие 16 бит</string>
+    <string name="checksum_desc_xor8">XOR всех байтов, младшие 8 бит</string>
+    <string name="checksum_desc_xor16">XOR всех байтов, младшие 16 бит</string>
+    <string name="checksum_desc_bcc">То же, что XOR8; используется в штрих-кодах и магнитных картах</string>
+    <string name="checksum_desc_lrc">Инверсия суммы с прибавлением 1 (MODBUS ASCII)</string>
+    <string name="checksum_desc_lrc16">Инверсия 16-битной суммы с прибавлением 1</string>
+    <string name="checksum_desc_twos8">Инверсия суммы с прибавлением 1</string>
+
+    <!-- 文件 -->
+    <string name="file_share_chooser">Поделиться файлом</string>
+
+    <!-- 数据仓库：历史导出 -->
+    <string name="store_export_title">Журнал приёма/передачи последовательного порта</string>
+    <string name="store_export_time">Время экспорта: %1$s</string>
+    <string name="store_export_columns">Направление\tВремя\tТип\tДлина\tHEX\tТекст</string>
+    <string name="store_dir_rx">Приём</string>
+    <string name="store_dir_tx">Передача</string>
+    <string name="store_dir_sys">Система</string>
+
+    <!-- 数据仓库：默认快捷指令 -->
+    <string name="store_cmd_at">AT-команда</string>
+    <string name="store_cmd_modbus">Modbus: чтение регистров хранения</string>
+    <string name="store_cmd_handshake">Кадр рукопожатия</string>
+    <string name="store_cmd_reset">Сброс</string>
+    <string name="store_cmd_newline">CR+LF</string>
+
+</resources>

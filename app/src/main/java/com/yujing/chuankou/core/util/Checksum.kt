@@ -1,5 +1,7 @@
 package com.yujing.chuankou.core.util
 
+import com.yujing.chuankou.R
+
 /**
  * 校验算法体系
  *
@@ -71,57 +73,63 @@ object Checksum {
     // 算法清单
     // ==================================================================
 
-    val ALGOS: List<Algo> = buildList {
-        // ---------- 简单校验 ----------
-        add(Algo("sum8", "累加和 SUM8", "常用", Kind.SUM, 8, desc = "所有字节求和，取低 8 位"))
-        add(Algo("sum16", "累加和 SUM16", "常用", Kind.SUM, 16, desc = "所有字节求和，取低 16 位"))
-        add(Algo("xor8", "异或校验 XOR8", "常用", Kind.XOR, 8, desc = "所有字节逐字节异或，取低 8 位"))
-        add(Algo("xor16", "异或校验 XOR16", "常用", Kind.XOR, 16, desc = "所有字节逐字节异或，取低 16 位"))
-        add(Algo("bcc", "BCC 块校验", "常用", Kind.BCC, 8, desc = "同 XOR8，用于条码/磁卡"))
-        add(Algo("lrc", "LRC 纵向冗余校验", "常用", Kind.LRC, 8, desc = "累加和取反加一（MODBUS ASCII）"))
-        add(Algo("lrc16", "LRC16 纵向冗余校验", "常用", Kind.LRC, 16, desc = "16 位累加和取反加一"))
-        add(Algo("twos8", "二进制补码 SUM8", "常用", Kind.TWOS_COMPLEMENT, 8, desc = "累加和取反加一"))
-        add(Algo("fletcher16", "Fletcher-16", "常用", Kind.FLETCHER, 16))
-        add(Algo("fletcher32", "Fletcher-32", "常用", Kind.FLETCHER, 32))
-        add(Algo("adler32", "Adler-32", "常用", Kind.ADLER, 32))
+    /**
+     * 算法清单。name / group / desc 均为用户可见文案，走字符串资源（Langs 取词，跟随应用语言），
+     * 故改为每次访问重新求值；纯 ASCII 名称（Fletcher / Adler / CRC-*）保持字面量。
+     */
+    val ALGOS: List<Algo>
+        get() = buildList {
+            val common = Langs.str(R.string.checksum_group_common)
+            // ---------- 简单校验 ----------
+            add(Algo("sum8", Langs.str(R.string.checksum_algo_sum8), common, Kind.SUM, 8, desc = Langs.str(R.string.checksum_desc_sum8)))
+            add(Algo("sum16", Langs.str(R.string.checksum_algo_sum16), common, Kind.SUM, 16, desc = Langs.str(R.string.checksum_desc_sum16)))
+            add(Algo("xor8", Langs.str(R.string.checksum_algo_xor8), common, Kind.XOR, 8, desc = Langs.str(R.string.checksum_desc_xor8)))
+            add(Algo("xor16", Langs.str(R.string.checksum_algo_xor16), common, Kind.XOR, 16, desc = Langs.str(R.string.checksum_desc_xor16)))
+            add(Algo("bcc", Langs.str(R.string.checksum_algo_bcc), common, Kind.BCC, 8, desc = Langs.str(R.string.checksum_desc_bcc)))
+            add(Algo("lrc", Langs.str(R.string.checksum_algo_lrc), common, Kind.LRC, 8, desc = Langs.str(R.string.checksum_desc_lrc)))
+            add(Algo("lrc16", Langs.str(R.string.checksum_algo_lrc16), common, Kind.LRC, 16, desc = Langs.str(R.string.checksum_desc_lrc16)))
+            add(Algo("twos8", Langs.str(R.string.checksum_algo_twos8), common, Kind.TWOS_COMPLEMENT, 8, desc = Langs.str(R.string.checksum_desc_twos8)))
+            add(Algo("fletcher16", "Fletcher-16", common, Kind.FLETCHER, 16))
+            add(Algo("fletcher32", "Fletcher-32", common, Kind.FLETCHER, 32))
+            add(Algo("adler32", "Adler-32", common, Kind.ADLER, 32))
 
-        // ---------- CRC-8 ----------
-        add(crc("crc8", "CRC-8", 8, 0x07, 0x00, false, false, 0x00, 0xF4))
-        add(crc("crc8_cdma2000", "CRC-8/CDMA2000", 8, 0x9B, 0xFF, false, false, 0x00, 0xDA))
-        add(crc("crc8_darc", "CRC-8/DARC", 8, 0x39, 0x00, true, true, 0x00, 0x15))
-        add(crc("crc8_dvbs2", "CRC-8/DVB-S2", 8, 0xD5, 0x00, false, false, 0x00, 0xBC))
-        add(crc("crc8_itu", "CRC-8/ITU", 8, 0x07, 0x00, false, false, 0x55, 0xA1))
-        add(crc("crc8_maxim", "CRC-8/MAXIM (Dallas)", 8, 0x31, 0x00, true, true, 0x00, 0xA1))
-        add(crc("crc8_rohc", "CRC-8/ROHC", 8, 0x07, 0xFF, true, true, 0x00, 0xD0))
-        add(crc("crc8_wcdma", "CRC-8/WCDMA", 8, 0x9B, 0x00, true, true, 0x00, 0x25))
-        add(crc("crc8_sae_j1850", "CRC-8/SAE-J1850", 8, 0x1D, 0xFF, false, false, 0xFF, 0x4B))
-        add(crc("crc8_autosar", "CRC-8/AUTOSAR", 8, 0x2F, 0xFF, false, false, 0xFF, 0xDF))
+            // ---------- CRC-8 ----------
+            add(crc("crc8", "CRC-8", 8, 0x07, 0x00, false, false, 0x00, 0xF4))
+            add(crc("crc8_cdma2000", "CRC-8/CDMA2000", 8, 0x9B, 0xFF, false, false, 0x00, 0xDA))
+            add(crc("crc8_darc", "CRC-8/DARC", 8, 0x39, 0x00, true, true, 0x00, 0x15))
+            add(crc("crc8_dvbs2", "CRC-8/DVB-S2", 8, 0xD5, 0x00, false, false, 0x00, 0xBC))
+            add(crc("crc8_itu", "CRC-8/ITU", 8, 0x07, 0x00, false, false, 0x55, 0xA1))
+            add(crc("crc8_maxim", "CRC-8/MAXIM (Dallas)", 8, 0x31, 0x00, true, true, 0x00, 0xA1))
+            add(crc("crc8_rohc", "CRC-8/ROHC", 8, 0x07, 0xFF, true, true, 0x00, 0xD0))
+            add(crc("crc8_wcdma", "CRC-8/WCDMA", 8, 0x9B, 0x00, true, true, 0x00, 0x25))
+            add(crc("crc8_sae_j1850", "CRC-8/SAE-J1850", 8, 0x1D, 0xFF, false, false, 0xFF, 0x4B))
+            add(crc("crc8_autosar", "CRC-8/AUTOSAR", 8, 0x2F, 0xFF, false, false, 0xFF, 0xDF))
 
-        // ---------- CRC-16 ----------
-        add(crc("crc16_arc", "CRC-16/ARC (IBM)", 16, 0x8005, 0x0000, true, true, 0x0000, 0xBB3D))
-        add(crc("crc16_modbus", "CRC-16/MODBUS", 16, 0x8005, 0xFFFF, true, true, 0x0000, 0x4B37))
-        add(crc("crc16_ccitt_false", "CRC-16/CCITT-FALSE", 16, 0x1021, 0xFFFF, false, false, 0x0000, 0x29B1))
-        add(crc("crc16_xmodem", "CRC-16/XMODEM", 16, 0x1021, 0x0000, false, false, 0x0000, 0x31C3))
-        add(crc("crc16_x25", "CRC-16/X-25", 16, 0x1021, 0xFFFF, true, true, 0xFFFF, 0x906E))
-        add(crc("crc16_usb", "CRC-16/USB", 16, 0x8005, 0xFFFF, true, true, 0xFFFF, 0xB4C8))
-        add(crc("crc16_maxim", "CRC-16/MAXIM (DOW)", 16, 0x8005, 0x0000, true, true, 0xFFFF, 0x44C2))
-        add(crc("crc16_dnp", "CRC-16/DNP", 16, 0x3D65, 0x0000, true, true, 0xFFFF, 0xEA82))
-        add(crc("crc16_kermit", "CRC-16/KERMIT", 16, 0x1021, 0x0000, true, true, 0x0000, 0x2189))
-        add(crc("crc16_ibm_sdlc", "CRC-16/IBM-SDLC", 16, 0x1021, 0xFFFF, true, true, 0xFFFF, 0x906E))
-        add(crc("crc16_en13757", "CRC-16/EN-13757", 16, 0x3D65, 0x0000, false, false, 0xFFFF, 0xC2B7))
-        add(crc("crc16_t10dif", "CRC-16/T10-DIF", 16, 0x8BB7, 0x0000, false, false, 0x0000, 0xD0DB))
-        add(crc("crc16_teledisk", "CRC-16/TELEDISK", 16, 0xA097, 0x0000, false, false, 0x0000, 0x0FB3))
-        add(crc("crc16_dectr", "CRC-16/DECT-R", 16, 0x0589, 0x0000, false, false, 0x0001, 0x007E))
+            // ---------- CRC-16 ----------
+            add(crc("crc16_arc", "CRC-16/ARC (IBM)", 16, 0x8005, 0x0000, true, true, 0x0000, 0xBB3D))
+            add(crc("crc16_modbus", "CRC-16/MODBUS", 16, 0x8005, 0xFFFF, true, true, 0x0000, 0x4B37))
+            add(crc("crc16_ccitt_false", "CRC-16/CCITT-FALSE", 16, 0x1021, 0xFFFF, false, false, 0x0000, 0x29B1))
+            add(crc("crc16_xmodem", "CRC-16/XMODEM", 16, 0x1021, 0x0000, false, false, 0x0000, 0x31C3))
+            add(crc("crc16_x25", "CRC-16/X-25", 16, 0x1021, 0xFFFF, true, true, 0xFFFF, 0x906E))
+            add(crc("crc16_usb", "CRC-16/USB", 16, 0x8005, 0xFFFF, true, true, 0xFFFF, 0xB4C8))
+            add(crc("crc16_maxim", "CRC-16/MAXIM (DOW)", 16, 0x8005, 0x0000, true, true, 0xFFFF, 0x44C2))
+            add(crc("crc16_dnp", "CRC-16/DNP", 16, 0x3D65, 0x0000, true, true, 0xFFFF, 0xEA82))
+            add(crc("crc16_kermit", "CRC-16/KERMIT", 16, 0x1021, 0x0000, true, true, 0x0000, 0x2189))
+            add(crc("crc16_ibm_sdlc", "CRC-16/IBM-SDLC", 16, 0x1021, 0xFFFF, true, true, 0xFFFF, 0x906E))
+            add(crc("crc16_en13757", "CRC-16/EN-13757", 16, 0x3D65, 0x0000, false, false, 0xFFFF, 0xC2B7))
+            add(crc("crc16_t10dif", "CRC-16/T10-DIF", 16, 0x8BB7, 0x0000, false, false, 0x0000, 0xD0DB))
+            add(crc("crc16_teledisk", "CRC-16/TELEDISK", 16, 0xA097, 0x0000, false, false, 0x0000, 0x0FB3))
+            add(crc("crc16_dectr", "CRC-16/DECT-R", 16, 0x0589, 0x0000, false, false, 0x0001, 0x007E))
 
-        // ---------- CRC-32 ----------
-        add(crc("crc32", "CRC-32 (IEEE)", 32, 0x04C11DB7L, 0xFFFFFFFFL, true, true, 0xFFFFFFFFL, 0xCBF43926L))
-        add(crc("crc32_mpeg2", "CRC-32/MPEG-2", 32, 0x04C11DB7L, 0xFFFFFFFFL, false, false, 0x00000000L, 0x0376E6E7L))
-        add(crc("crc32_bzip2", "CRC-32/BZIP2", 32, 0x04C11DB7L, 0xFFFFFFFFL, false, false, 0xFFFFFFFFL, 0xFC891918L))
-        add(crc("crc32_posix", "CRC-32/POSIX (CKSUM)", 32, 0x04C11DB7L, 0x00000000L, false, false, 0xFFFFFFFFL, 0x765E7680L))
-        add(crc("crc32_jamcrc", "CRC-32/JAMCRC", 32, 0x04C11DB7L, 0xFFFFFFFFL, true, true, 0x00000000L, 0x340BC6D9L))
-        add(crc("crc32_castagnoli", "CRC-32C (Castagnoli)", 32, 0x1EDC6F41L, 0xFFFFFFFFL, true, true, 0xFFFFFFFFL, 0xE3069283L))
-        add(crc("crc32_autosar", "CRC-32/AUTOSAR", 32, 0xF4ACFB13L, 0xFFFFFFFFL, true, true, 0xFFFFFFFFL, 0x1697D06AL))
-    }
+            // ---------- CRC-32 ----------
+            add(crc("crc32", "CRC-32 (IEEE)", 32, 0x04C11DB7L, 0xFFFFFFFFL, true, true, 0xFFFFFFFFL, 0xCBF43926L))
+            add(crc("crc32_mpeg2", "CRC-32/MPEG-2", 32, 0x04C11DB7L, 0xFFFFFFFFL, false, false, 0x00000000L, 0x0376E6E7L))
+            add(crc("crc32_bzip2", "CRC-32/BZIP2", 32, 0x04C11DB7L, 0xFFFFFFFFL, false, false, 0xFFFFFFFFL, 0xFC891918L))
+            add(crc("crc32_posix", "CRC-32/POSIX (CKSUM)", 32, 0x04C11DB7L, 0x00000000L, false, false, 0xFFFFFFFFL, 0x765E7680L))
+            add(crc("crc32_jamcrc", "CRC-32/JAMCRC", 32, 0x04C11DB7L, 0xFFFFFFFFL, true, true, 0x00000000L, 0x340BC6D9L))
+            add(crc("crc32_castagnoli", "CRC-32C (Castagnoli)", 32, 0x1EDC6F41L, 0xFFFFFFFFL, true, true, 0xFFFFFFFFL, 0xE3069283L))
+            add(crc("crc32_autosar", "CRC-32/AUTOSAR", 32, 0xF4ACFB13L, 0xFFFFFFFFL, true, true, 0xFFFFFFFFL, 0x1697D06AL))
+        }
 
     private fun crc(
         id: String, name: String, width: Int, poly: Long, init: Long,

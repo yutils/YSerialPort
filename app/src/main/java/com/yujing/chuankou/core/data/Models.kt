@@ -1,6 +1,8 @@
 package com.yujing.chuankou.core.data
 
+import com.yujing.chuankou.R
 import com.yujing.chuankou.core.util.Hex
+import com.yujing.chuankou.core.util.Langs
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -26,9 +28,22 @@ object MatchMode {
     const val PREFIX = 2
     const val SUFFIX = 3
     const val REGEX = 4
-    val names = listOf("包含", "完全相等", "前缀", "后缀", "正则")
 
-    fun name(v: Int) = names.getOrElse(v) { names[0] }
+    fun name(v: Int): String = when (v) {
+        1 -> Langs.str(R.string.match_equals)
+        2 -> Langs.str(R.string.match_prefix)
+        3 -> Langs.str(R.string.match_suffix)
+        4 -> Langs.str(R.string.match_regex)
+        else -> Langs.str(R.string.match_contains)
+    }
+
+    fun names(): List<String> = listOf(
+        Langs.str(R.string.match_contains),
+        Langs.str(R.string.match_equals),
+        Langs.str(R.string.match_prefix),
+        Langs.str(R.string.match_suffix),
+        Langs.str(R.string.match_regex)
+    )
 }
 
 // ======================================================================
@@ -202,7 +217,13 @@ data class AutoReplyRule(
 // 发送结束符
 // ======================================================================
 object Newline {
-    val NAMES = listOf("无", "\\r\\n", "\\n", "\\r")
+    private val NAMES = listOf("\\r\\n", "\\n", "\\r")
+
+    /** 展示名：无 / \r\n / \n / \r */
+    fun name(v: Int): String = if (v in NAMES.indices) NAMES[v] else Langs.str(R.string.common_none)
+
+    fun names(): List<String> = listOf(Langs.str(R.string.common_none), "\\r\\n", "\\n", "\\r")
+
     fun bytes(v: Int, charsetName: String): ByteArray = when (v) {
         1 -> byteArrayOf(0x0D, 0x0A)
         2 -> byteArrayOf(0x0A)

@@ -2,8 +2,10 @@ package com.yujing.chuankou.core.net
 
 import android.os.Handler
 import android.os.Looper
+import com.yujing.chuankou.R
 import com.yujing.chuankou.core.data.DataType
 import com.yujing.chuankou.core.serial.SerialManager
+import com.yujing.chuankou.core.util.Langs
 import java.io.InputStream
 import java.io.OutputStream
 import java.net.InetSocketAddress
@@ -84,14 +86,14 @@ object TcpBridge {
                 serverSocket = ss
                 SerialManager.addListener(serialListener)
                 running = true
-                log("服务端已启动，监听端口 $port")
+                log(Langs.str(R.string.tcp_log_server_started, port))
                 notifyState()
                 acceptLoop(ss)
             } catch (e: Exception) {
                 running = false
                 mode = Mode.NONE
                 SerialManager.removeListener(serialListener)
-                log("启动失败：${e.javaClass.simpleName} ${e.message ?: ""}")
+                log(Langs.str(R.string.tcp_log_start_failed, e.javaClass.simpleName, e.message ?: ""))
                 notifyState()
             }
         }
@@ -102,18 +104,18 @@ object TcpBridge {
             val socket = try {
                 ss.accept()
             } catch (e: Exception) {
-                if (running) log("accept 结束：${e.message ?: e.javaClass.simpleName}")
+                if (running) log(Langs.str(R.string.tcp_log_accept_ended, e.message ?: e.javaClass.simpleName))
                 break
             }
             try {
                 socket.tcpNoDelay = true
                 val c = Client(socket)
                 clients.add(c)
-                log("客户端接入：${socket.inetAddress?.hostAddress}:${socket.port}（当前 ${clients.size} 个）")
+                log(Langs.str(R.string.tcp_log_client_joined, socket.inetAddress?.hostAddress ?: "", socket.port, clients.size))
                 notifyState()
                 Thread({ readLoop(c) }, "tcp-client-${socket.port}").apply { isDaemon = true; start() }
             } catch (e: Exception) {
-                log("客户端初始化失败：${e.message}")
+                log(Langs.str(R.string.tcp_log_client_init_failed, e.message ?: e.javaClass.simpleName))
                 runCatching { socket.close() }
             }
         }
@@ -127,11 +129,14 @@ object TcpBridge {
                 if (n < 0) break
                 if (n == 0) continue
                 val data = buf.copyOf(n)
-                val ok = SerialManager.send(data, DataType.HEX, "TCP透传", fromUser = false)
-                logData("TCP → 串口：${data.size} 字节（${if (ok) "已提交" else "失败：串口未打开"}）")
+                val ok = SerialManager.send(data, DataType.HEX, Langs.str(R.string.tcp_note), fromUser = false)
+                logData(
+                    if (ok) Langs.str(R.string.tcp_log_tcp_to_serial_ok, data.size)
+                    else Langs.str(R.string.tcp_log_tcp_to_serial_failed, data.size)
+                )
             }
         } catch (e: Exception) {
-            if (running && !c.closed) log("读取结束：${e.message ?: e.javaClass.simpleName}")
+            if (running && !c.closed) log(Langs.str(R.string.tcp_log_read_ended, e.message ?: e.javaClass.simpleName))
         } finally {
             closeClient(c)
         }
@@ -152,7 +157,7 @@ object TcpBridge {
                 clientSocket = socket
                 SerialManager.addListener(serialListener)
                 running = true
-                log("已连接 $host:$port")
+                log(Langs.str(R.string.tcp_log_connected, host, port))
                 notifyState()
                 val buf = ByteArray(4096)
                 val ins = socket.getInputStream()
@@ -161,12 +166,15 @@ object TcpBridge {
                     if (n < 0) break
                     if (n == 0) continue
                     val data = buf.copyOf(n)
-                    val ok = SerialManager.send(data, DataType.HEX, "TCP透传", fromUser = false)
-                    logData("TCP → 串口：${data.size} 字节（${if (ok) "已提交" else "失败：串口未打开"}）")
+                    val ok = SerialManager.send(data, DataType.HEX, Langs.str(R.string.tcp_note), fromUser = false)
+                    logData(
+                        if (ok) Langs.str(R.string.tcp_log_tcp_to_serial_ok, data.size)
+                        else Langs.str(R.string.tcp_log_tcp_to_serial_failed, data.size)
+                    )
                 }
-                if (running) log("远端已断开")
+                if (running) log(Langs.str(R.string.tcp_log_remote_disconnected))
             } catch (e: Exception) {
-                if (running) log("连接结束：${e.javaClass.simpleName} ${e.message ?: ""}")
+                if (running) log(Langs.str(R.string.tcp_log_connect_ended, e.javaClass.simpleName, e.message ?: ""))
             } finally {
                 runCatching { socket?.close() }
                 if (running) {
@@ -193,7 +201,7 @@ object TcpBridge {
         clients.toList().forEach { c -> runCatching { c.socket.close() } }
         clients.clear()
         mode = Mode.NONE
-        if (wasActive) log("已停止透传")
+        if (wasActive) log(Langs.str(R.string.tcp_log_stopped))
         notifyState()
     }
 
@@ -217,20 +225,20 @@ object TcpBridge {
                             c.output.flush()
                             sent++
                         } catch (e: Exception) {
-                            log("写入客户端失败：${e.javaClass.simpleName} ${e.message ?: ""}")
+                            log(Langs.str(R.string.tcp_log_write_client_failed, e.javaClass.simpleName, e.message ?: ""))
                             closeClient(c)
                         }
                     }
-                    if (sent > 0) logData("串口 → TCP：${payload.size} 字节 × $sent 个客户端")
+                    if (sent > 0) logData(Langs.str(R.string.tcp_log_serial_to_tcp_clients, payload.size, sent))
                 }
                 Mode.CLIENT -> {
                     val s = clientSocket ?: return@execute
                     try {
                         s.getOutputStream().write(payload)
                         s.getOutputStream().flush()
-                        logData("串口 → TCP：${payload.size} 字节")
+                        logData(Langs.str(R.string.tcp_log_serial_to_tcp, payload.size))
                     } catch (e: Exception) {
-                        log("发送失败：${e.javaClass.simpleName} ${e.message ?: ""}")
+                        log(Langs.str(R.string.tcp_log_send_failed, e.javaClass.simpleName, e.message ?: ""))
                     }
                 }
                 Mode.NONE -> Unit
@@ -243,7 +251,7 @@ object TcpBridge {
         c.closed = true
         runCatching { c.socket.close() }
         clients.remove(c)
-        log("客户端断开（剩余 ${clients.size} 个）")
+        log(Langs.str(R.string.tcp_log_client_left, clients.size))
         notifyState()
     }
 

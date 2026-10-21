@@ -37,7 +37,7 @@
                     style="@style/Text.YS.PanelTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="快捷指令" />
+                    android:text="@string/command_title" />
 
                 <TextView
                     android:id="@+id/tv_count"
@@ -54,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="36dp"
                 android:minWidth="80dp"
-                android:text="新增"
+                android:text="@string/command_add"
                 android:textSize="12sp"
                 app:icon="@drawable/ic_add"
                 app:iconGravity="textStart"
@@ -93,7 +93,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="还没有快捷指令"
+                android:text="@string/command_empty_title"
                 android:textColor="@color/c_text_tertiary"
                 android:textSize="13sp" />
 
@@ -101,7 +101,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="点击右上角「新增」创建常用报文"
+                android:text="@string/command_empty_sub"
                 android:textColor="@color/c_text_tertiary"
                 android:textSize="12sp" />
         </LinearLayout>
@@ -113,7 +113,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="18dp"
-        android:contentDescription="新增指令"
+        android:contentDescription="@string/command_add_desc"
         android:src="@drawable/ic_add"
         app:backgroundTint="?attr/colorPrimary"
         app:tint="@color/c_on_primary" />

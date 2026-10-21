@@ -1,5 +1,6 @@
 package com.yujing.chuankou.core.util
 
+import com.yujing.chuankou.R
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -53,7 +54,7 @@ object AppFiles {
 
     fun share(context: Context, file: File, mime: String = "text/plain") {
         shareIntent(context, file, mime)?.let {
-            runCatching { context.startActivity(Intent.createChooser(it, "分享文件")) }
+            runCatching { context.startActivity(Intent.createChooser(it, Langs.str(R.string.file_share_chooser))) }
         }
     }
 

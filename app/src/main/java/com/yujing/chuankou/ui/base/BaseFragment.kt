@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.snackbar.Snackbar
+import com.yujing.chuankou.R
 
 /**
  * Fragment 基类：统一 ViewBinding 生命周期、横竖屏判断、常用交互
@@ -66,13 +67,13 @@ abstract class BaseFragment<B : ViewBinding>(
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
-    protected fun snack(message: String, actionText: String = "确定", actionBlock: (() -> Unit)? = null) {
+    protected fun snack(message: String, actionText: String? = null, actionBlock: (() -> Unit)? = null) {
         if (!isAdded || view == null) return
         val bar = Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG)
         bar.setBackgroundTint(resolveColor(com.google.android.material.R.attr.colorSurfaceContainerHighest))
         bar.setTextColor(resolveColor(com.google.android.material.R.attr.colorOnSurface))
         if (actionBlock != null) {
-            bar.setAction(actionText) { actionBlock() }
+            bar.setAction(actionText ?: getString(R.string.common_ok)) { actionBlock() }
             bar.setActionTextColor(resolveColor(com.google.android.material.R.attr.colorPrimary))
         }
         bar.show()
@@ -84,11 +85,11 @@ abstract class BaseFragment<B : ViewBinding>(
         return if (tv.resourceId != 0) androidx.core.content.ContextCompat.getColor(requireContext(), tv.resourceId) else tv.data
     }
 
-    protected fun copyToClipboard(text: String, label: String = "已复制到剪贴板") {
+    protected fun copyToClipboard(text: String, label: String? = null) {
         if (text.isEmpty()) return
         val cm = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         cm.setPrimaryClip(ClipData.newPlainText("YSerialPort", text))
-        snack(label)
+        snack(label ?: getString(R.string.common_copied))
     }
 
     protected fun dp(value: Int): Int = (value * resources.displayMetrics.density).toInt()

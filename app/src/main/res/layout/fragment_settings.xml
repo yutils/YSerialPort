@@ -13,10 +13,65 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <!-- ===================== 通用 ===================== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_panel"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_translate"
+                    app:tint="?attr/colorPrimary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/settings_section_general"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/colorOutlineVariant" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@drawable/div_setting"
+                android:orientation="vertical"
+                android:showDividers="middle">
+
+                <include
+                    android:id="@+id/row_language"
+                    layout="@layout/view_setting_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+
         <!-- ===================== 串口参数 ===================== -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:background="@drawable/bg_panel"
             android:orientation="vertical">
 
@@ -41,7 +96,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="串口参数"
+                    android:text="@string/settings_section_serial"
                     android:textColor="?attr/colorOnSurface"
                     android:textSize="13sp"
                     android:textStyle="bold" />
@@ -65,7 +120,7 @@
                     android:gravity="center"
                     android:paddingStart="9dp"
                     android:paddingEnd="11dp"
-                    android:text="打开串口"
+                    android:text="@string/serial_open"
                     android:textColor="#FFFFFF"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -161,7 +216,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="接收配置"
+                    android:text="@string/settings_section_rx"
                     android:textColor="?attr/colorOnSurface"
                     android:textSize="13sp"
                     android:textStyle="bold" />
@@ -246,7 +301,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="发送配置"
+                    android:text="@string/settings_section_tx"
                     android:textColor="?attr/colorOnSurface"
                     android:textSize="13sp"
                     android:textStyle="bold" />
@@ -325,7 +380,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="外观与显示"
+                    android:text="@string/settings_section_appearance"
                     android:textColor="?attr/colorOnSurface"
                     android:textSize="13sp"
                     android:textStyle="bold" />
@@ -387,7 +442,7 @@
                 android:paddingEnd="14dp"
                 android:paddingTop="12dp"
                 android:paddingBottom="14dp"
-                android:text="说明：关闭「自动换行」后接收数据将连续拼接，此时为保持数据完整性会自动忽略时间戳。"
+                android:text="@string/settings_rx_note"
                 android:textColor="@color/c_text_tertiary"
                 android:textSize="11sp" />
         </LinearLayout>
@@ -398,7 +453,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="16dp"
             android:gravity="center"
-            android:text="配置自动保存，重启后仍然生效"
+            android:text="@string/settings_autosave_note"
             android:textColor="@color/c_text_tertiary"
             android:textSize="11sp" />
 

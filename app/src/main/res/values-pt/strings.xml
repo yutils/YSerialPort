@@ -1,0 +1,698 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Serial Tool</string>
+    <string name="app_name_debug">Serial Tool(Debug)</string>
+
+    <!-- 语言 -->
+    <string name="lang_follow_system">Sistema (%1$s)</string>
+    <string name="lang_follow_system_plain">Seguir o sistema</string>
+    <string name="settings_section_general">Geral</string>
+    <string name="settings_language">Idioma</string>
+    <string name="settings_language_sub">Altera o idioma da interface; mantém-se após reiniciar</string>
+    <string name="settings_language_dialog_title">Escolher idioma</string>
+
+    <!-- 导航 -->
+    <string name="nav_terminal">Terminal</string>
+    <string name="nav_terminal_sub">Porta série TX/RX · monitorização em tempo real</string>
+    <string name="nav_history">Histórico</string>
+    <string name="nav_history_sub">Registos TX/RX · pesquisa e exportação</string>
+    <string name="nav_command">Comandos rápidos</string>
+    <string name="nav_command_sub">Envio com um toque · tramas frequentes</string>
+    <string name="nav_autoreply">Resposta automática</string>
+    <string name="nav_autoreply_sub">Correspondência de regras · resposta automática</string>
+    <string name="nav_tool">Ferramentas</string>
+    <string name="nav_tool_sub">Algoritmos de verificação · tabela ASCII</string>
+    <string name="nav_settings">Definições</string>
+    <string name="nav_settings_sub">Porta série · TX/RX · aparência</string>
+    <string name="nav_more">Mais</string>
+    <string name="nav_more_sub">Transmissão transparente · acerca</string>
+
+    <!-- 通用 -->
+    <string name="common_ok">OK</string>
+    <string name="common_cancel">Cancelar</string>
+    <string name="common_got_it">Entendi</string>
+    <string name="common_auto">Auto</string>
+    <string name="common_none">Nenhum</string>
+    <string name="common_none_selected">Não selecionado</string>
+    <string name="common_copied">Copiado para a área de transferência</string>
+    <string name="common_ms_format">%1$d ms</string>
+
+    <!-- 顶栏 -->
+    <string name="topbar_power_desc">Abrir ou fechar a porta série</string>
+    <string name="topbar_theme_desc">Alternar tema</string>
+
+    <!-- 数据模型：匹配模式 / 结束符 / 校验 / 流控 -->
+    <string name="match_contains">Contém</string>
+    <string name="match_equals">Igual exato</string>
+    <string name="match_prefix">Prefixo</string>
+    <string name="match_suffix">Sufixo</string>
+    <string name="match_regex">Regex</string>
+    <string name="parity_none">Sem paridade (None)</string>
+    <string name="parity_odd">Paridade ímpar (Odd)</string>
+    <string name="parity_even">Paridade par (Even)</string>
+    <string name="parity_mark">Paridade mark (Mark)</string>
+    <string name="parity_space">Paridade space (Space)</string>
+    <string name="flow_none">Sem controlo de fluxo</string>
+    <string name="flow_hardware">Controlo de fluxo por hardware (RTS/CTS)</string>
+    <string name="flow_software">Controlo de fluxo por software (XON/XOFF)</string>
+
+    <!-- 串口 -->
+    <string name="serial_state_closed">Desligado</string>
+    <string name="serial_state_opening">A abrir…</string>
+    <string name="serial_state_closing">A fechar…</string>
+    <string name="serial_state_error">Erro da porta série</string>
+    <string name="serial_select_in_settings">Selecione primeiro a porta série nas definições</string>
+    <string name="serial_open">Abrir porta série</string>
+    <string name="serial_close">Fechar porta série</string>
+
+    <!-- 设置：分区 -->
+    <string name="settings_section_serial">Parâmetros da porta série</string>
+    <string name="settings_section_rx">Configuração de receção</string>
+    <string name="settings_section_tx">Configuração de envio</string>
+    <string name="settings_section_appearance">Aparência e ecrã</string>
+    <string name="settings_rx_note">Nota: ao desativar «quebra automática de linha», os dados recebidos são concatenados de forma contínua; para preservar a integridade, a marca temporal é ignorada automaticamente.</string>
+    <string name="settings_autosave_note">A configuração é guardada automaticamente e mantém-se após reiniciar</string>
+
+    <!-- 设置：串口参数 -->
+    <string name="serial_select_device">Escolher porta série</string>
+    <string name="serial_no_devices_found">Nenhum dispositivo de porta série encontrado</string>
+    <string name="serial_select_baud">Escolher débito (baud)</string>
+    <string name="serial_data_bits">Bits de dados</string>
+    <string name="serial_stop_bits">Bits de paragem</string>
+    <string name="serial_parity">Paridade</string>
+    <string name="serial_flow_control">Controlo de fluxo</string>
+    <string name="serial_frame_gap">Intervalo entre tramas</string>
+    <string name="serial_frame_gap_hint">Milissegundos, 0 = cálculo automático pelo débito</string>
+    <string name="serial_frame_gap_sub">Após receber dados, este silêncio marca o fim da trama</string>
+    <string name="serial_device_list">Lista de portas série</string>
+    <string name="serial_scan_empty">Nenhum dispositivo de porta série encontrado.\nConfirme que o dispositivo tem permissão de porta série (/dev/ttyS*).</string>
+    <string name="serial_list_count">Lista de portas série (%1$d no total)</string>
+    <string name="serial_select_first">Selecione primeiro a porta série</string>
+    <string name="serial_reconnected">Reconectado com os novos parâmetros</string>
+    <string name="serial_connected_snack">Porta série ligada</string>
+    <string name="settings_serial_device">Dispositivo de porta série</string>
+    <string name="settings_serial_device_sub">Ex.: /dev/ttyS1; a lista vem da deteção do sistema</string>
+    <string name="settings_baud_rate">Débito (baud)</string>
+    <string name="settings_baud_sub">Comuns: 9600 / 115200 / 921600</string>
+    <string name="settings_data_bits_sub">5 ~ 8 bits</string>
+    <string name="settings_bits_format">%1$d bits</string>
+    <string name="settings_scan_count">%1$d encontrados</string>
+    <string name="settings_scan_sub">Toque para voltar a detetar e ver o nome e o caminho dos dispositivos</string>
+
+    <!-- 设置：接收 -->
+    <string name="settings_rx_charset_dialog">Conjunto de caracteres de receção</string>
+    <string name="settings_charset">Conjunto de caracteres</string>
+    <string name="settings_charset_sub">Usado para descodificar no modo ASCII; bytes não descodificáveis são mostrados como \\xNN (ex.: \\xA1), em vez de caractere de substituição</string>
+    <string name="settings_rx_time">Mostrar marca temporal</string>
+    <string name="settings_rx_time_sub">A marca temporal é ignorada quando a quebra automática de linha está desativada</string>
+    <string name="settings_rx_wrap">Quebra automática de linha</string>
+    <string name="settings_rx_wrap_sub">Quando desativada, os dados são concatenados sem qualquer quebra de linha</string>
+    <string name="settings_rx_sep">Separador HEX</string>
+    <string name="sep_space">Espaço</string>
+    <string name="sep_none">Sem separador</string>
+    <string name="sep_comma">Vírgula</string>
+    <string name="sep_dash">Traço</string>
+    <string name="settings_rx_max">Máximo de caracteres a mostrar</string>
+    <string name="settings_rx_max_sub">Ao exceder, corta automaticamente pelo início</string>
+    <string name="settings_rx_echo">Eco do conteúdo enviado na área de receção</string>
+
+    <!-- 设置：发送 -->
+    <string name="settings_tx_charset_dialog">Conjunto de caracteres de envio</string>
+    <string name="settings_tx_escape">Interpretar caracteres de escape</string>
+    <string name="settings_tx_escape_sub">Suporta \\r \\n \\t \\0 \\xNN \\uHHHH</string>
+    <string name="settings_tx_newline">Fim de linha predefinido</string>
+    <string name="settings_tx_chunk">Tamanho dos blocos do ficheiro</string>
+    <string name="settings_tx_chunk_hint">Bytes, 1 ~ 4096</string>
+    <string name="settings_bytes_format">%1$d bytes</string>
+    <string name="settings_tx_delay">Atraso entre blocos do ficheiro</string>
+    <string name="settings_ms_hint">Milissegundos</string>
+
+    <!-- 设置：外观 -->
+    <string name="settings_theme">Tema</string>
+    <string name="theme_follow_system">Seguir o sistema</string>
+    <string name="theme_dark">Escuro</string>
+    <string name="theme_light">Claro</string>
+    <string name="settings_bg">Imagem de fundo</string>
+    <string name="bg_none">Sem fundo</string>
+    <string name="bg_builtin">Papel de parede integrado</string>
+    <string name="bg_custom">Personalizado (escolher imagem na página Mais)</string>
+    <string name="bg_custom_short">Personalizado</string>
+    <string name="settings_bg_scrim">Escurecimento do fundo</string>
+    <string name="settings_bg_scrim_hint">0 ~ 100; quanto maior, mais escuro (recomendado 70 ~ 90)</string>
+    <string name="settings_percent_format">%1$d %%</string>
+    <string name="settings_font_size">Tamanho da letra do terminal</string>
+    <string name="settings_font_hint">Unidade sp, 9 ~ 24</string>
+    <string name="settings_sp_format">%1$d sp</string>
+    <string name="settings_keep_screen">Manter o ecrã sempre ligado</string>
+    <string name="settings_history_limit">Limite do histórico</string>
+    <string name="settings_history_limit_hint">Registos, 100 ~ 50000</string>
+    <string name="settings_history_count">%1$d registos (atual %2$d)</string>
+
+    <!-- 终端页：面板与控件 -->
+    <string name="terminal_panel_rx">Área de receção</string>
+    <string name="terminal_panel_tx">Área de envio</string>
+    <string name="terminal_timestamp">Marca temporal</string>
+    <string name="terminal_echo">Eco do envio</string>
+    <string name="terminal_back_to_bottom">Voltar ao fundo</string>
+    <string name="terminal_escape">Escape</string>
+    <string name="terminal_history">Histórico</string>
+    <string name="terminal_loop">Ciclo</string>
+    <string name="terminal_send">Enviar</string>
+    <string name="terminal_mode_file">Ficheiro</string>
+    <string name="terminal_pick_file">Escolher ficheiro</string>
+    <string name="terminal_chunk">Bloco</string>
+    <string name="terminal_delay_ms">Atraso (ms)</string>
+    <string name="terminal_interval_ms">Intervalo (ms)</string>
+    <string name="terminal_loop_count_hint">Nº (0 = infinito)</string>
+    <string name="terminal_rx_pause_desc">Pausar visualização</string>
+    <string name="terminal_rx_save_desc">Guardar em ficheiro</string>
+    <string name="terminal_rx_clear_desc">Limpar área de receção</string>
+    <string name="terminal_tx_clear_desc">Limpar entrada</string>
+
+    <!-- 终端页：提示消息 -->
+    <string name="terminal_filled">Inserido na caixa de envio</string>
+    <string name="terminal_rx_cleared">Área de receção limpa</string>
+    <string name="terminal_display_paused">Visualização em pausa (os dados continuam a ser recebidos e registados)</string>
+    <string name="terminal_display_resumed">Visualização retomada</string>
+    <string name="terminal_nothing_to_save">Não há conteúdo para guardar</string>
+    <string name="terminal_save_failed">Falha ao guardar</string>
+    <string name="terminal_saved">Guardado: %1$s</string>
+    <string name="terminal_share">Partilhar</string>
+    <string name="terminal_rx_charset_set">Conjunto de caracteres de receção: %1$s</string>
+    <string name="terminal_escape_on">Interpretação de caracteres de escape ativada</string>
+    <string name="terminal_escape_off">Interpretação de caracteres de escape desativada</string>
+    <string name="terminal_serial_not_open">Porta série fechada; toque no botão de energia no canto superior direito</string>
+    <string name="terminal_pick_file_first">Escolha o ficheiro a enviar</string>
+    <string name="terminal_input_first">Introduza o conteúdo a enviar</string>
+    <string name="terminal_no_history">Sem histórico de envio</string>
+    <string name="terminal_recent_sends">Envios recentes</string>
+    <string name="terminal_read_file_failed">Falha ao ler o ficheiro</string>
+    <string name="terminal_unknown_file">Ficheiro desconhecido</string>
+    <string name="terminal_loaded">Carregado: %1$s (%2$d bytes)</string>
+    <string name="terminal_source_manual">Envio manual</string>
+
+    <!-- 终端页：结束符 -->
+    <string name="terminal_newline">Fim de linha</string>
+    <string name="terminal_newline_format">Fim de linha: %1$s</string>
+
+    <!-- 终端页：发送按钮状态 -->
+    <string name="terminal_btn_stop">Parar</string>
+    <string name="terminal_btn_loop">Iniciar ciclo</string>
+
+    <!-- 终端页：周期发送 -->
+    <string name="terminal_loop_started_count">Envio periódico iniciado: intervalo %1$dms · total %2$d vezes</string>
+    <string name="terminal_loop_started_infinite">Envio periódico iniciado: intervalo %1$dms · ciclo infinito</string>
+    <string name="terminal_loop_progress">Ciclo %1$d/%2$d</string>
+    <string name="terminal_sent_times">Enviado %1$d vezes</string>
+    <string name="terminal_loop_finished">Envio periódico terminado, total %1$d vezes</string>
+
+    <!-- 终端页：文件发送 -->
+    <string name="terminal_no_file">Nenhum ficheiro selecionado\nAceita qualquer ficheiro; pode ativar a interpretação de escapes antes de enviar</string>
+    <string name="terminal_file_info">%1$s\nTamanho: %2$d bytes (%3$s)</string>
+    <string name="terminal_file_echo">[Ficheiro %1$d bytes]</string>
+    <string name="terminal_file_progress">Enviado %1$d / %2$d bytes</string>
+
+    <!-- 终端页：统计 -->
+    <string name="terminal_rx_stats">RX %1$s · %2$d pacotes</string>
+    <string name="terminal_tx_stats">TX %1$s · %2$d pacotes</string>
+
+    <!-- 终端页：输入提示 -->
+    <string name="terminal_hint_hex">Introduza hexadecimal, ex.: 01 03 00 00 00 0A</string>
+    <string name="terminal_hint_input">Introduza o conteúdo a enviar…</string>
+
+    <!-- ==================== 工具页：校验计算器 ==================== -->
+    <string name="tool_tab_checksum">Calculadora de verificação</string>
+    <string name="tool_tab_ascii">Tabela ASCII</string>
+    <string name="tool_input_data">Dados de entrada</string>
+    <string name="tool_input_hint_full">HEX ex.: 01 03 00 00 00 0A\nASCII ex.: 123456789</string>
+    <string name="tool_input_hint_hex">HEX ex.: 01 03 00 00 00 0A</string>
+    <string name="tool_input_hint_ascii">ASCII ex.: 123456789</string>
+    <string name="tool_escape">Escape</string>
+    <string name="tool_input_invalid">Formato incorreto</string>
+    <string name="tool_input_format_invalid">Formato de entrada incorreto</string>
+    <string name="tool_hex_rule">A entrada HEX só permite 0-9 A-F e separadores</string>
+    <string name="tool_checksum_algo">Algoritmo de verificação</string>
+    <string name="tool_high_byte_first">Byte alto primeiro</string>
+    <string name="tool_refin">Inverter entrada</string>
+    <string name="tool_refout">Inverter saída</string>
+    <string name="tool_invert">Inverter resultado</string>
+    <string name="tool_algo_group">Categoria de algoritmo</string>
+    <string name="tool_output_width">Largura de saída</string>
+    <string name="tool_width_opt_follow">Conforme o algoritmo</string>
+    <string name="tool_width_opt_8">8 bits</string>
+    <string name="tool_width_opt_16">16 bits</string>
+    <string name="tool_width_opt_32">32 bits</string>
+    <string name="tool_width_chip_follow">Largura: conforme o algoritmo</string>
+    <string name="tool_width_chip_format">Largura %1$d</string>
+    <string name="tool_xor_chip_format">XOR 0x%1$s</string>
+    <string name="tool_xor_value">Valor XOR do resultado</string>
+    <string name="tool_xor_value_hint">Aceita prefixo 0x ou decimal, ex.: 0xFF</string>
+    <string name="tool_calc">Calcular verificação</string>
+    <string name="tool_algo_desc_crc">Largura %1$d · polinómio 0x%2$s · valor inicial 0x%3$s · XorOut 0x%4$s · RefIn=%5$b RefOut=%6$b</string>
+    <string name="tool_algo_desc_check">" · valor de verificação padrão 0x%1$s"</string>
+    <string name="tool_copy">Copiar</string>
+    <string name="tool_fill_send">Inserir na caixa de envio</string>
+    <string name="tool_append_send">Acrescentar aos dados e enviar</string>
+    <string name="tool_copied_checksum_format">Verificação copiada: %1$s</string>
+    <string name="tool_serial_not_open">Porta série fechada</string>
+    <string name="tool_note_checksum_format">Dados+%1$s</string>
+    <string name="tool_sent_with_checksum">Enviado %1$d bytes (dados + verificação)</string>
+
+    <!-- ==================== 工具页：ASCII 码表 ==================== -->
+    <string name="tool_ascii_search_hint">Procurar caractere / hexadecimal / nome</string>
+    <string name="tool_ascii_hint">Toque em qualquer célula para copiar / inserir na caixa de envio</string>
+    <string name="tool_ascii_hint_count_format">Toque em qualquer célula para copiar / inserir na caixa de envio (%1$d itens)</string>
+    <string name="tool_ascii_hint_search_format">Procurar «%1$s»: %2$d resultados</string>
+    <string name="tool_ascii_space">Espaço</string>
+    <string name="tool_ascii_del">Apagar</string>
+    <string name="tool_ascii_digit_format">Dígito %1$s</string>
+    <string name="tool_ascii_upper_format">Letra maiúscula %1$s</string>
+    <string name="tool_ascii_lower_format">Letra minúscula %1$s</string>
+    <string name="tool_menu_copy_hex_format">Copiar HEX (%1$s)</string>
+    <string name="tool_menu_send_byte">Enviar este byte</string>
+    <string name="tool_menu_fill_hex">Inserir na caixa de envio (HEX)</string>
+    <string name="tool_menu_copy_char_format">Copiar caractere «%1$s»</string>
+    <string name="tool_copied_char">Caractere copiado</string>
+    <string name="tool_copied_hex">HEX copiado</string>
+    <string name="tool_sent_hex_format">Enviado 0x%1$s</string>
+
+    <!-- 0 ~ 31 控制字符说明 -->
+    <string name="tool_ctrl_nul">Caractere nulo</string>
+    <string name="tool_ctrl_soh">Início de cabeçalho</string>
+    <string name="tool_ctrl_stx">Início de texto</string>
+    <string name="tool_ctrl_etx">Fim de texto</string>
+    <string name="tool_ctrl_eot">Fim de transmissão</string>
+    <string name="tool_ctrl_enq">Consulta</string>
+    <string name="tool_ctrl_ack">Confirmação</string>
+    <string name="tool_ctrl_bel">Campainha</string>
+    <string name="tool_ctrl_bs">Retrocesso</string>
+    <string name="tool_ctrl_ht">Tabulação horizontal</string>
+    <string name="tool_ctrl_lf">Nova linha</string>
+    <string name="tool_ctrl_vt">Tabulação vertical</string>
+    <string name="tool_ctrl_ff">Nova página</string>
+    <string name="tool_ctrl_cr">Retorno de carro</string>
+    <string name="tool_ctrl_so">Deslocamento para fora</string>
+    <string name="tool_ctrl_si">Deslocamento para dentro</string>
+    <string name="tool_ctrl_dle">Escape de ligação de dados</string>
+    <string name="tool_ctrl_dc1">Controlo de dispositivo 1</string>
+    <string name="tool_ctrl_dc2">Controlo de dispositivo 2</string>
+    <string name="tool_ctrl_dc3">Controlo de dispositivo 3</string>
+    <string name="tool_ctrl_dc4">Controlo de dispositivo 4</string>
+    <string name="tool_ctrl_nak">Negação</string>
+    <string name="tool_ctrl_syn">Sincronismo</string>
+    <string name="tool_ctrl_etb">Fim de bloco de transmissão</string>
+    <string name="tool_ctrl_can">Cancelar</string>
+    <string name="tool_ctrl_em">Fim de suporte</string>
+    <string name="tool_ctrl_sub">Substituição</string>
+    <string name="tool_ctrl_esc">Escape</string>
+    <string name="tool_ctrl_fs">Separador de ficheiro</string>
+    <string name="tool_ctrl_gs">Separador de grupo</string>
+    <string name="tool_ctrl_rs">Separador de registo</string>
+    <string name="tool_ctrl_us">Separador de unidade</string>
+
+    <!-- 128 ~ 191 扩展字符说明（windows-1252 / Latin-1 上半区） -->
+    <string name="tool_ext_euro">Símbolo do euro</string>
+    <string name="tool_ext_undefined">Indefinido</string>
+    <string name="tool_ext_quote_low_single">Aspa baixa simples</string>
+    <string name="tool_ext_florin">F cursivo</string>
+    <string name="tool_ext_quote_low_double">Aspa baixa dupla</string>
+    <string name="tool_ext_ellipsis">Reticências</string>
+    <string name="tool_ext_dagger">Cruz</string>
+    <string name="tool_ext_dagger_double">Cruz dupla</string>
+    <string name="tool_ext_circumflex">Circunflexo modificador</string>
+    <string name="tool_ext_permille">Por mil</string>
+    <string name="tool_ext_s_caron">S com caron</string>
+    <string name="tool_ext_langle_single">Aspa angular esquerda</string>
+    <string name="tool_ext_oe_ligature">Ligadura OE</string>
+    <string name="tool_ext_z_caron">Z com caron</string>
+    <string name="tool_ext_quote_left_single">Aspa simples esquerda</string>
+    <string name="tool_ext_quote_right_single">Aspa simples direita</string>
+    <string name="tool_ext_quote_left_double">Aspa dupla esquerda</string>
+    <string name="tool_ext_quote_right_double">Aspa dupla direita</string>
+    <string name="tool_ext_bullet">Marca de lista</string>
+    <string name="tool_ext_dash_en">Meia-risca</string>
+    <string name="tool_ext_dash_em">Travessão</string>
+    <string name="tool_ext_tilde">Til modificador</string>
+    <string name="tool_ext_trademark">Marca comercial (™)</string>
+    <string name="tool_ext_s_caron_lower">s com caron</string>
+    <string name="tool_ext_rangle_single">Aspa angular direita</string>
+    <string name="tool_ext_oe_ligature_lower">Ligadura oe</string>
+    <string name="tool_ext_z_caron_lower">z com caron</string>
+    <string name="tool_ext_y_diaeresis">Y com trema</string>
+    <string name="tool_ext_nbsp">Espaço não separável</string>
+    <string name="tool_ext_exclaim_inverted">Ponto de exclamação invertido</string>
+    <string name="tool_ext_cent">Cêntimo</string>
+    <string name="tool_ext_pound">Libra esterlina</string>
+    <string name="tool_ext_currency">Símbolo monetário</string>
+    <string name="tool_ext_yen">Iene</string>
+    <string name="tool_ext_broken_bar">Barra vertical quebrada</string>
+    <string name="tool_ext_section">Símbolo de secção</string>
+    <string name="tool_ext_diaeresis">Trema</string>
+    <string name="tool_ext_copyright">Direitos de autor</string>
+    <string name="tool_ext_ordinal_f">Ordinal feminino</string>
+    <string name="tool_ext_langle_double">Aspas angulares duplas esquerdas</string>
+    <string name="tool_ext_not">Negação (¬)</string>
+    <string name="tool_ext_shy">Hífen suave</string>
+    <string name="tool_ext_registered">Marca registada (®)</string>
+    <string name="tool_ext_macron">Macron</string>
+    <string name="tool_ext_degree">Grau</string>
+    <string name="tool_ext_plus_minus">Mais-menos</string>
+    <string name="tool_ext_superscript_two">Expoente 2</string>
+    <string name="tool_ext_superscript_three">Expoente 3</string>
+    <string name="tool_ext_acute">Acento agudo</string>
+    <string name="tool_ext_micro">Micro</string>
+    <string name="tool_ext_paragraph">Parágrafo</string>
+    <string name="tool_ext_middle_dot">Ponto médio</string>
+    <string name="tool_ext_cedilla">Cedilha</string>
+    <string name="tool_ext_superscript_one">Expoente 1</string>
+    <string name="tool_ext_ordinal_m">Ordinal masculino</string>
+    <string name="tool_ext_rangle_double">Aspas angulares duplas direitas</string>
+    <string name="tool_ext_quarter">Um quarto</string>
+    <string name="tool_ext_half">Meio</string>
+    <string name="tool_ext_three_quarters">Três quartos</string>
+    <string name="tool_ext_question_inverted">Ponto de interrogação invertido</string>
+    <string name="tool_ext_multiply">Sinal de multiplicação</string>
+    <string name="tool_ext_divide">Sinal de divisão</string>
+
+    <!-- ==================== 更多页 ==================== -->
+    <string name="more_tcp_title">Porta série ↔ TCP (transmissão transparente)</string>
+    <string name="more_tcp_value">Servidor / cliente</string>
+    <string name="more_tcp_sub">Reencaminha dados da porta série para a rede, ou escreve na porta série os dados da rede</string>
+    <string name="more_bg_custom">Imagem personalizada</string>
+    <string name="more_bg_scrim_hint">0 ~ 100; quanto maior, mais escuro</string>
+    <string name="more_no_history">Sem histórico</string>
+    <string name="more_export_failed">Falha na exportação</string>
+    <string name="more_exported_format">Exportado %1$s</string>
+    <string name="more_share">Partilhar</string>
+    <string name="more_export_history">Exportar registos TX/RX</string>
+    <string name="more_count_format">%1$d registos</string>
+    <string name="more_export_dir">Diretório de exportação</string>
+    <string name="more_export_dir_msg">%1$s\n\nPode obtê-lo através de um gestor de ficheiros ou adb pull.</string>
+    <string name="more_view">Ver</string>
+    <string name="more_reset">Restaurar predefinições</string>
+    <string name="more_reset_msg">Irá limpar toda a configuração (parâmetros da porta série, configuração TX/RX, aparência, etc.).\nOs comandos rápidos e as regras de resposta automática não serão eliminados.</string>
+    <string name="more_reset_btn">Restaurar</string>
+    <string name="more_reset_done">Predefinições restauradas</string>
+    <string name="more_reset_careful">Use com cuidado</string>
+    <string name="more_pick_image">Escolher fundo personalizado</string>
+    <string name="more_selected">Selecionado</string>
+    <string name="more_pick_image_sub">Escolha uma imagem da galeria; recomenda-se uma imagem horizontal grande</string>
+    <string name="more_exit">Sair da aplicação</string>
+    <string name="more_exit_serial_open">Feche a porta série antes de sair</string>
+    <string name="more_exit_normal">Sair após libertar os recursos</string>
+    <string name="more_exit_confirm_serial_open">A ligação à porta série será fechada e os registos serão guardados antes de sair.\nConfirmar a saída?</string>
+    <string name="more_exit_confirm_normal">Os registos serão guardados antes de sair da aplicação.\nConfirmar a saída?</string>
+    <string name="more_exit_btn">Sair</string>
+    <string name="more_source">Código aberto</string>
+    <string name="more_copy_url">Copiar endereço</string>
+    <string name="more_open_browser">Abrir no navegador</string>
+    <string name="more_url_copied">Endereço copiado</string>
+    <string name="more_no_browser_copied">Não foi possível abrir o navegador; endereço copiado</string>
+    <string name="more_bg_set">Imagem de fundo definida</string>
+    <string name="more_bg_read_failed">Falha ao ler a imagem</string>
+    <string name="more_section_network">Rede</string>
+    <string name="more_section_personal">Personalização</string>
+    <string name="more_section_data">Dados e manutenção</string>
+
+    <!-- ==================== 关于 ==================== -->
+    <string name="about_version_format">Versão %1$s (%2$d)</string>
+    <string name="about_author">Autor: Yu Jing</string>
+    <string name="about_source_url">Código aberto: github.com/yutils/YSerialPort</string>
+    <string name="about_footer">Esta ferramenta serve para depurar dispositivos de porta série e suporta TX/RX ASCII / HEX,\nenvio de ficheiros, envio periódico, resposta automática, cálculo de verificação, etc.\n\nBiblioteca de porta série YSerialPort · sem conflito de .so com outras ferramentas de porta série</string>
+
+    <!-- ==================== 指令页 ==================== -->
+
+    <!-- 页面 -->
+    <string name="command_title">Comandos rápidos</string>
+    <string name="command_add">Novo</string>
+    <string name="command_add_desc">Novo comando</string>
+    <string name="command_empty_title">Ainda não há comandos rápidos</string>
+    <string name="command_empty_sub">Toque em «Novo» no canto superior direito para criar tramas frequentes</string>
+    <string name="command_count_format">%1$d no total · prima «Enviar» para enviar com um só toque</string>
+
+    <!-- 列表项 -->
+    <string name="command_send">Enviar</string>
+    <string name="command_more_desc">Mais ações</string>
+    <string name="command_item_unnamed">Sem nome</string>
+
+    <!-- 发送 -->
+    <string name="command_serial_not_open">Porta série fechada; abra-a primeiro</string>
+    <string name="command_content_invalid">O conteúdo do comando está vazio ou em formato incorreto</string>
+    <string name="command_note">Comando rápido</string>
+    <string name="command_note_name">Comando rápido: %1$s</string>
+    <string name="command_sent_bytes">Enviado %1$d bytes</string>
+
+    <!-- 卡片点击菜单 -->
+    <string name="command_fallback_name">Comando</string>
+    <string name="command_action_send_now">Enviar com um toque</string>
+    <string name="command_action_fill">Inserir na caixa de envio</string>
+
+    <!-- 更多菜单 -->
+    <string name="command_unnamed">Comando sem nome</string>
+    <string name="command_menu_edit">Editar</string>
+    <string name="command_menu_duplicate">Duplicar</string>
+    <string name="command_menu_move_up">Mover para cima</string>
+    <string name="command_menu_move_down">Mover para baixo</string>
+    <string name="command_delete">Eliminar</string>
+    <string name="command_copy_format">Cópia de %1$s</string>
+    <string name="command_delete_title">Eliminar comando</string>
+    <string name="command_delete_confirm">Eliminar «%1$s»?</string>
+
+    <!-- 编辑对话框 -->
+    <string name="command_add_title">Novo comando rápido</string>
+    <string name="command_edit_title">Editar comando rápido</string>
+    <string name="command_save">Guardar</string>
+    <string name="command_name_hint">Nome do comando, ex.: ler temperatura</string>
+    <string name="command_hint_hex">HEX ex.: 01 03 00 00 00 0A C5 CD</string>
+    <string name="command_hint_ascii">Texto, ex.: AT+RESET</string>
+    <string name="command_escape_chip">Escape</string>
+    <string name="command_newline_chip">Fim de linha: %1$s</string>
+    <string name="command_newline_title">Fim de linha</string>
+    <string name="command_escape_on">No envio, escapes como \\r \\n \\xNN serão interpretados</string>
+    <string name="command_escape_off">Interpretação de escapes desativada</string>
+
+    <!-- 校验提示 -->
+    <string name="command_error_content_empty">Introduza o conteúdo do comando</string>
+    <string name="command_error_hex_invalid">Formato HEX incorreto; verifique se contém caracteres inválidos</string>
+    <string name="command_default_name_hex">Comando HEX</string>
+    <string name="command_default_name_ascii">Comando de texto</string>
+    <string name="command_saved">Guardado</string>
+
+    <!-- ==================== 应答页 ==================== -->
+
+    <!-- 页面 -->
+    <string name="autoreply_title">Resposta automática</string>
+    <string name="autoreply_add">Novo</string>
+    <string name="autoreply_empty_title">Ainda não há regras de resposta automática</string>
+    <string name="autoreply_empty_sub">Responde automaticamente com dados específicos ao receber conteúdo correspondente</string>
+    <string name="autoreply_count_format">%1$d regras · %2$d ativas · resposta automática ao receber dados correspondentes</string>
+    <string name="autoreply_enabled_toast">Resposta automática ativada</string>
+    <string name="autoreply_disabled_toast">Resposta automática desativada</string>
+
+    <!-- 列表项 -->
+    <string name="autoreply_more_desc">Mais ações</string>
+    <string name="autoreply_unnamed">Regra sem nome</string>
+    <string name="autoreply_hits_format">%1$d ocorrências</string>
+    <string name="autoreply_match_label">Correspondência</string>
+    <string name="autoreply_reply_label">Resposta</string>
+
+    <!-- 更多菜单 -->
+    <string name="autoreply_fallback_name">Regra</string>
+    <string name="autoreply_menu_enable">Ativar esta regra</string>
+    <string name="autoreply_menu_disable">Desativar esta regra</string>
+    <string name="autoreply_menu_edit">Editar</string>
+    <string name="autoreply_menu_test">Testar resposta (enviar uma vez de imediato)</string>
+    <string name="autoreply_menu_duplicate">Duplicar</string>
+    <string name="autoreply_menu_move_up">Mover para cima</string>
+    <string name="autoreply_menu_move_down">Mover para baixo</string>
+    <string name="autoreply_delete">Eliminar</string>
+    <string name="autoreply_rule_enabled">«%1$s» ativada</string>
+    <string name="autoreply_rule_disabled">«%1$s» desativada</string>
+    <string name="autoreply_reply_invalid">O conteúdo da resposta está vazio ou em formato incorreto</string>
+    <string name="autoreply_test_note">Resposta de teste</string>
+    <string name="autoreply_test_sent">Resposta de teste enviada: %1$d bytes</string>
+    <string name="autoreply_copy_format">Cópia de %1$s</string>
+    <string name="autoreply_delete_title">Eliminar regra</string>
+    <string name="autoreply_delete_confirm">Eliminar «%1$s»?</string>
+
+    <!-- 编辑对话框 -->
+    <string name="autoreply_add_title">Nova regra de resposta</string>
+    <string name="autoreply_edit_title">Editar regra de resposta</string>
+    <string name="autoreply_save">Guardar</string>
+    <string name="autoreply_name_hint">Nome da regra, ex.: resposta à consulta de temperatura</string>
+    <string name="autoreply_section_match">Correspondência de receção</string>
+    <string name="autoreply_section_reply">Conteúdo da resposta</string>
+    <string name="autoreply_match_hint_hex">HEX aceita curingas: 01 03 ?? ?? 00 0A</string>
+    <string name="autoreply_match_hint_ascii">Texto a corresponder</string>
+    <string name="autoreply_reply_hint">Conteúdo da resposta em HEX ou texto</string>
+    <string name="autoreply_match_mode_title">Modo de correspondência</string>
+    <string name="autoreply_newline_chip">Fim de linha: %1$s</string>
+    <string name="autoreply_newline_title">Fim de linha</string>
+    <string name="autoreply_escape_chip">Escape</string>
+    <string name="autoreply_delay_label">Atraso da resposta(ms)</string>
+    <string name="autoreply_once_chip">Responder apenas uma vez</string>
+    <string name="autoreply_preview_empty">Pré-visualização da resposta: (vazio)</string>
+    <string name="autoreply_preview_format">Pré-visualização da resposta: %1$s</string>
+
+    <!-- 校验提示 -->
+    <string name="autoreply_error_match_empty">Introduza o conteúdo de correspondência</string>
+    <string name="autoreply_error_reply_empty">Introduza o conteúdo da resposta</string>
+    <string name="autoreply_error_match_hex">Formato HEX do conteúdo de correspondência incorreto</string>
+    <string name="autoreply_error_reply_hex">Formato HEX do conteúdo da resposta incorreto</string>
+    <string name="autoreply_default_name">Regra de resposta</string>
+    <string name="autoreply_saved">Guardado</string>
+
+    <!-- 引擎（无 Context） -->
+    <string name="autoreply_note">Resposta automática</string>
+    <string name="autoreply_note_name">Resposta automática: %1$s</string>
+
+    <!-- 历史记录页：筛选 / 搜索 / 记录项 -->
+    <string name="history_filter_all">Todos</string>
+    <string name="history_filter_rx">Receção</string>
+    <string name="history_filter_tx">Envio</string>
+    <string name="history_dir_rx">Receção</string>
+    <string name="history_dir_tx">Envio</string>
+    <string name="history_dir_system">Sistema</string>
+    <string name="history_search_hint">Procurar conteúdo / HEX</string>
+    <string name="history_export_desc">Exportar registos</string>
+    <string name="history_clear_desc">Limpar registos</string>
+    <string name="history_empty">Sem registos TX/RX</string>
+    <string name="history_no_records">Sem registos</string>
+    <string name="history_clear_title">Limpar registos</string>
+    <string name="history_clear_message">Serão eliminados todos os %1$d registos TX/RX, sem possibilidade de recuperação.</string>
+    <string name="history_cleared">Limpo</string>
+    <string name="history_count_format">%1$d registos (total %2$d)</string>
+    <string name="history_no_export">Sem registos para exportar</string>
+    <string name="history_export_failed">Falha na exportação</string>
+    <string name="history_exported_format">Exportado: %1$s</string>
+    <string name="history_export_share">Partilhar</string>
+    <string name="history_menu_title">Ações do registo</string>
+    <string name="history_menu_copy_hex">Copiar HEX</string>
+    <string name="history_menu_copy_text">Copiar texto</string>
+    <string name="history_menu_fill_hex">Preencher a caixa de envio (HEX)</string>
+    <string name="history_menu_fill_ascii">Preencher a caixa de envio (ASCII)</string>
+    <string name="history_menu_send_hex">Enviar HEX com um toque</string>
+    <string name="history_menu_delete">Eliminar este registo</string>
+    <string name="history_copied_hex">HEX copiado</string>
+    <string name="history_copied_text">Texto copiado</string>
+    <string name="history_deleted">Eliminado</string>
+
+    <!-- TCP 透传页：界面 -->
+    <string name="tcp_title">Porta série ↔ TCP (transmissão transparente)</string>
+    <string name="tcp_back_desc">Voltar</string>
+    <string name="tcp_mode_title">Modo de funcionamento</string>
+    <string name="tcp_mode_server">Servidor</string>
+    <string name="tcp_mode_client">Cliente</string>
+    <string name="tcp_listen_port">Porta de escuta</string>
+    <string name="tcp_remote_ip">IP remoto</string>
+    <string name="tcp_start">Iniciar</string>
+    <string name="tcp_stop">Parar</string>
+    <string name="tcp_connect">Ligar</string>
+    <string name="tcp_disconnect">Desligar</string>
+    <string name="tcp_log_title">Registo de transmissão transparente</string>
+    <string name="tcp_clear_log_desc">Limpar registo</string>
+    <string name="tcp_state_stopped">Não iniciado</string>
+    <string name="tcp_state_running">Em execução</string>
+    <string name="tcp_state_running_server">Em execução · servidor à escuta na porta %1$s · %2$d clientes ligados</string>
+    <string name="tcp_state_running_client">Em execução · ligado a %1$s:%2$s</string>
+
+    <!-- TCP 透传页：日志与提示 -->
+    <string name="tcp_intro">A transmissão transparente reencaminha para o TCP os dados recebidos da porta série e escreve na porta série os dados recebidos do TCP.</string>
+    <string name="tcp_local_ip_format">IP local: %1$s</string>
+    <string name="tcp_ip_unavailable">Não obtido</string>
+    <string name="tcp_port_invalid_title">Porta inválida</string>
+    <string name="tcp_port_invalid_message">Introduza um número de porta entre 1 e 65535</string>
+    <string name="tcp_host_invalid_title">Endereço inválido</string>
+    <string name="tcp_host_invalid_message">Introduza o IP remoto ou o domínio</string>
+    <string name="tcp_connecting">A ligar a %1$s:%2$d …</string>
+    <string name="tcp_serial_not_configured">Nota: a porta série ainda não está configurada; escolha e abra a porta série em «Definições»</string>
+    <string name="tcp_serial_auto_opening">Porta série fechada; a abrir automaticamente %1$s …</string>
+    <string name="tcp_serial_opened">Porta série aberta: %1$s</string>
+    <string name="tcp_serial_open_failed">Falha ao abrir a porta série: %1$s</string>
+    <string name="tcp_unknown_error">Erro desconhecido</string>
+    <string name="tcp_note">TCP transparente</string>
+
+    <!-- TCP 透传桥：日志 -->
+    <string name="tcp_log_server_started">Servidor iniciado, à escuta na porta %1$d</string>
+    <string name="tcp_log_start_failed">Falha ao iniciar: %1$s %2$s</string>
+    <string name="tcp_log_accept_ended">accept terminado: %1$s</string>
+    <string name="tcp_log_client_joined">Cliente ligado: %1$s:%2$d (atualmente %3$d)</string>
+    <string name="tcp_log_client_init_failed">Falha na inicialização do cliente: %1$s</string>
+    <string name="tcp_log_read_ended">Leitura terminada: %1$s</string>
+    <string name="tcp_log_tcp_to_serial_ok">TCP → porta série: %1$d bytes (submetidos)</string>
+    <string name="tcp_log_tcp_to_serial_failed">TCP → porta série: %1$d bytes (falha: porta série fechada)</string>
+    <string name="tcp_log_connected">Ligado a %1$s:%2$d</string>
+    <string name="tcp_log_remote_disconnected">Remoto desligado</string>
+    <string name="tcp_log_connect_ended">Ligação terminada: %1$s %2$s</string>
+    <string name="tcp_log_stopped">Transmissão transparente parada</string>
+    <string name="tcp_log_write_client_failed">Falha ao escrever no cliente: %1$s %2$s</string>
+    <string name="tcp_log_serial_to_tcp_clients">Porta série → TCP: %1$d bytes × %2$d clientes</string>
+    <string name="tcp_log_serial_to_tcp">Porta série → TCP: %1$d bytes</string>
+    <string name="tcp_log_send_failed">Falha ao enviar: %1$s %2$s</string>
+    <string name="tcp_log_client_left">Cliente desligado (%1$d restantes)</string>
+
+    <!-- 串口管理：状态与错误 -->
+    <string name="serial_state_open">Ligado</string>
+    <string name="serial_state_error_short">Erro</string>
+    <string name="serial_err_no_permission">Sem permissão de leitura/escrita da porta série: %1$s</string>
+    <string name="serial_err_no_permission_hint">Confirme que o dispositivo tem root ou que a permissão da porta série está aberta</string>
+    <string name="serial_err_open_failed">Falha ao abrir a porta série: %1$s</string>
+    <string name="serial_not_open">Porta série fechada</string>
+    <string name="serial_send_failed">Falha ao enviar; verifique a ligação à porta série</string>
+    <string name="serial_file_busy">A enviar ficheiro; aguarde</string>
+    <string name="serial_file_bytes">[Ficheiro] %1$d bytes</string>
+    <string name="serial_file_send_note">Envio de ficheiro</string>
+    <string name="serial_file_interrupted">Envio de ficheiro interrompido (enviados %1$d / %2$d bytes)</string>
+    <string name="serial_loop_note">Envio periódico</string>
+    <string name="serial_rx_note">Receção</string>
+
+    <!-- 字符集展示名 -->
+    <string name="charset_gb18030">GB18030 (norma chinesa)</string>
+    <string name="charset_big5">BIG5 (chinês tradicional)</string>
+    <string name="charset_utf16le">UTF-16LE (little-endian)</string>
+    <string name="charset_utf16be">UTF-16BE (big-endian)</string>
+    <string name="charset_iso_8859_1">ISO-8859-1 (Latin-1)</string>
+    <string name="charset_shift_jis">Shift_JIS (japonês)</string>
+    <string name="charset_euc_kr">EUC-KR (coreano)</string>
+
+    <!-- 校验算法：分组 -->
+    <string name="checksum_group_common">Comuns</string>
+
+    <!-- 校验算法：名称 -->
+    <string name="checksum_algo_sum8">Soma SUM8</string>
+    <string name="checksum_algo_sum16">Soma SUM16</string>
+    <string name="checksum_algo_xor8">Verificação XOR8</string>
+    <string name="checksum_algo_xor16">Verificação XOR16</string>
+    <string name="checksum_algo_bcc">Verificação de bloco BCC</string>
+    <string name="checksum_algo_lrc">Verificação longitudinal LRC</string>
+    <string name="checksum_algo_lrc16">Verificação longitudinal LRC16</string>
+    <string name="checksum_algo_twos8">Complemento para dois SUM8</string>
+
+    <!-- 校验算法：描述 -->
+    <string name="checksum_desc_sum8">Soma de todos os bytes, usando os 8 bits inferiores</string>
+    <string name="checksum_desc_sum16">Soma de todos os bytes, usando os 16 bits inferiores</string>
+    <string name="checksum_desc_xor8">XOR byte a byte de todos os bytes, 8 bits inferiores</string>
+    <string name="checksum_desc_xor16">XOR byte a byte de todos os bytes, 16 bits inferiores</string>
+    <string name="checksum_desc_bcc">Igual ao XOR8, para códigos de barras/cartões magnéticos</string>
+    <string name="checksum_desc_lrc">Soma invertida mais um (MODBUS ASCII)</string>
+    <string name="checksum_desc_lrc16">Soma de 16 bits invertida mais um</string>
+    <string name="checksum_desc_twos8">Soma invertida mais um</string>
+
+    <!-- 文件 -->
+    <string name="file_share_chooser">Partilhar ficheiro</string>
+
+    <!-- 数据仓库：历史导出 -->
+    <string name="store_export_title">Registos TX/RX da porta série</string>
+    <string name="store_export_time">Hora de exportação: %1$s</string>
+    <string name="store_export_columns">Direção\tHora\tTipo\tComprimento\tHEX\tTexto</string>
+    <string name="store_dir_rx">Receção</string>
+    <string name="store_dir_tx">Envio</string>
+    <string name="store_dir_sys">Sistema</string>
+
+    <!-- 数据仓库：默认快捷指令 -->
+    <string name="store_cmd_at">Comando AT</string>
+    <string name="store_cmd_modbus">Modbus: ler registos de retenção</string>
+    <string name="store_cmd_handshake">Trama de handshake</string>
+    <string name="store_cmd_reset">Reiniciar</string>
+    <string name="store_cmd_newline">Retorno + nova linha</string>
+</resources>

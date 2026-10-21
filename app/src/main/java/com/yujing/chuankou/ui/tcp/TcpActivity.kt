@@ -32,7 +32,9 @@ class TcpActivity : AppCompatActivity(), TcpBridge.Listener {
         setContentView(b.root)
         runCatching { YUtils.setFullScreen(this, true); YUtils.setImmersive(this, true) }
 
-        b.segMode.setOptions(listOf("服务端", "客户端"), mode)
+        b.segMode.setOptions(
+            listOf(getString(R.string.tcp_mode_server), getString(R.string.tcp_mode_client)), mode
+        )
         b.segMode.onSelected = { index ->
             mode = index
             b.llServer.visibility = if (index == 0) View.VISIBLE else View.GONE
@@ -49,8 +51,8 @@ class TcpActivity : AppCompatActivity(), TcpBridge.Listener {
         b.btnClearLog.setOnClickListener { b.tvLog.text = "" }
         b.btnBack.setOnClickListener { finish() }
 
-        b.tvLocalIp.text = "本机 IP：${localIp()}"
-        appendLog("透传功能会把串口收到的数据转发到 TCP，并把 TCP 收到的数据写入串口。")
+        b.tvLocalIp.text = getString(R.string.tcp_local_ip_format, localIp())
+        appendLog(getString(R.string.tcp_intro))
         updateState()
         TcpBridge.addListener(this)
     }
@@ -75,7 +77,7 @@ class TcpActivity : AppCompatActivity(), TcpBridge.Listener {
         }
         val port = b.etPort.text.toString().toIntOrNull()
         if (port == null || port !in 1..65535) {
-            Dialogs.info(this, "端口无效", "请输入 1 ~ 65535 之间的端口号")
+            Dialogs.info(this, getString(R.string.tcp_port_invalid_title), getString(R.string.tcp_port_invalid_message))
             return
         }
         Prefs.tcpPort = port.toString()
@@ -93,17 +95,17 @@ class TcpActivity : AppCompatActivity(), TcpBridge.Listener {
         val host = b.etHost.text.toString().trim()
         val port = b.etRemotePort.text.toString().toIntOrNull()
         if (host.isEmpty()) {
-            Dialogs.info(this, "地址无效", "请输入远端 IP 或域名")
+            Dialogs.info(this, getString(R.string.tcp_host_invalid_title), getString(R.string.tcp_host_invalid_message))
             return
         }
         if (port == null || port !in 1..65535) {
-            Dialogs.info(this, "端口无效", "请输入 1 ~ 65535 之间的端口号")
+            Dialogs.info(this, getString(R.string.tcp_port_invalid_title), getString(R.string.tcp_port_invalid_message))
             return
         }
         Prefs.tcpHost = host
         Prefs.tcpRemotePort = port.toString()
         ensureSerialOpen()
-        appendLog("正在连接 $host:$port …")
+        appendLog(getString(R.string.tcp_connecting, host, port))
         TcpBridge.startClient(host, port)
         updateState()
     }
@@ -113,27 +115,32 @@ class TcpActivity : AppCompatActivity(), TcpBridge.Listener {
         if (SerialManager.isOpen) return
         val cfg = com.yujing.chuankou.core.serial.SerialConfig.fromPrefs()
         if (cfg.device.isBlank()) {
-            appendLog("提示：尚未配置串口，请先到「设置」选择串口并打开")
+            appendLog(getString(R.string.tcp_serial_not_configured))
             return
         }
-        appendLog("串口未打开，正在自动打开 ${cfg.summary()} …")
+        appendLog(getString(R.string.tcp_serial_auto_opening, cfg.summary()))
         val ok = SerialManager.open(cfg)
-        appendLog(if (ok) "串口已打开：${cfg.summary()}" else "串口打开失败：${SerialManager.lastError ?: "未知错误"}")
+        appendLog(
+            if (ok) getString(R.string.tcp_serial_opened, cfg.summary())
+            else getString(R.string.tcp_serial_open_failed, SerialManager.lastError ?: getString(R.string.tcp_unknown_error))
+        )
     }
 
     private fun updateState() {
         val running = TcpBridge.isRunning
         val isServerMode = TcpBridge.currentMode == TcpBridge.Mode.SERVER
         val stateText = when {
-            running && isServerMode -> "运行中 · 服务端监听端口 ${Prefs.tcpPort} · 已接入 ${TcpBridge.clientCount} 个客户端"
-            running -> "运行中 · 已连接 ${Prefs.tcpHost}:${Prefs.tcpRemotePort}"
-            else -> "未启动"
+            running && isServerMode -> getString(R.string.tcp_state_running_server, Prefs.tcpPort, TcpBridge.clientCount)
+            running -> getString(R.string.tcp_state_running_client, Prefs.tcpHost, Prefs.tcpRemotePort)
+            else -> getString(R.string.tcp_state_stopped)
         }
         b.tvState.text = stateText
-        b.tvHeaderState.text = if (running) "运行中" else "未启动"
+        b.tvHeaderState.text = if (running) getString(R.string.tcp_state_running) else getString(R.string.tcp_state_stopped)
         b.tvHeaderState.setBackgroundResource(if (running) R.drawable.bg_status_open else R.drawable.bg_status_closed)
-        b.btnStartServer.text = if (running && isServerMode) "停止" else "启动"
-        b.btnStartClient.text = if (running && !isServerMode && TcpBridge.currentMode == TcpBridge.Mode.CLIENT) "断开" else "连接"
+        b.btnStartServer.text = if (running && isServerMode) getString(R.string.tcp_stop) else getString(R.string.tcp_start)
+        b.btnStartClient.text =
+            if (running && !isServerMode && TcpBridge.currentMode == TcpBridge.Mode.CLIENT) getString(R.string.tcp_disconnect)
+            else getString(R.string.tcp_connect)
 
         if (!running) {
             b.llServer.visibility = if (mode == 0) View.VISIBLE else View.GONE
@@ -153,8 +160,8 @@ class TcpActivity : AppCompatActivity(), TcpBridge.Listener {
         NetworkInterface.getNetworkInterfaces().toList()
             .flatMap { it.inetAddresses.toList() }
             .firstOrNull { !it.isLoopbackAddress && it is Inet4Address }
-            ?.hostAddress ?: "未获取到"
-    }.getOrDefault("未获取到")
+            ?.hostAddress ?: getString(R.string.tcp_ip_unavailable)
+    }.getOrDefault(getString(R.string.tcp_ip_unavailable))
 
     // ==================================================================
     override fun onLog(message: String) = appendLog(message)

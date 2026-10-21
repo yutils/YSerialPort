@@ -66,7 +66,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
-                    android:text="作者：余静"
+                    android:text="@string/about_author"
                     android:textColor="@color/c_text_tertiary"
                     android:textSize="11sp" />
 
@@ -90,7 +90,7 @@
                         android:layout_weight="1"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:text="开源地址：github.com/yutils/YSerialPort"
+                        android:text="@string/about_source_url"
                         android:textColor="?attr/colorPrimary"
                         android:textSize="11sp" />
 
@@ -122,7 +122,7 @@
                 android:paddingEnd="14dp"
                 android:paddingTop="12dp"
                 android:paddingBottom="6dp"
-                android:text="网络" />
+                android:text="@string/more_section_network" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -155,7 +155,7 @@
                 android:paddingEnd="14dp"
                 android:paddingTop="12dp"
                 android:paddingBottom="6dp"
-                android:text="个性化" />
+                android:text="@string/more_section_personal" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -212,7 +212,7 @@
                 android:paddingEnd="14dp"
                 android:paddingTop="12dp"
                 android:paddingBottom="6dp"
-                android:text="数据与维护" />
+                android:text="@string/more_section_data" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -271,7 +271,7 @@
             android:layout_marginBottom="20dp"
             android:gravity="center"
             android:lineSpacingExtra="4dp"
-            android:text="本工具用于调试串口设备，支持 ASCII / HEX 收发、\n文件发送、周期发送、自动应答、校验计算等能力。\n\n串口库 YSerialPort · 不与其他串口工具产生 so 冲突"
+            android:text="@string/about_footer"
             android:textColor="@color/c_text_tertiary"
             android:textSize="11sp" />
 

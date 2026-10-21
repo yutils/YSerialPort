@@ -48,7 +48,7 @@
                             style="@style/Text.YS.PanelTitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="输入数据" />
+                            android:text="@string/tool_input_data" />
 
                         <View
                             android:layout_width="0dp"
@@ -69,7 +69,7 @@
                         android:layout_marginTop="8dp"
                         android:layout_weight="1"
                         android:gravity="top|start"
-                        android:hint="HEX 例：01 03 00 00 00 0A&#10;ASCII 例：123456789"
+                        android:hint="@string/tool_input_hint_full"
                         android:importantForAutofill="no"
                         android:inputType="textMultiLine|textNoSuggestions"
                         android:minHeight="90dp"
@@ -93,7 +93,7 @@
                             android:id="@+id/chip_escape"
                             style="@style/Widget.YS.ChipText"
                             android:layout_marginStart="6dp"
-                            android:text="转义" />
+                            android:text="@string/tool_escape" />
 
                         <View
                             android:layout_width="0dp"
@@ -134,7 +134,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="校验算法" />
+                            android:text="@string/tool_checksum_algo" />
 
                         <TextView
                             android:id="@+id/chip_algo"
@@ -144,58 +144,57 @@
                             tools:text="CRC-16/MODBUS" />
                     </LinearLayout>
 
-                    <HorizontalScrollView
+                    <!-- 用 Flow 自动换行：长语言（俄/德/法）下 chip 不再挤出屏幕，而是折到下一行 -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:scrollbars="none">
+                        android:layout_marginTop="8dp">
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
+                        <TextView
+                            android:id="@+id/chip_high_first"
+                            style="@style/Widget.YS.ChipText"
+                            android:text="@string/tool_high_byte_first" />
+
+                        <TextView
+                            android:id="@+id/chip_refin"
+                            style="@style/Widget.YS.ChipText"
+                            android:text="@string/tool_refin" />
+
+                        <TextView
+                            android:id="@+id/chip_refout"
+                            style="@style/Widget.YS.ChipText"
+                            android:text="@string/tool_refout" />
+
+                        <TextView
+                            android:id="@+id/chip_invert"
+                            style="@style/Widget.YS.ChipText"
+                            android:text="@string/tool_invert" />
+
+                        <TextView
+                            android:id="@+id/chip_xor"
+                            style="@style/Widget.YS.ChipText"
+                            android:drawableEnd="@drawable/ic_edit"
+                            app:drawableTint="?attr/colorOnSurfaceVariant"
+                            tools:text="异或 0x00" />
+
+                        <TextView
+                            android:id="@+id/chip_width"
+                            style="@style/Widget.YS.ChipText"
+                            android:drawableEnd="@drawable/ic_chevron_down"
+                            app:drawableTint="?attr/colorOnSurfaceVariant"
+                            tools:text="位宽 16" />
+
+                        <androidx.constraintlayout.helper.widget.Flow
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/chip_high_first"
-                                style="@style/Widget.YS.ChipText"
-                                android:text="高字节在前" />
-
-                            <TextView
-                                android:id="@+id/chip_refin"
-                                style="@style/Widget.YS.ChipText"
-                                android:layout_marginStart="6dp"
-                                android:text="输入反转" />
-
-                            <TextView
-                                android:id="@+id/chip_refout"
-                                style="@style/Widget.YS.ChipText"
-                                android:layout_marginStart="6dp"
-                                android:text="输出反转" />
-
-                            <TextView
-                                android:id="@+id/chip_invert"
-                                style="@style/Widget.YS.ChipText"
-                                android:layout_marginStart="6dp"
-                                android:text="结果取反" />
-
-                            <TextView
-                                android:id="@+id/chip_xor"
-                                style="@style/Widget.YS.ChipText"
-                                android:layout_marginStart="6dp"
-                                android:drawableEnd="@drawable/ic_edit"
-                                app:drawableTint="?attr/colorOnSurfaceVariant"
-                                tools:text="异或 0x00" />
-
-                            <TextView
-                                android:id="@+id/chip_width"
-                                style="@style/Widget.YS.ChipText"
-                                android:layout_marginStart="6dp"
-                                android:drawableEnd="@drawable/ic_chevron_down"
-                                app:drawableTint="?attr/colorOnSurfaceVariant"
-                                tools:text="位宽 16" />
-                        </LinearLayout>
-                    </HorizontalScrollView>
+                            app:constraint_referenced_ids="chip_high_first,chip_refin,chip_refout,chip_invert,chip_xor,chip_width"
+                            app:flow_horizontalGap="6dp"
+                            app:flow_verticalGap="6dp"
+                            app:flow_wrapMode="chain"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_calc"
@@ -203,7 +202,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/btn_h"
                         android:layout_marginTop="10dp"
-                        android:text="计算校验值"
+                        android:text="@string/tool_calc"
                         app:icon="@drawable/ic_calculator"
                         app:iconGravity="textStart"
                         app:iconSize="18dp" />
@@ -264,15 +263,18 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
                             android:orientation="horizontal">
 
                             <com.google.android.material.button.MaterialButton
                                 android:id="@+id/btn_copy_result"
                                 style="@style/Widget.YS.Button.Outlined"
                                 android:layout_width="0dp"
-                                android:layout_height="38dp"
+                                android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="复制"
+                                android:maxLines="2"
+                                android:minHeight="38dp"
+                                android:text="@string/tool_copy"
                                 android:textSize="13sp"
                                 app:icon="@drawable/ic_copy"
                                 app:iconGravity="textStart"
@@ -283,20 +285,24 @@
                                 android:id="@+id/btn_append"
                                 style="@style/Widget.YS.Button.Tonal"
                                 android:layout_width="0dp"
-                                android:layout_height="38dp"
+                                android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
                                 android:layout_weight="1"
-                                android:text="填入发送框"
+                                android:maxLines="2"
+                                android:minHeight="38dp"
+                                android:text="@string/tool_fill_send"
                                 android:textSize="13sp" />
 
                             <com.google.android.material.button.MaterialButton
                                 android:id="@+id/btn_send_result"
                                 style="@style/Widget.YS.Button.Primary"
                                 android:layout_width="0dp"
-                                android:layout_height="38dp"
+                                android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
                                 android:layout_weight="1"
-                                android:text="追加到数据并发送"
+                                android:maxLines="2"
+                                android:minHeight="38dp"
+                                android:text="@string/tool_append_send"
                                 android:textSize="13sp" />
                         </LinearLayout>
                     </LinearLayout>
@@ -324,7 +330,7 @@
                     style="@style/Text.YS.PanelTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ASCII 码表" />
+                    android:text="@string/tool_tab_ascii" />
 
                 <com.yujing.chuankou.ui.widget.SegmentedControl
                     android:id="@+id/seg_ascii_range"
@@ -357,7 +363,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_weight="1"
                         android:background="@android:color/transparent"
-                        android:hint="搜索字符 / 十六进制 / 名称"
+                        android:hint="@string/tool_ascii_search_hint"
                         android:importantForAutofill="no"
                         android:inputType="text"
                         android:maxLines="1"
@@ -373,7 +379,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="点击任意单元格可复制 / 填入发送框"
+                android:text="@string/tool_ascii_hint"
                 android:textColor="@color/c_text_tertiary"
                 android:textSize="11sp" />
 

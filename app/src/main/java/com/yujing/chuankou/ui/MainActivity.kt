@@ -39,20 +39,20 @@ class MainActivity : AppCompatActivity(), SerialManager.Listener {
 
     private data class Page(
         val id: String,
-        val title: String,
-        val subtitle: String,
+        val titleRes: Int,
+        val subtitleRes: Int,
         val icon: Int,
         val create: () -> Fragment
     )
 
     private val pages: List<Page> = listOf(
-        Page("terminal", "终端", "串口收发 · 实时监控", R.drawable.ic_terminal) { TerminalFragment() },
-        Page("history", "历史", "收发记录 · 检索导出", R.drawable.ic_history) { HistoryFragment() },
-        Page("command", "快捷指令", "一键发送 · 常用报文", R.drawable.ic_command) { CommandFragment() },
-        Page("autoreply", "自动应答", "规则匹配 · 自动回复", R.drawable.ic_reply) { AutoReplyFragment() },
-        Page("tool", "工具", "校验算法 · ASCII 码表", R.drawable.ic_tool) { ToolFragment() },
-        Page("settings", "设置", "串口 · 收发 · 外观", R.drawable.ic_settings) { SettingsFragment() },
-        Page("more", "更多", "网络透传 · 关于", R.drawable.ic_more) { MoreFragment() }
+        Page("terminal", R.string.nav_terminal, R.string.nav_terminal_sub, R.drawable.ic_terminal) { TerminalFragment() },
+        Page("history", R.string.nav_history, R.string.nav_history_sub, R.drawable.ic_history) { HistoryFragment() },
+        Page("command", R.string.nav_command, R.string.nav_command_sub, R.drawable.ic_command) { CommandFragment() },
+        Page("autoreply", R.string.nav_autoreply, R.string.nav_autoreply_sub, R.drawable.ic_reply) { AutoReplyFragment() },
+        Page("tool", R.string.nav_tool, R.string.nav_tool_sub, R.drawable.ic_tool) { ToolFragment() },
+        Page("settings", R.string.nav_settings, R.string.nav_settings_sub, R.drawable.ic_settings) { SettingsFragment() },
+        Page("more", R.string.nav_more, R.string.nav_more_sub, R.drawable.ic_more) { MoreFragment() }
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -130,7 +130,7 @@ class MainActivity : AppCompatActivity(), SerialManager.Listener {
     }
 
     private fun initNav() {
-        binding.nav.setItems(pages.map { NavBarView.Item(it.id, it.icon, it.title) })
+        binding.nav.setItems(pages.map { NavBarView.Item(it.id, it.icon, getString(it.titleRes)) })
         binding.nav.onSelected = { index -> selectPage(pages[index].id) }
     }
 
@@ -139,8 +139,8 @@ class MainActivity : AppCompatActivity(), SerialManager.Listener {
         if (index < 0) return
         binding.nav.select(index, false)
         showFragment(index)
-        binding.topbar.tvPageTitle.text = pages[index].title
-        binding.topbar.tvPageSub.text = pages[index].subtitle
+        binding.topbar.tvPageTitle.text = getString(pages[index].titleRes)
+        binding.topbar.tvPageSub.text = getString(pages[index].subtitleRes)
     }
 
     private fun showFragment(index: Int) {
@@ -205,7 +205,7 @@ class MainActivity : AppCompatActivity(), SerialManager.Listener {
         } else {
             val cfg = SerialConfig.fromPrefs()
             if (!cfg.isValid) {
-                toast("请先在设置中选择串口")
+                toast(getString(R.string.serial_select_in_settings))
                 selectPage("settings")
                 return
             }
@@ -219,10 +219,10 @@ class MainActivity : AppCompatActivity(), SerialManager.Listener {
         tb.llStatus.setBackgroundResource(if (open) R.drawable.bg_status_open else R.drawable.bg_status_closed)
         tb.tvStatus.text = when (SerialManager.currentState()) {
             SerialManager.State.OPEN -> SerialConfig.fromPrefs().summary().removePrefix(" · ")
-            SerialManager.State.OPENING -> "打开中…"
-            SerialManager.State.CLOSING -> "关闭中…"
-            SerialManager.State.ERROR -> SerialManager.lastError ?: "串口错误"
-            SerialManager.State.CLOSED -> "未连接"
+            SerialManager.State.OPENING -> getString(R.string.serial_state_opening)
+            SerialManager.State.CLOSING -> getString(R.string.serial_state_closing)
+            SerialManager.State.ERROR -> SerialManager.lastError ?: getString(R.string.serial_state_error)
+            SerialManager.State.CLOSED -> getString(R.string.serial_state_closed)
         }
         tb.btnPower.setIconResource(if (open) R.drawable.ic_power else R.drawable.ic_power)
         tb.btnPower.iconTint = android.content.res.ColorStateList.valueOf(

@@ -46,7 +46,7 @@ class AutoReplyFragment : BaseFragment<FragmentAutoreplyBinding>(FragmentAutorep
         binding.swMaster.setOnCheckedChangeListener { _, checked ->
             Prefs.autoReplyEnabled = checked
             if (!checked) AutoReplyEngine.reset()
-            snack(if (checked) "自动应答已启用" else "自动应答已停用")
+            snack(if (checked) getString(R.string.autoreply_enabled_toast) else getString(R.string.autoreply_disabled_toast))
         }
 
         Store.addRuleListener(ruleListener)
@@ -79,7 +79,7 @@ class AutoReplyFragment : BaseFragment<FragmentAutoreplyBinding>(FragmentAutorep
         adapter.notifyDataSetChanged()
         val n = Store.rules.size
         val enabled = Store.rules.count { it.enabled }
-        binding.tvCount.text = "$n 条规则 · 启用 $enabled 条 · 收到匹配数据自动回复"
+        binding.tvCount.text = getString(R.string.autoreply_count_format, n, enabled)
         binding.swMaster.isChecked = Prefs.autoReplyEnabled
         binding.llEmpty.visibility = if (n == 0) View.VISIBLE else View.GONE
         binding.rv.visibility = if (n == 0) View.GONE else View.VISIBLE
@@ -88,34 +88,39 @@ class AutoReplyFragment : BaseFragment<FragmentAutoreplyBinding>(FragmentAutorep
     // ==================================================================
     private fun showMenu(r: AutoReplyRule, position: Int) {
         val options = listOf(
-            if (r.enabled) "停用此规则" else "启用此规则",
-            "编辑", "测试应答（立即发送一次）", "复制一份", "上移", "下移", "删除"
+            if (r.enabled) getString(R.string.autoreply_menu_disable) else getString(R.string.autoreply_menu_enable),
+            getString(R.string.autoreply_menu_edit),
+            getString(R.string.autoreply_menu_test),
+            getString(R.string.autoreply_menu_duplicate),
+            getString(R.string.autoreply_menu_move_up),
+            getString(R.string.autoreply_menu_move_down),
+            getString(R.string.autoreply_delete)
         )
-        Dialogs.singleChoice(requireContext(), r.name.ifBlank { "规则" }, options) { which ->
+        Dialogs.singleChoice(requireContext(), r.name.ifBlank { getString(R.string.autoreply_fallback_name) }, options) { which ->
             when (which) {
                 0 -> {
                     Store.toggleRule(r, !r.enabled)
                     AutoReplyEngine.reset()
-                    snack(if (r.enabled) "已启用「${r.name}」" else "已停用「${r.name}」")
+                    snack(if (r.enabled) getString(R.string.autoreply_rule_enabled, r.name) else getString(R.string.autoreply_rule_disabled, r.name))
                 }
                 1 -> editRule(r)
                 2 -> {
                     val bytes = AutoReplyEngine.buildReply(r)
-                    if (bytes.isEmpty()) snack("应答内容为空或格式不正确")
+                    if (bytes.isEmpty()) snack(getString(R.string.autoreply_reply_invalid))
                     else {
-                        com.yujing.chuankou.core.serial.SerialManager.send(bytes, r.replyType, "测试应答")
-                        snack("已发送测试应答 ${bytes.size} 字节")
+                        com.yujing.chuankou.core.serial.SerialManager.send(bytes, r.replyType, getString(R.string.autoreply_test_note))
+                        snack(getString(R.string.autoreply_test_sent, bytes.size))
                     }
                 }
                 3 -> Store.addRule(
                     r.copy(
                         id = System.currentTimeMillis() * 1000 + (Math.random() * 1000).toLong() + 2,
-                        name = r.name + " 副本"
+                        name = getString(R.string.autoreply_copy_format, r.name)
                     )
                 )
                 4 -> Store.moveRule(position, position - 1)
                 5 -> Store.moveRule(position, position + 1)
-                6 -> Dialogs.confirm(requireContext(), "删除规则", "确认删除「${r.name}」？", "删除", true) {
+                6 -> Dialogs.confirm(requireContext(), getString(R.string.autoreply_delete_title), getString(R.string.autoreply_delete_confirm, r.name), getString(R.string.autoreply_delete), true) {
                     Store.removeRule(r)
                 }
             }
@@ -142,17 +147,17 @@ class AutoReplyFragment : BaseFragment<FragmentAutoreplyBinding>(FragmentAutorep
         db.segMatchType.setOptions(listOf("HEX", "ASCII"), if (matchType == DataType.HEX) 0 else 1)
         db.segMatchType.onSelected = { i ->
             matchType = if (i == 0) DataType.HEX else DataType.ASCII
-            db.etMatch.hint = if (matchType == DataType.HEX) "HEX 支持通配：01 03 ?? ?? 00 0A"
-            else "匹配的文本内容"
+            db.etMatch.hint = if (matchType == DataType.HEX) getString(R.string.autoreply_match_hint_hex)
+            else getString(R.string.autoreply_match_hint_ascii)
         }
-        db.etMatch.hint = if (matchType == DataType.HEX) "HEX 支持通配：01 03 ?? ?? 00 0A" else "匹配的文本内容"
+        db.etMatch.hint = if (matchType == DataType.HEX) getString(R.string.autoreply_match_hint_hex) else getString(R.string.autoreply_match_hint_ascii)
 
         fun updatePreview() {
             val p = Payload.preview(
                 db.etReply.text.toString(), replyType, rule.charset, newline, escape
             )
-            db.tvPreview.text = if (p.isBlank()) "应答预览：（空）" else "应答预览：$p"
-            db.chipNewline.text = "结束符: " + Newline.NAMES.getOrElse(newline) { "无" }
+            db.tvPreview.text = if (p.isBlank()) getString(R.string.autoreply_preview_empty) else getString(R.string.autoreply_preview_format, p)
+            db.chipNewline.text = getString(R.string.autoreply_newline_chip, Newline.name(newline))
         }
 
         db.segReplyType.setOptions(listOf("HEX", "ASCII"), if (replyType == DataType.HEX) 0 else 1)
@@ -163,14 +168,14 @@ class AutoReplyFragment : BaseFragment<FragmentAutoreplyBinding>(FragmentAutorep
 
         db.chipMatchMode.text = MatchMode.name(matchMode)
         db.chipMatchMode.setOnClickListener {
-            Dialogs.singleChoice(requireContext(), "匹配模式", MatchMode.names, matchMode) { which ->
+            Dialogs.singleChoice(requireContext(), getString(R.string.autoreply_match_mode_title), MatchMode.names(), matchMode) { which ->
                 matchMode = which
                 db.chipMatchMode.text = MatchMode.name(which)
             }
         }
 
         db.chipNewline.setOnClickListener {
-            Dialogs.singleChoice(requireContext(), "结束符", Newline.NAMES, newline) { which ->
+            Dialogs.singleChoice(requireContext(), getString(R.string.autoreply_newline_title), Newline.names(), newline) { which ->
                 newline = which
                 updatePreview()
             }
@@ -197,32 +202,32 @@ class AutoReplyFragment : BaseFragment<FragmentAutoreplyBinding>(FragmentAutorep
         updatePreview()
 
         val dialog = MaterialAlertDialogBuilder(requireContext())
-            .setTitle(if (origin == null) "新增应答规则" else "编辑应答规则")
+            .setTitle(if (origin == null) getString(R.string.autoreply_add_title) else getString(R.string.autoreply_edit_title))
             .setView(db.root)
-            .setPositiveButton("保存", null)
-            .setNegativeButton("取消", null)
+            .setPositiveButton(getString(R.string.autoreply_save), null)
+            .setNegativeButton(getString(R.string.common_cancel), null)
             .create()
         dialog.show()
         dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener {
             val match = db.etMatch.text.toString().trim()
             val reply = db.etReply.text.toString().trim()
             if (match.isEmpty()) {
-                snack("请填写匹配内容")
+                snack(getString(R.string.autoreply_error_match_empty))
                 return@setOnClickListener
             }
             if (reply.isEmpty()) {
-                snack("请填写应答内容")
+                snack(getString(R.string.autoreply_error_reply_empty))
                 return@setOnClickListener
             }
             if (matchType == DataType.HEX && AutoReplyEngine.parseHexPattern(match) == null) {
-                snack("匹配内容 HEX 格式不正确")
+                snack(getString(R.string.autoreply_error_match_hex))
                 return@setOnClickListener
             }
             if (replyType == DataType.HEX && Hex.parse(reply) == null) {
-                snack("应答内容 HEX 格式不正确")
+                snack(getString(R.string.autoreply_error_reply_hex))
                 return@setOnClickListener
             }
-            rule.name = db.etName.text.toString().trim().ifBlank { "应答规则" }
+            rule.name = db.etName.text.toString().trim().ifBlank { getString(R.string.autoreply_default_name) }
             rule.matchType = matchType
             rule.matchMode = matchMode
             rule.matchContent = match
@@ -234,7 +239,7 @@ class AutoReplyFragment : BaseFragment<FragmentAutoreplyBinding>(FragmentAutorep
             rule.once = once
             if (origin == null) Store.addRule(rule) else Store.updateRule(rule)
             dialog.dismiss()
-            snack("已保存")
+            snack(getString(R.string.autoreply_saved))
         }
     }
 
@@ -250,8 +255,8 @@ class AutoReplyFragment : BaseFragment<FragmentAutoreplyBinding>(FragmentAutorep
         override fun onBindViewHolder(holder: VH, position: Int) {
             val r = Store.rules[position]
             val b = holder.b
-            b.tvName.text = r.name.ifBlank { "未命名规则" }
-            b.tvHits.text = "命中 ${r.hitCount}"
+            b.tvName.text = r.name.ifBlank { getString(R.string.autoreply_unnamed) }
+            b.tvHits.text = getString(R.string.autoreply_hits_format, r.hitCount)
             if (b.swEnabled.isChecked != r.enabled) {
                 b.swEnabled.setOnCheckedChangeListener(null)
                 b.swEnabled.isChecked = r.enabled

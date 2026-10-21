@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 历史记录页：筛选 / 搜索 / 记录项 -->
+    <string name="history_filter_all">全部</string>
+    <string name="history_filter_rx">接收</string>
+    <string name="history_filter_tx">发送</string>
+    <string name="history_dir_rx">接收</string>
+    <string name="history_dir_tx">发送</string>
+    <string name="history_dir_system">系统</string>
+    <string name="history_search_hint">搜索内容 / HEX</string>
+    <string name="history_export_desc">导出记录</string>
+    <string name="history_clear_desc">清空记录</string>
+    <string name="history_empty">暂无收发记录</string>
+    <string name="history_no_records">暂无记录</string>
+    <string name="history_clear_title">清空记录</string>
+    <string name="history_clear_message">将删除全部 %1$d 条收发记录，且不可恢复。</string>
+    <string name="history_cleared">已清空</string>
+    <string name="history_count_format">共 %1$d 条记录（总计 %2$d 条）</string>
+    <string name="history_no_export">暂无可导出的记录</string>
+    <string name="history_export_failed">导出失败</string>
+    <string name="history_exported_format">已导出：%1$s</string>
+    <string name="history_export_share">分享</string>
+    <string name="history_menu_title">记录操作</string>
+    <string name="history_menu_copy_hex">复制 HEX</string>
+    <string name="history_menu_copy_text">复制文本</string>
+    <string name="history_menu_fill_hex">回填到发送框（HEX）</string>
+    <string name="history_menu_fill_ascii">回填到发送框（ASCII）</string>
+    <string name="history_menu_send_hex">一键发送 HEX</string>
+    <string name="history_menu_delete">删除这条记录</string>
+    <string name="history_copied_hex">已复制 HEX</string>
+    <string name="history_copied_text">已复制文本</string>
+    <string name="history_deleted">已删除</string>
+
+    <!-- TCP 透传页：界面 -->
+    <string name="tcp_title">串口 ↔ TCP 透传</string>
+    <string name="tcp_back_desc">返回</string>
+    <string name="tcp_mode_title">工作模式</string>
+    <string name="tcp_mode_server">服务端</string>
+    <string name="tcp_mode_client">客户端</string>
+    <string name="tcp_listen_port">监听端口</string>
+    <string name="tcp_remote_ip">远端 IP</string>
+    <string name="tcp_start">启动</string>
+    <string name="tcp_stop">停止</string>
+    <string name="tcp_connect">连接</string>
+    <string name="tcp_disconnect">断开</string>
+    <string name="tcp_log_title">透传日志</string>
+    <string name="tcp_clear_log_desc">清空日志</string>
+    <string name="tcp_state_stopped">未启动</string>
+    <string name="tcp_state_running">运行中</string>
+    <string name="tcp_state_running_server">运行中 · 服务端监听端口 %1$s · 已接入 %2$d 个客户端</string>
+    <string name="tcp_state_running_client">运行中 · 已连接 %1$s:%2$s</string>
+
+    <!-- TCP 透传页：日志与提示 -->
+    <string name="tcp_intro">透传功能会把串口收到的数据转发到 TCP，并把 TCP 收到的数据写入串口。</string>
+    <string name="tcp_local_ip_format">本机 IP：%1$s</string>
+    <string name="tcp_ip_unavailable">未获取到</string>
+    <string name="tcp_port_invalid_title">端口无效</string>
+    <string name="tcp_port_invalid_message">请输入 1 ~ 65535 之间的端口号</string>
+    <string name="tcp_host_invalid_title">地址无效</string>
+    <string name="tcp_host_invalid_message">请输入远端 IP 或域名</string>
+    <string name="tcp_connecting">正在连接 %1$s:%2$d …</string>
+    <string name="tcp_serial_not_configured">提示：尚未配置串口，请先到「设置」选择串口并打开</string>
+    <string name="tcp_serial_auto_opening">串口未打开，正在自动打开 %1$s …</string>
+    <string name="tcp_serial_opened">串口已打开：%1$s</string>
+    <string name="tcp_serial_open_failed">串口打开失败：%1$s</string>
+    <string name="tcp_unknown_error">未知错误</string>
+    <string name="tcp_note">TCP透传</string>
+
+    <!-- TCP 透传桥：日志 -->
+    <string name="tcp_log_server_started">服务端已启动，监听端口 %1$d</string>
+    <string name="tcp_log_start_failed">启动失败：%1$s %2$s</string>
+    <string name="tcp_log_accept_ended">accept 结束：%1$s</string>
+    <string name="tcp_log_client_joined">客户端接入：%1$s:%2$d（当前 %3$d 个）</string>
+    <string name="tcp_log_client_init_failed">客户端初始化失败：%1$s</string>
+    <string name="tcp_log_read_ended">读取结束：%1$s</string>
+    <string name="tcp_log_tcp_to_serial_ok">TCP → 串口：%1$d 字节（已提交）</string>
+    <string name="tcp_log_tcp_to_serial_failed">TCP → 串口：%1$d 字节（失败：串口未打开）</string>
+    <string name="tcp_log_connected">已连接 %1$s:%2$d</string>
+    <string name="tcp_log_remote_disconnected">远端已断开</string>
+    <string name="tcp_log_connect_ended">连接结束：%1$s %2$s</string>
+    <string name="tcp_log_stopped">已停止透传</string>
+    <string name="tcp_log_write_client_failed">写入客户端失败：%1$s %2$s</string>
+    <string name="tcp_log_serial_to_tcp_clients">串口 → TCP：%1$d 字节 × %2$d 个客户端</string>
+    <string name="tcp_log_serial_to_tcp">串口 → TCP：%1$d 字节</string>
+    <string name="tcp_log_send_failed">发送失败：%1$s %2$s</string>
+    <string name="tcp_log_client_left">客户端断开（剩余 %1$d 个）</string>
+</resources>

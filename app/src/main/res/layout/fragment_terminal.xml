@@ -41,7 +41,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
-                    android:text="接收区" />
+                    android:text="@string/terminal_panel_rx" />
 
                 <TextView
                     android:id="@+id/tv_rx_stats"
@@ -64,7 +64,7 @@
                     android:id="@+id/btn_rx_pause"
                     style="@style/Widget.YS.IconButton.Small"
                     android:layout_marginStart="4dp"
-                    android:contentDescription="暂停显示"
+                    android:contentDescription="@string/terminal_rx_pause_desc"
                     app:icon="@drawable/ic_pause"
                     app:iconGravity="textStart"
                     app:iconPadding="0dp" />
@@ -72,7 +72,7 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_rx_save"
                     style="@style/Widget.YS.IconButton.Small"
-                    android:contentDescription="保存到文件"
+                    android:contentDescription="@string/terminal_rx_save_desc"
                     app:icon="@drawable/ic_save"
                     app:iconGravity="textStart"
                     app:iconPadding="0dp" />
@@ -80,7 +80,7 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_rx_clear"
                     style="@style/Widget.YS.IconButton.Small"
-                    android:contentDescription="清空接收区"
+                    android:contentDescription="@string/terminal_rx_clear_desc"
                     app:icon="@drawable/ic_clear"
                     app:iconGravity="textStart"
                     app:iconPadding="0dp" />
@@ -110,13 +110,13 @@
                         android:id="@+id/chip_rx_time"
                         style="@style/Widget.YS.ChipText"
                         android:layout_marginStart="6dp"
-                        android:text="时间戳" />
+                        android:text="@string/terminal_timestamp" />
 
                     <TextView
                         android:id="@+id/chip_rx_wrap"
                         style="@style/Widget.YS.ChipText"
                         android:layout_marginStart="6dp"
-                        android:text="自动换行" />
+                        android:text="@string/settings_rx_wrap" />
 
                     <TextView
                         android:id="@+id/chip_hex_sep"
@@ -131,7 +131,7 @@
                         android:id="@+id/chip_rx_echo"
                         style="@style/Widget.YS.ChipText"
                         android:layout_marginStart="6dp"
-                        android:text="回显发送" />
+                        android:text="@string/terminal_echo" />
                 </LinearLayout>
             </HorizontalScrollView>
 
@@ -168,7 +168,7 @@
                     android:elevation="4dp"
                     android:paddingStart="10dp"
                     android:paddingEnd="12dp"
-                    android:text="回到底部"
+                    android:text="@string/terminal_back_to_bottom"
                     android:textColor="@color/c_on_primary"
                     android:visibility="gone"
                     app:drawableTint="@color/c_on_primary"
@@ -210,7 +210,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
-                    android:text="发送区" />
+                    android:text="@string/terminal_panel_tx" />
 
                 <TextView
                     android:id="@+id/tv_tx_stats"
@@ -233,7 +233,7 @@
                     android:id="@+id/btn_tx_clear"
                     style="@style/Widget.YS.IconButton.Small"
                     android:layout_marginStart="4dp"
-                    android:contentDescription="清空输入"
+                    android:contentDescription="@string/terminal_tx_clear_desc"
                     app:icon="@drawable/ic_clear"
                     app:iconGravity="textStart"
                     app:iconPadding="0dp" />
@@ -255,7 +255,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="top|start"
-                    android:hint="输入要发送的内容…"
+                    android:hint="@string/terminal_hint_input"
                     android:importantForAutofill="no"
                     android:inputType="textMultiLine|textNoSuggestions"
                     android:maxLines="20"
@@ -287,7 +287,7 @@
                             android:id="@+id/chip_tx_escape"
                             style="@style/Widget.YS.ChipText"
                             android:layout_marginStart="6dp"
-                            android:text="转义" />
+                            android:text="@string/terminal_escape" />
 
                         <TextView
                             android:id="@+id/chip_tx_newline"
@@ -316,7 +316,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/btn_h"
                     android:icon="@drawable/ic_folder"
-                    android:text="选择文件" />
+                    android:text="@string/terminal_pick_file" />
 
                 <TextView
                     android:id="@+id/tv_file_info"
@@ -340,7 +340,7 @@
                         style="@style/Text.YS.Caption"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="分包" />
+                        android:text="@string/terminal_chunk" />
 
                     <EditText
                         android:id="@+id/et_chunk"
@@ -358,7 +358,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:text="延时(ms)" />
+                        android:text="@string/terminal_delay_ms" />
 
                     <EditText
                         android:id="@+id/et_file_delay"
@@ -412,7 +412,7 @@
                     style="@style/Text.YS.Caption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="间隔(ms)" />
+                    android:text="@string/terminal_interval_ms" />
 
                 <EditText
                     android:id="@+id/et_loop_interval"
@@ -430,7 +430,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="次数(0=无限)" />
+                    android:text="@string/terminal_loop_count_hint" />
 
                 <EditText
                     android:id="@+id/et_loop_count"
@@ -456,14 +456,14 @@
                     android:id="@+id/chip_history"
                     style="@style/Widget.YS.ChipText"
                     android:drawableEnd="@drawable/ic_history"
-                    android:text="历史"
+                    android:text="@string/terminal_history"
                     app:drawableTint="?attr/colorPrimary" />
 
                 <TextView
                     android:id="@+id/chip_tx_loop"
                     style="@style/Widget.YS.ChipText"
                     android:layout_marginStart="6dp"
-                    android:text="周期" />
+                    android:text="@string/terminal_loop" />
 
                 <Space
                     android:layout_width="0dp"
@@ -476,7 +476,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/btn_h"
                     android:minWidth="104dp"
-                    android:text="发送"
+                    android:text="@string/terminal_send"
                     app:icon="@drawable/ic_play"
                     app:iconGravity="textStart"
                     app:iconSize="16dp" />

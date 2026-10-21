@@ -55,7 +55,7 @@
             android:layout_height="34dp"
             android:layout_marginStart="8dp"
             android:minWidth="66dp"
-            android:text="发送"
+            android:text="@string/command_send"
             android:textSize="12sp"
             app:icon="@drawable/ic_play"
             app:iconGravity="textStart"
@@ -66,7 +66,7 @@
             android:id="@+id/btn_more"
             style="@style/Widget.YS.IconButton.Small"
             android:layout_marginStart="2dp"
-            android:contentDescription="更多操作"
+            android:contentDescription="@string/command_more_desc"
             app:icon="@drawable/ic_settings"
             app:iconGravity="textStart"
             app:iconPadding="0dp" />

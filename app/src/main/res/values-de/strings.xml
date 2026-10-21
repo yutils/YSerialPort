@@ -1,0 +1,698 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Serielles Debug-Tool</string>
+    <string name="app_name_debug">Serielles Debug-Tool (Debug)</string>
+
+    <!-- 语言 -->
+    <string name="lang_follow_system">Systemsprache (%1$s)</string>
+    <string name="lang_follow_system_plain">Systemsprache</string>
+    <string name="settings_section_general">Allgemein</string>
+    <string name="settings_language">Sprache</string>
+    <string name="settings_language_sub">Sprachwechsel für die App; bleibt nach einem Neustart aktiv</string>
+    <string name="settings_language_dialog_title">Sprache wählen</string>
+
+    <!-- 导航 -->
+    <string name="nav_terminal">Terminal</string>
+    <string name="nav_terminal_sub">Serielles Senden/Empfangen · Live-Überwachung</string>
+    <string name="nav_history">Verlauf</string>
+    <string name="nav_history_sub">Protokolle · Suche &amp; Export</string>
+    <string name="nav_command">Schnellbefehle</string>
+    <string name="nav_command_sub">Senden mit einem Tippen · häufige Telegramme</string>
+    <string name="nav_autoreply">Automatische Antwort</string>
+    <string name="nav_autoreply_sub">Regelabgleich · automatische Antwort</string>
+    <string name="nav_tool">Werkzeuge</string>
+    <string name="nav_tool_sub">Prüfsumme · ASCII-Tabelle</string>
+    <string name="nav_settings">Einstellungen</string>
+    <string name="nav_settings_sub">Seriell · Senden/Empfang · Darstellung</string>
+    <string name="nav_more">Mehr</string>
+    <string name="nav_more_sub">Transparentmodus · Über</string>
+
+    <!-- 通用 -->
+    <string name="common_ok">OK</string>
+    <string name="common_cancel">Abbrechen</string>
+    <string name="common_got_it">Verstanden</string>
+    <string name="common_auto">Automatisch</string>
+    <string name="common_none">Keine</string>
+    <string name="common_none_selected">Nicht ausgewählt</string>
+    <string name="common_copied">In die Zwischenablage kopiert</string>
+    <string name="common_ms_format">%1$d ms</string>
+
+    <!-- 顶栏 -->
+    <string name="topbar_power_desc">Serielle Schnittstelle öffnen oder schließen</string>
+    <string name="topbar_theme_desc">Theme wechseln</string>
+
+    <!-- 数据模型：匹配模式 / 结束符 / 校验 / 流控 -->
+    <string name="match_contains">Enthält</string>
+    <string name="match_equals">Exakt gleich</string>
+    <string name="match_prefix">Präfix</string>
+    <string name="match_suffix">Suffix</string>
+    <string name="match_regex">Regex</string>
+    <string name="parity_none">Keine Parität (None)</string>
+    <string name="parity_odd">Ungerade Parität (Odd)</string>
+    <string name="parity_even">Gerade Parität (Even)</string>
+    <string name="parity_mark">Mark-Parität (Mark)</string>
+    <string name="parity_space">Space-Parität (Space)</string>
+    <string name="flow_none">Keine Flusssteuerung</string>
+    <string name="flow_hardware">Hardware-Flusssteuerung (RTS/CTS)</string>
+    <string name="flow_software">Software-Flusssteuerung (XON/XOFF)</string>
+
+    <!-- 串口 -->
+    <string name="serial_state_closed">Nicht verbunden</string>
+    <string name="serial_state_opening">Wird geöffnet…</string>
+    <string name="serial_state_closing">Wird geschlossen…</string>
+    <string name="serial_state_error">Fehler der seriellen Schnittstelle</string>
+    <string name="serial_select_in_settings">Bitte zuerst in den Einstellungen eine Schnittstelle wählen</string>
+    <string name="serial_open">Schnittstelle öffnen</string>
+    <string name="serial_close">Schnittstelle schließen</string>
+
+    <!-- 设置：分区 -->
+    <string name="settings_section_serial">Serielle Parameter</string>
+    <string name="settings_section_rx">Empfangskonfiguration</string>
+    <string name="settings_section_tx">Sendekonfiguration</string>
+    <string name="settings_section_appearance">Darstellung &amp; Anzeige</string>
+    <string name="settings_rx_note">Hinweis: Nach Deaktivierung von „Automatischem Zeilenumbruch“ werden Empfangsdaten fortlaufend aneinandergefügt; zur Wahrung der Datenintegrität wird dabei der Zeitstempel automatisch ignoriert.</string>
+    <string name="settings_autosave_note">Die Konfiguration wird automatisch gespeichert und bleibt nach einem Neustart aktiv</string>
+
+    <!-- 设置：串口参数 -->
+    <string name="serial_select_device">Schnittstelle wählen</string>
+    <string name="serial_no_devices_found">Keine seriellen Schnittstellen gefunden</string>
+    <string name="serial_select_baud">Baudrate wählen</string>
+    <string name="serial_data_bits">Datenbits</string>
+    <string name="serial_stop_bits">Stoppbits</string>
+    <string name="serial_parity">Parität</string>
+    <string name="serial_flow_control">Flusssteuerung</string>
+    <string name="serial_frame_gap">Frame-Timeout</string>
+    <string name="serial_frame_gap_hint">Millisekunden, 0 = automatisch nach Baudrate</string>
+    <string name="serial_frame_gap_sub">Nach Empfang gilt ein Frame nach dieser Stillstandszeit als beendet</string>
+    <string name="serial_device_list">Schnittstellenliste</string>
+    <string name="serial_scan_empty">Keine seriellen Schnittstellen gefunden.\nBitte prüfen, ob die Rechte für die serielle Schnittstelle freigegeben sind (/dev/ttyS*).</string>
+    <string name="serial_list_count">Schnittstellenliste (%1$d insgesamt)</string>
+    <string name="serial_select_first">Bitte zuerst eine Schnittstelle wählen</string>
+    <string name="serial_reconnected">Mit neuen Parametern neu verbunden</string>
+    <string name="serial_connected_snack">Serielle Schnittstelle verbunden</string>
+    <string name="settings_serial_device">Serielles Gerät</string>
+    <string name="settings_serial_device_sub">z. B. /dev/ttyS1, Liste stammt aus dem System-Scan</string>
+    <string name="settings_baud_rate">Baudrate</string>
+    <string name="settings_baud_sub">Üblich: 9600 / 115200 / 921600</string>
+    <string name="settings_data_bits_sub">Wählbar 5 ~ 8 Bit</string>
+    <string name="settings_bits_format">%1$d Bit</string>
+    <string name="settings_scan_count">%1$d gefunden</string>
+    <string name="settings_scan_sub">Tippen, um erneut zu scannen; Gerätename und Pfad werden angezeigt</string>
+
+    <!-- 设置：接收 -->
+    <string name="settings_rx_charset_dialog">Empfangs-Zeichensatz</string>
+    <string name="settings_charset">Zeichensatz</string>
+    <string name="settings_charset_sub">Zur Dekodierung im ASCII-Modus; nicht dekodierbare Bytes werden als \\xNN (z. B. \\xA1) angezeigt, statt als Ersatzzeichen</string>
+    <string name="settings_rx_time">Zeitstempel anzeigen</string>
+    <string name="settings_rx_time_sub">Bei deaktiviertem automatischen Zeilenumbruch wird der Zeitstempel ignoriert</string>
+    <string name="settings_rx_wrap">Automatischer Zeilenumbruch</string>
+    <string name="settings_rx_wrap_sub">Nach Deaktivierung werden Daten fortlaufend aneinandergefügt, ohne eingefügte Zeilenumbrüche</string>
+    <string name="settings_rx_sep">HEX-Trennzeichen</string>
+    <string name="sep_space">Leerzeichen</string>
+    <string name="sep_none">Kein Trennzeichen</string>
+    <string name="sep_comma">Komma</string>
+    <string name="sep_dash">Bindestrich</string>
+    <string name="settings_rx_max">Max. angezeigte Zeichen</string>
+    <string name="settings_rx_max_sub">Überstehendes wird automatisch vom Kopf abgeschnitten</string>
+    <string name="settings_rx_echo">Gesendetes im Empfangsbereich anzeigen (Echo)</string>
+
+    <!-- 设置：发送 -->
+    <string name="settings_tx_charset_dialog">Sende-Zeichensatz</string>
+    <string name="settings_tx_escape">Escape-Sequenzen auflösen</string>
+    <string name="settings_tx_escape_sub">Unterstützt \\r \\n \\t \\0 \\xNN \\uHHHH</string>
+    <string name="settings_tx_newline">Standard-Zeilenende</string>
+    <string name="settings_tx_chunk">Datei-Paketgröße</string>
+    <string name="settings_tx_chunk_hint">Bytes, 1 ~ 4096</string>
+    <string name="settings_bytes_format">%1$d Bytes</string>
+    <string name="settings_tx_delay">Verzögerung zwischen Datei-Paketen</string>
+    <string name="settings_ms_hint">Millisekunden</string>
+
+    <!-- 设置：外观 -->
+    <string name="settings_theme">Theme</string>
+    <string name="theme_follow_system">Systemeinstellung</string>
+    <string name="theme_dark">Dunkel</string>
+    <string name="theme_light">Hell</string>
+    <string name="settings_bg">Hintergrundbild</string>
+    <string name="bg_none">Kein Hintergrund</string>
+    <string name="bg_builtin">Integrierte Wallpaper</string>
+    <string name="bg_custom">Benutzerdefiniert (Bild auf der Seite „Mehr“ wählen)</string>
+    <string name="bg_custom_short">Benutzerdefiniert</string>
+    <string name="settings_bg_scrim">Hintergrundabdunkelung</string>
+    <string name="settings_bg_scrim_hint">0 ~ 100, höher = dunkler (empfohlen 70 ~ 90)</string>
+    <string name="settings_percent_format">%1$d %%</string>
+    <string name="settings_font_size">Terminal-Schriftgröße</string>
+    <string name="settings_font_hint">Einheit sp, 9 ~ 24</string>
+    <string name="settings_sp_format">%1$d sp</string>
+    <string name="settings_keep_screen">Bildschirm eingeschaltet lassen</string>
+    <string name="settings_history_limit">Verlaufsgrenze</string>
+    <string name="settings_history_limit_hint">Einträge, 100 ~ 50000</string>
+    <string name="settings_history_count">%1$d Einträge (aktuell %2$d)</string>
+
+    <!-- 终端页：面板与控件 -->
+    <string name="terminal_panel_rx">Empfangsbereich</string>
+    <string name="terminal_panel_tx">Sendebereich</string>
+    <string name="terminal_timestamp">Zeitstempel</string>
+    <string name="terminal_echo">TX-Echo</string>
+    <string name="terminal_back_to_bottom">Zurück nach unten</string>
+    <string name="terminal_escape">Escape</string>
+    <string name="terminal_history">Verlauf</string>
+    <string name="terminal_loop">Zyklus</string>
+    <string name="terminal_send">Senden</string>
+    <string name="terminal_mode_file">Datei</string>
+    <string name="terminal_pick_file">Datei wählen</string>
+    <string name="terminal_chunk">Paketgröße</string>
+    <string name="terminal_delay_ms">Verzögerung (ms)</string>
+    <string name="terminal_interval_ms">Intervall (ms)</string>
+    <string name="terminal_loop_count_hint">Anzahl (0 = unbegrenzt)</string>
+    <string name="terminal_rx_pause_desc">Anzeige pausieren</string>
+    <string name="terminal_rx_save_desc">In Datei speichern</string>
+    <string name="terminal_rx_clear_desc">Empfangsbereich leeren</string>
+    <string name="terminal_tx_clear_desc">Eingabe leeren</string>
+
+    <!-- 终端页：提示消息 -->
+    <string name="terminal_filled">In Sendefeld eingefügt</string>
+    <string name="terminal_rx_cleared">Empfangsbereich geleert</string>
+    <string name="terminal_display_paused">Anzeige pausiert (Daten werden weiter empfangen und protokolliert)</string>
+    <string name="terminal_display_resumed">Anzeige fortgesetzt</string>
+    <string name="terminal_nothing_to_save">Keine speicherbaren Inhalte</string>
+    <string name="terminal_save_failed">Speichern fehlgeschlagen</string>
+    <string name="terminal_saved">Gespeichert: %1$s</string>
+    <string name="terminal_share">Teilen</string>
+    <string name="terminal_rx_charset_set">Empfangs-Zeichensatz: %1$s</string>
+    <string name="terminal_escape_on">Escape-Sequenzen werden aufgelöst</string>
+    <string name="terminal_escape_off">Escape-Sequenzen werden nicht aufgelöst</string>
+    <string name="terminal_serial_not_open">Schnittstelle nicht geöffnet, bitte zuerst die Ein-/Aus-Taste rechts oben tippen</string>
+    <string name="terminal_pick_file_first">Bitte die zu sendende Datei wählen</string>
+    <string name="terminal_input_first">Bitte den zu sendenden Inhalt eingeben</string>
+    <string name="terminal_no_history">Kein Sendeverlauf</string>
+    <string name="terminal_recent_sends">Zuletzt gesendet</string>
+    <string name="terminal_read_file_failed">Datei konnte nicht gelesen werden</string>
+    <string name="terminal_unknown_file">Unbekannte Datei</string>
+    <string name="terminal_loaded">Geladen: %1$s (%2$d Bytes)</string>
+    <string name="terminal_source_manual">Manuelles Senden</string>
+
+    <!-- 终端页：结束符 -->
+    <string name="terminal_newline">Zeilenende</string>
+    <string name="terminal_newline_format">Zeilenende: %1$s</string>
+
+    <!-- 终端页：发送按钮状态 -->
+    <string name="terminal_btn_stop">Stopp</string>
+    <string name="terminal_btn_loop">Zyklus starten</string>
+
+    <!-- 终端页：周期发送 -->
+    <string name="terminal_loop_started_count">Zyklus-Senden gestartet: Intervall %1$dms · %2$d-mal</string>
+    <string name="terminal_loop_started_infinite">Zyklus-Senden gestartet: Intervall %1$dms · Endlosschleife</string>
+    <string name="terminal_loop_progress">Zyklus %1$d/%2$d</string>
+    <string name="terminal_sent_times">%1$d-mal gesendet</string>
+    <string name="terminal_loop_finished">Zyklus-Senden beendet, insgesamt %1$d-mal</string>
+
+    <!-- 终端页：文件发送 -->
+    <string name="terminal_no_file">Keine Datei gewählt\nBeliebige Dateien möglich; optional beim Senden Escape-Sequenzen auflösen</string>
+    <string name="terminal_file_info">%1$s\nGröße: %2$d Bytes (%3$s)</string>
+    <string name="terminal_file_echo">[Datei %1$d Bytes]</string>
+    <string name="terminal_file_progress">%1$d / %2$d Bytes gesendet</string>
+
+    <!-- 终端页：统计 -->
+    <string name="terminal_rx_stats">Empf. %1$s · %2$d Pakete</string>
+    <string name="terminal_tx_stats">Ges. %1$s · %2$d Pakete</string>
+
+    <!-- 终端页：输入提示 -->
+    <string name="terminal_hint_hex">HEX eingeben, z. B. 01 03 00 00 00 0A</string>
+    <string name="terminal_hint_input">Zu sendenden Inhalt eingeben…</string>
+
+    <!-- ==================== 工具页：校验计算器 ==================== -->
+    <string name="tool_tab_checksum">Prüfsummen-Rechner</string>
+    <string name="tool_tab_ascii">ASCII-Tabelle</string>
+    <string name="tool_input_data">Eingabedaten</string>
+    <string name="tool_input_hint_full">HEX z. B.: 01 03 00 00 00 0A\nASCII z. B.: 123456789</string>
+    <string name="tool_input_hint_hex">HEX z. B.: 01 03 00 00 00 0A</string>
+    <string name="tool_input_hint_ascii">ASCII z. B.: 123456789</string>
+    <string name="tool_escape">Escape</string>
+    <string name="tool_input_invalid">Ungültiges Format</string>
+    <string name="tool_input_format_invalid">Eingabeformat ungültig</string>
+    <string name="tool_hex_rule">HEX-Eingabe erlaubt nur 0-9 A-F und Trennzeichen</string>
+    <string name="tool_checksum_algo">Prüfsummen-Algorithmus</string>
+    <string name="tool_high_byte_first">Höherwertiges Byte zuerst</string>
+    <string name="tool_refin">Eingabe reflektieren</string>
+    <string name="tool_refout">Ausgabe reflektieren</string>
+    <string name="tool_invert">Ergebnis invertieren</string>
+    <string name="tool_algo_group">Algorithmus-Kategorie</string>
+    <string name="tool_output_width">Ausgabebreite</string>
+    <string name="tool_width_opt_follow">Algorithmus folgen</string>
+    <string name="tool_width_opt_8">8 Bit</string>
+    <string name="tool_width_opt_16">16 Bit</string>
+    <string name="tool_width_opt_32">32 Bit</string>
+    <string name="tool_width_chip_follow">Breite: folgen</string>
+    <string name="tool_width_chip_format">Breite %1$d</string>
+    <string name="tool_xor_chip_format">XOR 0x%1$s</string>
+    <string name="tool_xor_value">Ergebnis-XOR-Wert</string>
+    <string name="tool_xor_value_hint">Unterstützt 0x-Präfix oder dezimal, z. B. 0xFF</string>
+    <string name="tool_calc">Prüfwert berechnen</string>
+    <string name="tool_algo_desc_crc">Breite %1$d · Polynom 0x%2$s · Init 0x%3$s · XorOut 0x%4$s · RefIn=%5$b RefOut=%6$b</string>
+    <string name="tool_algo_desc_check">" · Standardprüfwert 0x%1$s"</string>
+    <string name="tool_copy">Kopieren</string>
+    <string name="tool_fill_send">In Sendefeld einfügen</string>
+    <string name="tool_append_send">An Daten anhängen und senden</string>
+    <string name="tool_copied_checksum_format">Prüfwert kopiert: %1$s</string>
+    <string name="tool_serial_not_open">Schnittstelle nicht geöffnet</string>
+    <string name="tool_note_checksum_format">Daten+%1$s</string>
+    <string name="tool_sent_with_checksum">%1$d Bytes gesendet (Daten + Prüfsumme)</string>
+
+    <!-- ==================== 工具页：ASCII 码表 ==================== -->
+    <string name="tool_ascii_search_hint">Zeichen / HEX / Name suchen</string>
+    <string name="tool_ascii_hint">Beliebige Zelle antippen, um zu kopieren oder ins Sendefeld einzufügen</string>
+    <string name="tool_ascii_hint_count_format">Beliebige Zelle antippen, um zu kopieren oder ins Sendefeld einzufügen (%1$d Einträge)</string>
+    <string name="tool_ascii_hint_search_format">Suche „%1$s“ ergibt %2$d Treffer</string>
+    <string name="tool_ascii_space">Leerzeichen</string>
+    <string name="tool_ascii_del">Entf</string>
+    <string name="tool_ascii_digit_format">Zahl %1$s</string>
+    <string name="tool_ascii_upper_format">Großbuchstabe %1$s</string>
+    <string name="tool_ascii_lower_format">Kleinbuchstabe %1$s</string>
+    <string name="tool_menu_copy_hex_format">HEX kopieren (%1$s)</string>
+    <string name="tool_menu_send_byte">Dieses Byte senden</string>
+    <string name="tool_menu_fill_hex">In Sendefeld einfügen (HEX)</string>
+    <string name="tool_menu_copy_char_format">Zeichen „%1$s“ kopieren</string>
+    <string name="tool_copied_char">Zeichen kopiert</string>
+    <string name="tool_copied_hex">HEX kopiert</string>
+    <string name="tool_sent_hex_format">0x%1$s gesendet</string>
+
+    <!-- 0 ~ 31 控制字符说明 -->
+    <string name="tool_ctrl_nul">Null-Zeichen</string>
+    <string name="tool_ctrl_soh">Kopf-Start</string>
+    <string name="tool_ctrl_stx">Textstart</string>
+    <string name="tool_ctrl_etx">Textende</string>
+    <string name="tool_ctrl_eot">Übertragungsende</string>
+    <string name="tool_ctrl_enq">Anforderung</string>
+    <string name="tool_ctrl_ack">Bestätigung</string>
+    <string name="tool_ctrl_bel">Klingel</string>
+    <string name="tool_ctrl_bs">Rücktaste</string>
+    <string name="tool_ctrl_ht">Horizontaler Tabulator</string>
+    <string name="tool_ctrl_lf">Zeilenumbruch</string>
+    <string name="tool_ctrl_vt">Vertikaler Tabulator</string>
+    <string name="tool_ctrl_ff">Seitenvorschub</string>
+    <string name="tool_ctrl_cr">Wagenrücklauf</string>
+    <string name="tool_ctrl_so">Shift Out</string>
+    <string name="tool_ctrl_si">Shift In</string>
+    <string name="tool_ctrl_dle">Data Link Escape</string>
+    <string name="tool_ctrl_dc1">Gerätesteuerung 1</string>
+    <string name="tool_ctrl_dc2">Gerätesteuerung 2</string>
+    <string name="tool_ctrl_dc3">Gerätesteuerung 3</string>
+    <string name="tool_ctrl_dc4">Gerätesteuerung 4</string>
+    <string name="tool_ctrl_nak">Negativbestätigung</string>
+    <string name="tool_ctrl_syn">Synchronisation</string>
+    <string name="tool_ctrl_etb">Blockende</string>
+    <string name="tool_ctrl_can">Abbruch</string>
+    <string name="tool_ctrl_em">Mediumende</string>
+    <string name="tool_ctrl_sub">Substitution</string>
+    <string name="tool_ctrl_esc">Escape</string>
+    <string name="tool_ctrl_fs">Dateitrenner</string>
+    <string name="tool_ctrl_gs">Gruppentrenner</string>
+    <string name="tool_ctrl_rs">Datensatztrenner</string>
+    <string name="tool_ctrl_us">Einheitentrenner</string>
+
+    <!-- 128 ~ 191 扩展字符说明（windows-1252 / Latin-1 上半区） -->
+    <string name="tool_ext_euro">Euro-Zeichen</string>
+    <string name="tool_ext_undefined">Undefiniert</string>
+    <string name="tool_ext_quote_low_single">Einfaches tiefes Anführungszeichen</string>
+    <string name="tool_ext_florin">Florin</string>
+    <string name="tool_ext_quote_low_double">Doppeltes tiefes Anführungszeichen</string>
+    <string name="tool_ext_ellipsis">Auslassungspunkte</string>
+    <string name="tool_ext_dagger">Kreuz (Dagger)</string>
+    <string name="tool_ext_dagger_double">Doppelkreuz (Double Dagger)</string>
+    <string name="tool_ext_circumflex">Modifikator-Zirkumflex</string>
+    <string name="tool_ext_permille">Promille-Zeichen</string>
+    <string name="tool_ext_s_caron">S mit Hatschek</string>
+    <string name="tool_ext_langle_single">Einfache spitze Klammer links</string>
+    <string name="tool_ext_oe_ligature">OE-Ligatur</string>
+    <string name="tool_ext_z_caron">Z mit Hatschek</string>
+    <string name="tool_ext_quote_left_single">Einfaches Anführungszeichen links</string>
+    <string name="tool_ext_quote_right_single">Einfaches Anführungszeichen rechts</string>
+    <string name="tool_ext_quote_left_double">Doppeltes Anführungszeichen links</string>
+    <string name="tool_ext_quote_right_double">Doppeltes Anführungszeichen rechts</string>
+    <string name="tool_ext_bullet">Aufzählungspunkt</string>
+    <string name="tool_ext_dash_en">Halbgeviertstrich</string>
+    <string name="tool_ext_dash_em">Geviertstrich</string>
+    <string name="tool_ext_tilde">Modifikator-Tilde</string>
+    <string name="tool_ext_trademark">Warenzeichen</string>
+    <string name="tool_ext_s_caron_lower">s mit Hatschek</string>
+    <string name="tool_ext_rangle_single">Einfache spitze Klammer rechts</string>
+    <string name="tool_ext_oe_ligature_lower">oe-Ligatur</string>
+    <string name="tool_ext_z_caron_lower">z mit Hatschek</string>
+    <string name="tool_ext_y_diaeresis">Y mit Trema</string>
+    <string name="tool_ext_nbsp">Geschütztes Leerzeichen</string>
+    <string name="tool_ext_exclaim_inverted">Umgekehrtes Ausrufezeichen</string>
+    <string name="tool_ext_cent">Cent-Zeichen</string>
+    <string name="tool_ext_pound">Pfund-Zeichen</string>
+    <string name="tool_ext_currency">Währungszeichen</string>
+    <string name="tool_ext_yen">Yen-Zeichen</string>
+    <string name="tool_ext_broken_bar">Gebrochener senkrechter Strich</string>
+    <string name="tool_ext_section">Paragrafenzeichen</string>
+    <string name="tool_ext_diaeresis">Trema</string>
+    <string name="tool_ext_copyright">Copyright</string>
+    <string name="tool_ext_ordinal_f">Weibliches Ordnungszeichen</string>
+    <string name="tool_ext_langle_double">Doppelte spitze Klammer links</string>
+    <string name="tool_ext_not">Nicht-Zeichen</string>
+    <string name="tool_ext_shy">Weiches Trennzeichen</string>
+    <string name="tool_ext_registered">Eingetragenes Warenzeichen</string>
+    <string name="tool_ext_macron">Makron</string>
+    <string name="tool_ext_degree">Gradzeichen</string>
+    <string name="tool_ext_plus_minus">Plus-Minus</string>
+    <string name="tool_ext_superscript_two">Hochgestellte 2</string>
+    <string name="tool_ext_superscript_three">Hochgestellte 3</string>
+    <string name="tool_ext_acute">Akut</string>
+    <string name="tool_ext_micro">Mikro</string>
+    <string name="tool_ext_paragraph">Absatzzeichen</string>
+    <string name="tool_ext_middle_dot">Mittelpunkt</string>
+    <string name="tool_ext_cedilla">Cedille</string>
+    <string name="tool_ext_superscript_one">Hochgestellte 1</string>
+    <string name="tool_ext_ordinal_m">Männliches Ordnungszeichen</string>
+    <string name="tool_ext_rangle_double">Doppelte spitze Klammer rechts</string>
+    <string name="tool_ext_quarter">Ein Viertel</string>
+    <string name="tool_ext_half">Einhalb</string>
+    <string name="tool_ext_three_quarters">Drei Viertel</string>
+    <string name="tool_ext_question_inverted">Umgekehrtes Fragezeichen</string>
+    <string name="tool_ext_multiply">Mal-Zeichen</string>
+    <string name="tool_ext_divide">Geteilt-Zeichen</string>
+
+    <!-- ==================== 更多页 ==================== -->
+    <string name="more_tcp_title">Seriell ↔ TCP-Transparenz</string>
+    <string name="more_tcp_value">Server / Client</string>
+    <string name="more_tcp_sub">Serielle Daten ins Netzwerk weiterleiten oder Netzwerkdaten in die serielle Schnittstelle schreiben</string>
+    <string name="more_bg_custom">Benutzerdefiniertes Bild</string>
+    <string name="more_bg_scrim_hint">0 ~ 100, höher = dunkler</string>
+    <string name="more_no_history">Kein Verlauf</string>
+    <string name="more_export_failed">Export fehlgeschlagen</string>
+    <string name="more_exported_format">%1$s exportiert</string>
+    <string name="more_share">Teilen</string>
+    <string name="more_export_history">Sende-/Empfangsprotokolle exportieren</string>
+    <string name="more_count_format">%1$d Einträge</string>
+    <string name="more_export_dir">Exportverzeichnis</string>
+    <string name="more_export_dir_msg">%1$s\n\nÜber Dateimanager oder adb pull abrufbar.</string>
+    <string name="more_view">Anzeigen</string>
+    <string name="more_reset">Standardeinstellungen wiederherstellen</string>
+    <string name="more_reset_msg">Alle Konfigurationen werden gelöscht (serielle Parameter, Sende-/Empfangskonfiguration, Darstellung usw.).\nSchnellbefehle und Antwortregeln werden nicht gelöscht.</string>
+    <string name="more_reset_btn">Zurücksetzen</string>
+    <string name="more_reset_done">Standardeinstellungen wiederhergestellt</string>
+    <string name="more_reset_careful">Vorsicht</string>
+    <string name="more_pick_image">Benutzerdefinierten Hintergrund wählen</string>
+    <string name="more_selected">Ausgewählt</string>
+    <string name="more_pick_image_sub">Bild aus der Galerie wählen, großes Querformat-Bild empfohlen</string>
+    <string name="more_exit">App beenden</string>
+    <string name="more_exit_serial_open">Erst Schnittstelle schließen, dann beenden</string>
+    <string name="more_exit_normal">Ressourcen freigeben und beenden</string>
+    <string name="more_exit_confirm_serial_open">Die serielle Verbindung wird zuerst geschlossen, Protokolle gespeichert und dann beendet.\nBeenden?</string>
+    <string name="more_exit_confirm_normal">Protokolle werden gespeichert und die App dann beendet.\nBeenden?</string>
+    <string name="more_exit_btn">Beenden</string>
+    <string name="more_source">Open-Source-Adresse</string>
+    <string name="more_copy_url">Adresse kopieren</string>
+    <string name="more_open_browser">Im Browser öffnen</string>
+    <string name="more_url_copied">Adresse kopiert</string>
+    <string name="more_no_browser_copied">Browser nicht verfügbar, Adresse kopiert</string>
+    <string name="more_bg_set">Hintergrundbild gesetzt</string>
+    <string name="more_bg_read_failed">Bild konnte nicht gelesen werden</string>
+    <string name="more_section_network">Netzwerk</string>
+    <string name="more_section_personal">Personalisierung</string>
+    <string name="more_section_data">Daten &amp; Wartung</string>
+
+    <!-- ==================== 关于 ==================== -->
+    <string name="about_version_format">Version %1$s (%2$d)</string>
+    <string name="about_author">Autor: Yu Jing</string>
+    <string name="about_source_url">Open-Source-Adresse: github.com/yutils/YSerialPort</string>
+    <string name="about_footer">Dieses Tool dient zum Debuggen serieller Geräte und unterstützt ASCII-/HEX-Senden und -Empfangen,\nDateiversand, Zyklus-Senden, automatische Antwort, Prüfsummenberechnung u. a.\n\nSerielle Bibliothek YSerialPort · keine .so-Konflikte mit anderen seriellen Tools</string>
+
+    <!-- ==================== 指令页 ==================== -->
+
+    <!-- 页面 -->
+    <string name="command_title">Schnellbefehle</string>
+    <string name="command_add">Neu</string>
+    <string name="command_add_desc">Neuer Befehl</string>
+    <string name="command_empty_title">Noch keine Schnellbefehle</string>
+    <string name="command_empty_sub">Oben rechts auf „Neu“ tippen, um häufige Telegramme anzulegen</string>
+    <string name="command_count_format">%1$d Einträge · zum direkten Senden „Senden“ antippen</string>
+
+    <!-- 列表项 -->
+    <string name="command_send">Senden</string>
+    <string name="command_more_desc">Weitere Aktionen</string>
+    <string name="command_item_unnamed">Unbenannt</string>
+
+    <!-- 发送 -->
+    <string name="command_serial_not_open">Schnittstelle nicht geöffnet; bitte zuerst öffnen</string>
+    <string name="command_content_invalid">Befehlsinhalt leer oder Format ungültig</string>
+    <string name="command_note">Schnellbefehl</string>
+    <string name="command_note_name">Schnellbefehl: %1$s</string>
+    <string name="command_sent_bytes">%1$d Bytes gesendet</string>
+
+    <!-- 卡片点击菜单 -->
+    <string name="command_fallback_name">Befehl</string>
+    <string name="command_action_send_now">Sofort senden</string>
+    <string name="command_action_fill">In Sendefeld einfügen</string>
+
+    <!-- 更多菜单 -->
+    <string name="command_unnamed">Unbenannter Befehl</string>
+    <string name="command_menu_edit">Bearbeiten</string>
+    <string name="command_menu_duplicate">Duplizieren</string>
+    <string name="command_menu_move_up">Nach oben</string>
+    <string name="command_menu_move_down">Nach unten</string>
+    <string name="command_delete">Löschen</string>
+    <string name="command_copy_format">Kopie von %1$s</string>
+    <string name="command_delete_title">Befehl löschen</string>
+    <string name="command_delete_confirm">„%1$s“ wirklich löschen?</string>
+
+    <!-- 编辑对话框 -->
+    <string name="command_add_title">Neuen Schnellbefehl hinzufügen</string>
+    <string name="command_edit_title">Schnellbefehl bearbeiten</string>
+    <string name="command_save">Speichern</string>
+    <string name="command_name_hint">Befehlsname, z. B.: Temperatur lesen</string>
+    <string name="command_hint_hex">HEX z. B.: 01 03 00 00 00 0A C5 CD</string>
+    <string name="command_hint_ascii">Textinhalt, z. B.: AT+RESET</string>
+    <string name="command_escape_chip">Escape</string>
+    <string name="command_newline_chip">Zeilenende: %1$s</string>
+    <string name="command_newline_title">Zeilenende</string>
+    <string name="command_escape_on">Beim Senden werden \\r \\n \\xNN usw. aufgelöst</string>
+    <string name="command_escape_off">Escape-Sequenzen werden nicht aufgelöst</string>
+
+    <!-- 校验提示 -->
+    <string name="command_error_content_empty">Bitte Befehlsinhalt eingeben</string>
+    <string name="command_error_hex_invalid">HEX-Format ungültig; bitte auf unzulässige Zeichen prüfen</string>
+    <string name="command_default_name_hex">HEX-Befehl</string>
+    <string name="command_default_name_ascii">Textbefehl</string>
+    <string name="command_saved">Gespeichert</string>
+
+    <!-- ==================== 应答页 ==================== -->
+
+    <!-- 页面 -->
+    <string name="autoreply_title">Automatische Antwort</string>
+    <string name="autoreply_add">Neu</string>
+    <string name="autoreply_empty_title">Noch keine Antwortregeln</string>
+    <string name="autoreply_empty_sub">Bei passendem Empfang werden automatisch die festgelegten Daten gesendet</string>
+    <string name="autoreply_count_format">%1$d Regeln · %2$d aktiv · bei passendem Empfang automatische Antwort</string>
+    <string name="autoreply_enabled_toast">Automatische Antwort aktiviert</string>
+    <string name="autoreply_disabled_toast">Automatische Antwort deaktiviert</string>
+
+    <!-- 列表项 -->
+    <string name="autoreply_more_desc">Weitere Aktionen</string>
+    <string name="autoreply_unnamed">Unbenannte Regel</string>
+    <string name="autoreply_hits_format">%1$d Treffer</string>
+    <string name="autoreply_match_label">Abgleich</string>
+    <string name="autoreply_reply_label">Antwort</string>
+
+    <!-- 更多菜单 -->
+    <string name="autoreply_fallback_name">Regel</string>
+    <string name="autoreply_menu_enable">Regel aktivieren</string>
+    <string name="autoreply_menu_disable">Regel deaktivieren</string>
+    <string name="autoreply_menu_edit">Bearbeiten</string>
+    <string name="autoreply_menu_test">Antwort testen (sofort einmal senden)</string>
+    <string name="autoreply_menu_duplicate">Duplizieren</string>
+    <string name="autoreply_menu_move_up">Nach oben</string>
+    <string name="autoreply_menu_move_down">Nach unten</string>
+    <string name="autoreply_delete">Löschen</string>
+    <string name="autoreply_rule_enabled">„%1$s“ aktiviert</string>
+    <string name="autoreply_rule_disabled">„%1$s“ deaktiviert</string>
+    <string name="autoreply_reply_invalid">Antwortinhalt leer oder Format ungültig</string>
+    <string name="autoreply_test_note">Testantwort</string>
+    <string name="autoreply_test_sent">Testantwort mit %1$d Bytes gesendet</string>
+    <string name="autoreply_copy_format">Kopie von %1$s</string>
+    <string name="autoreply_delete_title">Regel löschen</string>
+    <string name="autoreply_delete_confirm">„%1$s“ wirklich löschen?</string>
+
+    <!-- 编辑对话框 -->
+    <string name="autoreply_add_title">Neue Antwortregel hinzufügen</string>
+    <string name="autoreply_edit_title">Antwortregel bearbeiten</string>
+    <string name="autoreply_save">Speichern</string>
+    <string name="autoreply_name_hint">Regelname, z. B.: Temperaturabfrage-Antwort</string>
+    <string name="autoreply_section_match">Empfangsabgleich</string>
+    <string name="autoreply_section_reply">Antwortinhalt</string>
+    <string name="autoreply_match_hint_hex">HEX unterstützt Wildcards: 01 03 ?? ?? 00 0A</string>
+    <string name="autoreply_match_hint_ascii">Abzugleichender Textinhalt</string>
+    <string name="autoreply_reply_hint">Antwort als HEX oder Text</string>
+    <string name="autoreply_match_mode_title">Abgleichmodus</string>
+    <string name="autoreply_newline_chip">Zeilenende: %1$s</string>
+    <string name="autoreply_newline_title">Zeilenende</string>
+    <string name="autoreply_escape_chip">Escape</string>
+    <string name="autoreply_delay_label">Antwortverzögerung (ms)</string>
+    <string name="autoreply_once_chip">Nur einmal antworten</string>
+    <string name="autoreply_preview_empty">Antwortvorschau: (leer)</string>
+    <string name="autoreply_preview_format">Antwortvorschau: %1$s</string>
+
+    <!-- 校验提示 -->
+    <string name="autoreply_error_match_empty">Bitte Abgleichinhalt eingeben</string>
+    <string name="autoreply_error_reply_empty">Bitte Antwortinhalt eingeben</string>
+    <string name="autoreply_error_match_hex">HEX-Format des Abgleichinhalts ungültig</string>
+    <string name="autoreply_error_reply_hex">HEX-Format des Antwortinhalts ungültig</string>
+    <string name="autoreply_default_name">Antwortregel</string>
+    <string name="autoreply_saved">Gespeichert</string>
+
+    <!-- 引擎（无 Context） -->
+    <string name="autoreply_note">Automatische Antwort</string>
+    <string name="autoreply_note_name">Automatische Antwort: %1$s</string>
+
+    <!-- 历史记录页：筛选 / 搜索 / 记录项 -->
+    <string name="history_filter_all">Alle</string>
+    <string name="history_filter_rx">Empfang</string>
+    <string name="history_filter_tx">Senden</string>
+    <string name="history_dir_rx">Empfang</string>
+    <string name="history_dir_tx">Senden</string>
+    <string name="history_dir_system">System</string>
+    <string name="history_search_hint">Inhalt / HEX suchen</string>
+    <string name="history_export_desc">Protokolle exportieren</string>
+    <string name="history_clear_desc">Protokolle löschen</string>
+    <string name="history_empty">Keine Sende-/Empfangsprotokolle</string>
+    <string name="history_no_records">Keine Einträge</string>
+    <string name="history_clear_title">Protokolle löschen</string>
+    <string name="history_clear_message">Alle %1$d Sende-/Empfangsprotokolle werden gelöscht und können nicht wiederhergestellt werden.</string>
+    <string name="history_cleared">Gelöscht</string>
+    <string name="history_count_format">%1$d Einträge (insgesamt %2$d)</string>
+    <string name="history_no_export">Keine exportierbaren Einträge</string>
+    <string name="history_export_failed">Export fehlgeschlagen</string>
+    <string name="history_exported_format">Exportiert: %1$s</string>
+    <string name="history_export_share">Teilen</string>
+    <string name="history_menu_title">Eintragsaktionen</string>
+    <string name="history_menu_copy_hex">HEX kopieren</string>
+    <string name="history_menu_copy_text">Text kopieren</string>
+    <string name="history_menu_fill_hex">In Sendefeld übernehmen (HEX)</string>
+    <string name="history_menu_fill_ascii">In Sendefeld übernehmen (ASCII)</string>
+    <string name="history_menu_send_hex">HEX sofort senden</string>
+    <string name="history_menu_delete">Diesen Eintrag löschen</string>
+    <string name="history_copied_hex">HEX kopiert</string>
+    <string name="history_copied_text">Text kopiert</string>
+    <string name="history_deleted">Gelöscht</string>
+
+    <!-- TCP 透传页：界面 -->
+    <string name="tcp_title">Seriell ↔ TCP-Transparenz</string>
+    <string name="tcp_back_desc">Zurück</string>
+    <string name="tcp_mode_title">Betriebsmodus</string>
+    <string name="tcp_mode_server">Server</string>
+    <string name="tcp_mode_client">Client</string>
+    <string name="tcp_listen_port">Listen-Port</string>
+    <string name="tcp_remote_ip">Remote-IP</string>
+    <string name="tcp_start">Starten</string>
+    <string name="tcp_stop">Stoppen</string>
+    <string name="tcp_connect">Verbinden</string>
+    <string name="tcp_disconnect">Trennen</string>
+    <string name="tcp_log_title">Transparenz-Log</string>
+    <string name="tcp_clear_log_desc">Log leeren</string>
+    <string name="tcp_state_stopped">Nicht gestartet</string>
+    <string name="tcp_state_running">In Betrieb</string>
+    <string name="tcp_state_running_server">In Betrieb · Server lauscht auf Port %1$s · %2$d Clients verbunden</string>
+    <string name="tcp_state_running_client">In Betrieb · verbunden mit %1$s:%2$s</string>
+
+    <!-- TCP 透传页：日志与提示 -->
+    <string name="tcp_intro">Die transparente Übertragung leitet seriell empfangene Daten an TCP weiter und schreibt über TCP empfangene Daten in die serielle Schnittstelle.</string>
+    <string name="tcp_local_ip_format">Lokale IP: %1$s</string>
+    <string name="tcp_ip_unavailable">Nicht ermittelt</string>
+    <string name="tcp_port_invalid_title">Ungültiger Port</string>
+    <string name="tcp_port_invalid_message">Bitte Port zwischen 1 ~ 65535 eingeben</string>
+    <string name="tcp_host_invalid_title">Ungültige Adresse</string>
+    <string name="tcp_host_invalid_message">Bitte Remote-IP oder Domain eingeben</string>
+    <string name="tcp_connecting">Verbinde mit %1$s:%2$d …</string>
+    <string name="tcp_serial_not_configured">Hinweis: Es ist noch keine serielle Schnittstelle konfiguriert. Bitte zuerst unter „Einstellungen“ eine auswählen und öffnen</string>
+    <string name="tcp_serial_auto_opening">Schnittstelle nicht geöffnet, automatisches Öffnen von %1$s …</string>
+    <string name="tcp_serial_opened">Schnittstelle geöffnet: %1$s</string>
+    <string name="tcp_serial_open_failed">Öffnen der Schnittstelle fehlgeschlagen: %1$s</string>
+    <string name="tcp_unknown_error">Unbekannter Fehler</string>
+    <string name="tcp_note">TCP-Transparenz</string>
+
+    <!-- TCP 透传桥：日志 -->
+    <string name="tcp_log_server_started">Server gestartet, lauscht auf Port %1$d</string>
+    <string name="tcp_log_start_failed">Start fehlgeschlagen: %1$s %2$s</string>
+    <string name="tcp_log_accept_ended">Accept beendet: %1$s</string>
+    <string name="tcp_log_client_joined">Client verbunden: %1$s:%2$d (aktuell %3$d verbunden)</string>
+    <string name="tcp_log_client_init_failed">Client-Initialisierung fehlgeschlagen: %1$s</string>
+    <string name="tcp_log_read_ended">Lesen beendet: %1$s</string>
+    <string name="tcp_log_tcp_to_serial_ok">TCP → Seriell: %1$d Bytes (eingereicht)</string>
+    <string name="tcp_log_tcp_to_serial_failed">TCP → Seriell: %1$d Bytes (Fehler: Schnittstelle nicht geöffnet)</string>
+    <string name="tcp_log_connected">Verbunden mit %1$s:%2$d</string>
+    <string name="tcp_log_remote_disconnected">Gegenstelle getrennt</string>
+    <string name="tcp_log_connect_ended">Verbindung beendet: %1$s %2$s</string>
+    <string name="tcp_log_stopped">Transparente Übertragung gestoppt</string>
+    <string name="tcp_log_write_client_failed">Schreiben an Client fehlgeschlagen: %1$s %2$s</string>
+    <string name="tcp_log_serial_to_tcp_clients">Seriell → TCP: %1$d Bytes × %2$d Clients</string>
+    <string name="tcp_log_serial_to_tcp">Seriell → TCP: %1$d Bytes</string>
+    <string name="tcp_log_send_failed">Senden fehlgeschlagen: %1$s %2$s</string>
+    <string name="tcp_log_client_left">Client getrennt (%1$d verbleibend)</string>
+
+    <!-- 串口管理：状态与错误 -->
+    <string name="serial_state_open">Verbunden</string>
+    <string name="serial_state_error_short">Fehler</string>
+    <string name="serial_err_no_permission">Keine Lese-/Schreibrechte für die serielle Schnittstelle: %1$s</string>
+    <string name="serial_err_no_permission_hint">Bitte prüfen, ob das Gerät gerootet ist oder die Rechte für die serielle Schnittstelle freigegeben sind</string>
+    <string name="serial_err_open_failed">Öffnen der Schnittstelle fehlgeschlagen: %1$s</string>
+    <string name="serial_not_open">Schnittstelle nicht geöffnet</string>
+    <string name="serial_send_failed">Senden fehlgeschlagen; bitte die serielle Verbindung prüfen</string>
+    <string name="serial_file_busy">Datei wird gesendet, bitte warten</string>
+    <string name="serial_file_bytes">[Datei] %1$d Bytes</string>
+    <string name="serial_file_send_note">Dateiversand</string>
+    <string name="serial_file_interrupted">Dateiversand unterbrochen (%1$d / %2$d Bytes gesendet)</string>
+    <string name="serial_loop_note">Zyklus-Senden</string>
+    <string name="serial_rx_note">Empfang</string>
+
+    <!-- 字符集展示名 -->
+    <string name="charset_gb18030">GB18030 (chinesischer Standard)</string>
+    <string name="charset_big5">BIG5 (traditionelles Chinesisch)</string>
+    <string name="charset_utf16le">UTF-16LE (Little Endian)</string>
+    <string name="charset_utf16be">UTF-16BE (Big Endian)</string>
+    <string name="charset_iso_8859_1">ISO-8859-1 (Latin-1)</string>
+    <string name="charset_shift_jis">Shift_JIS (Japanisch)</string>
+    <string name="charset_euc_kr">EUC-KR (Koreanisch)</string>
+
+    <!-- 校验算法：分组 -->
+    <string name="checksum_group_common">Häufig</string>
+
+    <!-- 校验算法：名称 -->
+    <string name="checksum_algo_sum8">Summe SUM8</string>
+    <string name="checksum_algo_sum16">Summe SUM16</string>
+    <string name="checksum_algo_xor8">XOR-Prüfsumme XOR8</string>
+    <string name="checksum_algo_xor16">XOR-Prüfsumme XOR16</string>
+    <string name="checksum_algo_bcc">BCC-Blockprüfsumme</string>
+    <string name="checksum_algo_lrc">LRC-Längsredundanzprüfung</string>
+    <string name="checksum_algo_lrc16">LRC16-Längsredundanzprüfung</string>
+    <string name="checksum_algo_twos8">Zweierkomplement SUM8</string>
+
+    <!-- 校验算法：描述 -->
+    <string name="checksum_desc_sum8">Summe aller Bytes, niederwertige 8 Bit</string>
+    <string name="checksum_desc_sum16">Summe aller Bytes, niederwertige 16 Bit</string>
+    <string name="checksum_desc_xor8">Alle Bytes byteweise XOR, niederwertige 8 Bit</string>
+    <string name="checksum_desc_xor16">Alle Bytes byteweise XOR, niederwertige 16 Bit</string>
+    <string name="checksum_desc_bcc">Wie XOR8, für Barcode/Magnetkarte</string>
+    <string name="checksum_desc_lrc">Zweierkomplement der Summe (MODBUS ASCII)</string>
+    <string name="checksum_desc_lrc16">Zweierkomplement der 16-Bit-Summe</string>
+    <string name="checksum_desc_twos8">Zweierkomplement der Summe</string>
+
+    <!-- 文件 -->
+    <string name="file_share_chooser">Datei teilen</string>
+
+    <!-- 数据仓库：历史导出 -->
+    <string name="store_export_title">Serielle Sende-/Empfangsprotokolle</string>
+    <string name="store_export_time">Exportzeit: %1$s</string>
+    <string name="store_export_columns">Richtung\tZeit\tTyp\tLänge\tHEX\tText</string>
+    <string name="store_dir_rx">Empfang</string>
+    <string name="store_dir_tx">Senden</string>
+    <string name="store_dir_sys">System</string>
+
+    <!-- 数据仓库：默认快捷指令 -->
+    <string name="store_cmd_at">AT-Befehl</string>
+    <string name="store_cmd_modbus">Modbus Holding-Register lesen</string>
+    <string name="store_cmd_handshake">Handshake-Frame</string>
+    <string name="store_cmd_reset">Reset</string>
+    <string name="store_cmd_newline">CR+LF</string>
+</resources>

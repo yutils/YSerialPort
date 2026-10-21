@@ -1,0 +1,712 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ==================== strings.xml ==================== -->
+
+    <string name="app_name">シリアルツール</string>
+    <string name="app_name_debug">シリアルツール(Debug)</string>
+
+    <!-- 语言 -->
+    <string name="lang_follow_system">システムに従う（%1$s）</string>
+    <string name="lang_follow_system_plain">システムに従う</string>
+    <string name="settings_section_general">全般</string>
+    <string name="settings_language">言語</string>
+    <string name="settings_language_sub">アプリの表示言語を切り替えます。再起動後も有効です</string>
+    <string name="settings_language_dialog_title">言語を選択</string>
+
+    <!-- 导航 -->
+    <string name="nav_terminal">ターミナル</string>
+    <string name="nav_terminal_sub">シリアル送受信 · リアルタイム監視</string>
+    <string name="nav_history">履歴</string>
+    <string name="nav_history_sub">送受信記録 · 検索とエクスポート</string>
+    <string name="nav_command">クイックコマンド</string>
+    <string name="nav_command_sub">ワンタップ送信 · よく使うフレーム</string>
+    <string name="nav_autoreply">自動応答</string>
+    <string name="nav_autoreply_sub">ルール照合 · 自動返信</string>
+    <string name="nav_tool">ツール</string>
+    <string name="nav_tool_sub">チェックサム · ASCII コード表</string>
+    <string name="nav_settings">設定</string>
+    <string name="nav_settings_sub">シリアルポート · 送受信 · 外観</string>
+    <string name="nav_more">その他</string>
+    <string name="nav_more_sub">ネットワーク透過転送 · 情報</string>
+
+    <!-- 通用 -->
+    <string name="common_ok">OK</string>
+    <string name="common_cancel">キャンセル</string>
+    <string name="common_got_it">了解</string>
+    <string name="common_auto">自動</string>
+    <string name="common_none">なし</string>
+    <string name="common_none_selected">未選択</string>
+    <string name="common_copied">クリップボードにコピーしました</string>
+    <string name="common_ms_format">%1$d ms</string>
+
+    <!-- 顶栏 -->
+    <string name="topbar_power_desc">シリアルポートを開くまたは閉じる</string>
+    <string name="topbar_theme_desc">テーマを切り替え</string>
+
+    <!-- 数据模型：匹配模式 / 结束符 / 校验 / 流控 -->
+    <string name="match_contains">含む</string>
+    <string name="match_equals">完全一致</string>
+    <string name="match_prefix">前方一致</string>
+    <string name="match_suffix">後方一致</string>
+    <string name="match_regex">正規表現</string>
+    <string name="parity_none">パリティなし (None)</string>
+    <string name="parity_odd">奇パリティ (Odd)</string>
+    <string name="parity_even">偶パリティ (Even)</string>
+    <string name="parity_mark">マークパリティ (Mark)</string>
+    <string name="parity_space">スペースパリティ (Space)</string>
+    <string name="flow_none">フロー制御なし</string>
+    <string name="flow_hardware">ハードウェアフロー制御 (RTS/CTS)</string>
+    <string name="flow_software">ソフトウェアフロー制御 (XON/XOFF)</string>
+
+    <!-- 串口 -->
+    <string name="serial_state_closed">未接続</string>
+    <string name="serial_state_opening">オープン中…</string>
+    <string name="serial_state_closing">クローズ中…</string>
+    <string name="serial_state_error">シリアルポートエラー</string>
+    <string name="serial_select_in_settings">先に設定でシリアルポートを選択してください</string>
+    <string name="serial_open">シリアルポートを開く</string>
+    <string name="serial_close">シリアルポートを閉じる</string>
+
+    <!-- 设置：分区 -->
+    <string name="settings_section_serial">シリアルポートパラメータ</string>
+    <string name="settings_section_rx">受信設定</string>
+    <string name="settings_section_tx">送信設定</string>
+    <string name="settings_section_appearance">外観と表示</string>
+    <string name="settings_rx_note">説明：「自動改行」をオフにすると受信データは連続して結合されます。この場合、データの完全性を保つためタイムスタンプは自動的に無視されます。</string>
+    <string name="settings_autosave_note">設定は自動保存され、再起動後も有効です</string>
+
+    <!-- 设置：串口参数 -->
+    <string name="serial_select_device">シリアルポートを選択</string>
+    <string name="serial_no_devices_found">シリアルポートデバイスが 1 つも見つかりません</string>
+    <string name="serial_select_baud">ボーレートを選択</string>
+    <string name="serial_data_bits">データビット</string>
+    <string name="serial_stop_bits">ストップビット</string>
+    <string name="serial_parity">パリティ</string>
+    <string name="serial_flow_control">フロー制御</string>
+    <string name="serial_frame_gap">フレーム区切り間隔</string>
+    <string name="serial_frame_gap_hint">ミリ秒。0 = ボーレートから自動計算</string>
+    <string name="serial_frame_gap_sub">データ受信後、この時間の無通信で 1 フレームの終了と判定します</string>
+    <string name="serial_device_list">シリアルポート一覧</string>
+    <string name="serial_scan_empty">シリアルポートデバイスが見つかりません。\nデバイスがシリアルポート権限（/dev/ttyS*）を開放しているか確認してください。</string>
+    <string name="serial_list_count">シリアルポート一覧（全 %1$d 個）</string>
+    <string name="serial_select_first">先にシリアルポートを選択してください</string>
+    <string name="serial_reconnected">新しいパラメータで再接続しました</string>
+    <string name="serial_connected_snack">シリアルポートに接続しました</string>
+    <string name="settings_serial_device">シリアルポートデバイス</string>
+    <string name="settings_serial_device_sub">例：/dev/ttyS1。一覧はシステムのシリアルポートスキャン結果です</string>
+    <string name="settings_baud_rate">ボーレート</string>
+    <string name="settings_baud_sub">よく使う値：9600 / 115200 / 921600</string>
+    <string name="settings_data_bits_sub">5 ～ 8 ビットから選択</string>
+    <string name="settings_bits_format">%1$d ビット</string>
+    <string name="settings_scan_count">%1$d 個を検出しました</string>
+    <string name="settings_scan_sub">タップで再スキャンし、デバイス名とパスを確認できます</string>
+
+    <!-- 设置：接收 -->
+    <string name="settings_rx_charset_dialog">受信文字コード</string>
+    <string name="settings_charset">文字コード</string>
+    <string name="settings_charset_sub">ASCII モードのデコードに使用。デコードできないバイトは置換文字ではなく \\xNN（例：\\xA1）と表示されます</string>
+    <string name="settings_rx_time">タイムスタンプを表示</string>
+    <string name="settings_rx_time_sub">自動改行がオフの場合、タイムスタンプは無視されます</string>
+    <string name="settings_rx_wrap">自動改行</string>
+    <string name="settings_rx_wrap_sub">オフにするとデータは連続して結合され、改行は挿入されません</string>
+    <string name="settings_rx_sep">HEX 区切り文字</string>
+    <string name="sep_space">スペース</string>
+    <string name="sep_none">区切りなし</string>
+    <string name="sep_comma">カンマ</string>
+    <string name="sep_dash">ハイフン</string>
+    <string name="settings_rx_max">最大表示文字数</string>
+    <string name="settings_rx_max_sub">超過分は先頭から自動的に切り詰められます</string>
+    <string name="settings_rx_echo">受信エリアに送信内容をエコー</string>
+
+    <!-- 设置：发送 -->
+    <string name="settings_tx_charset_dialog">送信文字コード</string>
+    <string name="settings_tx_escape">エスケープ文字を解析</string>
+    <string name="settings_tx_escape_sub">\\r \\n \\t \\0 \\xNN \\uHHHH に対応</string>
+    <string name="settings_tx_newline">デフォルトの終端コード</string>
+    <string name="settings_tx_chunk">ファイル分割サイズ</string>
+    <string name="settings_tx_chunk_hint">バイト、1 ～ 4096</string>
+    <string name="settings_bytes_format">%1$d バイト</string>
+    <string name="settings_tx_delay">ファイルパケット間遅延</string>
+    <string name="settings_ms_hint">ミリ秒</string>
+
+    <!-- 设置：外观 -->
+    <string name="settings_theme">テーマ</string>
+    <string name="theme_follow_system">システムに従う</string>
+    <string name="theme_dark">ダーク</string>
+    <string name="theme_light">ライト</string>
+    <string name="settings_bg">背景画像</string>
+    <string name="bg_none">背景なし</string>
+    <string name="bg_builtin">内蔵ウォールペーパー</string>
+    <string name="bg_custom">カスタム（その他ページで画像を選択）</string>
+    <string name="bg_custom_short">カスタム</string>
+    <string name="settings_bg_scrim">背景マスク</string>
+    <string name="settings_bg_scrim_hint">0 ～ 100、値が大きいほど背景が暗くなります（推奨 70 ～ 90）</string>
+    <string name="settings_percent_format">%1$d %%</string>
+    <string name="settings_font_size">ターミナルの文字サイズ</string>
+    <string name="settings_font_hint">単位 sp、9 ～ 24</string>
+    <string name="settings_sp_format">%1$d sp</string>
+    <string name="settings_keep_screen">画面を常時点灯</string>
+    <string name="settings_history_limit">履歴の上限件数</string>
+    <string name="settings_history_limit_hint">件、100 ～ 50000</string>
+    <string name="settings_history_count">%1$d 件（現在 %2$d 件）</string>
+
+    <!-- ==================== strings_terminal.xml ==================== -->
+
+    <!-- 终端页：面板与控件 -->
+    <string name="terminal_panel_rx">受信エリア</string>
+    <string name="terminal_panel_tx">送信エリア</string>
+    <string name="terminal_timestamp">タイムスタンプ</string>
+    <string name="terminal_echo">送信をエコー</string>
+    <string name="terminal_back_to_bottom">最下部へ戻る</string>
+    <string name="terminal_escape">エスケープ</string>
+    <string name="terminal_history">履歴</string>
+    <string name="terminal_loop">周期</string>
+    <string name="terminal_send">送信</string>
+    <string name="terminal_mode_file">ファイル</string>
+    <string name="terminal_pick_file">ファイルを選択</string>
+    <string name="terminal_chunk">分割</string>
+    <string name="terminal_delay_ms">遅延(ms)</string>
+    <string name="terminal_interval_ms">間隔(ms)</string>
+    <string name="terminal_loop_count_hint">回数(0=無限)</string>
+    <string name="terminal_rx_pause_desc">表示を一時停止</string>
+    <string name="terminal_rx_save_desc">ファイルに保存</string>
+    <string name="terminal_rx_clear_desc">受信エリアをクリア</string>
+    <string name="terminal_tx_clear_desc">入力をクリア</string>
+
+    <!-- 终端页：提示消息 -->
+    <string name="terminal_filled">送信ボックスに挿入しました</string>
+    <string name="terminal_rx_cleared">受信エリアをクリアしました</string>
+    <string name="terminal_display_paused">表示を一時停止しました（データの受信と記録は継続しています）</string>
+    <string name="terminal_display_resumed">表示を再開しました</string>
+    <string name="terminal_nothing_to_save">保存できる内容がありません</string>
+    <string name="terminal_save_failed">保存に失敗しました</string>
+    <string name="terminal_saved">保存しました：%1$s</string>
+    <string name="terminal_share">共有</string>
+    <string name="terminal_rx_charset_set">受信文字コード：%1$s</string>
+    <string name="terminal_escape_on">エスケープ文字の解析を有効にしました</string>
+    <string name="terminal_escape_off">エスケープ文字の解析を無効にしました</string>
+    <string name="terminal_serial_not_open">シリアルポートが開いていません。先に右上の電源ボタンをタップしてください</string>
+    <string name="terminal_pick_file_first">送信するファイルを選択してください</string>
+    <string name="terminal_input_first">送信する内容を入力してください</string>
+    <string name="terminal_no_history">送信履歴はまだありません</string>
+    <string name="terminal_recent_sends">最近の送信</string>
+    <string name="terminal_read_file_failed">ファイルの読み込みに失敗しました</string>
+    <string name="terminal_unknown_file">不明なファイル</string>
+    <string name="terminal_loaded">読み込みました：%1$s（%2$d バイト）</string>
+    <string name="terminal_source_manual">手動送信</string>
+
+    <!-- 终端页：结束符 -->
+    <string name="terminal_newline">終端コード</string>
+    <string name="terminal_newline_format">終端コード: %1$s</string>
+
+    <!-- 终端页：发送按钮状态 -->
+    <string name="terminal_btn_stop">停止</string>
+    <string name="terminal_btn_loop">周期送信開始</string>
+
+    <!-- 终端页：周期发送 -->
+    <string name="terminal_loop_started_count">周期送信を開始：間隔 %1$dms · 計 %2$d 回</string>
+    <string name="terminal_loop_started_infinite">周期送信を開始：間隔 %1$dms · 無限ループ</string>
+    <string name="terminal_loop_progress">周期 %1$d/%2$d</string>
+    <string name="terminal_sent_times">%1$d 回送信済み</string>
+    <string name="terminal_loop_finished">周期送信が完了しました（計 %1$d 回）</string>
+
+    <!-- 终端页：文件发送 -->
+    <string name="terminal_no_file">ファイル未選択\nすべてのファイルに対応。必要に応じてエスケープ文字の解析を有効にして送信できます</string>
+    <string name="terminal_file_info">%1$s\nサイズ：%2$d バイト（%3$s）</string>
+    <string name="terminal_file_echo">[ファイル %1$d バイト]</string>
+    <string name="terminal_file_progress">%1$d / %2$d バイト送信済み</string>
+
+    <!-- 终端页：统计 -->
+    <string name="terminal_rx_stats">受信 %1$s · %2$d パケット</string>
+    <string name="terminal_tx_stats">送信 %1$s · %2$d パケット</string>
+
+    <!-- 终端页：输入提示 -->
+    <string name="terminal_hint_hex">十六進数を入力、例：01 03 00 00 00 0A</string>
+    <string name="terminal_hint_input">送信する内容を入力…</string>
+
+    <!-- ==================== strings_tool_more.xml ==================== -->
+
+    <!-- ==================== 工具页：校验计算器 ==================== -->
+    <string name="tool_tab_checksum">チェックサム計算機</string>
+    <string name="tool_tab_ascii">ASCII コード表</string>
+    <string name="tool_input_data">入力データ</string>
+    <string name="tool_input_hint_full">HEX 例：01 03 00 00 00 0A\nASCII 例：123456789</string>
+    <string name="tool_input_hint_hex">HEX 例：01 03 00 00 00 0A</string>
+    <string name="tool_input_hint_ascii">ASCII 例：123456789</string>
+    <string name="tool_escape">エスケープ</string>
+    <string name="tool_input_invalid">形式が正しくありません</string>
+    <string name="tool_input_format_invalid">入力形式が正しくありません</string>
+    <string name="tool_hex_rule">HEX 入力は 0-9 A-F と区切り文字のみ使用できます</string>
+    <string name="tool_checksum_algo">チェックサムアルゴリズム</string>
+    <string name="tool_high_byte_first">上位バイト先頭</string>
+    <string name="tool_refin">入力反転</string>
+    <string name="tool_refout">出力反転</string>
+    <string name="tool_invert">結果を反転</string>
+    <string name="tool_algo_group">アルゴリズム分類</string>
+    <string name="tool_output_width">出力ビット幅</string>
+    <string name="tool_width_opt_follow">アルゴリズムに従う</string>
+    <string name="tool_width_opt_8">8 ビット</string>
+    <string name="tool_width_opt_16">16 ビット</string>
+    <string name="tool_width_opt_32">32 ビット</string>
+    <string name="tool_width_chip_follow">ビット幅 自動</string>
+    <string name="tool_width_chip_format">ビット幅 %1$d</string>
+    <string name="tool_xor_chip_format">XOR 0x%1$s</string>
+    <string name="tool_xor_value">結果 XOR 値</string>
+    <string name="tool_xor_value_hint">0x プレフィックスまたは 10 進数に対応（例：0xFF）</string>
+    <string name="tool_calc">チェックサム値を計算</string>
+    <string name="tool_algo_desc_crc">ビット幅 %1$d · 多項式 0x%2$s · 初期値 0x%3$s · XorOut 0x%4$s · RefIn=%5$b RefOut=%6$b</string>
+    <string name="tool_algo_desc_check">" · 標準チェック値 0x%1$s"</string>
+    <string name="tool_copy">コピー</string>
+    <string name="tool_fill_send">送信ボックスに挿入</string>
+    <string name="tool_append_send">データに追加して送信</string>
+    <string name="tool_copied_checksum_format">チェックサム値をコピーしました：%1$s</string>
+    <string name="tool_serial_not_open">シリアルポートが開いていません</string>
+    <string name="tool_note_checksum_format">データ+%1$s</string>
+    <string name="tool_sent_with_checksum">%1$d バイト送信済み（データ + チェックサム）</string>
+
+    <!-- ==================== 工具页：ASCII 码表 ==================== -->
+    <string name="tool_ascii_search_hint">文字 / 十六進数 / 名前を検索</string>
+    <string name="tool_ascii_hint">任意のセルをタップでコピー / 送信ボックスに挿入</string>
+    <string name="tool_ascii_hint_count_format">任意のセルをタップでコピー / 送信ボックスに挿入（%1$d 項目）</string>
+    <string name="tool_ascii_hint_search_format">「%1$s」で %2$d 件ヒット</string>
+    <string name="tool_ascii_space">スペース</string>
+    <string name="tool_ascii_del">削除</string>
+    <string name="tool_ascii_digit_format">数字 %1$s</string>
+    <string name="tool_ascii_upper_format">大文字 %1$s</string>
+    <string name="tool_ascii_lower_format">小文字 %1$s</string>
+    <string name="tool_menu_copy_hex_format">HEX をコピー（%1$s）</string>
+    <string name="tool_menu_send_byte">このバイトを送信</string>
+    <string name="tool_menu_fill_hex">送信ボックスに挿入（HEX）</string>
+    <string name="tool_menu_copy_char_format">文字「%1$s」をコピー</string>
+    <string name="tool_copied_char">文字をコピーしました</string>
+    <string name="tool_copied_hex">HEX をコピーしました</string>
+    <string name="tool_sent_hex_format">0x%1$s を送信しました</string>
+
+    <!-- 0 ~ 31 控制字符说明 -->
+    <string name="tool_ctrl_nul">ヌル文字</string>
+    <string name="tool_ctrl_soh">見出し開始</string>
+    <string name="tool_ctrl_stx">本文開始</string>
+    <string name="tool_ctrl_etx">本文終了</string>
+    <string name="tool_ctrl_eot">転送終了</string>
+    <string name="tool_ctrl_enq">問い合わせ</string>
+    <string name="tool_ctrl_ack">確認応答</string>
+    <string name="tool_ctrl_bel">ベル</string>
+    <string name="tool_ctrl_bs">バックスペース</string>
+    <string name="tool_ctrl_ht">水平タブ</string>
+    <string name="tool_ctrl_lf">改行</string>
+    <string name="tool_ctrl_vt">垂直タブ</string>
+    <string name="tool_ctrl_ff">改ページ</string>
+    <string name="tool_ctrl_cr">復帰</string>
+    <string name="tool_ctrl_so">シフトアウト</string>
+    <string name="tool_ctrl_si">シフトイン</string>
+    <string name="tool_ctrl_dle">データリンクエスケープ</string>
+    <string name="tool_ctrl_dc1">デバイス制御1</string>
+    <string name="tool_ctrl_dc2">デバイス制御2</string>
+    <string name="tool_ctrl_dc3">デバイス制御3</string>
+    <string name="tool_ctrl_dc4">デバイス制御4</string>
+    <string name="tool_ctrl_nak">否定応答</string>
+    <string name="tool_ctrl_syn">同期</string>
+    <string name="tool_ctrl_etb">ブロック転送終了</string>
+    <string name="tool_ctrl_can">キャンセル</string>
+    <string name="tool_ctrl_em">媒体終端</string>
+    <string name="tool_ctrl_sub">置換</string>
+    <string name="tool_ctrl_esc">エスケープ</string>
+    <string name="tool_ctrl_fs">ファイル分離</string>
+    <string name="tool_ctrl_gs">グループ分離</string>
+    <string name="tool_ctrl_rs">レコード分離</string>
+    <string name="tool_ctrl_us">ユニット分離</string>
+
+    <!-- 128 ~ 191 扩展字符说明（windows-1252 / Latin-1 上半区） -->
+    <string name="tool_ext_euro">ユーロ記号</string>
+    <string name="tool_ext_undefined">未定義</string>
+    <string name="tool_ext_quote_low_single">下付きシングル引用符</string>
+    <string name="tool_ext_florin">フローリン記号</string>
+    <string name="tool_ext_quote_low_double">下付きダブル引用符</string>
+    <string name="tool_ext_ellipsis">省略記号</string>
+    <string name="tool_ext_dagger">ダガー記号</string>
+    <string name="tool_ext_dagger_double">ダブルダガー記号</string>
+    <string name="tool_ext_circumflex">修飾サーカムフレックス</string>
+    <string name="tool_ext_permille">パーミル記号</string>
+    <string name="tool_ext_s_caron">S ハーチェク</string>
+    <string name="tool_ext_langle_single">左シングル山括弧</string>
+    <string name="tool_ext_oe_ligature">OE 合字</string>
+    <string name="tool_ext_z_caron">Z ハーチェク</string>
+    <string name="tool_ext_quote_left_single">左シングル引用符</string>
+    <string name="tool_ext_quote_right_single">右シングル引用符</string>
+    <string name="tool_ext_quote_left_double">左ダブル引用符</string>
+    <string name="tool_ext_quote_right_double">右ダブル引用符</string>
+    <string name="tool_ext_bullet">ビュレット</string>
+    <string name="tool_ext_dash_en">エンダッシュ</string>
+    <string name="tool_ext_dash_em">エムダッシュ</string>
+    <string name="tool_ext_tilde">修飾チルダ</string>
+    <string name="tool_ext_trademark">商標記号</string>
+    <string name="tool_ext_s_caron_lower">s ハーチェク</string>
+    <string name="tool_ext_rangle_single">右シングル山括弧</string>
+    <string name="tool_ext_oe_ligature_lower">oe 合字</string>
+    <string name="tool_ext_z_caron_lower">z ハーチェク</string>
+    <string name="tool_ext_y_diaeresis">Y ウムラウト</string>
+    <string name="tool_ext_nbsp">改行なしスペース</string>
+    <string name="tool_ext_exclaim_inverted">逆感嘆符</string>
+    <string name="tool_ext_cent">セント記号</string>
+    <string name="tool_ext_pound">ポンド記号</string>
+    <string name="tool_ext_currency">通貨記号</string>
+    <string name="tool_ext_yen">円記号</string>
+    <string name="tool_ext_broken_bar">破断線</string>
+    <string name="tool_ext_section">セクション記号</string>
+    <string name="tool_ext_diaeresis">ウムラウト記号</string>
+    <string name="tool_ext_copyright">著作権記号</string>
+    <string name="tool_ext_ordinal_f">女性序数標識</string>
+    <string name="tool_ext_langle_double">左二重山括弧</string>
+    <string name="tool_ext_not">否定</string>
+    <string name="tool_ext_shy">ソフトハイフン</string>
+    <string name="tool_ext_registered">登録商標記号</string>
+    <string name="tool_ext_macron">マクロン記号</string>
+    <string name="tool_ext_degree">度記号</string>
+    <string name="tool_ext_plus_minus">プラスマイナス記号</string>
+    <string name="tool_ext_superscript_two">上付き 2</string>
+    <string name="tool_ext_superscript_three">上付き 3</string>
+    <string name="tool_ext_acute">アキュートアクセント</string>
+    <string name="tool_ext_micro">マイクロ記号</string>
+    <string name="tool_ext_paragraph">段落記号</string>
+    <string name="tool_ext_middle_dot">中黒</string>
+    <string name="tool_ext_cedilla">セディーユ</string>
+    <string name="tool_ext_superscript_one">上付き 1</string>
+    <string name="tool_ext_ordinal_m">男性序数標識</string>
+    <string name="tool_ext_rangle_double">右二重山括弧</string>
+    <string name="tool_ext_quarter">四分の一</string>
+    <string name="tool_ext_half">二分の一</string>
+    <string name="tool_ext_three_quarters">四分の三</string>
+    <string name="tool_ext_question_inverted">逆疑問符</string>
+    <string name="tool_ext_multiply">乗算記号</string>
+    <string name="tool_ext_divide">除算記号</string>
+
+    <!-- ==================== 更多页 ==================== -->
+    <string name="more_tcp_title">シリアルポート ↔ TCP 透過転送</string>
+    <string name="more_tcp_value">サーバー / クライアント</string>
+    <string name="more_tcp_sub">シリアルポートのデータをネットワークへ転送、またはネットワークのデータをシリアルポートへ書き込み</string>
+    <string name="more_bg_custom">カスタム画像</string>
+    <string name="more_bg_scrim_hint">0 ～ 100、値が大きいほど背景が暗くなります</string>
+    <string name="more_no_history">履歴はまだありません</string>
+    <string name="more_export_failed">エクスポートに失敗しました</string>
+    <string name="more_exported_format">%1$s をエクスポートしました</string>
+    <string name="more_share">共有</string>
+    <string name="more_export_history">送受信記録をエクスポート</string>
+    <string name="more_count_format">%1$d 件</string>
+    <string name="more_export_dir">エクスポート先</string>
+    <string name="more_export_dir_msg">%1$s\n\nファイルマネージャーまたは adb pull で取得できます。</string>
+    <string name="more_view">表示</string>
+    <string name="more_reset">デフォルト設定に戻す</string>
+    <string name="more_reset_msg">すべての設定（シリアルポートパラメータ、送受信設定、外観など）を消去します。\nクイックコマンドと自動応答ルールは削除されません。</string>
+    <string name="more_reset_btn">デフォルトに戻す</string>
+    <string name="more_reset_done">デフォルト設定に戻しました</string>
+    <string name="more_reset_careful">要注意</string>
+    <string name="more_pick_image">カスタム背景を選択</string>
+    <string name="more_selected">選択済み</string>
+    <string name="more_pick_image_sub">ギャラリーから画像を選択。横向きの大きな画像を推奨</string>
+    <string name="more_exit">アプリを終了</string>
+    <string name="more_exit_serial_open">先にシリアルポートを閉じてから終了</string>
+    <string name="more_exit_normal">リソースを解放して終了</string>
+    <string name="more_exit_confirm_serial_open">シリアルポート接続を閉じ、送受信記録を保存してから終了します。\n終了しますか？</string>
+    <string name="more_exit_confirm_normal">送受信記録を保存してからアプリを終了します。\n終了しますか？</string>
+    <string name="more_exit_btn">終了</string>
+    <string name="more_source">オープンソース URL</string>
+    <string name="more_copy_url">URL をコピー</string>
+    <string name="more_open_browser">ブラウザで開く</string>
+    <string name="more_url_copied">URL をコピーしました</string>
+    <string name="more_no_browser_copied">ブラウザを開けないため、URL をコピーしました</string>
+    <string name="more_bg_set">背景画像を設定しました</string>
+    <string name="more_bg_read_failed">画像の読み込みに失敗しました</string>
+    <string name="more_section_network">ネットワーク</string>
+    <string name="more_section_personal">カスタマイズ</string>
+    <string name="more_section_data">データとメンテナンス</string>
+
+    <!-- ==================== 关于 ==================== -->
+    <string name="about_version_format">バージョン %1$s (%2$d)</string>
+    <string name="about_author">作者：余静</string>
+    <string name="about_source_url">オープンソース URL：github.com/yutils/YSerialPort</string>
+    <string name="about_footer">シリアルポートデバイスのデバッグ用ツール。ASCII / HEX 送受信、\nファイル送信、周期送信、自動応答、チェックサム計算などに対応しています。\n\nシリアルポートライブラリ YSerialPort · 他のシリアルポートツールと .so の競合はありません</string>
+
+    <!-- ==================== strings_command_autoreply.xml ==================== -->
+
+    <!-- ==================== 指令页 ==================== -->
+
+    <!-- 页面 -->
+    <string name="command_title">クイックコマンド</string>
+    <string name="command_add">追加</string>
+    <string name="command_add_desc">コマンドを追加</string>
+    <string name="command_empty_title">クイックコマンドはまだありません</string>
+    <string name="command_empty_sub">右上の「追加」をタップしてよく使うフレームを作成できます</string>
+    <string name="command_count_format">全 %1$d 件 · 「送信」をタップするだけで送信できます</string>
+
+    <!-- 列表项 -->
+    <string name="command_send">送信</string>
+    <string name="command_more_desc">その他の操作</string>
+    <string name="command_item_unnamed">名称未設定</string>
+
+    <!-- 发送 -->
+    <string name="command_serial_not_open">シリアルポートが開いていません。先に開いてください</string>
+    <string name="command_content_invalid">コマンド内容が空か、形式が正しくありません</string>
+    <string name="command_note">クイックコマンド</string>
+    <string name="command_note_name">クイックコマンド：%1$s</string>
+    <string name="command_sent_bytes">%1$d バイト送信済み</string>
+
+    <!-- 卡片点击菜单 -->
+    <string name="command_fallback_name">コマンド</string>
+    <string name="command_action_send_now">ワンタップ送信</string>
+    <string name="command_action_fill">送信ボックスに挿入</string>
+
+    <!-- 更多菜单 -->
+    <string name="command_unnamed">名称未設定のコマンド</string>
+    <string name="command_menu_edit">編集</string>
+    <string name="command_menu_duplicate">複製</string>
+    <string name="command_menu_move_up">上へ移動</string>
+    <string name="command_menu_move_down">下へ移動</string>
+    <string name="command_delete">削除</string>
+    <string name="command_copy_format">%1$s のコピー</string>
+    <string name="command_delete_title">コマンドを削除</string>
+    <string name="command_delete_confirm">「%1$s」を削除しますか？</string>
+
+    <!-- 编辑对话框 -->
+    <string name="command_add_title">クイックコマンドを追加</string>
+    <string name="command_edit_title">クイックコマンドを編集</string>
+    <string name="command_save">保存</string>
+    <string name="command_name_hint">コマンド名（例：温度読み取り）</string>
+    <string name="command_hint_hex">HEX 例：01 03 00 00 00 0A C5 CD</string>
+    <string name="command_hint_ascii">テキスト内容（例：AT+RESET）</string>
+    <string name="command_escape_chip">エスケープ</string>
+    <string name="command_newline_chip">終端コード: %1$s</string>
+    <string name="command_newline_title">終端コード</string>
+    <string name="command_escape_on">送信時に \\r \\n \\xNN などのエスケープを解析します</string>
+    <string name="command_escape_off">エスケープ解析をオフにしました</string>
+
+    <!-- 校验提示 -->
+    <string name="command_error_content_empty">コマンド内容を入力してください</string>
+    <string name="command_error_hex_invalid">HEX 形式が正しくありません。不正な文字が含まれていないか確認してください</string>
+    <string name="command_default_name_hex">HEX コマンド</string>
+    <string name="command_default_name_ascii">テキストコマンド</string>
+    <string name="command_saved">保存しました</string>
+
+    <!-- ==================== 应答页 ==================== -->
+
+    <!-- 页面 -->
+    <string name="autoreply_title">自動応答</string>
+    <string name="autoreply_add">追加</string>
+    <string name="autoreply_empty_title">自動応答ルールはまだありません</string>
+    <string name="autoreply_empty_sub">照合内容を受信したら指定データを自動返信します</string>
+    <string name="autoreply_count_format">ルール %1$d 件 · 有効 %2$d 件 · 照合データを受信すると自動返信</string>
+    <string name="autoreply_enabled_toast">自動応答を有効にしました</string>
+    <string name="autoreply_disabled_toast">自動応答を無効にしました</string>
+
+    <!-- 列表项 -->
+    <string name="autoreply_more_desc">その他の操作</string>
+    <string name="autoreply_unnamed">名称未設定のルール</string>
+    <string name="autoreply_hits_format">ヒット %1$d</string>
+    <string name="autoreply_match_label">照合</string>
+    <string name="autoreply_reply_label">応答</string>
+
+    <!-- 更多菜单 -->
+    <string name="autoreply_fallback_name">ルール</string>
+    <string name="autoreply_menu_enable">このルールを有効化</string>
+    <string name="autoreply_menu_disable">このルールを無効化</string>
+    <string name="autoreply_menu_edit">編集</string>
+    <string name="autoreply_menu_test">応答をテスト（即時に 1 回送信）</string>
+    <string name="autoreply_menu_duplicate">複製</string>
+    <string name="autoreply_menu_move_up">上へ移動</string>
+    <string name="autoreply_menu_move_down">下へ移動</string>
+    <string name="autoreply_delete">削除</string>
+    <string name="autoreply_rule_enabled">「%1$s」を有効にしました</string>
+    <string name="autoreply_rule_disabled">「%1$s」を無効にしました</string>
+    <string name="autoreply_reply_invalid">応答内容が空か、形式が正しくありません</string>
+    <string name="autoreply_test_note">応答テスト</string>
+    <string name="autoreply_test_sent">テスト応答 %1$d バイトを送信しました</string>
+    <string name="autoreply_copy_format">%1$s のコピー</string>
+    <string name="autoreply_delete_title">ルールを削除</string>
+    <string name="autoreply_delete_confirm">「%1$s」を削除しますか？</string>
+
+    <!-- 编辑对话框 -->
+    <string name="autoreply_add_title">応答ルールを追加</string>
+    <string name="autoreply_edit_title">応答ルールを編集</string>
+    <string name="autoreply_save">保存</string>
+    <string name="autoreply_name_hint">ルール名（例：温度照会応答）</string>
+    <string name="autoreply_section_match">受信照合</string>
+    <string name="autoreply_section_reply">応答内容</string>
+    <string name="autoreply_match_hint_hex">HEX ワイルドカード対応：01 03 ?? ?? 00 0A</string>
+    <string name="autoreply_match_hint_ascii">照合するテキスト内容</string>
+    <string name="autoreply_reply_hint">応答する HEX またはテキスト内容</string>
+    <string name="autoreply_match_mode_title">照合モード</string>
+    <string name="autoreply_newline_chip">終端コード: %1$s</string>
+    <string name="autoreply_newline_title">終端コード</string>
+    <string name="autoreply_escape_chip">エスケープ</string>
+    <string name="autoreply_delay_label">応答遅延(ms)</string>
+    <string name="autoreply_once_chip">1 回のみ応答</string>
+    <string name="autoreply_preview_empty">応答プレビュー：（空）</string>
+    <string name="autoreply_preview_format">応答プレビュー：%1$s</string>
+
+    <!-- 校验提示 -->
+    <string name="autoreply_error_match_empty">照合内容を入力してください</string>
+    <string name="autoreply_error_reply_empty">応答内容を入力してください</string>
+    <string name="autoreply_error_match_hex">照合内容の HEX 形式が正しくありません</string>
+    <string name="autoreply_error_reply_hex">応答内容の HEX 形式が正しくありません</string>
+    <string name="autoreply_default_name">応答ルール</string>
+    <string name="autoreply_saved">保存しました</string>
+
+    <!-- 引擎（无 Context） -->
+    <string name="autoreply_note">自動応答</string>
+    <string name="autoreply_note_name">自動応答：%1$s</string>
+
+    <!-- ==================== strings_history_tcp.xml ==================== -->
+
+    <!-- 历史记录页：筛选 / 搜索 / 记录项 -->
+    <string name="history_filter_all">すべて</string>
+    <string name="history_filter_rx">受信</string>
+    <string name="history_filter_tx">送信</string>
+    <string name="history_dir_rx">受信</string>
+    <string name="history_dir_tx">送信</string>
+    <string name="history_dir_system">システム</string>
+    <string name="history_search_hint">内容 / HEX を検索</string>
+    <string name="history_export_desc">記録をエクスポート</string>
+    <string name="history_clear_desc">記録をクリア</string>
+    <string name="history_empty">送受信記録はまだありません</string>
+    <string name="history_no_records">記録はまだありません</string>
+    <string name="history_clear_title">記録をクリア</string>
+    <string name="history_clear_message">送受信記録 %1$d 件をすべて削除します。元に戻せません。</string>
+    <string name="history_cleared">クリアしました</string>
+    <string name="history_count_format">%1$d 件の記録（全 %2$d 件）</string>
+    <string name="history_no_export">エクスポートできる記録はありません</string>
+    <string name="history_export_failed">エクスポートに失敗しました</string>
+    <string name="history_exported_format">エクスポートしました：%1$s</string>
+    <string name="history_export_share">共有</string>
+    <string name="history_menu_title">記録の操作</string>
+    <string name="history_menu_copy_hex">HEX をコピー</string>
+    <string name="history_menu_copy_text">テキストをコピー</string>
+    <string name="history_menu_fill_hex">送信ボックスに戻す（HEX）</string>
+    <string name="history_menu_fill_ascii">送信ボックスに戻す（ASCII）</string>
+    <string name="history_menu_send_hex">HEX をワンタップ送信</string>
+    <string name="history_menu_delete">この記録を削除</string>
+    <string name="history_copied_hex">HEX をコピーしました</string>
+    <string name="history_copied_text">テキストをコピーしました</string>
+    <string name="history_deleted">削除しました</string>
+
+    <!-- TCP 透传页：界面 -->
+    <string name="tcp_title">シリアルポート ↔ TCP 透過転送</string>
+    <string name="tcp_back_desc">戻る</string>
+    <string name="tcp_mode_title">動作モード</string>
+    <string name="tcp_mode_server">サーバー</string>
+    <string name="tcp_mode_client">クライアント</string>
+    <string name="tcp_listen_port">リッスンポート</string>
+    <string name="tcp_remote_ip">リモート IP</string>
+    <string name="tcp_start">起動</string>
+    <string name="tcp_stop">停止</string>
+    <string name="tcp_connect">接続</string>
+    <string name="tcp_disconnect">切断</string>
+    <string name="tcp_log_title">透過転送ログ</string>
+    <string name="tcp_clear_log_desc">ログをクリア</string>
+    <string name="tcp_state_stopped">未起動</string>
+    <string name="tcp_state_running">実行中</string>
+    <string name="tcp_state_running_server">実行中 · サーバーがポート %1$s でリッスン中 · 接続済みクライアント %2$d 件</string>
+    <string name="tcp_state_running_client">実行中 · %1$s:%2$s に接続済み</string>
+
+    <!-- TCP 透传页：日志与提示 -->
+    <string name="tcp_intro">透過転送機能は、シリアルポートで受信したデータを TCP へ転送し、TCP で受信したデータをシリアルポートへ書き込みます。</string>
+    <string name="tcp_local_ip_format">本機 IP：%1$s</string>
+    <string name="tcp_ip_unavailable">取得できません</string>
+    <string name="tcp_port_invalid_title">ポートが無効</string>
+    <string name="tcp_port_invalid_message">1 ～ 65535 のポート番号を入力してください</string>
+    <string name="tcp_host_invalid_title">アドレスが無効</string>
+    <string name="tcp_host_invalid_message">リモート IP またはドメイン名を入力してください</string>
+    <string name="tcp_connecting">%1$s:%2$d に接続中…</string>
+    <string name="tcp_serial_not_configured">ヒント：シリアルポートが未設定です。先に「設定」でシリアルポートを選択して開いてください</string>
+    <string name="tcp_serial_auto_opening">シリアルポートが開いていません。%1$s を自動的に開いています…</string>
+    <string name="tcp_serial_opened">シリアルポートを開きました：%1$s</string>
+    <string name="tcp_serial_open_failed">シリアルポートを開けませんでした：%1$s</string>
+    <string name="tcp_unknown_error">不明なエラー</string>
+    <string name="tcp_note">TCP 透過転送</string>
+
+    <!-- TCP 透传桥：日志 -->
+    <string name="tcp_log_server_started">サーバーを起動しました。ポート %1$d をリッスン中</string>
+    <string name="tcp_log_start_failed">起動に失敗：%1$s %2$s</string>
+    <string name="tcp_log_accept_ended">accept 終了：%1$s</string>
+    <string name="tcp_log_client_joined">クライアント接続：%1$s:%2$d（現在 %3$d 件）</string>
+    <string name="tcp_log_client_init_failed">クライアントの初期化に失敗：%1$s</string>
+    <string name="tcp_log_read_ended">読み取り終了：%1$s</string>
+    <string name="tcp_log_tcp_to_serial_ok">TCP → シリアルポート：%1$d バイト（書き込み済み）</string>
+    <string name="tcp_log_tcp_to_serial_failed">TCP → シリアルポート：%1$d バイト（失敗：シリアルポート未オープン）</string>
+    <string name="tcp_log_connected">%1$s:%2$d に接続しました</string>
+    <string name="tcp_log_remote_disconnected">リモートが切断されました</string>
+    <string name="tcp_log_connect_ended">接続終了：%1$s %2$s</string>
+    <string name="tcp_log_stopped">透過転送を停止しました</string>
+    <string name="tcp_log_write_client_failed">クライアントへの書き込みに失敗：%1$s %2$s</string>
+    <string name="tcp_log_serial_to_tcp_clients">シリアルポート → TCP：%1$d バイト × クライアント %2$d 件</string>
+    <string name="tcp_log_serial_to_tcp">シリアルポート → TCP：%1$d バイト</string>
+    <string name="tcp_log_send_failed">送信に失敗：%1$s %2$s</string>
+    <string name="tcp_log_client_left">クライアントが切断されました（残り %1$d 件）</string>
+
+    <!-- ==================== strings_core.xml ==================== -->
+
+    <!-- 串口管理：状态与错误 -->
+    <string name="serial_state_open">接続済み</string>
+    <string name="serial_state_error_short">エラー</string>
+    <string name="serial_err_no_permission">シリアルポートの読み書き権限がありません：%1$s</string>
+    <string name="serial_err_no_permission_hint">デバイスが root 化されているか、シリアルポート権限が開放されているか確認してください</string>
+    <string name="serial_err_open_failed">シリアルポートを開けませんでした：%1$s</string>
+    <string name="serial_not_open">シリアルポートが開いていません</string>
+    <string name="serial_send_failed">送信に失敗しました。シリアルポートの接続を確認してください</string>
+    <string name="serial_file_busy">ファイル送信中です。しばらくお待ちください</string>
+    <string name="serial_file_bytes">[ファイル] %1$d バイト</string>
+    <string name="serial_file_send_note">ファイル送信</string>
+    <string name="serial_file_interrupted">ファイル送信が中断されました（%1$d / %2$d バイト送信済み）</string>
+    <string name="serial_loop_note">周期送信</string>
+    <string name="serial_rx_note">受信</string>
+
+    <!-- 字符集展示名 -->
+    <string name="charset_gb18030">GB18030（中国規格）</string>
+    <string name="charset_big5">BIG5（繁体字）</string>
+    <string name="charset_utf16le">UTF-16LE（リトルエンディアン）</string>
+    <string name="charset_utf16be">UTF-16BE（ビッグエンディアン）</string>
+    <string name="charset_iso_8859_1">ISO-8859-1（Latin-1）</string>
+    <string name="charset_shift_jis">Shift_JIS（日本語）</string>
+    <string name="charset_euc_kr">EUC-KR（韓国語）</string>
+
+    <!-- 校验算法：分组 -->
+    <string name="checksum_group_common">よく使う</string>
+
+    <!-- 校验算法：名称 -->
+    <string name="checksum_algo_sum8">累積和 SUM8</string>
+    <string name="checksum_algo_sum16">累積和 SUM16</string>
+    <string name="checksum_algo_xor8">XOR チェックサム XOR8</string>
+    <string name="checksum_algo_xor16">XOR チェックサム XOR16</string>
+    <string name="checksum_algo_bcc">BCC ブロックチェック</string>
+    <string name="checksum_algo_lrc">LRC 縦方向冗長チェック</string>
+    <string name="checksum_algo_lrc16">LRC16 縦方向冗長チェック</string>
+    <string name="checksum_algo_twos8">2 の補数 SUM8</string>
+
+    <!-- 校验算法：描述 -->
+    <string name="checksum_desc_sum8">全バイトの合計の下位 8 ビット</string>
+    <string name="checksum_desc_sum16">全バイトの合計の下位 16 ビット</string>
+    <string name="checksum_desc_xor8">全バイトを順に XOR 演算、下位 8 ビット</string>
+    <string name="checksum_desc_xor16">全バイトを順に XOR 演算、下位 16 ビット</string>
+    <string name="checksum_desc_bcc">XOR8 と同一。バーコード / 磁気カードで使用</string>
+    <string name="checksum_desc_lrc">累積和を反転して +1（MODBUS ASCII）</string>
+    <string name="checksum_desc_lrc16">16 ビット累積和を反転して +1</string>
+    <string name="checksum_desc_twos8">累積和を反転して +1</string>
+
+    <!-- 文件 -->
+    <string name="file_share_chooser">ファイルを共有</string>
+
+    <!-- 数据仓库：历史导出 -->
+    <string name="store_export_title">シリアルポート送受信記録</string>
+    <string name="store_export_time">エクスポート日時：%1$s</string>
+    <string name="store_export_columns">方向\t時刻\t種類\t長さ\tHEX\tテキスト</string>
+    <string name="store_dir_rx">受信</string>
+    <string name="store_dir_tx">送信</string>
+    <string name="store_dir_sys">システム</string>
+
+    <!-- 数据仓库：默认快捷指令 -->
+    <string name="store_cmd_at">AT コマンド</string>
+    <string name="store_cmd_modbus">Modbus 保持レジスタ読み取り</string>
+    <string name="store_cmd_handshake">ハンドシェイクフレーム</string>
+    <string name="store_cmd_reset">リセット</string>
+    <string name="store_cmd_newline">改行（CR+LF）</string>
+
+</resources>

@@ -51,7 +51,13 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>(FragmentHistoryBind
         binding.rv.layoutManager = GridLayoutManager(requireContext(), span)
         binding.rv.adapter = adapter
 
-        binding.segFilter.setOptions(listOf("全部", "接收", "发送"), 0)
+        binding.segFilter.setOptions(
+            listOf(
+                getString(R.string.history_filter_all),
+                getString(R.string.history_filter_rx),
+                getString(R.string.history_filter_tx)
+            ), 0
+        )
         binding.segFilter.onSelected = { index ->
             filter = index
             applyFilter()
@@ -71,12 +77,16 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>(FragmentHistoryBind
 
         binding.btnClear.setOnClickListener {
             if (allItems.isEmpty()) {
-                snack("暂无记录")
+                snack(getString(R.string.history_no_records))
                 return@setOnClickListener
             }
-            Dialogs.confirm(requireContext(), "清空记录", "将删除全部 ${allItems.size} 条收发记录，且不可恢复。") {
+            Dialogs.confirm(
+                requireContext(),
+                getString(R.string.history_clear_title),
+                getString(R.string.history_clear_message, allItems.size)
+            ) {
                 Store.clearHistory()
-                snack("已清空")
+                snack(getString(R.string.history_cleared))
             }
         }
 
@@ -134,20 +144,21 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>(FragmentHistoryBind
             shown.add(item)
         }
         adapter.notifyDataSetChanged()
-        binding.tvCount.text = "共 ${shown.size} 条记录（总计 ${allItems.size} 条）"
+        binding.tvCount.text = getString(R.string.history_count_format, shown.size, allItems.size)
         binding.llEmpty.visibility = if (shown.isEmpty()) View.VISIBLE else View.GONE
         binding.rv.visibility = if (shown.isEmpty()) View.GONE else View.VISIBLE
     }
 
     private fun export() {
         if (shown.isEmpty()) {
-            snack("暂无可导出的记录")
+            snack(getString(R.string.history_no_export))
             return
         }
         io.execute {
             val file = AppFiles.saveText(Store.appContext(), "serial_history", buildExportText())
             ui.post {
-                if (file == null) snack("导出失败") else snack("已导出：${file.name}", "分享") {
+                if (file == null) snack(getString(R.string.history_export_failed))
+                else snack(getString(R.string.history_exported_format, file.name), getString(R.string.history_export_share)) {
                     AppFiles.share(requireContext(), file)
                 }
             }
@@ -158,13 +169,17 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>(FragmentHistoryBind
 
     private fun showItemMenu(item: HistoryItem) {
         val options = listOf(
-            "复制 HEX", "复制文本", "回填到发送框（HEX）", "回填到发送框（ASCII）",
-            "一键发送 HEX", "删除这条记录"
+            getString(R.string.history_menu_copy_hex),
+            getString(R.string.history_menu_copy_text),
+            getString(R.string.history_menu_fill_hex),
+            getString(R.string.history_menu_fill_ascii),
+            getString(R.string.history_menu_send_hex),
+            getString(R.string.history_menu_delete)
         )
-        Dialogs.singleChoice(requireContext(), "记录操作", options) { which ->
+        Dialogs.singleChoice(requireContext(), getString(R.string.history_menu_title), options) { which ->
             when (which) {
-                0 -> copyToClipboard(item.hex, "已复制 HEX")
-                1 -> copyToClipboard(item.text, "已复制文本")
+                0 -> copyToClipboard(item.hex, getString(R.string.history_copied_hex))
+                1 -> copyToClipboard(item.text, getString(R.string.history_copied_text))
                 2 -> {
                     SendBridge.fill(item.hex, DataType.HEX)
                     goTerminal()
@@ -180,7 +195,7 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>(FragmentHistoryBind
                 5 -> {
                     Store.removeHistory(item)
                     doRefresh()
-                    snack("已删除")
+                    snack(getString(R.string.history_deleted))
                 }
             }
         }
@@ -204,9 +219,9 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>(FragmentHistoryBind
             val item = shown[position]
             val b = holder.b
             b.tvDir.text = when (item.dir) {
-                Dir.RX -> "接收"
-                Dir.TX -> "发送"
-                else -> "系统"
+                Dir.RX -> getString(R.string.history_dir_rx)
+                Dir.TX -> getString(R.string.history_dir_tx)
+                else -> getString(R.string.history_dir_system)
             }
             val dirColor = when (item.dir) {
                 Dir.RX -> R.color.c_rx

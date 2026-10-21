@@ -1,5 +1,6 @@
 package com.yujing.chuankou.core.util
 
+import com.yujing.chuankou.R
 import java.nio.ByteBuffer
 import java.nio.CharBuffer
 import java.nio.charset.Charset
@@ -63,21 +64,26 @@ private fun decodeEscaping(
  */
 object Charsets2 {
 
-    /** 常用字符集清单（name 为展示名，charsetName 为 Java 字符集名） */
-    val SUPPORTED: List<Pair<String, String>> = listOf(
-        "UTF-8" to "UTF-8",
-        "GB18030（国标）" to "GB18030",
-        "GBK" to "GBK",
-        "GB2312" to "GB2312",
-        "BIG5（繁体）" to "Big5",
-        "UTF-16LE（小端）" to "UTF-16LE",
-        "UTF-16BE（大端）" to "UTF-16BE",
-        "ISO-8859-1（Latin-1）" to "ISO-8859-1",
-        "US-ASCII" to "US-ASCII",
-        "Windows-1252" to "windows-1252",
-        "Shift_JIS（日文）" to "Shift_JIS",
-        "EUC-KR（韩文）" to "EUC-KR"
-    )
+    /**
+     * 常用字符集清单（first 为展示名，second 为 Java 字符集名）。
+     * 展示名走字符串资源（Langs 取词，跟随应用语言），故改为每次访问重新求值；
+     * 纯 ASCII 展示名与 Java 字符集名保持字面量，不做资源化。
+     */
+    val SUPPORTED: List<Pair<String, String>>
+        get() = listOf(
+            "UTF-8" to "UTF-8",
+            Langs.str(R.string.charset_gb18030) to "GB18030",
+            "GBK" to "GBK",
+            "GB2312" to "GB2312",
+            Langs.str(R.string.charset_big5) to "Big5",
+            Langs.str(R.string.charset_utf16le) to "UTF-16LE",
+            Langs.str(R.string.charset_utf16be) to "UTF-16BE",
+            Langs.str(R.string.charset_iso_8859_1) to "ISO-8859-1",
+            "US-ASCII" to "US-ASCII",
+            "Windows-1252" to "windows-1252",
+            Langs.str(R.string.charset_shift_jis) to "Shift_JIS",
+            Langs.str(R.string.charset_euc_kr) to "EUC-KR"
+        )
 
     val DEFAULT = "UTF-8"
 

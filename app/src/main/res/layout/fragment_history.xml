@@ -46,7 +46,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
-                android:hint="搜索内容 / HEX"
+                android:hint="@string/history_search_hint"
                 android:importantForAutofill="no"
                 android:inputType="text"
                 android:maxLines="1"
@@ -71,7 +71,7 @@
             android:id="@+id/btn_export"
             style="@style/Widget.YS.IconButton.Small"
             android:layout_marginStart="6dp"
-            android:contentDescription="导出记录"
+            android:contentDescription="@string/history_export_desc"
             app:icon="@drawable/ic_export"
             app:iconGravity="textStart"
             app:iconPadding="0dp" />
@@ -79,7 +79,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_clear"
             style="@style/Widget.YS.IconButton.Small"
-            android:contentDescription="清空记录"
+            android:contentDescription="@string/history_clear_desc"
             app:icon="@drawable/ic_trash"
             app:iconGravity="textStart"
             app:iconPadding="0dp" />
@@ -128,7 +128,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="暂无收发记录"
+                android:text="@string/history_empty"
                 android:textColor="@color/c_text_tertiary"
                 android:textSize="13sp" />
         </LinearLayout>

@@ -1,0 +1,698 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">시리얼 도구</string>
+    <string name="app_name_debug">시리얼 도구(Debug)</string>
+
+    <!-- 语言 -->
+    <string name="lang_follow_system">시스템 설정 따르기(%1$s)</string>
+    <string name="lang_follow_system_plain">시스템 설정 따르기</string>
+    <string name="settings_section_general">일반</string>
+    <string name="settings_language">언어</string>
+    <string name="settings_language_sub">앱 화면 언어를 전환합니다. 재시작 후에도 유지됩니다</string>
+    <string name="settings_language_dialog_title">언어 선택</string>
+
+    <!-- 导航 -->
+    <string name="nav_terminal">터미널</string>
+    <string name="nav_terminal_sub">시리얼 송수신 · 실시간 모니터링</string>
+    <string name="nav_history">기록</string>
+    <string name="nav_history_sub">송수신 기록 · 검색 및 내보내기</string>
+    <string name="nav_command">빠른 명령</string>
+    <string name="nav_command_sub">원터치 전송 · 자주 쓰는 프레임</string>
+    <string name="nav_autoreply">자동 응답</string>
+    <string name="nav_autoreply_sub">규칙 매칭 · 자동 회신</string>
+    <string name="nav_tool">도구</string>
+    <string name="nav_tool_sub">체크섬 알고리즘 · ASCII 코드표</string>
+    <string name="nav_settings">설정</string>
+    <string name="nav_settings_sub">시리얼 · 송수신 · 화면</string>
+    <string name="nav_more">더보기</string>
+    <string name="nav_more_sub">네트워크 투과 전송 · 정보</string>
+
+    <!-- 通用 -->
+    <string name="common_ok">확인</string>
+    <string name="common_cancel">취소</string>
+    <string name="common_got_it">알겠습니다</string>
+    <string name="common_auto">자동</string>
+    <string name="common_none">없음</string>
+    <string name="common_none_selected">미선택</string>
+    <string name="common_copied">클립보드에 복사되었습니다</string>
+    <string name="common_ms_format">%1$d ms</string>
+
+    <!-- 顶栏 -->
+    <string name="topbar_power_desc">시리얼 포트 열기/닫기</string>
+    <string name="topbar_theme_desc">테마 전환</string>
+
+    <!-- 数据模型：匹配模式 / 结束符 / 校验 / 流控 -->
+    <string name="match_contains">포함</string>
+    <string name="match_equals">완전 일치</string>
+    <string name="match_prefix">접두사</string>
+    <string name="match_suffix">접미사</string>
+    <string name="match_regex">정규식</string>
+    <string name="parity_none">패리티 없음 (None)</string>
+    <string name="parity_odd">홀수 패리티 (Odd)</string>
+    <string name="parity_even">짝수 패리티 (Even)</string>
+    <string name="parity_mark">마크 패리티 (Mark)</string>
+    <string name="parity_space">스페이스 패리티 (Space)</string>
+    <string name="flow_none">플로 제어 없음</string>
+    <string name="flow_hardware">하드웨어 플로 제어 (RTS/CTS)</string>
+    <string name="flow_software">소프트웨어 플로 제어 (XON/XOFF)</string>
+
+    <!-- 串口 -->
+    <string name="serial_state_closed">연결 안 됨</string>
+    <string name="serial_state_opening">여는 중…</string>
+    <string name="serial_state_closing">닫는 중…</string>
+    <string name="serial_state_error">시리얼 포트 오류</string>
+    <string name="serial_select_in_settings">먼저 설정에서 시리얼 포트를 선택하세요</string>
+    <string name="serial_open">시리얼 포트 열기</string>
+    <string name="serial_close">시리얼 포트 닫기</string>
+
+    <!-- 设置：分区 -->
+    <string name="settings_section_serial">시리얼 포트 파라미터</string>
+    <string name="settings_section_rx">수신 설정</string>
+    <string name="settings_section_tx">송신 설정</string>
+    <string name="settings_section_appearance">화면 및 표시</string>
+    <string name="settings_rx_note">참고: \'자동 줄바꿈\'을 끄면 수신 데이터가 줄바꿈 없이 이어지며, 이때 데이터 무결성을 위해 타임스탬프가 자동으로 무시됩니다.</string>
+    <string name="settings_autosave_note">설정은 자동 저장되며 재시작 후에도 유지됩니다</string>
+
+    <!-- 设置：串口参数 -->
+    <string name="serial_select_device">시리얼 포트 선택</string>
+    <string name="serial_no_devices_found">스캔된 시리얼 포트 장치가 없습니다</string>
+    <string name="serial_select_baud">보레이트 선택</string>
+    <string name="serial_data_bits">데이터 비트</string>
+    <string name="serial_stop_bits">스톱 비트</string>
+    <string name="serial_parity">패리티</string>
+    <string name="serial_flow_control">플로 제어</string>
+    <string name="serial_frame_gap">프레임 간격</string>
+    <string name="serial_frame_gap_hint">밀리초, 0 = 보레이트 기준 자동 계산</string>
+    <string name="serial_frame_gap_sub">데이터 수신 후 해당 시간 동안 추가 데이터가 없으면 한 프레임이 끝난 것으로 간주합니다</string>
+    <string name="serial_device_list">시리얼 포트 목록</string>
+    <string name="serial_scan_empty">스캔된 시리얼 포트 장치가 없습니다.\n기기에서 시리얼 포트 권한(/dev/ttyS*)이 열려 있는지 확인하세요.</string>
+    <string name="serial_list_count">시리얼 포트 목록(총 %1$d개)</string>
+    <string name="serial_select_first">먼저 시리얼 포트를 선택하세요</string>
+    <string name="serial_reconnected">새 파라미터로 다시 연결되었습니다</string>
+    <string name="serial_connected_snack">시리얼 포트가 연결되었습니다</string>
+    <string name="settings_serial_device">시리얼 포트 장치</string>
+    <string name="settings_serial_device_sub">예: /dev/ttyS1, 목록은 시스템 시리얼 포트 스캔 결과입니다</string>
+    <string name="settings_baud_rate">보레이트</string>
+    <string name="settings_baud_sub">자주 쓰는 값: 9600 / 115200 / 921600</string>
+    <string name="settings_data_bits_sub">5 ~ 8비트 선택 가능</string>
+    <string name="settings_bits_format">%1$d비트</string>
+    <string name="settings_scan_count">%1$d개 발견</string>
+    <string name="settings_scan_sub">눌러서 다시 스캔하고 장치 이름과 경로를 확인하세요</string>
+
+    <!-- 设置：接收 -->
+    <string name="settings_rx_charset_dialog">수신 문자 집합</string>
+    <string name="settings_charset">문자 집합</string>
+    <string name="settings_charset_sub">ASCII 모드 디코딩에 사용되며, 디코딩되지 않는 바이트는 치환 문자 대신 \\xNN(예: \\xA1)로 표시됩니다</string>
+    <string name="settings_rx_time">타임스탬프 표시</string>
+    <string name="settings_rx_time_sub">자동 줄바꿈을 끄면 타임스탬프가 무시됩니다</string>
+    <string name="settings_rx_wrap">자동 줄바꿈</string>
+    <string name="settings_rx_wrap_sub">끄면 데이터가 줄바꿈 없이 계속 이어집니다</string>
+    <string name="settings_rx_sep">HEX 구분자</string>
+    <string name="sep_space">스페이스</string>
+    <string name="sep_none">구분 없음</string>
+    <string name="sep_comma">콤마</string>
+    <string name="sep_dash">하이픈</string>
+    <string name="settings_rx_max">최대 표시 문자 수</string>
+    <string name="settings_rx_max_sub">초과 시 앞부분부터 자동으로 잘라냅니다</string>
+    <string name="settings_rx_echo">수신 영역에 송신 내용 에코</string>
+
+    <!-- 设置：发送 -->
+    <string name="settings_tx_charset_dialog">송신 문자 집합</string>
+    <string name="settings_tx_escape">이스케이프 문자 해석</string>
+    <string name="settings_tx_escape_sub">\\r \\n \\t \\0 \\xNN \\uHHHH 지원</string>
+    <string name="settings_tx_newline">기본 종결 부호</string>
+    <string name="settings_tx_chunk">파일 분할 크기</string>
+    <string name="settings_tx_chunk_hint">바이트, 1 ~ 4096</string>
+    <string name="settings_bytes_format">%1$d바이트</string>
+    <string name="settings_tx_delay">파일 패킷 간 지연</string>
+    <string name="settings_ms_hint">밀리초</string>
+
+    <!-- 设置：外观 -->
+    <string name="settings_theme">테마</string>
+    <string name="theme_follow_system">시스템 따르기</string>
+    <string name="theme_dark">다크</string>
+    <string name="theme_light">라이트</string>
+    <string name="settings_bg">배경 이미지</string>
+    <string name="bg_none">배경 없음</string>
+    <string name="bg_builtin">내장 배경화면</string>
+    <string name="bg_custom">사용자 지정(더보기에서 이미지 선택)</string>
+    <string name="bg_custom_short">사용자 지정</string>
+    <string name="settings_bg_scrim">배경 스크림</string>
+    <string name="settings_bg_scrim_hint">0 ~ 100, 클수록 배경이 어두워집니다(권장 70 ~ 90)</string>
+    <string name="settings_percent_format">%1$d %%</string>
+    <string name="settings_font_size">터미널 글자 크기</string>
+    <string name="settings_font_hint">단위 sp, 9 ~ 24</string>
+    <string name="settings_sp_format">%1$d sp</string>
+    <string name="settings_keep_screen">화면 항상 켜기</string>
+    <string name="settings_history_limit">기록 상한</string>
+    <string name="settings_history_limit_hint">건, 100 ~ 50000</string>
+    <string name="settings_history_count">%1$d건(현재 %2$d건)</string>
+
+    <!-- 终端页：面板与控件 -->
+    <string name="terminal_panel_rx">수신 영역</string>
+    <string name="terminal_panel_tx">송신 영역</string>
+    <string name="terminal_timestamp">타임스탬프</string>
+    <string name="terminal_echo">송신 에코</string>
+    <string name="terminal_back_to_bottom">맨 아래로</string>
+    <string name="terminal_escape">이스케이프</string>
+    <string name="terminal_history">기록</string>
+    <string name="terminal_loop">주기</string>
+    <string name="terminal_send">전송</string>
+    <string name="terminal_mode_file">파일</string>
+    <string name="terminal_pick_file">파일 선택</string>
+    <string name="terminal_chunk">분할</string>
+    <string name="terminal_delay_ms">지연(ms)</string>
+    <string name="terminal_interval_ms">간격(ms)</string>
+    <string name="terminal_loop_count_hint">횟수(0=무한)</string>
+    <string name="terminal_rx_pause_desc">표시 일시정지</string>
+    <string name="terminal_rx_save_desc">파일로 저장</string>
+    <string name="terminal_rx_clear_desc">수신 영역 비우기</string>
+    <string name="terminal_tx_clear_desc">입력 비우기</string>
+
+    <!-- 终端页：提示消息 -->
+    <string name="terminal_filled">송신창에 채워 넣었습니다</string>
+    <string name="terminal_rx_cleared">수신 영역을 비웠습니다</string>
+    <string name="terminal_display_paused">표시가 일시정지되었습니다(데이터는 계속 수신·기록됩니다)</string>
+    <string name="terminal_display_resumed">표시가 재개되었습니다</string>
+    <string name="terminal_nothing_to_save">저장할 내용이 없습니다</string>
+    <string name="terminal_save_failed">저장 실패</string>
+    <string name="terminal_saved">저장됨: %1$s</string>
+    <string name="terminal_share">공유</string>
+    <string name="terminal_rx_charset_set">수신 문자 집합: %1$s</string>
+    <string name="terminal_escape_on">이스케이프 문자 해석이 켜졌습니다</string>
+    <string name="terminal_escape_off">이스케이프 문자 해석이 꺼졌습니다</string>
+    <string name="terminal_serial_not_open">시리얼 포트가 열려 있지 않습니다. 오른쪽 위 전원 버튼을 먼저 눌러 주세요</string>
+    <string name="terminal_pick_file_first">전송할 파일을 선택하세요</string>
+    <string name="terminal_input_first">전송할 내용을 입력하세요</string>
+    <string name="terminal_no_history">송신 기록이 없습니다</string>
+    <string name="terminal_recent_sends">최근 송신</string>
+    <string name="terminal_read_file_failed">파일 읽기 실패</string>
+    <string name="terminal_unknown_file">알 수 없는 파일</string>
+    <string name="terminal_loaded">불러왔습니다: %1$s(%2$d바이트)</string>
+    <string name="terminal_source_manual">수동 전송</string>
+
+    <!-- 终端页：结束符 -->
+    <string name="terminal_newline">종결 부호</string>
+    <string name="terminal_newline_format">종결 부호: %1$s</string>
+
+    <!-- 终端页：发送按钮状态 -->
+    <string name="terminal_btn_stop">정지</string>
+    <string name="terminal_btn_loop">주기 전송 시작</string>
+
+    <!-- 终端页：周期发送 -->
+    <string name="terminal_loop_started_count">주기 전송 시작됨: 간격 %1$dms · 총 %2$d회</string>
+    <string name="terminal_loop_started_infinite">주기 전송 시작됨: 간격 %1$dms · 무한 반복</string>
+    <string name="terminal_loop_progress">주기 %1$d/%2$d</string>
+    <string name="terminal_sent_times">%1$d회 전송됨</string>
+    <string name="terminal_loop_finished">주기 전송 완료, 총 %1$d회</string>
+
+    <!-- 终端页：文件发送 -->
+    <string name="terminal_no_file">파일이 선택되지 않았습니다\n모든 파일을 지원하며, 필요 시 이스케이프 문자 해석을 켜고 전송할 수 있습니다</string>
+    <string name="terminal_file_info">%1$s\n크기: %2$d바이트(%3$s)</string>
+    <string name="terminal_file_echo">[파일 %1$d바이트]</string>
+    <string name="terminal_file_progress">%1$d / %2$d바이트 전송됨</string>
+
+    <!-- 终端页：统计 -->
+    <string name="terminal_rx_stats">수신 %1$s · 패킷 %2$d개</string>
+    <string name="terminal_tx_stats">송신 %1$s · 패킷 %2$d개</string>
+
+    <!-- 终端页：输入提示 -->
+    <string name="terminal_hint_hex">HEX 입력, 예: 01 03 00 00 00 0A</string>
+    <string name="terminal_hint_input">전송할 내용 입력…</string>
+
+    <!-- ==================== 工具页：校验计算器 ==================== -->
+    <string name="tool_tab_checksum">체크섬 계산기</string>
+    <string name="tool_tab_ascii">ASCII 코드표</string>
+    <string name="tool_input_data">입력 데이터</string>
+    <string name="tool_input_hint_full">HEX 예: 01 03 00 00 00 0A\nASCII 예: 123456789</string>
+    <string name="tool_input_hint_hex">HEX 예: 01 03 00 00 00 0A</string>
+    <string name="tool_input_hint_ascii">ASCII 예: 123456789</string>
+    <string name="tool_escape">이스케이프</string>
+    <string name="tool_input_invalid">형식이 올바르지 않습니다</string>
+    <string name="tool_input_format_invalid">입력 형식이 올바르지 않습니다</string>
+    <string name="tool_hex_rule">HEX 입력에는 0-9 A-F와 구분자만 사용할 수 있습니다</string>
+    <string name="tool_checksum_algo">체크섬 알고리즘</string>
+    <string name="tool_high_byte_first">상위 바이트 우선</string>
+    <string name="tool_refin">입력 반전</string>
+    <string name="tool_refout">출력 반전</string>
+    <string name="tool_invert">결과 반전</string>
+    <string name="tool_algo_group">알고리즘 분류</string>
+    <string name="tool_output_width">출력 비트 폭</string>
+    <string name="tool_width_opt_follow">알고리즘 따르기</string>
+    <string name="tool_width_opt_8">8비트</string>
+    <string name="tool_width_opt_16">16비트</string>
+    <string name="tool_width_opt_32">32비트</string>
+    <string name="tool_width_chip_follow">비트 폭 따름</string>
+    <string name="tool_width_chip_format">비트 폭 %1$d</string>
+    <string name="tool_xor_chip_format">XOR 0x%1$s</string>
+    <string name="tool_xor_value">결과 XOR 값</string>
+    <string name="tool_xor_value_hint">0x 접두사 또는 10진수 지원, 예: 0xFF</string>
+    <string name="tool_calc">체크섬 계산</string>
+    <string name="tool_algo_desc_crc">비트 폭 %1$d · 다항식 0x%2$s · 초기값 0x%3$s · XorOut 0x%4$s · RefIn=%5$b RefOut=%6$b</string>
+    <string name="tool_algo_desc_check">" · 표준 체크섬 값 0x%1$s"</string>
+    <string name="tool_copy">복사</string>
+    <string name="tool_fill_send">송신창에 채우기</string>
+    <string name="tool_append_send">데이터에 추가해 전송</string>
+    <string name="tool_copied_checksum_format">체크섬 값 복사됨: %1$s</string>
+    <string name="tool_serial_not_open">시리얼 포트가 열려 있지 않습니다</string>
+    <string name="tool_note_checksum_format">데이터+%1$s</string>
+    <string name="tool_sent_with_checksum">%1$d바이트 전송됨(데이터 + 체크섬)</string>
+
+    <!-- ==================== 工具页：ASCII 码表 ==================== -->
+    <string name="tool_ascii_search_hint">문자 / 16진수 / 이름 검색</string>
+    <string name="tool_ascii_hint">아무 셀이나 눌러 복사 / 송신창에 채우기</string>
+    <string name="tool_ascii_hint_count_format">아무 셀이나 눌러 복사 / 송신창에 채우기(총 %1$d개 항목)</string>
+    <string name="tool_ascii_hint_search_format">\'%1$s\' 검색 결과 %2$d건</string>
+    <string name="tool_ascii_space">스페이스</string>
+    <string name="tool_ascii_del">삭제</string>
+    <string name="tool_ascii_digit_format">숫자 %1$s</string>
+    <string name="tool_ascii_upper_format">대문자 %1$s</string>
+    <string name="tool_ascii_lower_format">소문자 %1$s</string>
+    <string name="tool_menu_copy_hex_format">HEX 복사(%1$s)</string>
+    <string name="tool_menu_send_byte">해당 바이트 전송</string>
+    <string name="tool_menu_fill_hex">송신창에 채우기(HEX)</string>
+    <string name="tool_menu_copy_char_format">문자 \'%1$s\' 복사</string>
+    <string name="tool_copied_char">문자가 복사되었습니다</string>
+    <string name="tool_copied_hex">HEX가 복사되었습니다</string>
+    <string name="tool_sent_hex_format">0x%1$s 전송됨</string>
+
+    <!-- 0 ~ 31 控制字符说明 -->
+    <string name="tool_ctrl_nul">널 문자</string>
+    <string name="tool_ctrl_soh">제목 시작</string>
+    <string name="tool_ctrl_stx">본문 시작</string>
+    <string name="tool_ctrl_etx">본문 끝</string>
+    <string name="tool_ctrl_eot">전송 끝</string>
+    <string name="tool_ctrl_enq">문의</string>
+    <string name="tool_ctrl_ack">확인 응답</string>
+    <string name="tool_ctrl_bel">벨</string>
+    <string name="tool_ctrl_bs">백스페이스</string>
+    <string name="tool_ctrl_ht">수평 탭</string>
+    <string name="tool_ctrl_lf">줄바꿈</string>
+    <string name="tool_ctrl_vt">수직 탭</string>
+    <string name="tool_ctrl_ff">페이지 넘김</string>
+    <string name="tool_ctrl_cr">캐리지 리턴</string>
+    <string name="tool_ctrl_so">시프트 아웃</string>
+    <string name="tool_ctrl_si">시프트 인</string>
+    <string name="tool_ctrl_dle">데이터 링크 이스케이프</string>
+    <string name="tool_ctrl_dc1">장치 제어1</string>
+    <string name="tool_ctrl_dc2">장치 제어2</string>
+    <string name="tool_ctrl_dc3">장치 제어3</string>
+    <string name="tool_ctrl_dc4">장치 제어4</string>
+    <string name="tool_ctrl_nak">부정 응답</string>
+    <string name="tool_ctrl_syn">동기</string>
+    <string name="tool_ctrl_etb">블록 전송 끝</string>
+    <string name="tool_ctrl_can">취소</string>
+    <string name="tool_ctrl_em">매체 끝</string>
+    <string name="tool_ctrl_sub">치환</string>
+    <string name="tool_ctrl_esc">이스케이프</string>
+    <string name="tool_ctrl_fs">파일 구분</string>
+    <string name="tool_ctrl_gs">그룹 구분</string>
+    <string name="tool_ctrl_rs">레코드 구분</string>
+    <string name="tool_ctrl_us">유닛 구분</string>
+
+    <!-- 128 ~ 191 扩展字符说明（windows-1252 / Latin-1 上半区） -->
+    <string name="tool_ext_euro">유로 기호</string>
+    <string name="tool_ext_undefined">정의되지 않음</string>
+    <string name="tool_ext_quote_low_single">아래쪽 홑따옴표</string>
+    <string name="tool_ext_florin">플로린 f</string>
+    <string name="tool_ext_quote_low_double">아래쪽 겹따옴표</string>
+    <string name="tool_ext_ellipsis">말줄임표</string>
+    <string name="tool_ext_dagger">단검표</string>
+    <string name="tool_ext_dagger_double">이중 단검표</string>
+    <string name="tool_ext_circumflex">수정 문자 곡절 악센트</string>
+    <string name="tool_ext_permille">퍼밀 기호</string>
+    <string name="tool_ext_s_caron">카론이 붙은 S</string>
+    <string name="tool_ext_langle_single">왼쪽 꺾쇠 괄호</string>
+    <string name="tool_ext_oe_ligature">OE 합자</string>
+    <string name="tool_ext_z_caron">카론이 붙은 Z</string>
+    <string name="tool_ext_quote_left_single">왼쪽 홑따옴표</string>
+    <string name="tool_ext_quote_right_single">오른쪽 홑따옴표</string>
+    <string name="tool_ext_quote_left_double">왼쪽 겹따옴표</string>
+    <string name="tool_ext_quote_right_double">오른쪽 겹따옴표</string>
+    <string name="tool_ext_bullet">글머리 기호</string>
+    <string name="tool_ext_dash_en">짧은 대시</string>
+    <string name="tool_ext_dash_em">긴 대시</string>
+    <string name="tool_ext_tilde">수정 문자 물결표</string>
+    <string name="tool_ext_trademark">상표</string>
+    <string name="tool_ext_s_caron_lower">카론이 붙은 s</string>
+    <string name="tool_ext_rangle_single">오른쪽 꺾쇠 괄호</string>
+    <string name="tool_ext_oe_ligature_lower">oe 합자</string>
+    <string name="tool_ext_z_caron_lower">카론이 붙은 z</string>
+    <string name="tool_ext_y_diaeresis">Y 움라우트</string>
+    <string name="tool_ext_nbsp">줄바꿈 없는 공백</string>
+    <string name="tool_ext_exclaim_inverted">거꾸로 된 느낌표</string>
+    <string name="tool_ext_cent">센트</string>
+    <string name="tool_ext_pound">파운드</string>
+    <string name="tool_ext_currency">통화 기호</string>
+    <string name="tool_ext_yen">엔화</string>
+    <string name="tool_ext_broken_bar">끊어진 세로선</string>
+    <string name="tool_ext_section">섹션 기호</string>
+    <string name="tool_ext_diaeresis">분음 부호</string>
+    <string name="tool_ext_copyright">저작권</string>
+    <string name="tool_ext_ordinal_f">여성 서수 기호</string>
+    <string name="tool_ext_langle_double">왼쪽 겹꺾쇠 괄호</string>
+    <string name="tool_ext_not">부정 기호</string>
+    <string name="tool_ext_shy">소프트 하이픈</string>
+    <string name="tool_ext_registered">등록 상표</string>
+    <string name="tool_ext_macron">장음 기호</string>
+    <string name="tool_ext_degree">도</string>
+    <string name="tool_ext_plus_minus">플러스 마이너스</string>
+    <string name="tool_ext_superscript_two">위첨자 2</string>
+    <string name="tool_ext_superscript_three">위첨자 3</string>
+    <string name="tool_ext_acute">양음 악센트</string>
+    <string name="tool_ext_micro">마이크로</string>
+    <string name="tool_ext_paragraph">단락 기호</string>
+    <string name="tool_ext_middle_dot">가운뎃점</string>
+    <string name="tool_ext_cedilla">세디유</string>
+    <string name="tool_ext_superscript_one">위첨자 1</string>
+    <string name="tool_ext_ordinal_m">남성 서수 기호</string>
+    <string name="tool_ext_rangle_double">오른쪽 겹꺾쇠 괄호</string>
+    <string name="tool_ext_quarter">4분의 1</string>
+    <string name="tool_ext_half">2분의 1</string>
+    <string name="tool_ext_three_quarters">4분의 3</string>
+    <string name="tool_ext_question_inverted">거꾸로 된 물음표</string>
+    <string name="tool_ext_multiply">곱하기 기호</string>
+    <string name="tool_ext_divide">나누기 기호</string>
+
+    <!-- ==================== 更多页 ==================== -->
+    <string name="more_tcp_title">시리얼 ↔ TCP 투과 전송</string>
+    <string name="more_tcp_value">서버 / 클라이언트</string>
+    <string name="more_tcp_sub">시리얼 데이터를 네트워크로 전달하거나, 네트워크 데이터를 시리얼에 씁니다</string>
+    <string name="more_bg_custom">사용자 지정 이미지</string>
+    <string name="more_bg_scrim_hint">0 ~ 100, 클수록 배경이 어두워집니다</string>
+    <string name="more_no_history">기록이 없습니다</string>
+    <string name="more_export_failed">내보내기 실패</string>
+    <string name="more_exported_format">내보내기 완료: %1$s</string>
+    <string name="more_share">공유</string>
+    <string name="more_export_history">송수신 기록 내보내기</string>
+    <string name="more_count_format">%1$d건</string>
+    <string name="more_export_dir">내보내기 폴더</string>
+    <string name="more_export_dir_msg">%1$s\n\n파일 관리자 또는 adb pull로 가져올 수 있습니다.</string>
+    <string name="more_view">보기</string>
+    <string name="more_reset">기본 설정 복원</string>
+    <string name="more_reset_msg">모든 설정(시리얼 포트 파라미터, 송수신 설정, 화면 등)이 초기화됩니다.\n빠른 명령과 자동 응답 규칙은 삭제되지 않습니다.</string>
+    <string name="more_reset_btn">기본값 복원</string>
+    <string name="more_reset_done">기본 설정이 복원되었습니다</string>
+    <string name="more_reset_careful">신중히 사용</string>
+    <string name="more_pick_image">사용자 지정 배경 선택</string>
+    <string name="more_selected">선택됨</string>
+    <string name="more_pick_image_sub">갤러리에서 이미지를 선택하세요. 가로형 큰 이미지를 권장합니다</string>
+    <string name="more_exit">앱 종료</string>
+    <string name="more_exit_serial_open">시리얼 포트를 닫고 종료</string>
+    <string name="more_exit_normal">리소스 해제 후 종료</string>
+    <string name="more_exit_confirm_serial_open">시리얼 포트 연결을 먼저 끊고 송수신 기록을 저장한 후 종료합니다.\n종료하시겠습니까?</string>
+    <string name="more_exit_confirm_normal">송수신 기록을 저장한 후 앱을 종료합니다.\n종료하시겠습니까?</string>
+    <string name="more_exit_btn">종료</string>
+    <string name="more_source">오픈소스 주소</string>
+    <string name="more_copy_url">주소 복사</string>
+    <string name="more_open_browser">브라우저로 열기</string>
+    <string name="more_url_copied">주소가 복사되었습니다</string>
+    <string name="more_no_browser_copied">브라우저를 열 수 없어 주소를 복사했습니다</string>
+    <string name="more_bg_set">배경 이미지가 설정되었습니다</string>
+    <string name="more_bg_read_failed">이미지 읽기 실패</string>
+    <string name="more_section_network">네트워크</string>
+    <string name="more_section_personal">개인화</string>
+    <string name="more_section_data">데이터 및 관리</string>
+
+    <!-- ==================== 关于 ==================== -->
+    <string name="about_version_format">버전 %1$s (%2$d)</string>
+    <string name="about_author">개발자: Yu Jing</string>
+    <string name="about_source_url">오픈소스 주소: github.com/yutils/YSerialPort</string>
+    <string name="about_footer">이 도구는 시리얼 장치 디버깅용으로, ASCII / HEX 송수신,\n파일 전송, 주기 전송, 자동 응답, 체크섬 계산 등을 지원합니다.\n\n시리얼 라이브러리 YSerialPort · 다른 시리얼 도구와 so 충돌 없음</string>
+
+    <!-- ==================== 指令页 ==================== -->
+
+    <!-- 页面 -->
+    <string name="command_title">빠른 명령</string>
+    <string name="command_add">추가</string>
+    <string name="command_add_desc">명령 추가</string>
+    <string name="command_empty_title">빠른 명령이 없습니다</string>
+    <string name="command_empty_sub">오른쪽 위 \'추가\'를 눌러 자주 쓰는 프레임을 만들어 보세요</string>
+    <string name="command_count_format">총 %1$d건 · \'전송\'을 누르면 원터치로 전송됩니다</string>
+
+    <!-- 列表项 -->
+    <string name="command_send">전송</string>
+    <string name="command_more_desc">추가 작업</string>
+    <string name="command_item_unnamed">이름 없음</string>
+
+    <!-- 发送 -->
+    <string name="command_serial_not_open">시리얼 포트가 열려 있지 않습니다. 먼저 시리얼 포트를 여세요</string>
+    <string name="command_content_invalid">명령 내용이 비어 있거나 형식이 올바르지 않습니다</string>
+    <string name="command_note">빠른 명령</string>
+    <string name="command_note_name">빠른 명령: %1$s</string>
+    <string name="command_sent_bytes">%1$d바이트 전송됨</string>
+
+    <!-- 卡片点击菜单 -->
+    <string name="command_fallback_name">명령</string>
+    <string name="command_action_send_now">원터치 전송</string>
+    <string name="command_action_fill">송신창에 채우기</string>
+
+    <!-- 更多菜单 -->
+    <string name="command_unnamed">이름 없는 명령</string>
+    <string name="command_menu_edit">편집</string>
+    <string name="command_menu_duplicate">복제</string>
+    <string name="command_menu_move_up">위로 이동</string>
+    <string name="command_menu_move_down">아래로 이동</string>
+    <string name="command_delete">삭제</string>
+    <string name="command_copy_format">%1$s 사본</string>
+    <string name="command_delete_title">명령 삭제</string>
+    <string name="command_delete_confirm">\'%1$s\' 명령을 삭제하시겠습니까?</string>
+
+    <!-- 编辑对话框 -->
+    <string name="command_add_title">빠른 명령 추가</string>
+    <string name="command_edit_title">빠른 명령 편집</string>
+    <string name="command_save">저장</string>
+    <string name="command_name_hint">명령 이름, 예: 온도 읽기</string>
+    <string name="command_hint_hex">HEX 예: 01 03 00 00 00 0A C5 CD</string>
+    <string name="command_hint_ascii">텍스트 내용, 예: AT+RESET</string>
+    <string name="command_escape_chip">이스케이프</string>
+    <string name="command_newline_chip">종결 부호: %1$s</string>
+    <string name="command_newline_title">종결 부호</string>
+    <string name="command_escape_on">전송 시 \\r \\n \\xNN 등의 이스케이프를 해석합니다</string>
+    <string name="command_escape_off">이스케이프 해석이 꺼졌습니다</string>
+
+    <!-- 校验提示 -->
+    <string name="command_error_content_empty">명령 내용을 입력하세요</string>
+    <string name="command_error_hex_invalid">HEX 형식이 올바르지 않습니다. 잘못된 문자가 있는지 확인하세요</string>
+    <string name="command_default_name_hex">HEX 명령</string>
+    <string name="command_default_name_ascii">텍스트 명령</string>
+    <string name="command_saved">저장되었습니다</string>
+
+    <!-- ==================== 应答页 ==================== -->
+
+    <!-- 页面 -->
+    <string name="autoreply_title">자동 응답</string>
+    <string name="autoreply_add">추가</string>
+    <string name="autoreply_empty_title">자동 응답 규칙이 없습니다</string>
+    <string name="autoreply_empty_sub">일치하는 내용이 수신되면 지정한 데이터를 자동으로 회신합니다</string>
+    <string name="autoreply_count_format">규칙 %1$d건 · 활성 %2$d건 · 일치 데이터 수신 시 자동 회신</string>
+    <string name="autoreply_enabled_toast">자동 응답이 활성화되었습니다</string>
+    <string name="autoreply_disabled_toast">자동 응답이 비활성화되었습니다</string>
+
+    <!-- 列表项 -->
+    <string name="autoreply_more_desc">추가 작업</string>
+    <string name="autoreply_unnamed">이름 없는 규칙</string>
+    <string name="autoreply_hits_format">%1$d회 일치</string>
+    <string name="autoreply_match_label">매칭</string>
+    <string name="autoreply_reply_label">응답</string>
+
+    <!-- 更多菜单 -->
+    <string name="autoreply_fallback_name">규칙</string>
+    <string name="autoreply_menu_enable">이 규칙 활성화</string>
+    <string name="autoreply_menu_disable">이 규칙 비활성화</string>
+    <string name="autoreply_menu_edit">편집</string>
+    <string name="autoreply_menu_test">응답 테스트(즉시 한 번 전송)</string>
+    <string name="autoreply_menu_duplicate">복제</string>
+    <string name="autoreply_menu_move_up">위로 이동</string>
+    <string name="autoreply_menu_move_down">아래로 이동</string>
+    <string name="autoreply_delete">삭제</string>
+    <string name="autoreply_rule_enabled">\'%1$s\' 규칙이 활성화되었습니다</string>
+    <string name="autoreply_rule_disabled">\'%1$s\' 규칙이 비활성화되었습니다</string>
+    <string name="autoreply_reply_invalid">응답 내용이 비어 있거나 형식이 올바르지 않습니다</string>
+    <string name="autoreply_test_note">응답 테스트</string>
+    <string name="autoreply_test_sent">테스트 응답 %1$d바이트 전송됨</string>
+    <string name="autoreply_copy_format">%1$s 사본</string>
+    <string name="autoreply_delete_title">규칙 삭제</string>
+    <string name="autoreply_delete_confirm">\'%1$s\' 규칙을 삭제하시겠습니까?</string>
+
+    <!-- 编辑对话框 -->
+    <string name="autoreply_add_title">응답 규칙 추가</string>
+    <string name="autoreply_edit_title">응답 규칙 편집</string>
+    <string name="autoreply_save">저장</string>
+    <string name="autoreply_name_hint">규칙 이름, 예: 온도 조회 응답</string>
+    <string name="autoreply_section_match">수신 매칭</string>
+    <string name="autoreply_section_reply">응답 내용</string>
+    <string name="autoreply_match_hint_hex">HEX 와일드카드 지원: 01 03 ?? ?? 00 0A</string>
+    <string name="autoreply_match_hint_ascii">매칭할 텍스트 내용</string>
+    <string name="autoreply_reply_hint">응답할 HEX 또는 텍스트 내용</string>
+    <string name="autoreply_match_mode_title">매칭 모드</string>
+    <string name="autoreply_newline_chip">종결 부호: %1$s</string>
+    <string name="autoreply_newline_title">종결 부호</string>
+    <string name="autoreply_escape_chip">이스케이프</string>
+    <string name="autoreply_delay_label">응답 지연(ms)</string>
+    <string name="autoreply_once_chip">한 번만 응답</string>
+    <string name="autoreply_preview_empty">응답 미리보기: (비어 있음)</string>
+    <string name="autoreply_preview_format">응답 미리보기: %1$s</string>
+
+    <!-- 校验提示 -->
+    <string name="autoreply_error_match_empty">매칭 내용을 입력하세요</string>
+    <string name="autoreply_error_reply_empty">응답 내용을 입력하세요</string>
+    <string name="autoreply_error_match_hex">매칭 내용의 HEX 형식이 올바르지 않습니다</string>
+    <string name="autoreply_error_reply_hex">응답 내용의 HEX 형식이 올바르지 않습니다</string>
+    <string name="autoreply_default_name">응답 규칙</string>
+    <string name="autoreply_saved">저장되었습니다</string>
+
+    <!-- 引擎（无 Context） -->
+    <string name="autoreply_note">자동 응답</string>
+    <string name="autoreply_note_name">자동 응답: %1$s</string>
+
+    <!-- 历史记录页：筛选 / 搜索 / 记录项 -->
+    <string name="history_filter_all">전체</string>
+    <string name="history_filter_rx">수신</string>
+    <string name="history_filter_tx">송신</string>
+    <string name="history_dir_rx">수신</string>
+    <string name="history_dir_tx">송신</string>
+    <string name="history_dir_system">시스템</string>
+    <string name="history_search_hint">내용 / HEX 검색</string>
+    <string name="history_export_desc">기록 내보내기</string>
+    <string name="history_clear_desc">기록 비우기</string>
+    <string name="history_empty">송수신 기록이 없습니다</string>
+    <string name="history_no_records">기록이 없습니다</string>
+    <string name="history_clear_title">기록 비우기</string>
+    <string name="history_clear_message">송수신 기록 전체 %1$d건이 삭제되며 복구할 수 없습니다.</string>
+    <string name="history_cleared">비워졌습니다</string>
+    <string name="history_count_format">기록 %1$d건(전체 %2$d건)</string>
+    <string name="history_no_export">내보낼 기록이 없습니다</string>
+    <string name="history_export_failed">내보내기 실패</string>
+    <string name="history_exported_format">내보내기 완료: %1$s</string>
+    <string name="history_export_share">공유</string>
+    <string name="history_menu_title">기록 작업</string>
+    <string name="history_menu_copy_hex">HEX 복사</string>
+    <string name="history_menu_copy_text">텍스트 복사</string>
+    <string name="history_menu_fill_hex">송신창에 채우기(HEX)</string>
+    <string name="history_menu_fill_ascii">송신창에 채우기(ASCII)</string>
+    <string name="history_menu_send_hex">HEX 원터치 전송</string>
+    <string name="history_menu_delete">이 기록 삭제</string>
+    <string name="history_copied_hex">HEX 복사됨</string>
+    <string name="history_copied_text">텍스트 복사됨</string>
+    <string name="history_deleted">삭제되었습니다</string>
+
+    <!-- TCP 透传页：界面 -->
+    <string name="tcp_title">시리얼 ↔ TCP 투과 전송</string>
+    <string name="tcp_back_desc">뒤로</string>
+    <string name="tcp_mode_title">작동 모드</string>
+    <string name="tcp_mode_server">서버</string>
+    <string name="tcp_mode_client">클라이언트</string>
+    <string name="tcp_listen_port">수신 대기 포트</string>
+    <string name="tcp_remote_ip">원격 IP</string>
+    <string name="tcp_start">시작</string>
+    <string name="tcp_stop">정지</string>
+    <string name="tcp_connect">연결</string>
+    <string name="tcp_disconnect">연결 끊기</string>
+    <string name="tcp_log_title">투과 전송 로그</string>
+    <string name="tcp_clear_log_desc">로그 비우기</string>
+    <string name="tcp_state_stopped">중지됨</string>
+    <string name="tcp_state_running">실행 중</string>
+    <string name="tcp_state_running_server">실행 중 · 서버가 %1$s 포트에서 대기 중 · 클라이언트 %2$d개 접속됨</string>
+    <string name="tcp_state_running_client">실행 중 · %1$s:%2$s 연결됨</string>
+
+    <!-- TCP 透传页：日志与提示 -->
+    <string name="tcp_intro">투과 전송 기능은 시리얼로 수신한 데이터를 TCP로 전달하고, TCP로 수신한 데이터를 시리얼에 씁니다.</string>
+    <string name="tcp_local_ip_format">로컬 IP: %1$s</string>
+    <string name="tcp_ip_unavailable">가져올 수 없음</string>
+    <string name="tcp_port_invalid_title">유효하지 않은 포트</string>
+    <string name="tcp_port_invalid_message">1 ~ 65535 사이의 포트 번호를 입력하세요</string>
+    <string name="tcp_host_invalid_title">유효하지 않은 주소</string>
+    <string name="tcp_host_invalid_message">원격 IP 또는 도메인을 입력하세요</string>
+    <string name="tcp_connecting">%1$s:%2$d 연결 중…</string>
+    <string name="tcp_serial_not_configured">알림: 시리얼 포트가 아직 설정되지 않았습니다. 먼저 \'설정\'에서 시리얼 포트를 선택하고 열어 주세요</string>
+    <string name="tcp_serial_auto_opening">시리얼 포트가 열려 있지 않습니다. %1$s 포트를 자동으로 여는 중…</string>
+    <string name="tcp_serial_opened">시리얼 포트 열림: %1$s</string>
+    <string name="tcp_serial_open_failed">시리얼 포트 열기 실패: %1$s</string>
+    <string name="tcp_unknown_error">알 수 없는 오류</string>
+    <string name="tcp_note">TCP 투과 전송</string>
+
+    <!-- TCP 透传桥：日志 -->
+    <string name="tcp_log_server_started">서버가 시작되었습니다. %1$d 포트에서 대기 중</string>
+    <string name="tcp_log_start_failed">시작 실패: %1$s %2$s</string>
+    <string name="tcp_log_accept_ended">accept 종료: %1$s</string>
+    <string name="tcp_log_client_joined">클라이언트 접속: %1$s:%2$d(현재 %3$d개)</string>
+    <string name="tcp_log_client_init_failed">클라이언트 초기화 실패: %1$s</string>
+    <string name="tcp_log_read_ended">읽기 종료: %1$s</string>
+    <string name="tcp_log_tcp_to_serial_ok">TCP → 시리얼: %1$d바이트(전달됨)</string>
+    <string name="tcp_log_tcp_to_serial_failed">TCP → 시리얼: %1$d바이트(실패: 시리얼 포트 미열림)</string>
+    <string name="tcp_log_connected">%1$s:%2$d 연결됨</string>
+    <string name="tcp_log_remote_disconnected">원격 연결이 끊겼습니다</string>
+    <string name="tcp_log_connect_ended">연결 종료: %1$s %2$s</string>
+    <string name="tcp_log_stopped">투과 전송이 중지되었습니다</string>
+    <string name="tcp_log_write_client_failed">클라이언트 쓰기 실패: %1$s %2$s</string>
+    <string name="tcp_log_serial_to_tcp_clients">시리얼 → TCP: %1$d바이트 × 클라이언트 %2$d개</string>
+    <string name="tcp_log_serial_to_tcp">시리얼 → TCP: %1$d바이트</string>
+    <string name="tcp_log_send_failed">전송 실패: %1$s %2$s</string>
+    <string name="tcp_log_client_left">클라이언트 연결 끊김(남은 %1$d개)</string>
+
+    <!-- 串口管理：状态与错误 -->
+    <string name="serial_state_open">연결됨</string>
+    <string name="serial_state_error_short">오류</string>
+    <string name="serial_err_no_permission">시리얼 포트 읽기/쓰기 권한 없음: %1$s</string>
+    <string name="serial_err_no_permission_hint">기기가 루팅되어 있거나 시리얼 포트 권한이 열려 있는지 확인하세요</string>
+    <string name="serial_err_open_failed">시리얼 포트 열기 실패: %1$s</string>
+    <string name="serial_not_open">시리얼 포트가 열려 있지 않습니다</string>
+    <string name="serial_send_failed">전송 실패. 시리얼 포트 연결을 확인하세요</string>
+    <string name="serial_file_busy">파일 전송 중입니다. 잠시만 기다려 주세요</string>
+    <string name="serial_file_bytes">[파일] %1$d바이트</string>
+    <string name="serial_file_send_note">파일 전송</string>
+    <string name="serial_file_interrupted">파일 전송 중단됨(%1$d / %2$d바이트 전송됨)</string>
+    <string name="serial_loop_note">주기 전송</string>
+    <string name="serial_rx_note">수신</string>
+
+    <!-- 字符集展示名 -->
+    <string name="charset_gb18030">GB18030(중국 국가 표준)</string>
+    <string name="charset_big5">BIG5(번체)</string>
+    <string name="charset_utf16le">UTF-16LE(리틀 엔디언)</string>
+    <string name="charset_utf16be">UTF-16BE(빅 엔디언)</string>
+    <string name="charset_iso_8859_1">ISO-8859-1(Latin-1)</string>
+    <string name="charset_shift_jis">Shift_JIS(일본어)</string>
+    <string name="charset_euc_kr">EUC-KR(한국어)</string>
+
+    <!-- 校验算法：分组 -->
+    <string name="checksum_group_common">자주 사용</string>
+
+    <!-- 校验算法：名称 -->
+    <string name="checksum_algo_sum8">누적 합 SUM8</string>
+    <string name="checksum_algo_sum16">누적 합 SUM16</string>
+    <string name="checksum_algo_xor8">XOR 체크섬 XOR8</string>
+    <string name="checksum_algo_xor16">XOR 체크섬 XOR16</string>
+    <string name="checksum_algo_bcc">BCC 블록 체크섬</string>
+    <string name="checksum_algo_lrc">LRC 세로 중복 검사</string>
+    <string name="checksum_algo_lrc16">LRC16 세로 중복 검사</string>
+    <string name="checksum_algo_twos8">2의 보수 SUM8</string>
+
+    <!-- 校验算法：描述 -->
+    <string name="checksum_desc_sum8">모든 바이트의 합, 하위 8비트 사용</string>
+    <string name="checksum_desc_sum16">모든 바이트의 합, 하위 16비트 사용</string>
+    <string name="checksum_desc_xor8">모든 바이트를 바이트 단위로 XOR, 하위 8비트 사용</string>
+    <string name="checksum_desc_xor16">모든 바이트를 바이트 단위로 XOR, 하위 16비트 사용</string>
+    <string name="checksum_desc_bcc">XOR8과 동일, 바코드/마그네틱 카드에 사용</string>
+    <string name="checksum_desc_lrc">누적 합의 2의 보수(MODBUS ASCII)</string>
+    <string name="checksum_desc_lrc16">16비트 누적 합의 2의 보수</string>
+    <string name="checksum_desc_twos8">누적 합의 2의 보수</string>
+
+    <!-- 文件 -->
+    <string name="file_share_chooser">파일 공유</string>
+
+    <!-- 数据仓库：历史导出 -->
+    <string name="store_export_title">시리얼 송수신 기록</string>
+    <string name="store_export_time">내보낸 시각: %1$s</string>
+    <string name="store_export_columns">방향\t시간\t유형\t길이\tHEX\t텍스트</string>
+    <string name="store_dir_rx">수신</string>
+    <string name="store_dir_tx">송신</string>
+    <string name="store_dir_sys">시스템</string>
+
+    <!-- 数据仓库：默认快捷指令 -->
+    <string name="store_cmd_at">AT 명령</string>
+    <string name="store_cmd_modbus">Modbus 홀딩 레지스터 읽기</string>
+    <string name="store_cmd_handshake">핸드셰이크 프레임</string>
+    <string name="store_cmd_reset">리셋</string>
+    <string name="store_cmd_newline">캐리지 리턴+줄바꿈</string>
+</resources>

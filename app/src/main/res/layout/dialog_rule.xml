@@ -11,7 +11,7 @@
         style="@style/Widget.YS.EditText.Small"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="规则名称，例如：温度查询应答"
+        android:hint="@string/autoreply_name_hint"
         android:importantForAutofill="no"
         android:inputType="text"
         tools:ignore="LabelFor" />
@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
-        android:text="接收匹配" />
+        android:text="@string/autoreply_section_match" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:gravity="top|start"
-        android:hint="HEX 支持通配：01 03 ?? ?? 00 0A"
+        android:hint="@string/autoreply_match_hint_hex"
         android:importantForAutofill="no"
         android:inputType="textMultiLine|textNoSuggestions"
         android:maxLines="4"
@@ -65,7 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
-        android:text="应答内容" />
+        android:text="@string/autoreply_section_reply" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -91,7 +91,7 @@
             android:id="@+id/chip_escape"
             style="@style/Widget.YS.ChipText"
             android:layout_marginStart="6dp"
-            android:text="转义" />
+            android:text="@string/autoreply_escape_chip" />
     </LinearLayout>
 
     <EditText
@@ -101,7 +101,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:gravity="top|start"
-        android:hint="应答的 HEX 或文本内容"
+        android:hint="@string/autoreply_reply_hint"
         android:importantForAutofill="no"
         android:inputType="textMultiLine|textNoSuggestions"
         android:maxLines="4"
@@ -120,7 +120,7 @@
             style="@style/Text.YS.Caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="应答延时(ms)" />
+            android:text="@string/autoreply_delay_label" />
 
         <EditText
             android:id="@+id/et_delay"
@@ -137,7 +137,7 @@
             android:id="@+id/chip_once"
             style="@style/Widget.YS.ChipText"
             android:layout_marginStart="8dp"
-            android:text="仅应答一次" />
+            android:text="@string/autoreply_once_chip" />
     </LinearLayout>
 
     <TextView

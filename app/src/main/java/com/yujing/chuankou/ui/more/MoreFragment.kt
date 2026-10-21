@@ -38,16 +38,27 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
 
     override fun onInit(view: View, savedInstanceState: Bundle?) {
         binding.tvAppName.text = getString(R.string.app_name)
-        binding.tvVersion.text = "版本 ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
+        binding.tvVersion.text = getString(
+            R.string.about_version_format, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE
+        )
 
         binding.rowTcp.root.setOnClickListener {
             startActivity(android.content.Intent(requireContext(), TcpActivity::class.java))
         }
-        setValue(binding.rowTcp, "串口 ↔ TCP 透传", "服务端 / 客户端", "把串口数据转发到网络，或把网络数据写入串口")
+        setValue(
+            binding.rowTcp,
+            getString(R.string.more_tcp_title),
+            getString(R.string.more_tcp_value),
+            getString(R.string.more_tcp_sub)
+        )
 
         binding.rowTheme.root.setOnClickListener {
-            val names = listOf("跟随系统", "深色", "浅色")
-            Dialogs.singleChoice(requireContext(), "主题", names, Prefs.themeMode) { which ->
+            val names = listOf(
+                getString(R.string.theme_follow_system),
+                getString(R.string.theme_dark),
+                getString(R.string.theme_light)
+            )
+            Dialogs.singleChoice(requireContext(), getString(R.string.settings_theme), names, Prefs.themeMode) { which ->
                 Prefs.themeMode = which
                 (requireActivity().application as App).applyTheme(which)
                 refresh()
@@ -55,8 +66,12 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
         }
 
         binding.rowBgMode.root.setOnClickListener {
-            val names = listOf("无背景", "内置壁纸", "自定义图片")
-            Dialogs.singleChoice(requireContext(), "背景图", names, Prefs.bgMode) { which ->
+            val names = listOf(
+                getString(R.string.bg_none),
+                getString(R.string.bg_builtin),
+                getString(R.string.more_bg_custom)
+            )
+            Dialogs.singleChoice(requireContext(), getString(R.string.settings_bg), names, Prefs.bgMode) { which ->
                 Prefs.bgMode = which
                 (activity as? MainActivity)?.applyBackground()
                 refresh()
@@ -68,7 +83,10 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
         }
 
         binding.rowBgScrim.root.setOnClickListener {
-            Dialogs.input(requireContext(), "背景遮罩", "0 ~ 100，越大背景越暗", Prefs.bgScrim.toString(), numeric = true) { text ->
+            Dialogs.input(
+                requireContext(), getString(R.string.settings_bg_scrim), getString(R.string.more_bg_scrim_hint),
+                Prefs.bgScrim.toString(), numeric = true
+            ) { text ->
                 Prefs.bgScrim = (text.toIntOrNull() ?: 78).coerceIn(0, 100)
                 (activity as? MainActivity)?.applyBackground()
                 refresh()
@@ -76,7 +94,10 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
         }
 
         binding.rowFont.root.setOnClickListener {
-            Dialogs.input(requireContext(), "终端字号", "9 ~ 24 sp", Prefs.terminalFontSize.toString(), numeric = true) { text ->
+            Dialogs.input(
+                requireContext(), getString(R.string.settings_font_size), "9 ~ 24 sp",
+                Prefs.terminalFontSize.toString(), numeric = true
+            ) { text ->
                 Prefs.terminalFontSize = (text.toIntOrNull() ?: 13).coerceIn(9, 24)
                 refresh()
             }
@@ -84,30 +105,36 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
 
         binding.rowExportHistory.root.setOnClickListener {
             if (Store.historySize == 0) {
-                snack("暂无历史记录")
+                snack(getString(R.string.more_no_history))
                 return@setOnClickListener
             }
             val file = AppFiles.saveText(requireContext(), "serial_history", buildHistoryText())
-            if (file == null) snack("导出失败")
-            else snack("已导出 ${file.name}", "分享") { AppFiles.share(requireContext(), file) }
+            if (file == null) snack(getString(R.string.more_export_failed))
+            else snack(getString(R.string.more_exported_format, file.name), getString(R.string.more_share)) {
+                AppFiles.share(requireContext(), file)
+            }
         }
 
         binding.rowExportDir.root.setOnClickListener {
             val dir = AppFiles.exportDir(requireContext())
-            Dialogs.info(requireContext(), "导出目录", "${dir.absolutePath}\n\n可通过文件管理器或 adb pull 获取。")
+            Dialogs.info(
+                requireContext(),
+                getString(R.string.more_export_dir),
+                getString(R.string.more_export_dir_msg, dir.absolutePath)
+            )
         }
 
         binding.rowReset.root.setOnClickListener {
             Dialogs.confirm(
-                requireContext(), "恢复默认设置",
-                "将清空所有配置（串口参数、收发配置、外观等）。\n快捷指令与自动应答规则不会删除。",
-                "恢复默认", true
+                requireContext(), getString(R.string.more_reset),
+                getString(R.string.more_reset_msg),
+                getString(R.string.more_reset_btn), true
             ) {
                 Prefs.clearAll()
                 (requireActivity().application as App).applyTheme(Prefs.themeMode)
                 (activity as? MainActivity)?.applyBackground()
                 refresh()
-                snack("已恢复默认设置")
+                snack(getString(R.string.more_reset_done))
             }
         }
 
@@ -124,21 +151,31 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
 
     private fun refresh() {
         if (view == null) return
-        setValue(binding.rowTheme, "主题", listOf("跟随系统", "深色", "浅色").getOrElse(Prefs.themeMode) { "深色" })
-        setValue(binding.rowBgMode, "背景图", listOf("无背景", "内置壁纸", "自定义图片").getOrElse(Prefs.bgMode) { "无背景" })
-        setValue(
-            binding.rowPickImage, "选择自定义背景",
-            if (Prefs.bgPath.isBlank()) "未选择" else "已选择",
-            "从相册选择图片，建议横屏大图"
+        val themeNames = listOf(
+            getString(R.string.theme_follow_system),
+            getString(R.string.theme_dark),
+            getString(R.string.theme_light)
         )
-        setValue(binding.rowBgScrim, "背景遮罩", "${Prefs.bgScrim} %")
-        setValue(binding.rowFont, "终端字号", "${Prefs.terminalFontSize} sp")
-        setValue(binding.rowExportHistory, "导出收发记录", "${Store.historySize} 条")
-        setValue(binding.rowExportDir, "导出目录", "查看")
-        setValue(binding.rowReset, "恢复默认设置", "慎用")
+        setValue(binding.rowTheme, getString(R.string.settings_theme), themeNames.getOrElse(Prefs.themeMode) { getString(R.string.theme_dark) })
+        val bgNames = listOf(
+            getString(R.string.bg_none),
+            getString(R.string.bg_builtin),
+            getString(R.string.more_bg_custom)
+        )
+        setValue(binding.rowBgMode, getString(R.string.settings_bg), bgNames.getOrElse(Prefs.bgMode) { getString(R.string.bg_none) })
         setValue(
-            binding.rowExit, "退出应用",
-            if (SerialManager.isOpen) "先关串口再退出" else "释放资源后退出"
+            binding.rowPickImage, getString(R.string.more_pick_image),
+            if (Prefs.bgPath.isBlank()) getString(R.string.common_none_selected) else getString(R.string.more_selected),
+            getString(R.string.more_pick_image_sub)
+        )
+        setValue(binding.rowBgScrim, getString(R.string.settings_bg_scrim), getString(R.string.settings_percent_format, Prefs.bgScrim))
+        setValue(binding.rowFont, getString(R.string.settings_font_size), getString(R.string.settings_sp_format, Prefs.terminalFontSize))
+        setValue(binding.rowExportHistory, getString(R.string.more_export_history), getString(R.string.more_count_format, Store.historySize))
+        setValue(binding.rowExportDir, getString(R.string.more_export_dir), getString(R.string.more_view))
+        setValue(binding.rowReset, getString(R.string.more_reset), getString(R.string.more_reset_careful))
+        setValue(
+            binding.rowExit, getString(R.string.more_exit),
+            if (SerialManager.isOpen) getString(R.string.more_exit_serial_open) else getString(R.string.more_exit_normal)
         )
         binding.rowExit.ivIcon.visibility = View.VISIBLE
         binding.rowExit.ivIcon.setImageResource(R.drawable.ic_exit)
@@ -154,12 +191,12 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
     private fun showSourceActions() {
         Dialogs.actions(
             requireContext(),
-            "开源地址",
+            getString(R.string.more_source),
             SOURCE_URL,
-            listOf("复制地址", "浏览器打开")
+            listOf(getString(R.string.more_copy_url), getString(R.string.more_open_browser))
         ) { which ->
             when (which) {
-                0 -> copyToClipboard(SOURCE_URL, "地址已复制")
+                0 -> copyToClipboard(SOURCE_URL, getString(R.string.more_url_copied))
                 1 -> openSourceUrl()
             }
         }
@@ -171,7 +208,7 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(SOURCE_URL)))
             true
         }.getOrDefault(false)
-        if (!ok) copyToClipboard(SOURCE_URL, "无法打开浏览器，地址已复制")
+        if (!ok) copyToClipboard(SOURCE_URL, getString(R.string.more_no_browser_copied))
     }
 
     // ==================================================================
@@ -180,10 +217,10 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
     private fun confirmExit() {
         val serialOpen = SerialManager.isOpen
         Dialogs.confirm(
-            requireContext(), "退出应用",
-            if (serialOpen) "将先关闭串口连接，保存收发记录后退出。\n确定退出吗？"
-            else "将保存收发记录后退出应用。\n确定退出吗？",
-            "退出", true
+            requireContext(), getString(R.string.more_exit),
+            if (serialOpen) getString(R.string.more_exit_confirm_serial_open)
+            else getString(R.string.more_exit_confirm_normal),
+            getString(R.string.more_exit_btn), true
         ) {
             val act = activity ?: return@confirm
             // 先落盘（历史是 2.5s 防抖写入，直接退出会丢最后几条）
@@ -211,9 +248,9 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
         if (ok) {
             (activity as? MainActivity)?.applyBackground()
             refresh()
-            snack("背景图已设置")
+            snack(getString(R.string.more_bg_set))
         } else {
-            snack("图片读取失败")
+            snack(getString(R.string.more_bg_read_failed))
         }
     }
 

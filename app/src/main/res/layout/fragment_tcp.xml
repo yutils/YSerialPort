@@ -21,7 +21,7 @@
             style="@style/Widget.YS.IconButton"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:contentDescription="返回"
+            android:contentDescription="@string/tcp_back_desc"
             app:icon="@drawable/ic_chevron_left"
             app:iconGravity="textStart"
             app:iconPadding="0dp"
@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_weight="1"
-            android:text="串口 ↔ TCP 透传"
+            android:text="@string/tcp_title"
             android:textColor="?attr/colorOnSurface"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -52,7 +52,7 @@
             android:gravity="center"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:text="未启动"
+            android:text="@string/tcp_state_stopped"
             android:textColor="#FFFFFF"
             android:textSize="11sp" />
     </LinearLayout>
@@ -76,7 +76,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="工作模式" />
+                android:text="@string/tcp_mode_title" />
 
             <com.yujing.chuankou.ui.widget.SegmentedControl
                 android:id="@+id/seg_mode"
@@ -108,7 +108,7 @@
                 style="@style/Text.YS.Caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="监听端口" />
+                android:text="@string/tcp_listen_port" />
 
             <EditText
                 android:id="@+id/et_port"
@@ -128,7 +128,7 @@
                 android:layout_height="@dimen/btn_h"
                 android:layout_marginStart="8dp"
                 android:minWidth="96dp"
-                android:text="启动" />
+                android:text="@string/tcp_start" />
         </LinearLayout>
 
         <!-- 客户端 -->
@@ -145,7 +145,7 @@
                 style="@style/Text.YS.Caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="远端 IP" />
+                android:text="@string/tcp_remote_ip" />
 
             <EditText
                 android:id="@+id/et_host"
@@ -176,7 +176,7 @@
                 android:layout_height="@dimen/btn_h"
                 android:layout_marginStart="8dp"
                 android:minWidth="96dp"
-                android:text="连接" />
+                android:text="@string/tcp_connect" />
         </LinearLayout>
 
         <TextView
@@ -209,12 +209,12 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="透传日志" />
+                android:text="@string/tcp_log_title" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_clear_log"
                 style="@style/Widget.YS.IconButton.Small"
-                android:contentDescription="清空日志"
+                android:contentDescription="@string/tcp_clear_log_desc"
                 app:icon="@drawable/ic_clear"
                 app:iconGravity="textStart"
                 app:iconPadding="0dp" />

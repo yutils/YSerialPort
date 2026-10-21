@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ==================== 指令页 ==================== -->
+
+    <!-- 页面 -->
+    <string name="command_title">快捷指令</string>
+    <string name="command_add">新增</string>
+    <string name="command_add_desc">新增指令</string>
+    <string name="command_empty_title">还没有快捷指令</string>
+    <string name="command_empty_sub">点击右上角「新增」创建常用报文</string>
+    <string name="command_count_format">共 %1$d 条 · 点击「发送」即可一键下发</string>
+
+    <!-- 列表项 -->
+    <string name="command_send">发送</string>
+    <string name="command_more_desc">更多操作</string>
+    <string name="command_item_unnamed">未命名</string>
+
+    <!-- 发送 -->
+    <string name="command_serial_not_open">串口未打开，请先打开串口</string>
+    <string name="command_content_invalid">指令内容为空或格式不正确</string>
+    <string name="command_note">快捷指令</string>
+    <string name="command_note_name">快捷指令：%1$s</string>
+    <string name="command_sent_bytes">已发送 %1$d 字节</string>
+
+    <!-- 卡片点击菜单 -->
+    <string name="command_fallback_name">指令</string>
+    <string name="command_action_send_now">一键发送</string>
+    <string name="command_action_fill">填入发送框</string>
+
+    <!-- 更多菜单 -->
+    <string name="command_unnamed">未命名指令</string>
+    <string name="command_menu_edit">编辑</string>
+    <string name="command_menu_duplicate">复制一份</string>
+    <string name="command_menu_move_up">上移</string>
+    <string name="command_menu_move_down">下移</string>
+    <string name="command_delete">删除</string>
+    <string name="command_copy_format">%1$s 副本</string>
+    <string name="command_delete_title">删除指令</string>
+    <string name="command_delete_confirm">确认删除「%1$s」？</string>
+
+    <!-- 编辑对话框 -->
+    <string name="command_add_title">新增快捷指令</string>
+    <string name="command_edit_title">编辑快捷指令</string>
+    <string name="command_save">保存</string>
+    <string name="command_name_hint">指令名称，例如：读取温度</string>
+    <string name="command_hint_hex">HEX 例：01 03 00 00 00 0A C5 CD</string>
+    <string name="command_hint_ascii">文本内容，例：AT+RESET</string>
+    <string name="command_escape_chip">转义</string>
+    <string name="command_newline_chip">结束符: %1$s</string>
+    <string name="command_newline_title">结束符</string>
+    <string name="command_escape_on">发送时将解析 \\r \\n \\xNN 等转义</string>
+    <string name="command_escape_off">已关闭转义解析</string>
+
+    <!-- 校验提示 -->
+    <string name="command_error_content_empty">请填写指令内容</string>
+    <string name="command_error_hex_invalid">HEX 格式不正确，请检查是否含非法字符</string>
+    <string name="command_default_name_hex">HEX 指令</string>
+    <string name="command_default_name_ascii">文本指令</string>
+    <string name="command_saved">已保存</string>
+
+    <!-- ==================== 应答页 ==================== -->
+
+    <!-- 页面 -->
+    <string name="autoreply_title">自动应答</string>
+    <string name="autoreply_add">新增</string>
+    <string name="autoreply_empty_title">还没有自动应答规则</string>
+    <string name="autoreply_empty_sub">收到匹配内容时自动回复指定数据</string>
+    <string name="autoreply_count_format">%1$d 条规则 · 启用 %2$d 条 · 收到匹配数据自动回复</string>
+    <string name="autoreply_enabled_toast">自动应答已启用</string>
+    <string name="autoreply_disabled_toast">自动应答已停用</string>
+
+    <!-- 列表项 -->
+    <string name="autoreply_more_desc">更多操作</string>
+    <string name="autoreply_unnamed">未命名规则</string>
+    <string name="autoreply_hits_format">命中 %1$d</string>
+    <string name="autoreply_match_label">匹配</string>
+    <string name="autoreply_reply_label">应答</string>
+
+    <!-- 更多菜单 -->
+    <string name="autoreply_fallback_name">规则</string>
+    <string name="autoreply_menu_enable">启用此规则</string>
+    <string name="autoreply_menu_disable">停用此规则</string>
+    <string name="autoreply_menu_edit">编辑</string>
+    <string name="autoreply_menu_test">测试应答（立即发送一次）</string>
+    <string name="autoreply_menu_duplicate">复制一份</string>
+    <string name="autoreply_menu_move_up">上移</string>
+    <string name="autoreply_menu_move_down">下移</string>
+    <string name="autoreply_delete">删除</string>
+    <string name="autoreply_rule_enabled">已启用「%1$s」</string>
+    <string name="autoreply_rule_disabled">已停用「%1$s」</string>
+    <string name="autoreply_reply_invalid">应答内容为空或格式不正确</string>
+    <string name="autoreply_test_note">测试应答</string>
+    <string name="autoreply_test_sent">已发送测试应答 %1$d 字节</string>
+    <string name="autoreply_copy_format">%1$s 副本</string>
+    <string name="autoreply_delete_title">删除规则</string>
+    <string name="autoreply_delete_confirm">确认删除「%1$s」？</string>
+
+    <!-- 编辑对话框 -->
+    <string name="autoreply_add_title">新增应答规则</string>
+    <string name="autoreply_edit_title">编辑应答规则</string>
+    <string name="autoreply_save">保存</string>
+    <string name="autoreply_name_hint">规则名称，例如：温度查询应答</string>
+    <string name="autoreply_section_match">接收匹配</string>
+    <string name="autoreply_section_reply">应答内容</string>
+    <string name="autoreply_match_hint_hex">HEX 支持通配：01 03 ?? ?? 00 0A</string>
+    <string name="autoreply_match_hint_ascii">匹配的文本内容</string>
+    <string name="autoreply_reply_hint">应答的 HEX 或文本内容</string>
+    <string name="autoreply_match_mode_title">匹配模式</string>
+    <string name="autoreply_newline_chip">结束符: %1$s</string>
+    <string name="autoreply_newline_title">结束符</string>
+    <string name="autoreply_escape_chip">转义</string>
+    <string name="autoreply_delay_label">应答延时(ms)</string>
+    <string name="autoreply_once_chip">仅应答一次</string>
+    <string name="autoreply_preview_empty">应答预览：（空）</string>
+    <string name="autoreply_preview_format">应答预览：%1$s</string>
+
+    <!-- 校验提示 -->
+    <string name="autoreply_error_match_empty">请填写匹配内容</string>
+    <string name="autoreply_error_reply_empty">请填写应答内容</string>
+    <string name="autoreply_error_match_hex">匹配内容 HEX 格式不正确</string>
+    <string name="autoreply_error_reply_hex">应答内容 HEX 格式不正确</string>
+    <string name="autoreply_default_name">应答规则</string>
+    <string name="autoreply_saved">已保存</string>
+
+    <!-- 引擎（无 Context） -->
+    <string name="autoreply_note">自动应答</string>
+    <string name="autoreply_note_name">自动应答：%1$s</string>
+
+</resources>

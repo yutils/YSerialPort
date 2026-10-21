@@ -76,11 +76,10 @@
             android:layout_marginStart="6dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="未连接"
+            android:text="@string/serial_state_closed"
             android:textColor="#FFFFFF"
             android:textSize="11sp"
-            android:textStyle="bold"
-            tools:ignore="HardcodedText" />
+            android:textStyle="bold" />
     </LinearLayout>
 
     <!-- 打开/关闭串口 -->
@@ -90,7 +89,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="4dp"
-        android:contentDescription="打开或关闭串口"
+        android:contentDescription="@string/topbar_power_desc"
         app:icon="@drawable/ic_power"
         app:iconGravity="textStart"
         app:iconPadding="0dp"
@@ -102,7 +101,7 @@
         style="@style/Widget.YS.IconButton"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:contentDescription="切换主题"
+        android:contentDescription="@string/topbar_theme_desc"
         app:icon="@drawable/ic_sun"
         app:iconGravity="textStart"
         app:iconPadding="0dp"

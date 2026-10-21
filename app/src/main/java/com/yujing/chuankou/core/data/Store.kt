@@ -3,7 +3,9 @@ package com.yujing.chuankou.core.data
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import com.yujing.chuankou.R
 import com.yujing.chuankou.core.util.Hex
+import com.yujing.chuankou.core.util.Langs
 import org.json.JSONObject
 import android.annotation.SuppressLint
 import java.io.File
@@ -161,14 +163,14 @@ object Store {
     fun buildExportText(items: List<HistoryItem>): String {
         val fmt = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT)
         val sb = StringBuilder(items.size * 64 + 128)
-        sb.append("# YSerialPort 串口收发记录\n")
-        sb.append("# 导出时间：${fmt.format(Date())}\n")
-        sb.append("# 方向\t时间\t类型\t长度\tHEX\t文本\n")
+        sb.append("# YSerialPort ${Langs.str(R.string.store_export_title)}\n")
+        sb.append("# ${Langs.str(R.string.store_export_time, fmt.format(Date()))}\n")
+        sb.append("# ${Langs.str(R.string.store_export_columns)}\n")
         items.forEach { h ->
             val dir = when (h.dir) {
-                Dir.RX -> "接收"
-                Dir.TX -> "发送"
-                else -> "系统"
+                Dir.RX -> Langs.str(R.string.store_dir_rx)
+                Dir.TX -> Langs.str(R.string.store_dir_tx)
+                else -> Langs.str(R.string.store_dir_sys)
             }
             val type = when (h.type) {
                 DataType.ASCII -> "ASCII"
@@ -224,11 +226,11 @@ object Store {
     }
 
     private fun defaultCommands(): List<QuickCommand> = listOf(
-        QuickCommand(name = "AT 指令", type = DataType.ASCII, content = "AT", appendNewline = 1, charset = "UTF-8"),
-        QuickCommand(name = "Modbus 读保持寄存器", type = DataType.HEX, content = "01 03 00 00 00 0A C5 CD"),
-        QuickCommand(name = "握手帧", type = DataType.HEX, content = "AA 55 01 00 55 AA"),
-        QuickCommand(name = "复位", type = DataType.HEX, content = "FF FF 00 00 00 00 00 00"),
-        QuickCommand(name = "回车换行", type = DataType.HEX, content = "0D 0A")
+        QuickCommand(name = Langs.str(R.string.store_cmd_at), type = DataType.ASCII, content = "AT", appendNewline = 1, charset = "UTF-8"),
+        QuickCommand(name = Langs.str(R.string.store_cmd_modbus), type = DataType.HEX, content = "01 03 00 00 00 0A C5 CD"),
+        QuickCommand(name = Langs.str(R.string.store_cmd_handshake), type = DataType.HEX, content = "AA 55 01 00 55 AA"),
+        QuickCommand(name = Langs.str(R.string.store_cmd_reset), type = DataType.HEX, content = "FF FF 00 00 00 00 00 00"),
+        QuickCommand(name = Langs.str(R.string.store_cmd_newline), type = DataType.HEX, content = "0D 0A")
     )
 
     // ==================================================================

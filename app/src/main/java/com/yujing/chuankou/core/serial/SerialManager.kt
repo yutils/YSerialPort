@@ -8,9 +8,11 @@ import com.yujing.chuankou.core.data.DataType
 import com.yujing.chuankou.core.data.Dir
 import com.yujing.chuankou.core.data.HistoryItem
 import com.yujing.chuankou.core.data.Prefs
+import com.yujing.chuankou.R
 import com.yujing.chuankou.core.data.Store
 import com.yujing.chuankou.core.util.Charsets2
 import com.yujing.chuankou.core.util.Hex
+import com.yujing.chuankou.core.util.Langs
 import com.yujing.chuankou.core.util.StreamingDecoder
 import com.yujing.serialport.SerialPort
 import com.yujing.yserialport.ThreadMode
@@ -89,7 +91,7 @@ object SerialManager {
             if (!loopRunning) return
             val payload = loopPayload ?: return
             loopSent++
-            sendInternal(payload.first, payload.second, "周期发送", false)
+            sendInternal(payload.first, payload.second, Langs.str(R.string.serial_loop_note), false)
             val total = loopTotal
             notifyLoop(true, loopSent, total)
             if (total > 0 && loopSent >= total) {
@@ -164,10 +166,19 @@ object SerialManager {
             notifyStatsNow()
             true
         } catch (e: SecurityException) {
-            setState(State.ERROR, "无串口读写权限：${e.message ?: "请确认设备已 root 或串口权限已开放"}")
+            setState(
+                State.ERROR,
+                Langs.str(
+                    R.string.serial_err_no_permission,
+                    e.message ?: Langs.str(R.string.serial_err_no_permission_hint)
+                )
+            )
             false
         } catch (e: Exception) {
-            setState(State.ERROR, "打开串口失败：${e.message ?: e.javaClass.simpleName}")
+            setState(
+                State.ERROR,
+                Langs.str(R.string.serial_err_open_failed, e.message ?: e.javaClass.simpleName)
+            )
             false
         }
     }
@@ -211,7 +222,7 @@ object SerialManager {
     private fun sendInternal(bytes: ByteArray, type: Int, note: String, fromUser: Boolean): Boolean {
         val ysp = ySerialPort
         if (ysp == null || state != State.OPEN) {
-            if (fromUser) postError("串口未打开")
+            if (fromUser) postError(Langs.str(R.string.serial_not_open))
             return false
         }
         txExecutor.execute {
@@ -226,7 +237,7 @@ object SerialManager {
                     val text = displayTextOf(bytes, type)
                     Store.addHistory(HistoryItem.of(now, Dir.TX, type, bytes, text, note))
                 } else {
-                    postError("发送失败，请检查串口连接")
+                    postError(Langs.str(R.string.serial_send_failed))
                 }
             }
         }
@@ -272,7 +283,7 @@ object SerialManager {
     fun sendFile(bytes: ByteArray, chunkSize: Int, delayMs: Int, type: Int = DataType.FILE) {
         if (bytes.isEmpty()) return
         if (fileSending) {
-            postError("正在发送文件，请稍候")
+            postError(Langs.str(R.string.serial_file_busy))
             return
         }
         fileSending = true
@@ -303,10 +314,14 @@ object SerialManager {
                     val now = System.currentTimeMillis()
                     listeners.forEach { runCatching { it.onSend(bytes, type, now) } }
                     Store.addHistory(
-                        HistoryItem.of(now, Dir.TX, type, bytes, "[文件] ${bytes.size} 字节", "文件发送")
+                        HistoryItem.of(
+                            now, Dir.TX, type, bytes,
+                            Langs.str(R.string.serial_file_bytes, bytes.size),
+                            Langs.str(R.string.serial_file_send_note)
+                        )
                     )
                 } else {
-                    postError("文件发送中断（已发送 $sent / ${bytes.size} 字节）")
+                    postError(Langs.str(R.string.serial_file_interrupted, sent, bytes.size))
                 }
                 listeners.forEach { runCatching { it.onFileProgress(if (okAll) bytes.size else sent, bytes.size) } }
             }
@@ -339,7 +354,7 @@ object SerialManager {
         // 历史
         val type = if (Prefs.rxMode == DataType.HEX) DataType.HEX else DataType.ASCII
         val text = if (type == DataType.HEX) Hex.toHexString(bytes, " ") else ascii
-        Store.addHistory(HistoryItem.of(now, Dir.RX, type, bytes, text, "接收"))
+        Store.addHistory(HistoryItem.of(now, Dir.RX, type, bytes, text, Langs.str(R.string.serial_rx_note)))
         // 自动应答
         if (Prefs.autoReplyEnabled) {
             AutoReplyEngine.onReceive(bytes, ascii)
@@ -357,16 +372,16 @@ object SerialManager {
     // ==================================================================
     fun displayTextOf(bytes: ByteArray, type: Int): String = when (type) {
         DataType.ASCII -> Charsets2.decode(bytes, Prefs.txCharset.toCharsetName())
-        DataType.FILE -> "[文件] ${bytes.size} 字节"
+        DataType.FILE -> Langs.str(R.string.serial_file_bytes, bytes.size)
         else -> Hex.toHexString(bytes, " ")
     }
 
     fun describeState(): String = when (state) {
-        State.CLOSED -> "未连接"
-        State.OPENING -> "打开中…"
-        State.OPEN -> "已连接"
-        State.CLOSING -> "关闭中…"
-        State.ERROR -> "错误"
+        State.CLOSED -> Langs.str(R.string.serial_state_closed)
+        State.OPENING -> Langs.str(R.string.serial_state_opening)
+        State.OPEN -> Langs.str(R.string.serial_state_open)
+        State.CLOSING -> Langs.str(R.string.serial_state_closing)
+        State.ERROR -> Langs.str(R.string.serial_state_error_short)
     }
 
     fun uptimeMs(): Long = if (connectedAt > 0) System.currentTimeMillis() - connectedAt else 0

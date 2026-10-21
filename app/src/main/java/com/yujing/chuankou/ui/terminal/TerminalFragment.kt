@@ -104,7 +104,7 @@ class TerminalFragment : BaseFragment<FragmentTerminalBinding>(FragmentTerminalB
         if (payload.autoSend) {
             binding.etSend.post { onSendClicked() }
         } else {
-            snack("已填入发送框")
+            snack(getString(R.string.terminal_filled))
         }
     }
 
@@ -139,7 +139,7 @@ class TerminalFragment : BaseFragment<FragmentTerminalBinding>(FragmentTerminalB
             binding.terminalRx.clearAll()
             TerminalSnapshot.clear()
             updateScrollHint()
-            snack("接收区已清空")
+            snack(getString(R.string.terminal_rx_cleared))
         }
 
         binding.btnRxPause.setOnClickListener {
@@ -149,22 +149,22 @@ class TerminalFragment : BaseFragment<FragmentTerminalBinding>(FragmentTerminalB
             binding.btnRxPause.iconTint = android.content.res.ColorStateList.valueOf(
                 ContextCompat.getColor(requireContext(), if (rxPaused) R.color.c_warn else R.color.c_text_secondary)
             )
-            snack(if (rxPaused) "已暂停显示（数据仍在接收并记录）" else "已恢复显示")
+            snack(if (rxPaused) getString(R.string.terminal_display_paused) else getString(R.string.terminal_display_resumed))
         }
 
         binding.btnRxSave.setOnClickListener {
             val text = binding.terminalRx.contentText()
             if (text.isEmpty()) {
-                snack("没有可保存的内容")
+                snack(getString(R.string.terminal_nothing_to_save))
                 return@setOnClickListener
             }
             io.execute {
                 val file = AppFiles.saveText(Store.appContext(), "serial_rx", text)
                 ui.post {
                     if (file == null) {
-                        snack("保存失败")
+                        snack(getString(R.string.terminal_save_failed))
                     } else {
-                        snack("已保存：${file.absolutePath}", "分享") {
+                        snack(getString(R.string.terminal_saved, file.absolutePath), getString(R.string.terminal_share)) {
                             AppFiles.share(requireContext(), file)
                         }
                     }
@@ -177,10 +177,10 @@ class TerminalFragment : BaseFragment<FragmentTerminalBinding>(FragmentTerminalB
         binding.chipCharset.setOnClickListener {
             val names = Charsets2.SUPPORTED.map { it.first }
             val current = names.indexOfFirst { Charsets2.byDisplay(it) == Prefs.rxCharset }
-            Dialogs.singleChoice(requireContext(), "接收字符集", names, current) { which ->
+            Dialogs.singleChoice(requireContext(), getString(R.string.settings_rx_charset_dialog), names, current) { which ->
                 Prefs.rxCharset = Charsets2.SUPPORTED[which].second
                 updateCharsetChip()
-                snack("接收字符集：${Charsets2.SUPPORTED[which].first}")
+                snack(getString(R.string.terminal_rx_charset_set, Charsets2.SUPPORTED[which].first))
             }
         }
 
@@ -205,8 +205,8 @@ class TerminalFragment : BaseFragment<FragmentTerminalBinding>(FragmentTerminalB
         }
 
         binding.chipHexSep.setOnClickListener {
-            val names = listOf("空格", "无分隔", "逗号", "横线")
-            Dialogs.singleChoice(requireContext(), "HEX 分隔符", names, Prefs.rxHexSeparator) { which ->
+            val names = hexSepNames()
+            Dialogs.singleChoice(requireContext(), getString(R.string.settings_rx_sep), names, Prefs.rxHexSeparator) { which ->
                 Prefs.rxHexSeparator = which
                 updateHexSepChip()
             }
@@ -224,9 +224,14 @@ class TerminalFragment : BaseFragment<FragmentTerminalBinding>(FragmentTerminalB
         binding.chipCharset.text = Charsets2.displayOf(Prefs.rxCharset)
     }
 
+    private fun hexSepNames() = listOf(
+        getString(R.string.sep_space), getString(R.string.sep_none),
+        getString(R.string.sep_comma), getString(R.string.sep_dash)
+    )
+
     private fun updateHexSepChip() {
-        binding.chipHexSep.text = listOf("空格", "无分隔", "逗号", "横线")
-            .getOrElse(Prefs.rxHexSeparator) { "空格" }
+        binding.chipHexSep.text = hexSepNames()
+            .getOrElse(Prefs.rxHexSeparator) { getString(R.string.sep_space) }
     }
 
     private fun updateRxWrapHint() {
@@ -248,7 +253,7 @@ class TerminalFragment : BaseFragment<FragmentTerminalBinding>(FragmentTerminalB
     // 发送面板
     // ==================================================================
     private fun initTxPanel() {
-        binding.segTxMode.setOptions(listOf("ASCII", "HEX", "文件"), txMode)
+        binding.segTxMode.setOptions(listOf("ASCII", "HEX", getString(R.string.terminal_mode_file)), txMode)
         binding.segTxMode.onSelected = { index ->
             txMode = index
             Prefs.txMode = index
@@ -267,7 +272,7 @@ class TerminalFragment : BaseFragment<FragmentTerminalBinding>(FragmentTerminalB
         binding.chipTxCharset.setOnClickListener {
             val names = Charsets2.SUPPORTED.map { it.first }
             val current = names.indexOfFirst { Charsets2.byDisplay(it) == Prefs.txCharset }
-            Dialogs.singleChoice(requireContext(), "发送字符集", names, current) { which ->
+            Dialogs.singleChoice(requireContext(), getString(R.string.settings_tx_charset_dialog), names, current) { which ->
                 Prefs.txCharset = Charsets2.SUPPORTED[which].second
                 updateTxCharsetChip()
             }
@@ -278,11 +283,11 @@ class TerminalFragment : BaseFragment<FragmentTerminalBinding>(FragmentTerminalB
         binding.chipTxEscape.setOnClickListener {
             Prefs.txEscape = !Prefs.txEscape
             binding.chipTxEscape.isSelected = Prefs.txEscape
-            snack(if (Prefs.txEscape) "已启用转义字符解析" else "已关闭转义字符解析")
+            snack(if (Prefs.txEscape) getString(R.string.terminal_escape_on) else getString(R.string.terminal_escape_off))
         }
 
         binding.chipTxNewline.setOnClickListener {
-            Dialogs.singleChoice(requireContext(), "结束符", Newline.NAMES, Prefs.txAppendNewline) { which ->
+            Dialogs.singleChoice(requireContext(), getString(R.string.terminal_newline), Newline.names(), Prefs.txAppendNewline) { which ->
                 Prefs.txAppendNewline = which
                 updateNewlineChip()
             }
@@ -336,21 +341,21 @@ class TerminalFragment : BaseFragment<FragmentTerminalBinding>(FragmentTerminalB
     }
 
     private fun updateNewlineChip() {
-        binding.chipTxNewline.text = "结束符: " + Newline.NAMES.getOrElse(Prefs.txAppendNewline) { "无" }
+        binding.chipTxNewline.text = getString(R.string.terminal_newline_format, Newline.name(Prefs.txAppendNewline))
     }
 
     private fun updateSendButton() {
         when {
             SerialManager.isLooping -> {
-                binding.btnSend.text = "停止"
+                binding.btnSend.text = getString(R.string.terminal_btn_stop)
                 binding.btnSend.setIconResource(R.drawable.ic_stop)
             }
             loopEnabled -> {
-                binding.btnSend.text = "开始周期"
+                binding.btnSend.text = getString(R.string.terminal_btn_loop)
                 binding.btnSend.setIconResource(R.drawable.ic_repeat)
             }
             else -> {
-                binding.btnSend.text = "发送"
+                binding.btnSend.text = getString(R.string.terminal_send)
                 binding.btnSend.setIconResource(R.drawable.ic_play)
             }
         }
@@ -380,12 +385,12 @@ class TerminalFragment : BaseFragment<FragmentTerminalBinding>(FragmentTerminalB
             return
         }
         if (!SerialManager.isOpen) {
-            snack("串口未打开，请先点击右上角电源按钮")
+            snack(getString(R.string.terminal_serial_not_open))
             return
         }
         val bytes = buildPayload()
         if (bytes == null || bytes.isEmpty()) {
-            snack(if (txMode == 2) "请选择要发送的文件" else "请输入要发送的内容")
+            snack(if (txMode == 2) getString(R.string.terminal_pick_file_first) else getString(R.string.terminal_input_first))
             return
         }
         if (loopEnabled) {
@@ -394,9 +399,12 @@ class TerminalFragment : BaseFragment<FragmentTerminalBinding>(FragmentTerminalB
             Prefs.txLoopInterval = interval
             Prefs.txLoopCount = count
             SerialManager.startLoop(bytes, interval, count, dataTypeOf(txMode))
-            snack("周期发送已启动：间隔 ${interval}ms" + if (count > 0) " · 共 $count 次" else " · 无限循环")
+            snack(
+                if (count > 0) getString(R.string.terminal_loop_started_count, interval, count)
+                else getString(R.string.terminal_loop_started_infinite, interval)
+            )
         } else {
-            SerialManager.send(bytes, dataTypeOf(txMode), "手动发送")
+            SerialManager.send(bytes, dataTypeOf(txMode), getString(R.string.terminal_source_manual))
         }
         if (txMode != 2) {
             persistEditor()
@@ -430,10 +438,10 @@ class TerminalFragment : BaseFragment<FragmentTerminalBinding>(FragmentTerminalB
     private fun showSendHistory() {
         val list = Store.sendHistory()
         if (list.isEmpty()) {
-            snack("暂无发送历史")
+            snack(getString(R.string.terminal_no_history))
             return
         }
-        Dialogs.singleChoice(requireContext(), "最近发送", list) { which ->
+        Dialogs.singleChoice(requireContext(), getString(R.string.terminal_recent_sends), list) { which ->
             val text = list[which]
             binding.etSend.setText(text)
             binding.etSend.setSelection(text.length)
@@ -455,14 +463,14 @@ class TerminalFragment : BaseFragment<FragmentTerminalBinding>(FragmentTerminalB
             ui.post {
                 val data = result?.first
                 if (data == null) {
-                    snack("读取文件失败")
+                    snack(getString(R.string.terminal_read_file_failed))
                     return@post
                 }
                 fileBytes = data
-                fileName = result.second ?: "未知文件"
+                fileName = result.second ?: getString(R.string.terminal_unknown_file)
                 Prefs.lastFilePath = uri.toString()
                 updateFileInfo()
-                snack("已加载：$fileName（${data.size} 字节）")
+                snack(getString(R.string.terminal_loaded, fileName, data.size))
             }
         }
     }
@@ -478,9 +486,9 @@ class TerminalFragment : BaseFragment<FragmentTerminalBinding>(FragmentTerminalB
     private fun updateFileInfo() {
         val bytes = fileBytes
         binding.tvFileInfo.text = if (bytes == null) {
-            "未选择文件\n支持任意文件，可按需启用转义字符解析后发送"
+            getString(R.string.terminal_no_file)
         } else {
-            "$fileName\n大小：${bytes.size} 字节（${formatSize(bytes.size.toLong())}）"
+            getString(R.string.terminal_file_info, fileName, bytes.size, formatSize(bytes.size.toLong()))
         }
     }
 
@@ -535,7 +543,7 @@ class TerminalFragment : BaseFragment<FragmentTerminalBinding>(FragmentTerminalB
         }
         val body = when (type) {
             DataType.ASCII -> Charsets2.decode(bytes, Charsets2.byDisplay(Prefs.txCharset))
-            DataType.FILE -> "[文件 ${bytes.size} 字节]"
+            DataType.FILE -> getString(R.string.terminal_file_echo, bytes.size)
             else -> Hex.toHexString(bytes, hexSeparator())
         }
         if (body.isNotEmpty() && !wrap && !binding.terminalRx.endsWithWhitespace()) sb.append(' ')
@@ -579,8 +587,8 @@ class TerminalFragment : BaseFragment<FragmentTerminalBinding>(FragmentTerminalB
 
     private fun refreshStats() {
         if (view == null) return
-        binding.tvRxStats.text = "收 ${formatSize(SerialManager.rxBytes)} · ${SerialManager.rxPackets} 包"
-        binding.tvTxStats.text = "发 ${formatSize(SerialManager.txBytes)} · ${SerialManager.txPackets} 包"
+        binding.tvRxStats.text = getString(R.string.terminal_rx_stats, formatSize(SerialManager.rxBytes), SerialManager.rxPackets)
+        binding.tvTxStats.text = getString(R.string.terminal_tx_stats, formatSize(SerialManager.txBytes), SerialManager.txPackets)
         updateSerialHint()
     }
 
@@ -588,11 +596,11 @@ class TerminalFragment : BaseFragment<FragmentTerminalBinding>(FragmentTerminalB
         if (view == null) return
         if (!SerialManager.isOpen) {
             binding.etSend.isEnabled = false
-            binding.etSend.hint = "串口未打开，请点击右上角电源按钮"
+            binding.etSend.hint = getString(R.string.terminal_serial_not_open)
         } else {
             binding.etSend.isEnabled = true
-            binding.etSend.hint = if (txMode == 1) "输入十六进制，例如 01 03 00 00 00 0A"
-            else "输入要发送的内容…"
+            binding.etSend.hint = if (txMode == 1) getString(R.string.terminal_hint_hex)
+            else getString(R.string.terminal_hint_input)
         }
     }
 
@@ -634,8 +642,8 @@ class TerminalFragment : BaseFragment<FragmentTerminalBinding>(FragmentTerminalB
         ui.post {
             updateSendButton()
             if (view != null) {
-                binding.tvTxStats.text = if (total > 0) "周期 $sent/$total" else "已发 $sent 次"
-                if (!running && sent > 0) snack("周期发送结束，共 $sent 次")
+                binding.tvTxStats.text = if (total > 0) getString(R.string.terminal_loop_progress, sent, total) else getString(R.string.terminal_sent_times, sent)
+                if (!running && sent > 0) snack(getString(R.string.terminal_loop_finished, sent))
             }
         }
     }
@@ -647,7 +655,7 @@ class TerminalFragment : BaseFragment<FragmentTerminalBinding>(FragmentTerminalB
             binding.tvFileProgress.visibility = View.VISIBLE
             // sent * 100 用 Long 计算：大文件（>21MB）下 Int 会溢出成负数
             binding.pbFile.progress = if (total > 0) (sent.toLong() * 100 / total).toInt() else 0
-            binding.tvFileProgress.text = "已发送 $sent / $total 字节"
+            binding.tvFileProgress.text = getString(R.string.terminal_file_progress, sent, total)
             if (sent >= total) {
                 ui.postDelayed({
                     if (view != null) {

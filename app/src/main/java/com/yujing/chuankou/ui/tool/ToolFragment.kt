@@ -47,7 +47,9 @@ class ToolFragment : BaseFragment<FragmentToolBinding>(FragmentToolBinding::infl
         initChecksumPanel()
         initAsciiPanel()
 
-        binding.segTool.setOptions(listOf("校验计算器", "ASCII 码表"), 0)
+        binding.segTool.setOptions(
+            listOf(getString(R.string.tool_tab_checksum), getString(R.string.tool_tab_ascii)), 0
+        )
         binding.segTool.onSelected = { index ->
             binding.panelChecksum.visibility = if (index == 0) View.VISIBLE else View.GONE
             binding.panelAscii.visibility = if (index == 1) View.VISIBLE else View.GONE
@@ -71,8 +73,8 @@ class ToolFragment : BaseFragment<FragmentToolBinding>(FragmentToolBinding::infl
         binding.segInputType.onSelected = { index ->
             inputType = if (index == 0) DataType.HEX else DataType.ASCII
             binding.chipCharset.visibility = if (inputType == DataType.ASCII) View.VISIBLE else View.GONE
-            binding.etInput.hint = if (inputType == DataType.HEX) "HEX 例：01 03 00 00 00 0A"
-            else "ASCII 例：123456789"
+            binding.etInput.hint = if (inputType == DataType.HEX) getString(R.string.tool_input_hint_hex)
+            else getString(R.string.tool_input_hint_ascii)
             binding.chipEscape.visibility = if (inputType == DataType.ASCII) View.VISIBLE else View.GONE
             updateInputInfo()
             calc()
@@ -83,7 +85,7 @@ class ToolFragment : BaseFragment<FragmentToolBinding>(FragmentToolBinding::infl
         binding.chipCharset.text = Charsets2.displayOf("UTF-8")
         binding.chipCharset.setOnClickListener {
             val names = Charsets2.SUPPORTED.map { it.first }
-            Dialogs.singleChoice(requireContext(), "字符集", names, 0) { which ->
+            Dialogs.singleChoice(requireContext(), getString(R.string.settings_charset), names, 0) { which ->
                 binding.chipCharset.text = names[which]
                 updateInputInfo()
                 calc()
@@ -138,7 +140,7 @@ class ToolFragment : BaseFragment<FragmentToolBinding>(FragmentToolBinding::infl
 
         binding.chipXor.setOnClickListener {
             Dialogs.input(
-                requireContext(), "结果异或值", "支持 0x 前缀或十进制，例：0xFF",
+                requireContext(), getString(R.string.tool_xor_value), getString(R.string.tool_xor_value_hint),
                 "0x" + java.lang.Long.toHexString(extraXor).uppercase(Locale.getDefault())
             ) { text ->
                 extraXor = parseNumber(text)
@@ -149,7 +151,16 @@ class ToolFragment : BaseFragment<FragmentToolBinding>(FragmentToolBinding::infl
         updateXorChip()
 
         binding.chipWidth.setOnClickListener {
-            Dialogs.singleChoice(requireContext(), "输出位宽", listOf("跟随算法", "8 位", "16 位", "32 位"), widthIndex()) { which ->
+            Dialogs.singleChoice(
+                requireContext(), getString(R.string.tool_output_width),
+                listOf(
+                    getString(R.string.tool_width_opt_follow),
+                    getString(R.string.tool_width_opt_8),
+                    getString(R.string.tool_width_opt_16),
+                    getString(R.string.tool_width_opt_32)
+                ),
+                widthIndex()
+            ) { which ->
                 outWidth = when (which) {
                     1 -> 8
                     2 -> 16
@@ -166,7 +177,7 @@ class ToolFragment : BaseFragment<FragmentToolBinding>(FragmentToolBinding::infl
 
         binding.btnCopyResult.setOnClickListener {
             val r = lastResult ?: return@setOnClickListener
-            copyToClipboard(r.hex, "已复制校验值：${r.hex}")
+            copyToClipboard(r.hex, getString(R.string.tool_copied_checksum_format, r.hex))
         }
 
         binding.btnAppend.setOnClickListener {
@@ -178,13 +189,13 @@ class ToolFragment : BaseFragment<FragmentToolBinding>(FragmentToolBinding::infl
         binding.btnSendResult.setOnClickListener {
             val r = lastResult ?: return@setOnClickListener
             if (!SerialManager.isOpen) {
-                snack("串口未打开")
+                snack(getString(R.string.tool_serial_not_open))
                 return@setOnClickListener
             }
             val data = inputBytes() ?: ByteArray(0)
             val payload = data + r.bytes
-            SerialManager.send(payload, DataType.HEX, "数据+${r.algo.name}")
-            snack("已发送 ${payload.size} 字节（数据 + 校验）")
+            SerialManager.send(payload, DataType.HEX, getString(R.string.tool_note_checksum_format, r.algo.name))
+            snack(getString(R.string.tool_sent_with_checksum, payload.size))
         }
 
         // 默认示例数据，便于直接体验
@@ -204,12 +215,16 @@ class ToolFragment : BaseFragment<FragmentToolBinding>(FragmentToolBinding::infl
     }
 
     private fun updateXorChip() {
-        binding.chipXor.text = "异或 0x" + java.lang.Long.toHexString(extraXor).uppercase(Locale.getDefault())
+        binding.chipXor.text = getString(
+            R.string.tool_xor_chip_format,
+            java.lang.Long.toHexString(extraXor).uppercase(Locale.getDefault())
+        )
         binding.chipXor.isSelected = extraXor != 0L
     }
 
     private fun updateWidthChip() {
-        binding.chipWidth.text = if (outWidth == 0) "位宽 跟随" else "位宽 $outWidth"
+        binding.chipWidth.text = if (outWidth == 0) getString(R.string.tool_width_chip_follow)
+        else getString(R.string.tool_width_chip_format, outWidth)
         binding.chipWidth.isSelected = outWidth != 0
     }
 
@@ -230,7 +245,7 @@ class ToolFragment : BaseFragment<FragmentToolBinding>(FragmentToolBinding::infl
 
     private fun pickAlgo() {
         val groups = Checksum.ALGOS.map { it.group }.distinct()
-        Dialogs.singleChoice(requireContext(), "算法分类", groups, groups.indexOf(algo.group)) { gi ->
+        Dialogs.singleChoice(requireContext(), getString(R.string.tool_algo_group), groups, groups.indexOf(algo.group)) { gi ->
             val list = Checksum.ALGOS.filter { it.group == groups[gi] }
             Dialogs.singleChoice(requireContext(), groups[gi], list.map { it.name }, list.indexOfFirst { it.id == algo.id }) { ai ->
                 algo = list[ai]
@@ -257,11 +272,16 @@ class ToolFragment : BaseFragment<FragmentToolBinding>(FragmentToolBinding::infl
     private fun algoDescription(a: Checksum.Algo): String {
         val p = a.crc
         return if (p != null) {
-            "位宽 ${p.width} · 多项式 0x${java.lang.Long.toHexString(p.poly).uppercase(Locale.getDefault())} · " +
-                    "初值 0x${java.lang.Long.toHexString(p.init).uppercase(Locale.getDefault())} · " +
-                    "XorOut 0x${java.lang.Long.toHexString(p.xorout).uppercase(Locale.getDefault())} · " +
-                    "RefIn=${p.refin} RefOut=${p.refout}" +
-                    if (p.check >= 0) " · 标准校验值 0x${java.lang.Long.toHexString(p.check).uppercase(Locale.getDefault())}" else ""
+            getString(
+                R.string.tool_algo_desc_crc, p.width,
+                java.lang.Long.toHexString(p.poly).uppercase(Locale.getDefault()),
+                java.lang.Long.toHexString(p.init).uppercase(Locale.getDefault()),
+                java.lang.Long.toHexString(p.xorout).uppercase(Locale.getDefault()),
+                p.refin, p.refout
+            ) + if (p.check >= 0) getString(
+                R.string.tool_algo_desc_check,
+                java.lang.Long.toHexString(p.check).uppercase(Locale.getDefault())
+            ) else ""
         } else {
             a.desc.ifBlank { a.name }
         }
@@ -284,7 +304,8 @@ class ToolFragment : BaseFragment<FragmentToolBinding>(FragmentToolBinding::infl
     private fun updateInputInfo() {
         if (view == null) return
         val bytes = inputBytes()
-        binding.tvInputInfo.text = if (bytes == null) "格式不正确" else "${bytes.size} 字节"
+        binding.tvInputInfo.text = if (bytes == null) getString(R.string.tool_input_invalid)
+        else getString(R.string.settings_bytes_format, bytes.size)
         binding.tvInputInfo.setTextColor(
             androidx.core.content.ContextCompat.getColor(
                 requireContext(),
@@ -298,8 +319,8 @@ class ToolFragment : BaseFragment<FragmentToolBinding>(FragmentToolBinding::infl
         val bytes = inputBytes()
         if (bytes == null) {
             lastResult = null
-            binding.tvResultHex.text = "输入格式不正确"
-            binding.tvResultDec.text = "HEX 输入仅允许 0-9 A-F 与分隔符"
+            binding.tvResultHex.text = getString(R.string.tool_input_format_invalid)
+            binding.tvResultDec.text = getString(R.string.tool_hex_rule)
             binding.tvResultBin.text = ""
             return
         }
@@ -358,9 +379,9 @@ class ToolFragment : BaseFragment<FragmentToolBinding>(FragmentToolBinding::infl
         }
         asciiAdapter.notifyDataSetChanged()
         binding.tvAsciiHint.text = if (asciiKeyword.isEmpty())
-            "点击任意单元格可复制 / 填入发送框（共 ${asciiItems.size} 项）"
+            getString(R.string.tool_ascii_hint_count_format, asciiItems.size)
         else
-            "搜索「$asciiKeyword」命中 ${asciiItems.size} 项"
+            getString(R.string.tool_ascii_hint_search_format, asciiKeyword, asciiItems.size)
     }
 
     /** 大号显示：控制字符直接显示助记符，避免出现缺字方框 */
@@ -378,28 +399,42 @@ class ToolFragment : BaseFragment<FragmentToolBinding>(FragmentToolBinding::infl
     }
 
     /** 名称行 */
-    private fun nameOf(code: Int): String = when {
-        code in 0..31 -> CONTROL_DESC[code]
-        code == 32 -> "空格"
-        code == 127 -> "删除"
-        else -> ASCII_NAMES.getOrElse(code) { "扩展字符" }
+    private fun nameOf(code: Int): String = when (code) {
+        in 0..31 -> getString(CONTROL_DESC_RES[code])
+        32 -> getString(R.string.tool_ascii_space)
+        in 33..47 -> SYMBOLS_33[code - 33]
+        in 48..57 -> getString(R.string.tool_ascii_digit_format, (code - 48).toString())
+        in 58..64 -> SYMBOLS_58[code - 58]
+        in 65..90 -> getString(R.string.tool_ascii_upper_format, code.toChar().toString())
+        in 91..96 -> SYMBOLS_91[code - 91]
+        in 97..122 -> getString(R.string.tool_ascii_lower_format, code.toChar().toString())
+        in 123..126 -> SYMBOLS_123[code - 123]
+        127 -> getString(R.string.tool_ascii_del)
+        in 128..191 -> getString(EXT_DESC_RES[code - 128])
+        215 -> getString(R.string.tool_ext_multiply)
+        247 -> getString(R.string.tool_ext_divide)
+        else -> code.toChar().toString()
     }
 
     private fun showAsciiMenu(code: Int) {
         val hex = Hex.byteToHex(code)
         val c = if (code in 33..126) code.toChar().toString() else ""
-        val options = mutableListOf("复制 HEX（$hex）", "发送该字节", "填入发送框（HEX）")
-        if (c.isNotEmpty()) options.add(0, "复制字符「$c」")
+        val options = mutableListOf(
+            getString(R.string.tool_menu_copy_hex_format, hex),
+            getString(R.string.tool_menu_send_byte),
+            getString(R.string.tool_menu_fill_hex)
+        )
+        if (c.isNotEmpty()) options.add(0, getString(R.string.tool_menu_copy_char_format, c))
         Dialogs.singleChoice(requireContext(), "0x$hex · DEC $code", options) { which ->
             val realWhich = if (c.isNotEmpty()) which else which + 1
             when (realWhich) {
-                0 -> copyToClipboard(c, "已复制字符")
-                1 -> copyToClipboard(hex, "已复制 HEX")
+                0 -> copyToClipboard(c, getString(R.string.tool_copied_char))
+                1 -> copyToClipboard(hex, getString(R.string.tool_copied_hex))
                 2 -> {
-                    if (!SerialManager.isOpen) snack("串口未打开")
+                    if (!SerialManager.isOpen) snack(getString(R.string.tool_serial_not_open))
                     else {
-                        SerialManager.send(byteArrayOf(code.toByte()), DataType.HEX, "ASCII 码表")
-                        snack("已发送 0x$hex")
+                        SerialManager.send(byteArrayOf(code.toByte()), DataType.HEX, getString(R.string.tool_tab_ascii))
+                        snack(getString(R.string.tool_sent_hex_format, hex))
                     }
                 }
                 3 -> {
@@ -438,40 +473,48 @@ class ToolFragment : BaseFragment<FragmentToolBinding>(FragmentToolBinding::infl
             "CAN", "EM", "SUB", "ESC", "FS", "GS", "RS", "US"
         )
 
-        /** 0 ~ 31 控制字符说明 */
-        val CONTROL_DESC = listOf(
-            "空字符", "标题开始", "正文开始", "正文结束", "传输结束", "请求", "确认", "响铃",
-            "退格", "水平制表", "换行", "垂直制表", "换页", "回车", "移出", "移入",
-            "数据链路转义", "设备控制1", "设备控制2", "设备控制3", "设备控制4", "否定", "同步", "块传输结束",
-            "取消", "介质结束", "替换", "转义", "文件分隔", "组分隔", "记录分隔", "单元分隔"
+        /** 0 ~ 31 控制字符说明（资源 id，下标 = code） */
+        private val CONTROL_DESC_RES = intArrayOf(
+            R.string.tool_ctrl_nul, R.string.tool_ctrl_soh, R.string.tool_ctrl_stx, R.string.tool_ctrl_etx,
+            R.string.tool_ctrl_eot, R.string.tool_ctrl_enq, R.string.tool_ctrl_ack, R.string.tool_ctrl_bel,
+            R.string.tool_ctrl_bs, R.string.tool_ctrl_ht, R.string.tool_ctrl_lf, R.string.tool_ctrl_vt,
+            R.string.tool_ctrl_ff, R.string.tool_ctrl_cr, R.string.tool_ctrl_so, R.string.tool_ctrl_si,
+            R.string.tool_ctrl_dle, R.string.tool_ctrl_dc1, R.string.tool_ctrl_dc2, R.string.tool_ctrl_dc3,
+            R.string.tool_ctrl_dc4, R.string.tool_ctrl_nak, R.string.tool_ctrl_syn, R.string.tool_ctrl_etb,
+            R.string.tool_ctrl_can, R.string.tool_ctrl_em, R.string.tool_ctrl_sub, R.string.tool_ctrl_esc,
+            R.string.tool_ctrl_fs, R.string.tool_ctrl_gs, R.string.tool_ctrl_rs, R.string.tool_ctrl_us
         )
 
-        /** 0 ~ 255 名称表（0-31 与 32/127 由上面控制表处理，这里仅作搜索与回退） */
-        val ASCII_NAMES: List<String> = buildList {
-            addAll(CONTROL_DESC)
-            add("空格")
-            addAll(listOf("!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/"))
-            addAll((0..9).map { "数字 $it" })
-            addAll(listOf(":", ";", "<", "=", ">", "?", "@"))
-            addAll(('A'..'Z').map { "大写字母 $it" })
-            addAll(listOf("[", "\\", "]", "^", "_", "`"))
-            addAll(('a'..'z').map { "小写字母 $it" })
-            addAll(listOf("{", "|", "}", "~"))
-            add("删除")
-            addAll(listOf(
-                "欧元符号", "未定义", "单低引号", "花体 f", "双低引号", "省略号", "剑号", "双剑号",
-                "修饰符抑扬", "千分号", "S 加抑扬", "单左尖括号", "OE 连字", "未定义", "Z 加抑扬", "未定义",
-                "未定义", "左单引号", "右单引号", "左双引号", "右双引号", "项目符号", "短破折号", "长破折号",
-                "修饰符波浪", "商标", "s 加抑扬", "单右尖括号", "oe 连字", "未定义", "z 加抑扬", "Y 加分音",
-                "不换行空格", "倒叹号", "分币", "英镑", "货币符号", "日元", "断竖线", "章节号",
-                "分音符号", "版权", "阴性序数", "左双角括号", "非", "软连字符", "注册商标", "长音符号",
-                "度", "正负", "上标2", "上标3", "重音", "微", "段落", "中间点",
-                "下加符", "上标1", "阳性序数", "右双角括号", "四分之一", "二分之一", "四分之三", "倒问号",
-                "À", "Á", "Â", "Ã", "Ä", "Å", "Æ", "Ç", "È", "É", "Ê", "Ë", "Ì", "Í", "Î", "Ï",
-                "Ð", "Ñ", "Ò", "Ó", "Ô", "Õ", "Ö", "乘号", "Ø", "Ù", "Ú", "Û", "Ü", "Ý", "Þ", "ß",
-                "à", "á", "â", "ã", "ä", "å", "æ", "ç", "è", "é", "ê", "ë", "ì", "í", "î", "ï",
-                "ð", "ñ", "ò", "ó", "ô", "õ", "ö", "除号", "ø", "ù", "ú", "û", "ü", "ý", "þ", "ÿ"
-            ))
-        }.let { list -> if (list.size >= 256) list.subList(0, 256) else list + List(256 - list.size) { "扩展字符" } }
+        /** 128 ~ 191 扩展字符说明（资源 id，下标 = code - 128） */
+        private val EXT_DESC_RES = intArrayOf(
+            R.string.tool_ext_euro, R.string.tool_ext_undefined, R.string.tool_ext_quote_low_single, R.string.tool_ext_florin,
+            R.string.tool_ext_quote_low_double, R.string.tool_ext_ellipsis, R.string.tool_ext_dagger, R.string.tool_ext_dagger_double,
+            R.string.tool_ext_circumflex, R.string.tool_ext_permille, R.string.tool_ext_s_caron, R.string.tool_ext_langle_single,
+            R.string.tool_ext_oe_ligature, R.string.tool_ext_undefined, R.string.tool_ext_z_caron, R.string.tool_ext_undefined,
+            R.string.tool_ext_undefined, R.string.tool_ext_quote_left_single, R.string.tool_ext_quote_right_single, R.string.tool_ext_quote_left_double,
+            R.string.tool_ext_quote_right_double, R.string.tool_ext_bullet, R.string.tool_ext_dash_en, R.string.tool_ext_dash_em,
+            R.string.tool_ext_tilde, R.string.tool_ext_trademark, R.string.tool_ext_s_caron_lower, R.string.tool_ext_rangle_single,
+            R.string.tool_ext_oe_ligature_lower, R.string.tool_ext_undefined, R.string.tool_ext_z_caron_lower, R.string.tool_ext_y_diaeresis,
+            R.string.tool_ext_nbsp, R.string.tool_ext_exclaim_inverted, R.string.tool_ext_cent, R.string.tool_ext_pound,
+            R.string.tool_ext_currency, R.string.tool_ext_yen, R.string.tool_ext_broken_bar, R.string.tool_ext_section,
+            R.string.tool_ext_diaeresis, R.string.tool_ext_copyright, R.string.tool_ext_ordinal_f, R.string.tool_ext_langle_double,
+            R.string.tool_ext_not, R.string.tool_ext_shy, R.string.tool_ext_registered, R.string.tool_ext_macron,
+            R.string.tool_ext_degree, R.string.tool_ext_plus_minus, R.string.tool_ext_superscript_two, R.string.tool_ext_superscript_three,
+            R.string.tool_ext_acute, R.string.tool_ext_micro, R.string.tool_ext_paragraph, R.string.tool_ext_middle_dot,
+            R.string.tool_ext_cedilla, R.string.tool_ext_superscript_one, R.string.tool_ext_ordinal_m, R.string.tool_ext_rangle_double,
+            R.string.tool_ext_quarter, R.string.tool_ext_half, R.string.tool_ext_three_quarters, R.string.tool_ext_question_inverted
+        )
+
+        /** 33 ~ 47 符号 */
+        private val SYMBOLS_33 = listOf("!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/")
+
+        /** 58 ~ 64 符号 */
+        private val SYMBOLS_58 = listOf(":", ";", "<", "=", ">", "?", "@")
+
+        /** 91 ~ 96 符号 */
+        private val SYMBOLS_91 = listOf("[", "\\", "]", "^", "_", "`")
+
+        /** 123 ~ 126 符号 */
+        private val SYMBOLS_123 = listOf("{", "|", "}", "~")
     }
 }

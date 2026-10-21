@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:hint="指令名称，例如：读取温度"
+        android:hint="@string/command_name_hint"
         android:importantForAutofill="no"
         android:inputType="text"
         tools:ignore="LabelFor" />
@@ -40,7 +40,7 @@
             android:id="@+id/chip_escape"
             style="@style/Widget.YS.ChipText"
             android:layout_marginStart="6dp"
-            android:text="转义" />
+            android:text="@string/command_escape_chip" />
 
         <TextView
             android:id="@+id/chip_newline"
@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:gravity="top|start"
-        android:hint="HEX 例：01 03 00 00 00 0A C5 CD"
+        android:hint="@string/command_hint_hex"
         android:importantForAutofill="no"
         android:inputType="textMultiLine|textNoSuggestions"
         android:maxLines="6"

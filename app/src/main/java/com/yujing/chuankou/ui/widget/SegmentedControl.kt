@@ -2,10 +2,12 @@ package com.yujing.chuankou.ui.widget
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.Gravity
 import android.widget.LinearLayout
-import android.widget.TextView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
+import androidx.core.widget.TextViewCompat
 import com.yujing.chuankou.R
 
 /**
@@ -20,7 +22,7 @@ class SegmentedControl @JvmOverloads constructor(
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
     private val labels = mutableListOf<String>()
-    private var views = mutableListOf<TextView>()
+    private var views = mutableListOf<AppCompatTextView>()
 
     var onSelected: ((Int) -> Unit)? = null
 
@@ -43,10 +45,13 @@ class SegmentedControl @JvmOverloads constructor(
         val padH = (10 * density).toInt()
         val padV = (6 * density).toInt()
         options.forEachIndexed { index, label ->
-            val tv = TextView(context).apply {
+            val tv = AppCompatTextView(context).apply {
                 text = label
                 gravity = Gravity.CENTER
-                setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 12f)
+                // 语言不同文案长度差异大（如俄语「Передача」比「发送」长得多）：
+                // 强制单行 + 自动缩小字号，保证等宽分段内不折行、不裁字
+                maxLines = 1
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f)
                 setTextColor(ContextCompat.getColorStateList(context, R.color.sel_seg_text))
                 setPadding(padH, padV, padH, padV)
                 isClickable = true
@@ -54,6 +59,9 @@ class SegmentedControl @JvmOverloads constructor(
                 background = ContextCompat.getDrawable(context, R.drawable.bg_seg_item)
                 setOnClickListener { select(index, true) }
             }
+            TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(
+                tv, 8, 12, 1, TypedValue.COMPLEX_UNIT_SP
+            )
             val lp = LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f)
             lp.marginStart = if (index == 0) 0 else (3 * density).toInt()
             addView(tv, lp)

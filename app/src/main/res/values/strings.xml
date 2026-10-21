@@ -3,9 +3,149 @@
     <string name="app_name">串口调试助手</string>
     <string name="app_name_debug">串口调试助手(Debug)</string>
 
+    <!-- 语言 -->
+    <string name="lang_follow_system">跟随系统（%1$s）</string>
+    <string name="lang_follow_system_plain">跟随系统</string>
+    <string name="settings_section_general">通用</string>
+    <string name="settings_language">语言</string>
+    <string name="settings_language_sub">切换应用界面语言，重启后仍生效</string>
+    <string name="settings_language_dialog_title">选择语言</string>
+
     <!-- 导航 -->
+    <string name="nav_terminal">终端</string>
+    <string name="nav_terminal_sub">串口收发 · 实时监控</string>
+    <string name="nav_history">历史</string>
+    <string name="nav_history_sub">收发记录 · 检索导出</string>
+    <string name="nav_command">快捷指令</string>
+    <string name="nav_command_sub">一键发送 · 常用报文</string>
+    <string name="nav_autoreply">自动应答</string>
+    <string name="nav_autoreply_sub">规则匹配 · 自动回复</string>
+    <string name="nav_tool">工具</string>
+    <string name="nav_tool_sub">校验算法 · ASCII 码表</string>
+    <string name="nav_settings">设置</string>
+    <string name="nav_settings_sub">串口 · 收发 · 外观</string>
+    <string name="nav_more">更多</string>
+    <string name="nav_more_sub">网络透传 · 关于</string>
+
     <!-- 通用 -->
+    <string name="common_ok">确定</string>
+    <string name="common_cancel">取消</string>
+    <string name="common_got_it">知道了</string>
+    <string name="common_auto">自动</string>
+    <string name="common_none">无</string>
+    <string name="common_none_selected">未选择</string>
+    <string name="common_copied">已复制到剪贴板</string>
+    <string name="common_ms_format">%1$d ms</string>
+
+    <!-- 顶栏 -->
+    <string name="topbar_power_desc">打开或关闭串口</string>
+    <string name="topbar_theme_desc">切换主题</string>
+
+    <!-- 数据模型：匹配模式 / 结束符 / 校验 / 流控 -->
+    <string name="match_contains">包含</string>
+    <string name="match_equals">完全相等</string>
+    <string name="match_prefix">前缀</string>
+    <string name="match_suffix">后缀</string>
+    <string name="match_regex">正则</string>
+    <string name="parity_none">无校验 (None)</string>
+    <string name="parity_odd">奇校验 (Odd)</string>
+    <string name="parity_even">偶校验 (Even)</string>
+    <string name="parity_mark">标记校验 (Mark)</string>
+    <string name="parity_space">空格校验 (Space)</string>
+    <string name="flow_none">无流控</string>
+    <string name="flow_hardware">硬件流控 (RTS/CTS)</string>
+    <string name="flow_software">软件流控 (XON/XOFF)</string>
+
     <!-- 串口 -->
-    <!-- 接收 -->
-    <!-- 关于 -->
+    <string name="serial_state_closed">未连接</string>
+    <string name="serial_state_opening">打开中…</string>
+    <string name="serial_state_closing">关闭中…</string>
+    <string name="serial_state_error">串口错误</string>
+    <string name="serial_select_in_settings">请先在设置中选择串口</string>
+    <string name="serial_open">打开串口</string>
+    <string name="serial_close">关闭串口</string>
+
+    <!-- 设置：分区 -->
+    <string name="settings_section_serial">串口参数</string>
+    <string name="settings_section_rx">接收配置</string>
+    <string name="settings_section_tx">发送配置</string>
+    <string name="settings_section_appearance">外观与显示</string>
+    <string name="settings_rx_note">说明：关闭「自动换行」后接收数据将连续拼接，此时为保持数据完整性会自动忽略时间戳。</string>
+    <string name="settings_autosave_note">配置自动保存，重启后仍然生效</string>
+
+    <!-- 设置：串口参数 -->
+    <string name="serial_select_device">选择串口</string>
+    <string name="serial_no_devices_found">未扫描到任何串口设备</string>
+    <string name="serial_select_baud">选择波特率</string>
+    <string name="serial_data_bits">数据位</string>
+    <string name="serial_stop_bits">停止位</string>
+    <string name="serial_parity">校验位</string>
+    <string name="serial_flow_control">流控</string>
+    <string name="serial_frame_gap">断帧组包间隔</string>
+    <string name="serial_frame_gap_hint">毫秒，0 = 按波特率自动计算</string>
+    <string name="serial_frame_gap_sub">收到数据后静默该时间即认为一帧结束</string>
+    <string name="serial_device_list">串口列表</string>
+    <string name="serial_scan_empty">未扫描到串口设备。\n请确认设备已开放串口权限（/dev/ttyS*）。</string>
+    <string name="serial_list_count">串口列表（共 %1$d 个）</string>
+    <string name="serial_select_first">请先选择串口</string>
+    <string name="serial_reconnected">已按新参数重新连接</string>
+    <string name="serial_connected_snack">串口已连接</string>
+    <string name="settings_serial_device">串口设备</string>
+    <string name="settings_serial_device_sub">如 /dev/ttyS1，列表来自系统串口扫描</string>
+    <string name="settings_baud_rate">波特率</string>
+    <string name="settings_baud_sub">常见：9600 / 115200 / 921600</string>
+    <string name="settings_data_bits_sub">可选 5 ~ 8 位</string>
+    <string name="settings_bits_format">%1$d 位</string>
+    <string name="settings_scan_count">已发现 %1$d 个</string>
+    <string name="settings_scan_sub">点击重新扫描并查看设备名称与路径</string>
+
+    <!-- 设置：接收 -->
+    <string name="settings_rx_charset_dialog">接收字符集</string>
+    <string name="settings_charset">字符集</string>
+    <string name="settings_charset_sub">用于 ASCII 模式解码；解不出来的字节显示为 \\xNN（如 \\xA1），而不是替换符</string>
+    <string name="settings_rx_time">显示时间戳</string>
+    <string name="settings_rx_time_sub">关闭自动换行时时间戳会被忽略</string>
+    <string name="settings_rx_wrap">自动换行</string>
+    <string name="settings_rx_wrap_sub">关闭后数据连续拼接，不插入任何换行</string>
+    <string name="settings_rx_sep">HEX 分隔符</string>
+    <string name="sep_space">空格</string>
+    <string name="sep_none">无分隔</string>
+    <string name="sep_comma">逗号</string>
+    <string name="sep_dash">横线</string>
+    <string name="settings_rx_max">最大显示字符数</string>
+    <string name="settings_rx_max_sub">超出后自动从头部裁剪</string>
+    <string name="settings_rx_echo">接收区回显发送内容</string>
+
+    <!-- 设置：发送 -->
+    <string name="settings_tx_charset_dialog">发送字符集</string>
+    <string name="settings_tx_escape">解析转义字符</string>
+    <string name="settings_tx_escape_sub">支持 \\r \\n \\t \\0 \\xNN \\uHHHH</string>
+    <string name="settings_tx_newline">默认结束符</string>
+    <string name="settings_tx_chunk">文件分包大小</string>
+    <string name="settings_tx_chunk_hint">字节，1 ~ 4096</string>
+    <string name="settings_bytes_format">%1$d 字节</string>
+    <string name="settings_tx_delay">文件包间延时</string>
+    <string name="settings_ms_hint">毫秒</string>
+
+    <!-- 设置：外观 -->
+    <string name="settings_theme">主题</string>
+    <string name="theme_follow_system">跟随系统</string>
+    <string name="theme_dark">深色</string>
+    <string name="theme_light">浅色</string>
+    <string name="settings_bg">背景图</string>
+    <string name="bg_none">无背景</string>
+    <string name="bg_builtin">内置壁纸</string>
+    <string name="bg_custom">自定义（更多页选择图片）</string>
+    <string name="bg_custom_short">自定义</string>
+    <string name="settings_bg_scrim">背景遮罩</string>
+    <string name="settings_bg_scrim_hint">0 ~ 100，越大背景越暗（推荐 70 ~ 90）</string>
+    <string name="settings_percent_format">%1$d %%</string>
+    <string name="settings_font_size">终端字号</string>
+    <string name="settings_font_hint">单位 sp，9 ~ 24</string>
+    <string name="settings_sp_format">%1$d sp</string>
+    <string name="settings_keep_screen">保持屏幕常亮</string>
+    <string name="settings_history_limit">历史记录上限</string>
+    <string name="settings_history_limit_hint">条，100 ~ 50000</string>
+    <string name="settings_history_count">%1$d 条（当前 %2$d 条）</string>
 </resources>
+

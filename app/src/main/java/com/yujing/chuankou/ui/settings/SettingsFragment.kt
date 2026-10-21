@@ -2,7 +2,10 @@ package com.yujing.chuankou.ui.settings
 
 import android.os.Bundle
 import android.view.View
+import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.radiobutton.MaterialRadioButton
 import com.yujing.chuankou.App
 import com.yujing.chuankou.R
 import com.yujing.chuankou.core.data.Newline
@@ -11,6 +14,7 @@ import com.yujing.chuankou.core.data.Store
 import com.yujing.chuankou.core.serial.SerialConfig
 import com.yujing.chuankou.core.serial.SerialManager
 import com.yujing.chuankou.core.util.Charsets2
+import com.yujing.chuankou.core.util.Languages
 import com.yujing.chuankou.databinding.FragmentSettingsBinding
 import com.yujing.chuankou.databinding.ViewSettingRowBinding
 import com.yujing.chuankou.ui.MainActivity
@@ -19,7 +23,7 @@ import com.yujing.chuankou.ui.widget.Dialogs
 import com.yujing.yserialport.YSerialPort
 
 /**
- * 设置页：串口全参数 + 收发配置 + 外观
+ * 设置页：语言 + 串口全参数 + 收发配置 + 外观
  */
 class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsBinding::inflate),
     SerialManager.Listener {
@@ -31,6 +35,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
 
     override fun onInit(view: View, savedInstanceState: Bundle?) {
         config = SerialConfig.fromPrefs()
+        initGeneralSection()
         initSerialSection()
         initRxSection()
         initTxSection()
@@ -51,10 +56,68 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
     // ==================================================================
     private fun refreshAll() {
         if (view == null) return
+        refreshGeneralSection()
         refreshSerialSection()
         refreshRxSection()
         refreshTxSection()
         refreshAppearanceSection()
+    }
+
+    // ==================================================================
+    // 通用（语言）
+    // ==================================================================
+    private fun initGeneralSection() {
+        binding.rowLanguage.root.setOnClickListener { showLanguageDialog() }
+    }
+
+    /**
+     * 语言选择弹窗：两列紧凑单选列表
+     * （系统默认单选列表行高按 48dp 触控目标，10 种语言 + 跟随系统共 11 项会被对话框高度裁掉后几项，需滚动才能看到）
+     */
+    private fun showLanguageDialog() {
+        val ctx = requireContext()
+        val names = (0 until Languages.optionCount).map { Languages.displayNameAt(ctx, it) }
+        val current = Languages.currentIndex()
+
+        val columns = LinearLayout(ctx).apply {
+            orientation = LinearLayout.HORIZONTAL
+            setPadding(dp(16), dp(8), dp(16), dp(8))
+        }
+        val half = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+        val leftColumn = LinearLayout(ctx).apply { orientation = LinearLayout.VERTICAL; layoutParams = half }
+        val rightColumn = LinearLayout(ctx).apply { orientation = LinearLayout.VERTICAL; layoutParams = half }
+        columns.addView(leftColumn)
+        columns.addView(rightColumn)
+
+        val dialog = MaterialAlertDialogBuilder(ctx)
+            .setTitle(R.string.settings_language_dialog_title)
+            .setView(columns)
+            .setNegativeButton(R.string.common_cancel, null)
+            .create()
+
+        val perColumn = (names.size + 1) / 2
+        names.forEachIndexed { index, name ->
+            val radio = MaterialRadioButton(ctx).apply {
+                text = name
+                isChecked = index == current
+                setTextColor(resolveColor(com.google.android.material.R.attr.colorOnSurface))
+                setOnClickListener {
+                    // 切换语言：AppCompatDelegate 会自动持久化并重建 Activity
+                    Languages.apply(index)
+                    dialog.dismiss()
+                }
+            }
+            if (index < perColumn) leftColumn.addView(radio) else rightColumn.addView(radio)
+        }
+        dialog.show()
+    }
+
+    private fun refreshGeneralSection() {
+        setValue(
+            binding.rowLanguage, getString(R.string.settings_language),
+            Languages.displayNameAt(requireContext(), Languages.currentIndex()),
+            getString(R.string.settings_language_sub)
+        )
     }
 
     // ==================================================================
@@ -65,12 +128,12 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
             val paths = YSerialPort.getDevices() ?: emptyArray()
             val names = YSerialPort.getSerialPortFinder().allDevices ?: emptyArray()
             if (paths.isEmpty()) {
-                snack("未扫描到任何串口设备")
+                snack(getString(R.string.serial_no_devices_found))
                 return@setOnClickListener
             }
             val items = paths.mapIndexed { i, p -> "${names.getOrElse(i) { p }}\n$p" }
             val checked = paths.indexOfFirst { it == config.device }
-            Dialogs.singleChoice(requireContext(), "选择串口", items, checked) { which ->
+            Dialogs.singleChoice(requireContext(), getString(R.string.serial_select_device), items, checked) { which ->
                 config = config.copy(device = paths[which])
                 SerialConfig.save(config)
                 refreshSerialSection()
@@ -81,7 +144,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
         binding.rowBaud.root.setOnClickListener {
             val list = SerialConfig.BAUD_RATES.map { it.toString() }
             val checked = SerialConfig.BAUD_RATES.indexOfFirst { it == config.baudRate }
-            Dialogs.singleChoice(requireContext(), "选择波特率", list, checked) { which ->
+            Dialogs.singleChoice(requireContext(), getString(R.string.serial_select_baud), list, checked) { which ->
                 config = config.copy(baudRate = SerialConfig.BAUD_RATES[which])
                 SerialConfig.save(config)
                 refreshSerialSection()
@@ -90,8 +153,8 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
         }
 
         binding.rowDataBits.root.setOnClickListener {
-            val list = SerialConfig.DATA_BITS.map { "$it 位" }
-            Dialogs.singleChoice(requireContext(), "数据位", list, SerialConfig.DATA_BITS.indexOf(config.dataBits)) { which ->
+            val list = SerialConfig.DATA_BITS.map { getString(R.string.settings_bits_format, it) }
+            Dialogs.singleChoice(requireContext(), getString(R.string.serial_data_bits), list, SerialConfig.DATA_BITS.indexOf(config.dataBits)) { which ->
                 config = config.copy(dataBits = SerialConfig.DATA_BITS[which])
                 SerialConfig.save(config)
                 refreshSerialSection()
@@ -100,7 +163,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
         }
 
         binding.rowStopBits.root.setOnClickListener {
-            Dialogs.singleChoice(requireContext(), "停止位", SerialConfig.STOP_BITS_NAMES, SerialConfig.STOP_BITS.indexOf(config.stopBits)) { which ->
+            Dialogs.singleChoice(requireContext(), getString(R.string.serial_stop_bits), SerialConfig.STOP_BITS_NAMES, SerialConfig.STOP_BITS.indexOf(config.stopBits)) { which ->
                 config = config.copy(stopBits = SerialConfig.STOP_BITS[which])
                 SerialConfig.save(config)
                 refreshSerialSection()
@@ -109,7 +172,8 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
         }
 
         binding.rowParity.root.setOnClickListener {
-            Dialogs.singleChoice(requireContext(), "校验位", SerialConfig.PARITY_NAMES, config.parity) { which ->
+            val names = (0..4).map { SerialConfig.parityName(it) }
+            Dialogs.singleChoice(requireContext(), getString(R.string.serial_parity), names, config.parity) { which ->
                 config = config.copy(parity = which)
                 SerialConfig.save(config)
                 refreshSerialSection()
@@ -118,7 +182,8 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
         }
 
         binding.rowFlow.root.setOnClickListener {
-            Dialogs.singleChoice(requireContext(), "流控", SerialConfig.FLOW_NAMES, config.flowControl) { which ->
+            val names = (0..2).map { SerialConfig.flowName(it) }
+            Dialogs.singleChoice(requireContext(), getString(R.string.serial_flow_control), names, config.flowControl) { which ->
                 config = config.copy(flowControl = which)
                 SerialConfig.save(config)
                 refreshSerialSection()
@@ -128,8 +193,8 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
 
         binding.rowFrameGap.root.setOnClickListener {
             Dialogs.input(
-                requireContext(), "断帧组包间隔", "毫秒，0 = 按波特率自动计算",
-                config.frameGapMs.toString(), "收到数据后静默该时间即认为一帧结束", numeric = true
+                requireContext(), getString(R.string.serial_frame_gap), getString(R.string.serial_frame_gap_hint),
+                config.frameGapMs.toString(), getString(R.string.serial_frame_gap_sub), numeric = true
             ) { text ->
                 val v = text.toIntOrNull() ?: 0
                 config = config.copy(frameGapMs = v.coerceIn(0, 5000))
@@ -146,10 +211,10 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
             deviceCount = paths.size
             refreshSerialSection()
             if (paths.isEmpty()) {
-                Dialogs.info(requireContext(), "串口列表", "未扫描到串口设备。\n请确认设备已开放串口权限（/dev/ttyS*）。")
+                Dialogs.info(requireContext(), getString(R.string.serial_device_list), getString(R.string.serial_scan_empty))
             } else {
                 Dialogs.info(
-                    requireContext(), "串口列表（共 ${paths.size} 个）",
+                    requireContext(), getString(R.string.serial_list_count, paths.size),
                     paths.mapIndexed { i, p -> "${names.getOrElse(i) { "" }}\n$p" }.joinToString("\n\n")
                 )
             }
@@ -161,7 +226,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
                 SerialManager.close()
             } else {
                 if (config.device.isBlank()) {
-                    snack("请先选择串口")
+                    snack(getString(R.string.serial_select_first))
                     return@setOnClickListener
                 }
                 SerialConfig.save(config)
@@ -171,68 +236,78 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
     }
 
     private fun refreshSerialSection() {
-        setValue(binding.rowDevice, "串口设备", config.device.ifBlank { "未选择" }, "如 /dev/ttyS1，列表来自系统串口扫描")
-        setValue(binding.rowBaud, "波特率", config.baudRate.toString(), "常见：9600 / 115200 / 921600")
-        setValue(binding.rowDataBits, "数据位", "${config.dataBits} 位", "可选 5 ~ 8 位")
-        setValue(binding.rowStopBits, "停止位", SerialConfig.STOP_BITS_NAMES.getOrElse(SerialConfig.STOP_BITS.indexOf(config.stopBits)) { "1" })
-        setValue(binding.rowParity, "校验位", SerialConfig.PARITY_NAMES.getOrElse(config.parity) { "无校验" })
-        setValue(binding.rowFlow, "流控", SerialConfig.FLOW_NAMES.getOrElse(config.flowControl) { "无流控" })
-        setValue(binding.rowFrameGap, "断帧组包间隔", if (config.frameGapMs <= 0) "自动" else "${config.frameGapMs} ms")
+        setValue(
+            binding.rowDevice, getString(R.string.settings_serial_device),
+            config.device.ifBlank { getString(R.string.common_none_selected) },
+            getString(R.string.settings_serial_device_sub)
+        )
+        setValue(binding.rowBaud, getString(R.string.settings_baud_rate), config.baudRate.toString(), getString(R.string.settings_baud_sub))
+        setValue(binding.rowDataBits, getString(R.string.serial_data_bits), getString(R.string.settings_bits_format, config.dataBits), getString(R.string.settings_data_bits_sub))
+        setValue(binding.rowStopBits, getString(R.string.serial_stop_bits), SerialConfig.STOP_BITS_NAMES.getOrElse(SerialConfig.STOP_BITS.indexOf(config.stopBits)) { "1" })
+        setValue(binding.rowParity, getString(R.string.serial_parity), SerialConfig.parityName(config.parity))
+        setValue(binding.rowFlow, getString(R.string.serial_flow_control), SerialConfig.flowName(config.flowControl))
+        setValue(
+            binding.rowFrameGap, getString(R.string.serial_frame_gap),
+            if (config.frameGapMs <= 0) getString(R.string.common_auto) else getString(R.string.common_ms_format, config.frameGapMs)
+        )
         if (deviceCount < 0) deviceCount = runCatching { YSerialPort.getDevices()?.size ?: 0 }.getOrDefault(0)
-        setValue(binding.rowScan, "串口列表", "已发现 $deviceCount 个", "点击重新扫描并查看设备名称与路径")
+        setValue(binding.rowScan, getString(R.string.serial_device_list), getString(R.string.settings_scan_count, deviceCount), getString(R.string.settings_scan_sub))
 
         val open = SerialManager.isOpen
-        binding.chipSerialToggle.text = if (open) "关闭串口" else "打开串口"
+        binding.chipSerialToggle.text = getString(if (open) R.string.serial_close else R.string.serial_open)
         binding.chipSerialToggle.setBackgroundResource(if (open) R.drawable.bg_status_open else R.drawable.bg_status_closed)
     }
 
     private fun restartIfOpen() {
         if (SerialManager.isOpen) {
             SerialManager.open(config)
-            snack("已按新参数重新连接")
+            snack(getString(R.string.serial_reconnected))
         }
     }
 
     // ==================================================================
     // 接收
     // ==================================================================
+    private fun hexSeparatorNames(): List<String> = listOf(
+        getString(R.string.sep_space), getString(R.string.sep_none), getString(R.string.sep_comma), getString(R.string.sep_dash)
+    )
+
     private fun initRxSection() {
         binding.rowRxCharset.root.setOnClickListener {
             val names = Charsets2.SUPPORTED.map { it.first }
-            Dialogs.singleChoice(requireContext(), "接收字符集", names, names.indexOfFirst { Charsets2.byDisplay(it) == Prefs.rxCharset }) { which ->
+            Dialogs.singleChoice(requireContext(), getString(R.string.settings_rx_charset_dialog), names, names.indexOfFirst { Charsets2.byDisplay(it) == Prefs.rxCharset }) { which ->
                 Prefs.rxCharset = Charsets2.SUPPORTED[which].second
                 refreshRxSection()
             }
         }
-        bindSwitch(binding.rowRxTime, "显示时间戳", { Prefs.rxShowTime }, { Prefs.rxShowTime = it }, sub = "关闭自动换行时时间戳会被忽略")
-        bindSwitch(binding.rowRxWrap, "自动换行", { Prefs.rxAutoWrap }, { Prefs.rxAutoWrap = it }, sub = "关闭后数据连续拼接，不插入任何换行")
+        bindSwitch(binding.rowRxTime, getString(R.string.settings_rx_time), { Prefs.rxShowTime }, { Prefs.rxShowTime = it }, sub = getString(R.string.settings_rx_time_sub))
+        bindSwitch(binding.rowRxWrap, getString(R.string.settings_rx_wrap), { Prefs.rxAutoWrap }, { Prefs.rxAutoWrap = it }, sub = getString(R.string.settings_rx_wrap_sub))
         binding.rowRxSep.root.setOnClickListener {
-            val names = listOf("空格", "无分隔", "逗号", "横线")
-            Dialogs.singleChoice(requireContext(), "HEX 分隔符", names, Prefs.rxHexSeparator) { which ->
+            Dialogs.singleChoice(requireContext(), getString(R.string.settings_rx_sep), hexSeparatorNames(), Prefs.rxHexSeparator) { which ->
                 Prefs.rxHexSeparator = which
                 refreshRxSection()
             }
         }
         binding.rowRxMax.root.setOnClickListener {
-            Dialogs.input(requireContext(), "最大显示字符数", "超出后自动从头部裁剪", Prefs.rxMaxChars.toString(), numeric = true) { text ->
+            Dialogs.input(requireContext(), getString(R.string.settings_rx_max), getString(R.string.settings_rx_max_sub), Prefs.rxMaxChars.toString(), numeric = true) { text ->
                 val v = text.toIntOrNull() ?: 20000
                 Prefs.rxMaxChars = v.coerceIn(1000, 500000)
                 refreshRxSection()
             }
         }
-        bindSwitch(binding.rowRxEcho, "接收区回显发送内容", { Prefs.rxEchoTx }, { Prefs.rxEchoTx = it })
+        bindSwitch(binding.rowRxEcho, getString(R.string.settings_rx_echo), { Prefs.rxEchoTx }, { Prefs.rxEchoTx = it })
     }
 
     private fun refreshRxSection() {
         setValue(
-            binding.rowRxCharset, "字符集", Charsets2.displayOf(Prefs.rxCharset),
-            "用于 ASCII 模式解码；解不出来的字节显示为 \\xNN（如 \\xA1），而不是替换符"
+            binding.rowRxCharset, getString(R.string.settings_charset), Charsets2.displayOf(Prefs.rxCharset),
+            getString(R.string.settings_charset_sub)
         )
-        setSwitchValue(binding.rowRxTime, "显示时间戳", Prefs.rxShowTime)
-        setSwitchValue(binding.rowRxWrap, "自动换行", Prefs.rxAutoWrap)
-        setValue(binding.rowRxSep, "HEX 分隔符", listOf("空格", "无分隔", "逗号", "横线").getOrElse(Prefs.rxHexSeparator) { "空格" })
-        setValue(binding.rowRxMax, "最大显示字符数", "${Prefs.rxMaxChars}")
-        setSwitchValue(binding.rowRxEcho, "接收区回显发送内容", Prefs.rxEchoTx)
+        setSwitchValue(binding.rowRxTime, getString(R.string.settings_rx_time), Prefs.rxShowTime)
+        setSwitchValue(binding.rowRxWrap, getString(R.string.settings_rx_wrap), Prefs.rxAutoWrap)
+        setValue(binding.rowRxSep, getString(R.string.settings_rx_sep), hexSeparatorNames().getOrElse(Prefs.rxHexSeparator) { getString(R.string.sep_space) })
+        setValue(binding.rowRxMax, getString(R.string.settings_rx_max), "${Prefs.rxMaxChars}")
+        setSwitchValue(binding.rowRxEcho, getString(R.string.settings_rx_echo), Prefs.rxEchoTx)
     }
 
     // ==================================================================
@@ -241,26 +316,26 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
     private fun initTxSection() {
         binding.rowTxCharset.root.setOnClickListener {
             val names = Charsets2.SUPPORTED.map { it.first }
-            Dialogs.singleChoice(requireContext(), "发送字符集", names, names.indexOfFirst { Charsets2.byDisplay(it) == Prefs.txCharset }) { which ->
+            Dialogs.singleChoice(requireContext(), getString(R.string.settings_tx_charset_dialog), names, names.indexOfFirst { Charsets2.byDisplay(it) == Prefs.txCharset }) { which ->
                 Prefs.txCharset = Charsets2.SUPPORTED[which].second
                 refreshTxSection()
             }
         }
-        bindSwitch(binding.rowTxEscape, "解析转义字符", { Prefs.txEscape }, { Prefs.txEscape = it }, sub = "支持 \\r \\n \\t \\0 \\xNN \\uHHHH")
+        bindSwitch(binding.rowTxEscape, getString(R.string.settings_tx_escape), { Prefs.txEscape }, { Prefs.txEscape = it }, sub = getString(R.string.settings_tx_escape_sub))
         binding.rowTxNewline.root.setOnClickListener {
-            Dialogs.singleChoice(requireContext(), "默认结束符", Newline.NAMES, Prefs.txAppendNewline) { which ->
+            Dialogs.singleChoice(requireContext(), getString(R.string.settings_tx_newline), Newline.names(), Prefs.txAppendNewline) { which ->
                 Prefs.txAppendNewline = which
                 refreshTxSection()
             }
         }
         binding.rowTxChunk.root.setOnClickListener {
-            Dialogs.input(requireContext(), "文件分包大小", "字节，1 ~ 4096", Prefs.txFileChunk.toString(), numeric = true) { text ->
+            Dialogs.input(requireContext(), getString(R.string.settings_tx_chunk), getString(R.string.settings_tx_chunk_hint), Prefs.txFileChunk.toString(), numeric = true) { text ->
                 Prefs.txFileChunk = (text.toIntOrNull() ?: 512).coerceIn(1, 4096)
                 refreshTxSection()
             }
         }
         binding.rowTxDelay.root.setOnClickListener {
-            Dialogs.input(requireContext(), "文件包间延时", "毫秒", Prefs.txFileDelay.toString(), numeric = true) { text ->
+            Dialogs.input(requireContext(), getString(R.string.settings_tx_delay), getString(R.string.settings_ms_hint), Prefs.txFileDelay.toString(), numeric = true) { text ->
                 Prefs.txFileDelay = (text.toIntOrNull() ?: 5).coerceIn(0, 5000)
                 refreshTxSection()
             }
@@ -268,48 +343,56 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
     }
 
     private fun refreshTxSection() {
-        setValue(binding.rowTxCharset, "字符集", Charsets2.displayOf(Prefs.txCharset))
-        setSwitchValue(binding.rowTxEscape, "解析转义字符", Prefs.txEscape)
-        setValue(binding.rowTxNewline, "默认结束符", Newline.NAMES.getOrElse(Prefs.txAppendNewline) { "无" })
-        setValue(binding.rowTxChunk, "文件分包大小", "${Prefs.txFileChunk} 字节")
-        setValue(binding.rowTxDelay, "文件包间延时", "${Prefs.txFileDelay} ms")
+        setValue(binding.rowTxCharset, getString(R.string.settings_charset), Charsets2.displayOf(Prefs.txCharset))
+        setSwitchValue(binding.rowTxEscape, getString(R.string.settings_tx_escape), Prefs.txEscape)
+        setValue(binding.rowTxNewline, getString(R.string.settings_tx_newline), Newline.name(Prefs.txAppendNewline))
+        setValue(binding.rowTxChunk, getString(R.string.settings_tx_chunk), getString(R.string.settings_bytes_format, Prefs.txFileChunk))
+        setValue(binding.rowTxDelay, getString(R.string.settings_tx_delay), getString(R.string.common_ms_format, Prefs.txFileDelay))
     }
 
     // ==================================================================
     // 外观
     // ==================================================================
+    private fun themeNames(): List<String> = listOf(
+        getString(R.string.theme_follow_system), getString(R.string.theme_dark), getString(R.string.theme_light)
+    )
+
+    private fun bgNames(full: Boolean): List<String> = listOf(
+        getString(R.string.bg_none), getString(R.string.bg_builtin),
+        getString(if (full) R.string.bg_custom else R.string.bg_custom_short)
+    )
+
     private fun initAppearanceSection() {
         binding.rowTheme.root.setOnClickListener {
-            val names = listOf("跟随系统", "深色", "浅色")
-            Dialogs.singleChoice(requireContext(), "主题", names, Prefs.themeMode) { which ->
+            Dialogs.singleChoice(requireContext(), getString(R.string.settings_theme), themeNames(), Prefs.themeMode) { which ->
                 Prefs.themeMode = which
                 (requireActivity().application as App).applyTheme(which)
                 refreshAppearanceSection()
             }
         }
         binding.rowBg.root.setOnClickListener {
-            Dialogs.singleChoice(requireContext(), "背景图", listOf("无背景", "内置壁纸", "自定义（更多页选择图片）"), Prefs.bgMode) { which ->
+            Dialogs.singleChoice(requireContext(), getString(R.string.settings_bg), bgNames(full = true), Prefs.bgMode) { which ->
                 Prefs.bgMode = which
                 (activity as? MainActivity)?.applyBackground()
                 refreshAppearanceSection()
             }
         }
         binding.rowBgScrim.root.setOnClickListener {
-            Dialogs.input(requireContext(), "背景遮罩", "0 ~ 100，越大背景越暗（推荐 70 ~ 90）", Prefs.bgScrim.toString(), numeric = true) { text ->
+            Dialogs.input(requireContext(), getString(R.string.settings_bg_scrim), getString(R.string.settings_bg_scrim_hint), Prefs.bgScrim.toString(), numeric = true) { text ->
                 Prefs.bgScrim = (text.toIntOrNull() ?: 78).coerceIn(0, 100)
                 (activity as? MainActivity)?.applyBackground()
                 refreshAppearanceSection()
             }
         }
         binding.rowFont.root.setOnClickListener {
-            Dialogs.input(requireContext(), "终端字号", "单位 sp，9 ~ 24", Prefs.terminalFontSize.toString(), numeric = true) { text ->
+            Dialogs.input(requireContext(), getString(R.string.settings_font_size), getString(R.string.settings_font_hint), Prefs.terminalFontSize.toString(), numeric = true) { text ->
                 Prefs.terminalFontSize = (text.toIntOrNull() ?: 13).coerceIn(9, 24)
                 refreshAppearanceSection()
             }
         }
-        bindSwitch(binding.rowKeepScreen, "保持屏幕常亮", { Prefs.keepScreenOn }, { Prefs.keepScreenOn = it })
+        bindSwitch(binding.rowKeepScreen, getString(R.string.settings_keep_screen), { Prefs.keepScreenOn }, { Prefs.keepScreenOn = it })
         binding.rowHistoryLimit.root.setOnClickListener {
-            Dialogs.input(requireContext(), "历史记录上限", "条，100 ~ 50000", Prefs.historyLimit.toString(), numeric = true) { text ->
+            Dialogs.input(requireContext(), getString(R.string.settings_history_limit), getString(R.string.settings_history_limit_hint), Prefs.historyLimit.toString(), numeric = true) { text ->
                 Prefs.historyLimit = (text.toIntOrNull() ?: 2000).coerceIn(100, 50000)
                 refreshAppearanceSection()
             }
@@ -317,12 +400,12 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
     }
 
     private fun refreshAppearanceSection() {
-        setValue(binding.rowTheme, "主题", listOf("跟随系统", "深色", "浅色").getOrElse(Prefs.themeMode) { "深色" })
-        setValue(binding.rowBg, "背景图", listOf("无背景", "内置壁纸", "自定义").getOrElse(Prefs.bgMode) { "无背景" })
-        setValue(binding.rowBgScrim, "背景遮罩", "${Prefs.bgScrim} %")
-        setValue(binding.rowFont, "终端字号", "${Prefs.terminalFontSize} sp")
-        setSwitchValue(binding.rowKeepScreen, "保持屏幕常亮", Prefs.keepScreenOn)
-        setValue(binding.rowHistoryLimit, "历史记录上限", "${Prefs.historyLimit} 条（当前 ${Store.historySize} 条）")
+        setValue(binding.rowTheme, getString(R.string.settings_theme), themeNames().getOrElse(Prefs.themeMode) { getString(R.string.theme_dark) })
+        setValue(binding.rowBg, getString(R.string.settings_bg), bgNames(full = false).getOrElse(Prefs.bgMode) { getString(R.string.bg_none) })
+        setValue(binding.rowBgScrim, getString(R.string.settings_bg_scrim), getString(R.string.settings_percent_format, Prefs.bgScrim))
+        setValue(binding.rowFont, getString(R.string.settings_font_size), getString(R.string.settings_sp_format, Prefs.terminalFontSize))
+        setSwitchValue(binding.rowKeepScreen, getString(R.string.settings_keep_screen), Prefs.keepScreenOn)
+        setValue(binding.rowHistoryLimit, getString(R.string.settings_history_limit), getString(R.string.settings_history_count, Prefs.historyLimit, Store.historySize))
     }
 
     // ==================================================================
@@ -375,7 +458,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
         view?.post {
             refreshSerialSection()
             if (state == SerialManager.State.ERROR && !message.isNullOrBlank()) snack(message)
-            if (state == SerialManager.State.OPEN) snack("串口已连接")
+            if (state == SerialManager.State.OPEN) snack(getString(R.string.serial_connected_snack))
         }
     }
 }

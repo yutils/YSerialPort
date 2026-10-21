@@ -55,7 +55,7 @@ class CommandFragment : BaseFragment<FragmentCommandBinding>(FragmentCommandBind
         if (view == null) return
         adapter.notifyDataSetChanged()
         val n = Store.commands.size
-        binding.tvCount.text = "共 $n 条 · 点击「发送」即可一键下发"
+        binding.tvCount.text = getString(R.string.command_count_format, n)
         binding.llEmpty.visibility = if (n == 0) View.VISIBLE else View.GONE
         binding.rv.visibility = if (n == 0) View.GONE else View.VISIBLE
     }
@@ -63,27 +63,38 @@ class CommandFragment : BaseFragment<FragmentCommandBinding>(FragmentCommandBind
     // ==================================================================
     private fun sendCommand(c: QuickCommand) {
         if (!SerialManager.isOpen) {
-            snack("串口未打开，请先打开串口")
+            snack(getString(R.string.command_serial_not_open))
             return
         }
         val bytes = Payload.build(c.content, c.type, c.charset, c.appendNewline, c.escape)
         if (bytes.isEmpty()) {
-            snack("指令内容为空或格式不正确")
+            snack(getString(R.string.command_content_invalid))
             return
         }
-        SerialManager.send(bytes, c.type, "快捷指令${if (c.name.isBlank()) "" else "：${c.name}"}")
-        snack("已发送 ${bytes.size} 字节")
+        val note = if (c.name.isBlank()) {
+            getString(R.string.command_note)
+        } else {
+            getString(R.string.command_note_name, c.name)
+        }
+        SerialManager.send(bytes, c.type, note)
+        snack(getString(R.string.command_sent_bytes, bytes.size))
     }
 
     private fun showMenu(c: QuickCommand, position: Int) {
-        val options = listOf("编辑", "复制一份", "上移", "下移", "删除")
-        Dialogs.singleChoice(requireContext(), c.name.ifBlank { "未命名指令" }, options) { which ->
+        val options = listOf(
+            getString(R.string.command_menu_edit),
+            getString(R.string.command_menu_duplicate),
+            getString(R.string.command_menu_move_up),
+            getString(R.string.command_menu_move_down),
+            getString(R.string.command_delete)
+        )
+        Dialogs.singleChoice(requireContext(), c.name.ifBlank { getString(R.string.command_unnamed) }, options) { which ->
             when (which) {
                 0 -> editCommand(c)
-                1 -> Store.addCommand(c.copy(id = System.currentTimeMillis() * 1000 + (Math.random() * 1000).toLong(), name = c.name + " 副本"))
+                1 -> Store.addCommand(c.copy(id = System.currentTimeMillis() * 1000 + (Math.random() * 1000).toLong(), name = getString(R.string.command_copy_format, c.name)))
                 2 -> Store.moveCommand(position, position - 1)
                 3 -> Store.moveCommand(position, position + 1)
-                4 -> Dialogs.confirm(requireContext(), "删除指令", "确认删除「${c.name}」？", "删除", true) {
+                4 -> Dialogs.confirm(requireContext(), getString(R.string.command_delete_title), getString(R.string.command_delete_confirm, c.name), getString(R.string.command_delete), true) {
                     Store.removeCommand(c)
                 }
             }
@@ -105,7 +116,7 @@ class CommandFragment : BaseFragment<FragmentCommandBinding>(FragmentCommandBind
 
         fun applyType() {
             db.llContentAscii.visibility = if (type == DataType.ASCII) View.VISIBLE else View.GONE
-            db.etContent.hint = if (type == DataType.HEX) "HEX 例：01 03 00 00 00 0A C5 CD" else "文本内容，例：AT+RESET"
+            db.etContent.hint = if (type == DataType.HEX) getString(R.string.command_hint_hex) else getString(R.string.command_hint_ascii)
             db.chipCharset.text = Charsets2.displayOf(charset)
         }
 
@@ -118,17 +129,17 @@ class CommandFragment : BaseFragment<FragmentCommandBinding>(FragmentCommandBind
         db.chipCharset.setOnClickListener {
             val names = Charsets2.SUPPORTED.map { it.first }
             val current = names.indexOfFirst { Charsets2.byDisplay(it) == charset }
-            Dialogs.singleChoice(requireContext(), "字符集", names, current) { which ->
+            Dialogs.singleChoice(requireContext(), getString(R.string.settings_charset), names, current) { which ->
                 charset = Charsets2.SUPPORTED[which].second
                 db.chipCharset.text = Charsets2.displayOf(charset)
             }
         }
 
-        db.chipNewline.text = "结束符: " + Newline.NAMES.getOrElse(newline) { "无" }
+        db.chipNewline.text = getString(R.string.command_newline_chip, Newline.name(newline))
         db.chipNewline.setOnClickListener {
-            Dialogs.singleChoice(requireContext(), "结束符", Newline.NAMES, newline) { which ->
+            Dialogs.singleChoice(requireContext(), getString(R.string.command_newline_title), Newline.names(), newline) { which ->
                 newline = which
-                db.chipNewline.text = "结束符: " + Newline.NAMES[which]
+                db.chipNewline.text = getString(R.string.command_newline_chip, Newline.name(which))
             }
         }
 
@@ -136,30 +147,30 @@ class CommandFragment : BaseFragment<FragmentCommandBinding>(FragmentCommandBind
         db.chipEscape.setOnClickListener {
             escape = !escape
             db.chipEscape.isSelected = escape
-            snack(if (escape) "发送时将解析 \\r \\n \\xNN 等转义" else "已关闭转义解析")
+            snack(if (escape) getString(R.string.command_escape_on) else getString(R.string.command_escape_off))
         }
 
         applyType()
 
         val dialog = MaterialAlertDialogBuilder(requireContext())
-            .setTitle(if (origin == null) "新增快捷指令" else "编辑快捷指令")
+            .setTitle(if (origin == null) getString(R.string.command_add_title) else getString(R.string.command_edit_title))
             .setView(db.root)
-            .setPositiveButton("保存", null)
-            .setNegativeButton("取消", null)
+            .setPositiveButton(getString(R.string.command_save), null)
+            .setNegativeButton(getString(R.string.common_cancel), null)
             .create()
         dialog.show()
         dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener {
             val name = db.etName.text.toString().trim()
             val content = db.etContent.text.toString().trim()
             if (content.isEmpty()) {
-                snack("请填写指令内容")
+                snack(getString(R.string.command_error_content_empty))
                 return@setOnClickListener
             }
             if (type == DataType.HEX && Hex.parse(content) == null) {
-                snack("HEX 格式不正确，请检查是否含非法字符")
+                snack(getString(R.string.command_error_hex_invalid))
                 return@setOnClickListener
             }
-            editing.name = name.ifBlank { if (type == DataType.HEX) "HEX 指令" else "文本指令" }
+            editing.name = name.ifBlank { if (type == DataType.HEX) getString(R.string.command_default_name_hex) else getString(R.string.command_default_name_ascii) }
             editing.type = type
             editing.content = content
             editing.charset = charset
@@ -167,7 +178,7 @@ class CommandFragment : BaseFragment<FragmentCommandBinding>(FragmentCommandBind
             editing.escape = escape
             if (origin == null) Store.addCommand(editing) else Store.updateCommand(editing)
             dialog.dismiss()
-            snack("已保存")
+            snack(getString(R.string.command_saved))
         }
     }
 
@@ -183,7 +194,7 @@ class CommandFragment : BaseFragment<FragmentCommandBinding>(FragmentCommandBind
         override fun onBindViewHolder(holder: VH, position: Int) {
             val c = Store.commands[position]
             val b = holder.b
-            b.tvName.text = c.name.ifBlank { "未命名" }
+            b.tvName.text = c.name.ifBlank { getString(R.string.command_item_unnamed) }
             b.tvType.text = if (c.type == DataType.HEX) "HEX" else "ASCII"
             b.vDot.background.setTint(
                 androidx.core.content.ContextCompat.getColor(
@@ -197,8 +208,13 @@ class CommandFragment : BaseFragment<FragmentCommandBinding>(FragmentCommandBind
             b.btnMore.setOnClickListener { showMenu(c, holder.bindingAdapterPosition) }
             b.root.setOnClickListener {
                 Dialogs.singleChoice(
-                    requireContext(), c.name.ifBlank { "指令" },
-                    listOf("一键发送", "填入发送框", "编辑", "删除")
+                    requireContext(), c.name.ifBlank { getString(R.string.command_fallback_name) },
+                    listOf(
+                        getString(R.string.command_action_send_now),
+                        getString(R.string.command_action_fill),
+                        getString(R.string.command_menu_edit),
+                        getString(R.string.command_delete)
+                    )
                 ) { which ->
                     when (which) {
                         0 -> sendCommand(c)
@@ -207,7 +223,7 @@ class CommandFragment : BaseFragment<FragmentCommandBinding>(FragmentCommandBind
                             (activity as? com.yujing.chuankou.ui.MainActivity)?.selectPage("terminal")
                         }
                         2 -> editCommand(c)
-                        3 -> Dialogs.confirm(requireContext(), "删除指令", "确认删除「${c.name}」？", "删除", true) {
+                        3 -> Dialogs.confirm(requireContext(), getString(R.string.command_delete_title), getString(R.string.command_delete_confirm, c.name), getString(R.string.command_delete), true) {
                             Store.removeCommand(c)
                         }
                     }

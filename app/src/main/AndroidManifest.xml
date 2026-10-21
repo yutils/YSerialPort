@@ -22,10 +22,21 @@
         android:roundIcon="@mipmap/logo512"
         android:label="${app_name}"
         android:largeHeap="true"
+        android:localeConfig="@xml/locales_config"
         android:networkSecurityConfig="@xml/network_config"
         android:supportsRtl="true"
         android:theme="@style/Theme.YSerialPort"
         tools:replace="android:label">
+
+        <!-- 应用内语言选择由 AppCompatDelegate 持久化与恢复（Android 13 以下）；Android 13+ 走系统「应用语言」设置 -->
+        <service
+            android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
+            android:enabled="false"
+            android:exported="false">
+            <meta-data
+                android:name="autoStoreLocales"
+                android:value="true" />
+        </service>
 
         <activity
             android:name=".ui.MainActivity"

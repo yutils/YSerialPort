@@ -1,6 +1,8 @@
 package com.yujing.chuankou.core.serial
 
+import com.yujing.chuankou.R
 import com.yujing.chuankou.core.data.Prefs
+import com.yujing.chuankou.core.util.Langs
 
 /**
  * 串口全参数配置
@@ -25,7 +27,7 @@ data class SerialConfig(
     fun summary(): String = "$device · $baudRate · ${dataBits}${parityLetter()}${stopBitsText()}"
 
     fun frameSummary(): String {
-        val flow = if (flowControl == 0) "" else " · ${FLOW_NAMES[flowControl]}"
+        val flow = if (flowControl == 0) "" else " · ${flowName(flowControl)}"
         return "${dataBits}${parityLetter()}${stopBitsText()}$flow"
     }
 
@@ -53,8 +55,20 @@ data class SerialConfig(
         val DATA_BITS = listOf(5, 6, 7, 8)
         val STOP_BITS_NAMES = listOf("1", "2", "1.5")
         val STOP_BITS = listOf(1, 2, 3)
-        val PARITY_NAMES = listOf("无校验 (None)", "奇校验 (Odd)", "偶校验 (Even)", "标记校验 (Mark)", "空格校验 (Space)")
-        val FLOW_NAMES = listOf("无流控", "硬件流控 (RTS/CTS)", "软件流控 (XON/XOFF)")
+
+        fun parityName(v: Int): String = when (v) {
+            1 -> Langs.str(R.string.parity_odd)
+            2 -> Langs.str(R.string.parity_even)
+            3 -> Langs.str(R.string.parity_mark)
+            4 -> Langs.str(R.string.parity_space)
+            else -> Langs.str(R.string.parity_none)
+        }
+
+        fun flowName(v: Int): String = when (v) {
+            1 -> Langs.str(R.string.flow_hardware)
+            2 -> Langs.str(R.string.flow_software)
+            else -> Langs.str(R.string.flow_none)
+        }
 
         fun fromPrefs(): SerialConfig = SerialConfig(
             device = Prefs.device,

@@ -2,6 +2,7 @@ package com.yujing.chuankou.core.serial
 
 import android.os.Handler
 import android.os.Looper
+import com.yujing.chuankou.R
 import com.yujing.chuankou.core.data.AutoReplyRule
 import com.yujing.chuankou.core.data.DataType
 import com.yujing.chuankou.core.data.MatchMode
@@ -11,6 +12,7 @@ import com.yujing.chuankou.core.data.Store
 import com.yujing.chuankou.core.util.Charsets2
 import com.yujing.chuankou.core.util.Escape
 import com.yujing.chuankou.core.util.Hex
+import com.yujing.chuankou.core.util.Langs
 
 /**
  * 自动应答引擎
@@ -107,7 +109,12 @@ object AutoReplyEngine {
     private fun sendNow(rule: AutoReplyRule, payload: ByteArray) {
         if (!rule.enabled) return
         if (!Prefs.autoReplyEnabled) return
-        SerialManager.send(payload, rule.replyType, "自动应答${if (rule.name.isBlank()) "" else "：${rule.name}"}")
+        val note = if (rule.name.isBlank()) {
+            Langs.str(R.string.autoreply_note)
+        } else {
+            Langs.str(R.string.autoreply_note_name, rule.name)
+        }
+        SerialManager.send(payload, rule.replyType, note)
         hitListeners.toList().forEach { runCatching { it(rule, payload) } }
     }
 

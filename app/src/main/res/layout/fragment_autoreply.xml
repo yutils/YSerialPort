@@ -33,10 +33,10 @@
             android:orientation="vertical">
 
             <TextView
-                style="@style/Text.YS.PanelTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="自动应答" />
+                    style="@style/Text.YS.PanelTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/autoreply_title" />
 
             <TextView
                 android:id="@+id/tv_count"
@@ -61,7 +61,7 @@
             android:layout_height="36dp"
             android:layout_marginStart="6dp"
             android:minWidth="80dp"
-            android:text="新增"
+            android:text="@string/autoreply_add"
             android:textSize="12sp"
             app:icon="@drawable/ic_add"
             app:iconGravity="textStart"
@@ -100,7 +100,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="还没有自动应答规则"
+            android:text="@string/autoreply_empty_title"
             android:textColor="@color/c_text_tertiary"
             android:textSize="13sp" />
 
@@ -108,7 +108,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="收到匹配内容时自动回复指定数据"
+            android:text="@string/autoreply_empty_sub"
             android:textColor="@color/c_text_tertiary"
             android:textSize="12sp" />
     </LinearLayout>

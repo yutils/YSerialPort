@@ -8,7 +8,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-
+import com.yujing.chuankou.R
 /**
  * 统一风格的对话框工具
  */
@@ -34,7 +34,7 @@ object Dialogs {
                 onPick(which)
             }
         }
-        builder.setNegativeButton("取消", null)
+        builder.setNegativeButton(context.getString(R.string.common_cancel), null)
         builder.show()
     }
 
@@ -73,8 +73,8 @@ object Dialogs {
         MaterialAlertDialogBuilder(context)
             .setTitle(title)
             .setView(container)
-            .setPositiveButton("确定") { _, _ -> onOk(et.text.toString()) }
-            .setNegativeButton("取消", null)
+            .setPositiveButton(context.getString(R.string.common_ok)) { _, _ -> onOk(et.text.toString()) }
+            .setNegativeButton(context.getString(R.string.common_cancel), null)
             .show()
     }
 
@@ -113,8 +113,8 @@ object Dialogs {
         MaterialAlertDialogBuilder(context)
             .setTitle(title)
             .setView(container)
-            .setPositiveButton("确定") { _, _ -> onOk(et.text.toString()) }
-            .setNegativeButton("取消", null)
+            .setPositiveButton(context.getString(R.string.common_ok)) { _, _ -> onOk(et.text.toString()) }
+            .setNegativeButton(context.getString(R.string.common_cancel), null)
             .show()
     }
 
@@ -126,7 +126,7 @@ object Dialogs {
         context: Context,
         title: String,
         message: String,
-        okText: String = "确定",
+        okText: String = context.getString(R.string.common_ok),
         danger: Boolean = false,
         onOk: () -> Unit
     ) {
@@ -134,7 +134,7 @@ object Dialogs {
             .setTitle(title)
             .setMessage(message)
             .setPositiveButton(okText) { _, _ -> onOk() }
-            .setNegativeButton("取消", null)
+            .setNegativeButton(context.getString(R.string.common_cancel), null)
             .create()
         if (danger) {
             // 按钮文字颜色只能在 show 之后取到，故用 OnShowListener
@@ -152,7 +152,7 @@ object Dialogs {
         MaterialAlertDialogBuilder(context)
             .setTitle(title)
             .setMessage(message)
-            .setPositiveButton("知道了", null)
+            .setPositiveButton(context.getString(R.string.common_got_it), null)
             .show()
     }
 
@@ -179,7 +179,7 @@ object Dialogs {
             d.dismiss()
             onPick(which)
         }
-        builder.setNegativeButton("取消", null)
+        builder.setNegativeButton(context.getString(R.string.common_cancel), null)
         builder.show()
     }
 
@@ -210,8 +210,8 @@ object Dialogs {
         context: Context,
         title: String,
         view: View,
-        okText: String = "确定",
-        cancelText: String? = "取消",
+        okText: String = context.getString(R.string.common_ok),
+        cancelText: String? = context.getString(R.string.common_cancel),
         onOk: (AlertDialog) -> Unit
     ): AlertDialog {
         val builder = MaterialAlertDialogBuilder(context).setTitle(title).setView(view)

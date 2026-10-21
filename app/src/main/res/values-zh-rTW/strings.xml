@@ -1,0 +1,698 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">串口調試助手</string>
+    <string name="app_name_debug">串口調試助手(Debug)</string>
+
+    <!-- 語言 -->
+    <string name="lang_follow_system">跟隨系統（%1$s）</string>
+    <string name="lang_follow_system_plain">跟隨系統</string>
+    <string name="settings_section_general">通用</string>
+    <string name="settings_language">語言</string>
+    <string name="settings_language_sub">切換應用介面語言，重啟後仍生效</string>
+    <string name="settings_language_dialog_title">選擇語言</string>
+
+    <!-- 導航 -->
+    <string name="nav_terminal">終端</string>
+    <string name="nav_terminal_sub">串口收發 · 即時監控</string>
+    <string name="nav_history">歷史</string>
+    <string name="nav_history_sub">收發記錄 · 檢索匯出</string>
+    <string name="nav_command">快捷指令</string>
+    <string name="nav_command_sub">一鍵發送 · 常用報文</string>
+    <string name="nav_autoreply">自動應答</string>
+    <string name="nav_autoreply_sub">規則匹配 · 自動回覆</string>
+    <string name="nav_tool">工具</string>
+    <string name="nav_tool_sub">校驗演算法 · ASCII 碼表</string>
+    <string name="nav_settings">設定</string>
+    <string name="nav_settings_sub">串口 · 收發 · 外觀</string>
+    <string name="nav_more">更多</string>
+    <string name="nav_more_sub">網路透傳 · 關於</string>
+
+    <!-- 通用 -->
+    <string name="common_ok">確定</string>
+    <string name="common_cancel">取消</string>
+    <string name="common_got_it">知道了</string>
+    <string name="common_auto">自動</string>
+    <string name="common_none">無</string>
+    <string name="common_none_selected">未選擇</string>
+    <string name="common_copied">已複製到剪貼簿</string>
+    <string name="common_ms_format">%1$d ms</string>
+
+    <!-- 頂欄 -->
+    <string name="topbar_power_desc">開啟或關閉串口</string>
+    <string name="topbar_theme_desc">切換主題</string>
+
+    <!-- 資料模型：匹配模式 / 結束符 / 校驗 / 流控 -->
+    <string name="match_contains">包含</string>
+    <string name="match_equals">完全相等</string>
+    <string name="match_prefix">前綴</string>
+    <string name="match_suffix">後綴</string>
+    <string name="match_regex">正則</string>
+    <string name="parity_none">無校驗 (None)</string>
+    <string name="parity_odd">奇校驗 (Odd)</string>
+    <string name="parity_even">偶校驗 (Even)</string>
+    <string name="parity_mark">標記校驗 (Mark)</string>
+    <string name="parity_space">空格校驗 (Space)</string>
+    <string name="flow_none">無流控</string>
+    <string name="flow_hardware">硬體流控 (RTS/CTS)</string>
+    <string name="flow_software">軟體流控 (XON/XOFF)</string>
+
+    <!-- 串口 -->
+    <string name="serial_state_closed">未連接</string>
+    <string name="serial_state_opening">開啟中…</string>
+    <string name="serial_state_closing">關閉中…</string>
+    <string name="serial_state_error">串口錯誤</string>
+    <string name="serial_select_in_settings">請先在設定中選擇串口</string>
+    <string name="serial_open">開啟串口</string>
+    <string name="serial_close">關閉串口</string>
+
+    <!-- 設定：分區 -->
+    <string name="settings_section_serial">串口參數</string>
+    <string name="settings_section_rx">接收配置</string>
+    <string name="settings_section_tx">發送配置</string>
+    <string name="settings_section_appearance">外觀與顯示</string>
+    <string name="settings_rx_note">說明：關閉「自動換行」後接收資料將連續拼接，此時為保持資料完整性會自動忽略時間戳。</string>
+    <string name="settings_autosave_note">配置自動儲存，重啟後仍然生效</string>
+
+    <!-- 設定：串口參數 -->
+    <string name="serial_select_device">選擇串口</string>
+    <string name="serial_no_devices_found">未掃描到任何串口裝置</string>
+    <string name="serial_select_baud">選擇鮑率</string>
+    <string name="serial_data_bits">資料位元</string>
+    <string name="serial_stop_bits">停止位元</string>
+    <string name="serial_parity">校驗位</string>
+    <string name="serial_flow_control">流控</string>
+    <string name="serial_frame_gap">斷幀組包間隔</string>
+    <string name="serial_frame_gap_hint">毫秒，0 = 按鮑率自動計算</string>
+    <string name="serial_frame_gap_sub">收到資料後靜默該時間即認為一幀結束</string>
+    <string name="serial_device_list">串口列表</string>
+    <string name="serial_scan_empty">未掃描到串口裝置。\n請確認裝置已開放串口權限（/dev/ttyS*）。</string>
+    <string name="serial_list_count">串口列表（共 %1$d 個）</string>
+    <string name="serial_select_first">請先選擇串口</string>
+    <string name="serial_reconnected">已按新參數重新連接</string>
+    <string name="serial_connected_snack">串口已連接</string>
+    <string name="settings_serial_device">串口裝置</string>
+    <string name="settings_serial_device_sub">如 /dev/ttyS1，列表來自系統串口掃描</string>
+    <string name="settings_baud_rate">鮑率</string>
+    <string name="settings_baud_sub">常見：9600 / 115200 / 921600</string>
+    <string name="settings_data_bits_sub">可選 5 ~ 8 位元</string>
+    <string name="settings_bits_format">%1$d 位元</string>
+    <string name="settings_scan_count">已發現 %1$d 個</string>
+    <string name="settings_scan_sub">點擊重新掃描並檢視裝置名稱與路徑</string>
+
+    <!-- 設定：接收 -->
+    <string name="settings_rx_charset_dialog">接收字元集</string>
+    <string name="settings_charset">字元集</string>
+    <string name="settings_charset_sub">用於 ASCII 模式解碼；解不出來的位元組顯示為 \\xNN（如 \\xA1），而不是替換符</string>
+    <string name="settings_rx_time">顯示時間戳</string>
+    <string name="settings_rx_time_sub">關閉自動換行時時間戳會被忽略</string>
+    <string name="settings_rx_wrap">自動換行</string>
+    <string name="settings_rx_wrap_sub">關閉後資料連續拼接，不插入任何換行</string>
+    <string name="settings_rx_sep">HEX 分隔符</string>
+    <string name="sep_space">空格</string>
+    <string name="sep_none">無分隔</string>
+    <string name="sep_comma">逗號</string>
+    <string name="sep_dash">橫線</string>
+    <string name="settings_rx_max">最大顯示字元數</string>
+    <string name="settings_rx_max_sub">超出後自動從頭部裁剪</string>
+    <string name="settings_rx_echo">接收區回顯發送內容</string>
+
+    <!-- 設定：發送 -->
+    <string name="settings_tx_charset_dialog">發送字元集</string>
+    <string name="settings_tx_escape">解析轉義字元</string>
+    <string name="settings_tx_escape_sub">支援 \\r \\n \\t \\0 \\xNN \\uHHHH</string>
+    <string name="settings_tx_newline">預設結束符</string>
+    <string name="settings_tx_chunk">檔案分包大小</string>
+    <string name="settings_tx_chunk_hint">位元組，1 ~ 4096</string>
+    <string name="settings_bytes_format">%1$d 位元組</string>
+    <string name="settings_tx_delay">檔案包間延遲</string>
+    <string name="settings_ms_hint">毫秒</string>
+
+    <!-- 設定：外觀 -->
+    <string name="settings_theme">主題</string>
+    <string name="theme_follow_system">跟隨系統</string>
+    <string name="theme_dark">深色</string>
+    <string name="theme_light">淺色</string>
+    <string name="settings_bg">背景圖</string>
+    <string name="bg_none">無背景</string>
+    <string name="bg_builtin">內建桌布</string>
+    <string name="bg_custom">自訂（更多頁選擇圖片）</string>
+    <string name="bg_custom_short">自訂</string>
+    <string name="settings_bg_scrim">背景遮罩</string>
+    <string name="settings_bg_scrim_hint">0 ~ 100，越大背景越暗（推薦 70 ~ 90）</string>
+    <string name="settings_percent_format">%1$d %%</string>
+    <string name="settings_font_size">終端字號</string>
+    <string name="settings_font_hint">單位 sp，9 ~ 24</string>
+    <string name="settings_sp_format">%1$d sp</string>
+    <string name="settings_keep_screen">保持螢幕常亮</string>
+    <string name="settings_history_limit">歷史記錄上限</string>
+    <string name="settings_history_limit_hint">條，100 ~ 50000</string>
+    <string name="settings_history_count">%1$d 條（目前 %2$d 條）</string>
+
+    <!-- 終端頁：面板與控制項 -->
+    <string name="terminal_panel_rx">接收區</string>
+    <string name="terminal_panel_tx">發送區</string>
+    <string name="terminal_timestamp">時間戳</string>
+    <string name="terminal_echo">回顯發送</string>
+    <string name="terminal_back_to_bottom">回到底部</string>
+    <string name="terminal_escape">轉義</string>
+    <string name="terminal_history">歷史</string>
+    <string name="terminal_loop">週期</string>
+    <string name="terminal_send">發送</string>
+    <string name="terminal_mode_file">檔案</string>
+    <string name="terminal_pick_file">選擇檔案</string>
+    <string name="terminal_chunk">分包</string>
+    <string name="terminal_delay_ms">延遲(ms)</string>
+    <string name="terminal_interval_ms">間隔(ms)</string>
+    <string name="terminal_loop_count_hint">次數(0=無限)</string>
+    <string name="terminal_rx_pause_desc">暫停顯示</string>
+    <string name="terminal_rx_save_desc">儲存到檔案</string>
+    <string name="terminal_rx_clear_desc">清空接收區</string>
+    <string name="terminal_tx_clear_desc">清空輸入</string>
+
+    <!-- 終端頁：提示訊息 -->
+    <string name="terminal_filled">已填入發送框</string>
+    <string name="terminal_rx_cleared">接收區已清空</string>
+    <string name="terminal_display_paused">已暫停顯示（資料仍在接收並記錄）</string>
+    <string name="terminal_display_resumed">已恢復顯示</string>
+    <string name="terminal_nothing_to_save">沒有可儲存的內容</string>
+    <string name="terminal_save_failed">儲存失敗</string>
+    <string name="terminal_saved">已儲存：%1$s</string>
+    <string name="terminal_share">分享</string>
+    <string name="terminal_rx_charset_set">接收字元集：%1$s</string>
+    <string name="terminal_escape_on">已啟用轉義字元解析</string>
+    <string name="terminal_escape_off">已關閉轉義字元解析</string>
+    <string name="terminal_serial_not_open">串口未開啟，請先點擊右上角電源按鈕</string>
+    <string name="terminal_pick_file_first">請選擇要發送的檔案</string>
+    <string name="terminal_input_first">請輸入要發送的內容</string>
+    <string name="terminal_no_history">暫無發送歷史</string>
+    <string name="terminal_recent_sends">最近發送</string>
+    <string name="terminal_read_file_failed">讀取檔案失敗</string>
+    <string name="terminal_unknown_file">未知檔案</string>
+    <string name="terminal_loaded">已載入：%1$s（%2$d 位元組）</string>
+    <string name="terminal_source_manual">手動發送</string>
+
+    <!-- 終端頁：結束符 -->
+    <string name="terminal_newline">結束符</string>
+    <string name="terminal_newline_format">結束符：%1$s</string>
+
+    <!-- 終端頁：發送按鈕狀態 -->
+    <string name="terminal_btn_stop">停止</string>
+    <string name="terminal_btn_loop">開始週期</string>
+
+    <!-- 終端頁：週期發送 -->
+    <string name="terminal_loop_started_count">週期發送已啟動：間隔 %1$dms · 共 %2$d 次</string>
+    <string name="terminal_loop_started_infinite">週期發送已啟動：間隔 %1$dms · 無限循環</string>
+    <string name="terminal_loop_progress">週期 %1$d/%2$d</string>
+    <string name="terminal_sent_times">已發 %1$d 次</string>
+    <string name="terminal_loop_finished">週期發送結束，共 %1$d 次</string>
+
+    <!-- 終端頁：檔案發送 -->
+    <string name="terminal_no_file">未選擇檔案\n支援任意檔案，可按需啟用轉義字元解析後發送</string>
+    <string name="terminal_file_info">%1$s\n大小：%2$d 位元組（%3$s）</string>
+    <string name="terminal_file_echo">[檔案 %1$d 位元組]</string>
+    <string name="terminal_file_progress">已發送 %1$d / %2$d 位元組</string>
+
+    <!-- 終端頁：統計 -->
+    <string name="terminal_rx_stats">收 %1$s · %2$d 包</string>
+    <string name="terminal_tx_stats">發 %1$s · %2$d 包</string>
+
+    <!-- 終端頁：輸入提示 -->
+    <string name="terminal_hint_hex">輸入十六進位，例如 01 03 00 00 00 0A</string>
+    <string name="terminal_hint_input">輸入要發送的內容…</string>
+
+    <!-- ==================== 工具頁：校驗計算機 ==================== -->
+    <string name="tool_tab_checksum">校驗計算機</string>
+    <string name="tool_tab_ascii">ASCII 碼表</string>
+    <string name="tool_input_data">輸入資料</string>
+    <string name="tool_input_hint_full">HEX 例：01 03 00 00 00 0A\nASCII 例：123456789</string>
+    <string name="tool_input_hint_hex">HEX 例：01 03 00 00 00 0A</string>
+    <string name="tool_input_hint_ascii">ASCII 例：123456789</string>
+    <string name="tool_escape">轉義</string>
+    <string name="tool_input_invalid">格式不正確</string>
+    <string name="tool_input_format_invalid">輸入格式不正確</string>
+    <string name="tool_hex_rule">HEX 輸入僅允許 0-9 A-F 與分隔符</string>
+    <string name="tool_checksum_algo">校驗演算法</string>
+    <string name="tool_high_byte_first">高位元組在前</string>
+    <string name="tool_refin">輸入反轉</string>
+    <string name="tool_refout">輸出反轉</string>
+    <string name="tool_invert">結果取反</string>
+    <string name="tool_algo_group">演算法分類</string>
+    <string name="tool_output_width">輸出位元寬度</string>
+    <string name="tool_width_opt_follow">跟隨演算法</string>
+    <string name="tool_width_opt_8">8 位元</string>
+    <string name="tool_width_opt_16">16 位元</string>
+    <string name="tool_width_opt_32">32 位元</string>
+    <string name="tool_width_chip_follow">位元寬度 跟隨</string>
+    <string name="tool_width_chip_format">位元寬度 %1$d</string>
+    <string name="tool_xor_chip_format">異或 0x%1$s</string>
+    <string name="tool_xor_value">結果異或值</string>
+    <string name="tool_xor_value_hint">支援 0x 前綴或十進位，例：0xFF</string>
+    <string name="tool_calc">計算校驗值</string>
+    <string name="tool_algo_desc_crc">位元寬度 %1$d · 多項式 0x%2$s · 初值 0x%3$s · XorOut 0x%4$s · RefIn=%5$b RefOut=%6$b</string>
+    <string name="tool_algo_desc_check">" · 標準校驗值 0x%1$s"</string>
+    <string name="tool_copy">複製</string>
+    <string name="tool_fill_send">填入發送框</string>
+    <string name="tool_append_send">附加到資料並發送</string>
+    <string name="tool_copied_checksum_format">已複製校驗值：%1$s</string>
+    <string name="tool_serial_not_open">串口未開啟</string>
+    <string name="tool_note_checksum_format">資料+%1$s</string>
+    <string name="tool_sent_with_checksum">已發送 %1$d 位元組（資料 + 校驗）</string>
+
+    <!-- ==================== 工具頁：ASCII 碼表 ==================== -->
+    <string name="tool_ascii_search_hint">搜尋字元 / 十六進位 / 名稱</string>
+    <string name="tool_ascii_hint">點擊任意儲存格可複製 / 填入發送框</string>
+    <string name="tool_ascii_hint_count_format">點擊任意儲存格可複製 / 填入發送框（共 %1$d 項）</string>
+    <string name="tool_ascii_hint_search_format">搜尋「%1$s」命中 %2$d 項</string>
+    <string name="tool_ascii_space">空格</string>
+    <string name="tool_ascii_del">刪除</string>
+    <string name="tool_ascii_digit_format">數字 %1$s</string>
+    <string name="tool_ascii_upper_format">大寫字母 %1$s</string>
+    <string name="tool_ascii_lower_format">小寫字母 %1$s</string>
+    <string name="tool_menu_copy_hex_format">複製 HEX（%1$s）</string>
+    <string name="tool_menu_send_byte">發送該位元組</string>
+    <string name="tool_menu_fill_hex">填入發送框（HEX）</string>
+    <string name="tool_menu_copy_char_format">複製字元「%1$s」</string>
+    <string name="tool_copied_char">已複製字元</string>
+    <string name="tool_copied_hex">已複製 HEX</string>
+    <string name="tool_sent_hex_format">已發送 0x%1$s</string>
+
+    <!-- 0 ~ 31 控制字元說明 -->
+    <string name="tool_ctrl_nul">空字元</string>
+    <string name="tool_ctrl_soh">標題開始</string>
+    <string name="tool_ctrl_stx">正文開始</string>
+    <string name="tool_ctrl_etx">正文結束</string>
+    <string name="tool_ctrl_eot">傳輸結束</string>
+    <string name="tool_ctrl_enq">請求</string>
+    <string name="tool_ctrl_ack">確認</string>
+    <string name="tool_ctrl_bel">響鈴</string>
+    <string name="tool_ctrl_bs">退格</string>
+    <string name="tool_ctrl_ht">水平製表</string>
+    <string name="tool_ctrl_lf">換行</string>
+    <string name="tool_ctrl_vt">垂直製表</string>
+    <string name="tool_ctrl_ff">換頁</string>
+    <string name="tool_ctrl_cr">回車</string>
+    <string name="tool_ctrl_so">移出</string>
+    <string name="tool_ctrl_si">移入</string>
+    <string name="tool_ctrl_dle">資料鏈路轉義</string>
+    <string name="tool_ctrl_dc1">裝置控制1</string>
+    <string name="tool_ctrl_dc2">裝置控制2</string>
+    <string name="tool_ctrl_dc3">裝置控制3</string>
+    <string name="tool_ctrl_dc4">裝置控制4</string>
+    <string name="tool_ctrl_nak">否定</string>
+    <string name="tool_ctrl_syn">同步</string>
+    <string name="tool_ctrl_etb">區塊傳輸結束</string>
+    <string name="tool_ctrl_can">取消</string>
+    <string name="tool_ctrl_em">介質結束</string>
+    <string name="tool_ctrl_sub">替換</string>
+    <string name="tool_ctrl_esc">轉義</string>
+    <string name="tool_ctrl_fs">檔案分隔</string>
+    <string name="tool_ctrl_gs">群組分隔</string>
+    <string name="tool_ctrl_rs">記錄分隔</string>
+    <string name="tool_ctrl_us">單元分隔</string>
+
+    <!-- 128 ~ 191 擴展字元說明（windows-1252 / Latin-1 上半區） -->
+    <string name="tool_ext_euro">歐元符號</string>
+    <string name="tool_ext_undefined">未定義</string>
+    <string name="tool_ext_quote_low_single">單低引號</string>
+    <string name="tool_ext_florin">花體 f</string>
+    <string name="tool_ext_quote_low_double">雙低引號</string>
+    <string name="tool_ext_ellipsis">省略號</string>
+    <string name="tool_ext_dagger">劍號</string>
+    <string name="tool_ext_dagger_double">雙劍號</string>
+    <string name="tool_ext_circumflex">修飾符抑揚</string>
+    <string name="tool_ext_permille">千分號</string>
+    <string name="tool_ext_s_caron">S 加抑揚</string>
+    <string name="tool_ext_langle_single">單左尖括號</string>
+    <string name="tool_ext_oe_ligature">OE 連字</string>
+    <string name="tool_ext_z_caron">Z 加抑揚</string>
+    <string name="tool_ext_quote_left_single">左單引號</string>
+    <string name="tool_ext_quote_right_single">右單引號</string>
+    <string name="tool_ext_quote_left_double">左雙引號</string>
+    <string name="tool_ext_quote_right_double">右雙引號</string>
+    <string name="tool_ext_bullet">項目符號</string>
+    <string name="tool_ext_dash_en">短破折號</string>
+    <string name="tool_ext_dash_em">長破折號</string>
+    <string name="tool_ext_tilde">修飾符波浪</string>
+    <string name="tool_ext_trademark">商標</string>
+    <string name="tool_ext_s_caron_lower">s 加抑揚</string>
+    <string name="tool_ext_rangle_single">單右尖括號</string>
+    <string name="tool_ext_oe_ligature_lower">oe 連字</string>
+    <string name="tool_ext_z_caron_lower">z 加抑揚</string>
+    <string name="tool_ext_y_diaeresis">Y 加分音</string>
+    <string name="tool_ext_nbsp">不換行空格</string>
+    <string name="tool_ext_exclaim_inverted">倒嘆號</string>
+    <string name="tool_ext_cent">分幣</string>
+    <string name="tool_ext_pound">英鎊</string>
+    <string name="tool_ext_currency">貨幣符號</string>
+    <string name="tool_ext_yen">日圓</string>
+    <string name="tool_ext_broken_bar">斷豎線</string>
+    <string name="tool_ext_section">章節號</string>
+    <string name="tool_ext_diaeresis">分音符號</string>
+    <string name="tool_ext_copyright">版權</string>
+    <string name="tool_ext_ordinal_f">陰性序數</string>
+    <string name="tool_ext_langle_double">左雙角括號</string>
+    <string name="tool_ext_not">非</string>
+    <string name="tool_ext_shy">軟連字符</string>
+    <string name="tool_ext_registered">註冊商標</string>
+    <string name="tool_ext_macron">長音符號</string>
+    <string name="tool_ext_degree">度</string>
+    <string name="tool_ext_plus_minus">正負</string>
+    <string name="tool_ext_superscript_two">上標2</string>
+    <string name="tool_ext_superscript_three">上標3</string>
+    <string name="tool_ext_acute">重音</string>
+    <string name="tool_ext_micro">微</string>
+    <string name="tool_ext_paragraph">段落</string>
+    <string name="tool_ext_middle_dot">中間點</string>
+    <string name="tool_ext_cedilla">下加符</string>
+    <string name="tool_ext_superscript_one">上標1</string>
+    <string name="tool_ext_ordinal_m">陽性序數</string>
+    <string name="tool_ext_rangle_double">右雙角括號</string>
+    <string name="tool_ext_quarter">四分之一</string>
+    <string name="tool_ext_half">二分之一</string>
+    <string name="tool_ext_three_quarters">四分之三</string>
+    <string name="tool_ext_question_inverted">倒問號</string>
+    <string name="tool_ext_multiply">乘號</string>
+    <string name="tool_ext_divide">除號</string>
+
+    <!-- ==================== 更多頁 ==================== -->
+    <string name="more_tcp_title">串口 ↔ TCP 透傳</string>
+    <string name="more_tcp_value">服務端 / 客戶端</string>
+    <string name="more_tcp_sub">把串口資料轉發到網路，或把網路資料寫入串口</string>
+    <string name="more_bg_custom">自訂圖片</string>
+    <string name="more_bg_scrim_hint">0 ~ 100，越大背景越暗</string>
+    <string name="more_no_history">暫無歷史記錄</string>
+    <string name="more_export_failed">匯出失敗</string>
+    <string name="more_exported_format">已匯出 %1$s</string>
+    <string name="more_share">分享</string>
+    <string name="more_export_history">匯出收發記錄</string>
+    <string name="more_count_format">%1$d 條</string>
+    <string name="more_export_dir">匯出目錄</string>
+    <string name="more_export_dir_msg">%1$s\n\n可透過檔案管理器或 adb pull 取得。</string>
+    <string name="more_view">檢視</string>
+    <string name="more_reset">恢復預設設定</string>
+    <string name="more_reset_msg">將清空所有配置（串口參數、收發配置、外觀等）。\n快捷指令與自動應答規則不會刪除。</string>
+    <string name="more_reset_btn">恢復預設</string>
+    <string name="more_reset_done">已恢復預設設定</string>
+    <string name="more_reset_careful">慎用</string>
+    <string name="more_pick_image">選擇自訂背景</string>
+    <string name="more_selected">已選擇</string>
+    <string name="more_pick_image_sub">從相簿選擇圖片，建議橫屏大圖</string>
+    <string name="more_exit">退出應用</string>
+    <string name="more_exit_serial_open">先關串口再退出</string>
+    <string name="more_exit_normal">釋放資源後退出</string>
+    <string name="more_exit_confirm_serial_open">將先關閉串口連接，儲存收發記錄後退出。\n確定退出嗎？</string>
+    <string name="more_exit_confirm_normal">將儲存收發記錄後退出應用。\n確定退出嗎？</string>
+    <string name="more_exit_btn">退出</string>
+    <string name="more_source">開源地址</string>
+    <string name="more_copy_url">複製地址</string>
+    <string name="more_open_browser">瀏覽器開啟</string>
+    <string name="more_url_copied">地址已複製</string>
+    <string name="more_no_browser_copied">無法開啟瀏覽器，地址已複製</string>
+    <string name="more_bg_set">背景圖已設定</string>
+    <string name="more_bg_read_failed">圖片讀取失敗</string>
+    <string name="more_section_network">網路</string>
+    <string name="more_section_personal">個人化</string>
+    <string name="more_section_data">資料與維護</string>
+
+    <!-- ==================== 關於 ==================== -->
+    <string name="about_version_format">版本 %1$s (%2$d)</string>
+    <string name="about_author">作者：余靜</string>
+    <string name="about_source_url">開源地址：github.com/yutils/YSerialPort</string>
+    <string name="about_footer">本工具用於調試串口裝置，支援 ASCII / HEX 收發、\n檔案發送、週期發送、自動應答、校驗計算等能力。\n\n串口庫 YSerialPort · 不與其他串口工具產生 so 衝突</string>
+
+    <!-- ==================== 指令頁 ==================== -->
+
+    <!-- 頁面 -->
+    <string name="command_title">快捷指令</string>
+    <string name="command_add">新增</string>
+    <string name="command_add_desc">新增指令</string>
+    <string name="command_empty_title">還沒有快捷指令</string>
+    <string name="command_empty_sub">點擊右上角「新增」建立常用報文</string>
+    <string name="command_count_format">共 %1$d 條 · 點擊「發送」即可一鍵下發</string>
+
+    <!-- 列表項 -->
+    <string name="command_send">發送</string>
+    <string name="command_more_desc">更多操作</string>
+    <string name="command_item_unnamed">未命名</string>
+
+    <!-- 發送 -->
+    <string name="command_serial_not_open">串口未開啟，請先開啟串口</string>
+    <string name="command_content_invalid">指令內容為空或格式不正確</string>
+    <string name="command_note">快捷指令</string>
+    <string name="command_note_name">快捷指令：%1$s</string>
+    <string name="command_sent_bytes">已發送 %1$d 位元組</string>
+
+    <!-- 卡片點擊選單 -->
+    <string name="command_fallback_name">指令</string>
+    <string name="command_action_send_now">一鍵發送</string>
+    <string name="command_action_fill">填入發送框</string>
+
+    <!-- 更多選單 -->
+    <string name="command_unnamed">未命名指令</string>
+    <string name="command_menu_edit">編輯</string>
+    <string name="command_menu_duplicate">複製一份</string>
+    <string name="command_menu_move_up">上移</string>
+    <string name="command_menu_move_down">下移</string>
+    <string name="command_delete">刪除</string>
+    <string name="command_copy_format">%1$s 副本</string>
+    <string name="command_delete_title">刪除指令</string>
+    <string name="command_delete_confirm">確認刪除「%1$s」？</string>
+
+    <!-- 編輯對話框 -->
+    <string name="command_add_title">新增快捷指令</string>
+    <string name="command_edit_title">編輯快捷指令</string>
+    <string name="command_save">儲存</string>
+    <string name="command_name_hint">指令名稱，例如：讀取溫度</string>
+    <string name="command_hint_hex">HEX 例：01 03 00 00 00 0A C5 CD</string>
+    <string name="command_hint_ascii">文字內容，例：AT+RESET</string>
+    <string name="command_escape_chip">轉義</string>
+    <string name="command_newline_chip">結束符：%1$s</string>
+    <string name="command_newline_title">結束符</string>
+    <string name="command_escape_on">發送時將解析 \\r \\n \\xNN 等轉義</string>
+    <string name="command_escape_off">已關閉轉義解析</string>
+
+    <!-- 校驗提示 -->
+    <string name="command_error_content_empty">請填寫指令內容</string>
+    <string name="command_error_hex_invalid">HEX 格式不正確，請檢查是否含非法字元</string>
+    <string name="command_default_name_hex">HEX 指令</string>
+    <string name="command_default_name_ascii">文字指令</string>
+    <string name="command_saved">已儲存</string>
+
+    <!-- ==================== 應答頁 ==================== -->
+
+    <!-- 頁面 -->
+    <string name="autoreply_title">自動應答</string>
+    <string name="autoreply_add">新增</string>
+    <string name="autoreply_empty_title">還沒有自動應答規則</string>
+    <string name="autoreply_empty_sub">收到匹配內容時自動回覆指定資料</string>
+    <string name="autoreply_count_format">%1$d 條規則 · 啟用 %2$d 條 · 收到匹配資料自動回覆</string>
+    <string name="autoreply_enabled_toast">自動應答已啟用</string>
+    <string name="autoreply_disabled_toast">自動應答已停用</string>
+
+    <!-- 列表項 -->
+    <string name="autoreply_more_desc">更多操作</string>
+    <string name="autoreply_unnamed">未命名規則</string>
+    <string name="autoreply_hits_format">命中 %1$d</string>
+    <string name="autoreply_match_label">匹配</string>
+    <string name="autoreply_reply_label">應答</string>
+
+    <!-- 更多選單 -->
+    <string name="autoreply_fallback_name">規則</string>
+    <string name="autoreply_menu_enable">啟用此規則</string>
+    <string name="autoreply_menu_disable">停用此規則</string>
+    <string name="autoreply_menu_edit">編輯</string>
+    <string name="autoreply_menu_test">測試應答（立即發送一次）</string>
+    <string name="autoreply_menu_duplicate">複製一份</string>
+    <string name="autoreply_menu_move_up">上移</string>
+    <string name="autoreply_menu_move_down">下移</string>
+    <string name="autoreply_delete">刪除</string>
+    <string name="autoreply_rule_enabled">已啟用「%1$s」</string>
+    <string name="autoreply_rule_disabled">已停用「%1$s」</string>
+    <string name="autoreply_reply_invalid">應答內容為空或格式不正確</string>
+    <string name="autoreply_test_note">測試應答</string>
+    <string name="autoreply_test_sent">已發送測試應答 %1$d 位元組</string>
+    <string name="autoreply_copy_format">%1$s 副本</string>
+    <string name="autoreply_delete_title">刪除規則</string>
+    <string name="autoreply_delete_confirm">確認刪除「%1$s」？</string>
+
+    <!-- 編輯對話框 -->
+    <string name="autoreply_add_title">新增應答規則</string>
+    <string name="autoreply_edit_title">編輯應答規則</string>
+    <string name="autoreply_save">儲存</string>
+    <string name="autoreply_name_hint">規則名稱，例如：溫度查詢應答</string>
+    <string name="autoreply_section_match">接收匹配</string>
+    <string name="autoreply_section_reply">應答內容</string>
+    <string name="autoreply_match_hint_hex">HEX 支援通配：01 03 ?? ?? 00 0A</string>
+    <string name="autoreply_match_hint_ascii">匹配的文字內容</string>
+    <string name="autoreply_reply_hint">應答的 HEX 或文字內容</string>
+    <string name="autoreply_match_mode_title">匹配模式</string>
+    <string name="autoreply_newline_chip">結束符：%1$s</string>
+    <string name="autoreply_newline_title">結束符</string>
+    <string name="autoreply_escape_chip">轉義</string>
+    <string name="autoreply_delay_label">應答延遲(ms)</string>
+    <string name="autoreply_once_chip">僅應答一次</string>
+    <string name="autoreply_preview_empty">應答預覽：（空）</string>
+    <string name="autoreply_preview_format">應答預覽：%1$s</string>
+
+    <!-- 校驗提示 -->
+    <string name="autoreply_error_match_empty">請填寫匹配內容</string>
+    <string name="autoreply_error_reply_empty">請填寫應答內容</string>
+    <string name="autoreply_error_match_hex">匹配內容 HEX 格式不正確</string>
+    <string name="autoreply_error_reply_hex">應答內容 HEX 格式不正確</string>
+    <string name="autoreply_default_name">應答規則</string>
+    <string name="autoreply_saved">已儲存</string>
+
+    <!-- 引擎（無 Context） -->
+    <string name="autoreply_note">自動應答</string>
+    <string name="autoreply_note_name">自動應答：%1$s</string>
+
+    <!-- 歷史記錄頁：篩選 / 搜尋 / 記錄項 -->
+    <string name="history_filter_all">全部</string>
+    <string name="history_filter_rx">接收</string>
+    <string name="history_filter_tx">發送</string>
+    <string name="history_dir_rx">接收</string>
+    <string name="history_dir_tx">發送</string>
+    <string name="history_dir_system">系統</string>
+    <string name="history_search_hint">搜尋內容 / HEX</string>
+    <string name="history_export_desc">匯出記錄</string>
+    <string name="history_clear_desc">清空記錄</string>
+    <string name="history_empty">暫無收發記錄</string>
+    <string name="history_no_records">暫無記錄</string>
+    <string name="history_clear_title">清空記錄</string>
+    <string name="history_clear_message">將刪除全部 %1$d 條收發記錄，且不可復原。</string>
+    <string name="history_cleared">已清空</string>
+    <string name="history_count_format">共 %1$d 條記錄（總計 %2$d 條）</string>
+    <string name="history_no_export">暫無可匯出的記錄</string>
+    <string name="history_export_failed">匯出失敗</string>
+    <string name="history_exported_format">已匯出：%1$s</string>
+    <string name="history_export_share">分享</string>
+    <string name="history_menu_title">記錄操作</string>
+    <string name="history_menu_copy_hex">複製 HEX</string>
+    <string name="history_menu_copy_text">複製文字</string>
+    <string name="history_menu_fill_hex">回填到發送框（HEX）</string>
+    <string name="history_menu_fill_ascii">回填到發送框（ASCII）</string>
+    <string name="history_menu_send_hex">一鍵發送 HEX</string>
+    <string name="history_menu_delete">刪除這條記錄</string>
+    <string name="history_copied_hex">已複製 HEX</string>
+    <string name="history_copied_text">已複製文字</string>
+    <string name="history_deleted">已刪除</string>
+
+    <!-- TCP 透傳頁：介面 -->
+    <string name="tcp_title">串口 ↔ TCP 透傳</string>
+    <string name="tcp_back_desc">返回</string>
+    <string name="tcp_mode_title">工作模式</string>
+    <string name="tcp_mode_server">服務端</string>
+    <string name="tcp_mode_client">客戶端</string>
+    <string name="tcp_listen_port">監聽埠</string>
+    <string name="tcp_remote_ip">遠端 IP</string>
+    <string name="tcp_start">啟動</string>
+    <string name="tcp_stop">停止</string>
+    <string name="tcp_connect">連接</string>
+    <string name="tcp_disconnect">斷開</string>
+    <string name="tcp_log_title">透傳日誌</string>
+    <string name="tcp_clear_log_desc">清空日誌</string>
+    <string name="tcp_state_stopped">未啟動</string>
+    <string name="tcp_state_running">運行中</string>
+    <string name="tcp_state_running_server">運行中 · 服務端監聽埠 %1$s · 已接入 %2$d 個客戶端</string>
+    <string name="tcp_state_running_client">運行中 · 已連接 %1$s:%2$s</string>
+
+    <!-- TCP 透傳頁：日誌與提示 -->
+    <string name="tcp_intro">透傳功能會把串口收到的資料轉發到 TCP，並把 TCP 收到的資料寫入串口。</string>
+    <string name="tcp_local_ip_format">本機 IP：%1$s</string>
+    <string name="tcp_ip_unavailable">未取得</string>
+    <string name="tcp_port_invalid_title">埠號無效</string>
+    <string name="tcp_port_invalid_message">請輸入 1 ~ 65535 之間的埠號</string>
+    <string name="tcp_host_invalid_title">地址無效</string>
+    <string name="tcp_host_invalid_message">請輸入遠端 IP 或網域名稱</string>
+    <string name="tcp_connecting">正在連接 %1$s:%2$d …</string>
+    <string name="tcp_serial_not_configured">提示：尚未配置串口，請先到「設定」選擇串口並開啟</string>
+    <string name="tcp_serial_auto_opening">串口未開啟，正在自動開啟 %1$s …</string>
+    <string name="tcp_serial_opened">串口已開啟：%1$s</string>
+    <string name="tcp_serial_open_failed">串口開啟失敗：%1$s</string>
+    <string name="tcp_unknown_error">未知錯誤</string>
+    <string name="tcp_note">TCP透傳</string>
+
+    <!-- TCP 透傳橋：日誌 -->
+    <string name="tcp_log_server_started">服務端已啟動，監聽埠 %1$d</string>
+    <string name="tcp_log_start_failed">啟動失敗：%1$s %2$s</string>
+    <string name="tcp_log_accept_ended">accept 結束：%1$s</string>
+    <string name="tcp_log_client_joined">客戶端接入：%1$s:%2$d（目前 %3$d 個）</string>
+    <string name="tcp_log_client_init_failed">客戶端初始化失敗：%1$s</string>
+    <string name="tcp_log_read_ended">讀取結束：%1$s</string>
+    <string name="tcp_log_tcp_to_serial_ok">TCP → 串口：%1$d 位元組（已提交）</string>
+    <string name="tcp_log_tcp_to_serial_failed">TCP → 串口：%1$d 位元組（失敗：串口未開啟）</string>
+    <string name="tcp_log_connected">已連接 %1$s:%2$d</string>
+    <string name="tcp_log_remote_disconnected">遠端已斷開</string>
+    <string name="tcp_log_connect_ended">連接結束：%1$s %2$s</string>
+    <string name="tcp_log_stopped">已停止透傳</string>
+    <string name="tcp_log_write_client_failed">寫入客戶端失敗：%1$s %2$s</string>
+    <string name="tcp_log_serial_to_tcp_clients">串口 → TCP：%1$d 位元組 × %2$d 個客戶端</string>
+    <string name="tcp_log_serial_to_tcp">串口 → TCP：%1$d 位元組</string>
+    <string name="tcp_log_send_failed">發送失敗：%1$s %2$s</string>
+    <string name="tcp_log_client_left">客戶端斷開（剩餘 %1$d 個）</string>
+
+    <!-- 串口管理：狀態與錯誤 -->
+    <string name="serial_state_open">已連接</string>
+    <string name="serial_state_error_short">錯誤</string>
+    <string name="serial_err_no_permission">無串口讀寫權限：%1$s</string>
+    <string name="serial_err_no_permission_hint">請確認裝置已 root 或串口權限已開放</string>
+    <string name="serial_err_open_failed">開啟串口失敗：%1$s</string>
+    <string name="serial_not_open">串口未開啟</string>
+    <string name="serial_send_failed">發送失敗，請檢查串口連接</string>
+    <string name="serial_file_busy">正在發送檔案，請稍候</string>
+    <string name="serial_file_bytes">[檔案] %1$d 位元組</string>
+    <string name="serial_file_send_note">檔案發送</string>
+    <string name="serial_file_interrupted">檔案發送中斷（已發送 %1$d / %2$d 位元組）</string>
+    <string name="serial_loop_note">週期發送</string>
+    <string name="serial_rx_note">接收</string>
+
+    <!-- 字元集展示名 -->
+    <string name="charset_gb18030">GB18030（國標）</string>
+    <string name="charset_big5">BIG5（繁體）</string>
+    <string name="charset_utf16le">UTF-16LE（小端）</string>
+    <string name="charset_utf16be">UTF-16BE（大端）</string>
+    <string name="charset_iso_8859_1">ISO-8859-1（Latin-1）</string>
+    <string name="charset_shift_jis">Shift_JIS（日文）</string>
+    <string name="charset_euc_kr">EUC-KR（韓文）</string>
+
+    <!-- 校驗演算法：分組 -->
+    <string name="checksum_group_common">常用</string>
+
+    <!-- 校驗演算法：名稱 -->
+    <string name="checksum_algo_sum8">累加和 SUM8</string>
+    <string name="checksum_algo_sum16">累加和 SUM16</string>
+    <string name="checksum_algo_xor8">異或校驗 XOR8</string>
+    <string name="checksum_algo_xor16">異或校驗 XOR16</string>
+    <string name="checksum_algo_bcc">BCC 區塊校驗</string>
+    <string name="checksum_algo_lrc">LRC 縱向冗餘校驗</string>
+    <string name="checksum_algo_lrc16">LRC16 縱向冗餘校驗</string>
+    <string name="checksum_algo_twos8">二進位補碼 SUM8</string>
+
+    <!-- 校驗演算法：描述 -->
+    <string name="checksum_desc_sum8">所有位元組求和，取低 8 位元</string>
+    <string name="checksum_desc_sum16">所有位元組求和，取低 16 位元</string>
+    <string name="checksum_desc_xor8">所有位元組逐位元組異或，取低 8 位元</string>
+    <string name="checksum_desc_xor16">所有位元組逐位元組異或，取低 16 位元</string>
+    <string name="checksum_desc_bcc">同 XOR8，用於條碼/磁卡</string>
+    <string name="checksum_desc_lrc">累加和取反加一（MODBUS ASCII）</string>
+    <string name="checksum_desc_lrc16">16 位元累加和取反加一</string>
+    <string name="checksum_desc_twos8">累加和取反加一</string>
+
+    <!-- 檔案 -->
+    <string name="file_share_chooser">分享檔案</string>
+
+    <!-- 資料倉庫：歷史匯出 -->
+    <string name="store_export_title">串口收發記錄</string>
+    <string name="store_export_time">匯出時間：%1$s</string>
+    <string name="store_export_columns">方向\t時間\t類型\t長度\tHEX\t文字</string>
+    <string name="store_dir_rx">接收</string>
+    <string name="store_dir_tx">發送</string>
+    <string name="store_dir_sys">系統</string>
+
+    <!-- 資料倉庫：預設快捷指令 -->
+    <string name="store_cmd_at">AT 指令</string>
+    <string name="store_cmd_modbus">Modbus 讀保持暫存器</string>
+    <string name="store_cmd_handshake">握手幀</string>
+    <string name="store_cmd_reset">復位</string>
+    <string name="store_cmd_newline">回車換行</string>
+</resources>

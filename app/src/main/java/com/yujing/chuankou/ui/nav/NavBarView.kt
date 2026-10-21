@@ -100,16 +100,4 @@ class NavBarView @JvmOverloads constructor(
 
     fun labelOf(index: Int): String = items.getOrNull(index)?.label ?: ""
     fun idOf(index: Int): String = items.getOrNull(index)?.id ?: ""
-
-    companion object {
-        val DEFAULT_ITEMS = listOf(
-            Item("terminal", R.drawable.ic_terminal, "终端"),
-            Item("history", R.drawable.ic_history, "历史"),
-            Item("command", R.drawable.ic_command, "指令"),
-            Item("autoreply", R.drawable.ic_reply, "应答"),
-            Item("tool", R.drawable.ic_tool, "工具"),
-            Item("settings", R.drawable.ic_settings, "设置"),
-            Item("more", R.drawable.ic_more, "更多")
-        )
-    }
 }
