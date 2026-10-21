@@ -263,11 +263,11 @@ public class YSerialPort {
                 readInputStream.start();
             }
         } catch (SecurityException e) {
-            DisplayError("您对串行端口没有读/写权限。");
+            DisplayError(context.getString(R.string.ysp_error_no_permission));
         } catch (IOException e) {
-            DisplayError("由于未知原因，无法打开串行端口。");
+            DisplayError(context.getString(R.string.ysp_error_unknown_open));
         } catch (InvalidParameterException e) {
-            DisplayError("请先配置你的串口。");
+            DisplayError(context.getString(R.string.ysp_error_not_configured));
         }
     }
 
@@ -586,10 +586,11 @@ public class YSerialPort {
         if (errorListener != null) {
             post(() -> errorListener.error(error));
         } else {
+            String text = context.getString(R.string.ysp_error_prefix, error);
             if (isMainThread()) {
-                Toast.makeText(context, "错误:" + error, Toast.LENGTH_LONG).show();
+                Toast.makeText(context, text, Toast.LENGTH_LONG).show();
             } else {
-                handler.post(() -> Toast.makeText(context, "错误:" + error, Toast.LENGTH_LONG).show());
+                handler.post(() -> Toast.makeText(context, text, Toast.LENGTH_LONG).show());
             }
         }
     }

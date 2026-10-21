@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- YSerialPort 库字符串资源（简体中文） -->
+<resources>
+    <string name="ysp_app_name">YSerialPort</string>
+
+    <!-- 错误提示 -->
+    <string name="ysp_error_prefix">错误：%1$s</string>
+    <string name="ysp_error_no_permission">您对串行端口没有读/写权限。</string>
+    <string name="ysp_error_unknown_open">由于未知原因，无法打开串行端口。</string>
+    <string name="ysp_error_not_configured">请先配置你的串口。</string>
+</resources>

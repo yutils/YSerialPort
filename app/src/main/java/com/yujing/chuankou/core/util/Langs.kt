@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.res.Configuration
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.os.LocaleListCompat
 import com.yujing.chuankou.App
 
 /**

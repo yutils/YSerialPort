@@ -1,3 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  YSerialPort 库字符串资源
+  命名统一使用 ysp_ 前缀，避免与使用方的资源同名冲突（资源合并按名称进行，前缀是库的必备约定）
+  默认（values）为英文，作为其他语言的兜底；简体中文见 values-zh
+-->
 <resources>
-    <string name="app_name">YSerialPort</string>
+    <string name="ysp_app_name">YSerialPort</string>
+
+    <!-- 错误提示 -->
+    <string name="ysp_error_prefix">Error: %1$s</string>
+    <string name="ysp_error_no_permission">No read/write permission for the serial port.</string>
+    <string name="ysp_error_unknown_open">Unable to open the serial port for an unknown reason.</string>
+    <string name="ysp_error_not_configured">Please configure the serial port first.</string>
 </resources>

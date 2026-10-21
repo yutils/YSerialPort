@@ -132,7 +132,7 @@ object SerialManager {
     // 打开 / 关闭
     // ==================================================================
     fun open(cfg: SerialConfig): Boolean {
-        val ctx = appContext ?: return false
+        appContext ?: return false
         if (state == State.OPENING || state == State.OPEN) close()
         config = cfg
         setState(State.OPENING, null)
@@ -146,7 +146,8 @@ object SerialManager {
                 .flowControl(cfg.flowControl)
                 .build()
 
-            val ysp = YSerialPort(ctx, cfg.device, cfg.baudRate.toString())
+            // 传跟随应用语言的 Context：库内错误提示按应用语言取词（Android 13 以下用 Application 取不到应用语言）
+            val ysp = YSerialPort(Langs.context(), cfg.device, cfg.baudRate.toString())
             ysp.setThreadMode(ThreadMode.MAIN)
             ysp.setErrorListener { msg ->
                 lastError = msg
@@ -166,12 +167,10 @@ object SerialManager {
             notifyStatsNow()
             true
         } catch (e: SecurityException) {
+            // 底层异常文案（如 chmod 失败）由库打印到日志；界面只显示本地化提示，避免中英混杂
             setState(
                 State.ERROR,
-                Langs.str(
-                    R.string.serial_err_no_permission,
-                    e.message ?: Langs.str(R.string.serial_err_no_permission_hint)
-                )
+                Langs.str(R.string.serial_err_no_permission, Langs.str(R.string.serial_err_no_permission_hint))
             )
             false
         } catch (e: Exception) {
